@@ -1,11 +1,12 @@
 package edu.memphis.ccrg.lida.framework.shared;
 
+
 /**
- * Default implementation of {@link UnifyingNode}
+ * Default implementation of {@link RootableNode}
  * @author Ryan J. McCall
  *
  */
-public class UnifyingNodeImpl extends NodeImpl implements UnifyingNode {
+public class RootableNodeImpl extends NodeImpl implements RootableNode {
 
 	private double desirability;
 	private NodeType nodeType;
@@ -47,8 +48,21 @@ public class UnifyingNodeImpl extends NodeImpl implements UnifyingNode {
 	
 	@Override
 	public void updateNodeValues(Node n){
-		if(n instanceof UnifyingNode){
-			desirability = ((UnifyingNode) n).getDesirability();
+		if(n instanceof RootableNode){
+			desirability = ((RootableNode) n).getDesirability();
 		}
 	}
+	
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof RootableNodeImpl) {
+            return getId() == ((RootableNodeImpl) obj).getId();
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return getId();
+    }
 }

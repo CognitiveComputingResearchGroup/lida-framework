@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.actionselection.Action;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Condition;
-import edu.memphis.ccrg.lida.framework.shared.UnifyingNode;
+import edu.memphis.ccrg.lida.framework.shared.RootableNode;
 import edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl;
 
 /**
@@ -131,9 +131,9 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 		int numConditions = 0;
 		double aggregateNetDesirability = 0.0;
 		for(Condition c: addingList.values()){
-			if(c instanceof UnifyingNode){
+			if(c instanceof RootableNode){
 				//TODO consider Condition's weight!
-				aggregateNetDesirability += ((UnifyingNode) c).getDesirability(); 
+				aggregateNetDesirability += ((RootableNode) c).getDesirability(); 
 				numConditions++;
 			}
 		}

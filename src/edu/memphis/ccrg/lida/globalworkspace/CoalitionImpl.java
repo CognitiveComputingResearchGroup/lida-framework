@@ -27,11 +27,15 @@ import edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl;
 public class CoalitionImpl extends ActivatibleImpl implements Coalition {
 
 	private static long idCounter = 0;
+	private long id;
+	protected BroadcastContent content;
+	protected double attentionCodeletActivation;
+	protected AttentionCodelet attentionCodelet;
 	
-    private BroadcastContent content;
-    private double attentionCodeletActivation;
-    private AttentionCodelet attentionCodelet;
-    private long id;
+    public CoalitionImpl(){
+    	super();
+		id = idCounter++;
+    }
 
     /**
      * Constructs a {@link CoalitionImpl} with specified content and sets activation to be equal to
@@ -43,7 +47,7 @@ public class CoalitionImpl extends ActivatibleImpl implements Coalition {
      * @see AttentionCodeletImpl
      */
     public CoalitionImpl(NodeStructure content, double activation, AttentionCodelet codelet) {
-    	id = idCounter++;
+    	this();
         this.content = (BroadcastContent) new UnmodifiableNodeStructureImpl(content,true);
         attentionCodeletActivation = activation;
         attentionCodelet = codelet;
@@ -53,7 +57,8 @@ public class CoalitionImpl extends ActivatibleImpl implements Coalition {
     /*
      * Calculates coalition's activation based on BroadcastContent and the attention codelet's activation
      */
-    private void updateActivation() {
+    protected void updateActivation() {
+    	//TODO fully encapsulate content!
         double sum = 0.0;
         NodeStructure ns = (NodeStructure) content;
         for (Linkable lnk : ns.getLinkables()) {

@@ -7,6 +7,7 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.workspace.workspacebuffers;
 
+import java.util.Collection;
 import java.util.Map;
 
 import edu.memphis.ccrg.lida.framework.FrameworkModule;
@@ -21,7 +22,7 @@ import edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.StructureBuildi
  * @author Ryan J. McCall
  * @author Javier Snaider
  */
-public interface WorkspaceBuffer extends FrameworkModule{
+public interface WorkspaceBuffer extends FrameworkModule {
 	
 	/**
 	 * Gets buffer content based on specified parameters.
@@ -29,6 +30,12 @@ public interface WorkspaceBuffer extends FrameworkModule{
 	 * @return {@link WorkspaceContent}
 	 */
 	public WorkspaceContent getBufferContent(Map<String, Object> params);
+	
+	/**
+	 * Returns all buffer contents as a list.
+	 * @return list of all {@link WorkspaceContent} in this buffer.
+	 */
+	public Collection<WorkspaceContent> getAllBufferContent();
 	
 	/**
 	 * Adds specified content to this workspace buffer.

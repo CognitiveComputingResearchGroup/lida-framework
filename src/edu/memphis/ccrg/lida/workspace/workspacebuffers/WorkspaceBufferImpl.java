@@ -7,6 +7,8 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.workspace.workspacebuffers;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -59,5 +61,11 @@ public class WorkspaceBufferImpl extends FrameworkModuleImpl implements Workspac
 	@Override
 	public WorkspaceContent getBufferContent(Map<String, Object> params) {
 		return (WorkspaceContent) buffer;
+	}
+	@Override
+	public Collection<WorkspaceContent> getAllBufferContent() {
+		Collection<WorkspaceContent> content = new ArrayList<WorkspaceContent>();
+		content.add((WorkspaceContent) buffer);
+		return content;
 	}
 }

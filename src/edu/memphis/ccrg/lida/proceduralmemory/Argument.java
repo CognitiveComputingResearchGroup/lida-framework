@@ -6,7 +6,7 @@
  * http://ccrg.cs.memphis.edu/assets/papers/2010/LIDA-framework-non-commercial-v1.0.pdf
  *******************************************************************************/
 package edu.memphis.ccrg.lida.proceduralmemory;
-import edu.memphis.ccrg.lida.framework.shared.UnifyingNode;
+import edu.memphis.ccrg.lida.framework.shared.RootableNode;
 
 /**
  * Argument is used to denote a "slot" for real Node. It implements the Node interface, so
@@ -20,7 +20,7 @@ import edu.memphis.ccrg.lida.framework.shared.UnifyingNode;
  * @author Javier Snaider
  * @author Ryan J. McCall
  */
-public interface Argument extends UnifyingNode {
+public interface Argument extends RootableNode {
 	
 	/**
 	 * Gets argument id 
@@ -29,20 +29,20 @@ public interface Argument extends UnifyingNode {
 	public long getArgumentId();
 	
 	/**
-	 * Binds specified {@link UnifyingNode}
+	 * Binds specified {@link RootableNode}
 	 * @param n Node to be bound to this argument
 	 */
-	public void bindNode(UnifyingNode n);
+	public void bindNode(RootableNode n);
 	
 	/**
 	 * Gets bound node
-	 * @return {@link UnifyingNode} currently bound to this argument
+	 * @return {@link RootableNode} currently bound to this argument
 	 */
-	public UnifyingNode getBoundNode();
+	public RootableNode getBoundNode();
 	
 	/**
-	 * Returns whether argument has a bound {@link UnifyingNode}
-	 * @return true if argument has a bound {@link UnifyingNode}
+	 * Returns whether argument has a bound {@link RootableNode}
+	 * @return true if argument has a bound {@link RootableNode}
 	 */
 	public boolean hasBoundNode();
 }

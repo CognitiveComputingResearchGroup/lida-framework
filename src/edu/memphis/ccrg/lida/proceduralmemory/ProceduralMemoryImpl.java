@@ -28,7 +28,7 @@ import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
-import edu.memphis.ccrg.lida.framework.shared.UnifyingNode;
+import edu.memphis.ccrg.lida.framework.shared.RootableNode;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.TaskStatus;
@@ -224,10 +224,10 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 					conditionNode.setActivation(broadcastNode.getActivation());
 				}
 				//Update the desirability of the condition-pool/broadcast-buffer node if needed
-				if(broadcastNode instanceof UnifyingNode){
-					UnifyingNode uBroadcastNode = (UnifyingNode) broadcastNode;
-					if(conditionNode instanceof UnifyingNode){
-						UnifyingNode uConditionNode = (UnifyingNode)conditionNode;
+				if(broadcastNode instanceof RootableNode){
+					RootableNode uBroadcastNode = (RootableNode) broadcastNode;
+					if(conditionNode instanceof RootableNode){
+						RootableNode uConditionNode = (RootableNode)conditionNode;
 						if(uBroadcastNode.getDesirability() > uConditionNode.getDesirability()||isNotInBuffer){
 							uConditionNode.setDesirability(uBroadcastNode.getDesirability());
 						}	
@@ -269,8 +269,8 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 			}
 			//If Node n has positive desirability, 
 			//get the schemes that have n in their adding list and add them to relevantSchemes
-			if(n instanceof UnifyingNode){
-				UnifyingNode uNode = (UnifyingNode) n;
+			if(n instanceof RootableNode){
+				RootableNode uNode = (RootableNode) n;
 				if(uNode.getNetDesirability() > 0.0){//TODO boolean method?
 					schemes = addingSchemeMap.get(uNode.getConditionId());
 					if (schemes != null) {

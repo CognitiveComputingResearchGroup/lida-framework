@@ -7,6 +7,7 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.workspace.workspacebuffers;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -36,7 +37,7 @@ public class BroadcastQueueImpl extends FrameworkModuleImpl implements Broadcast
 
 	private static final int DEFAULT_QUEUE_CAPACITY = 20;
 	private int broadcastQueueCapacity = DEFAULT_QUEUE_CAPACITY;
-	private LinkedList<NodeStructure> broadcastQueue = new LinkedList<NodeStructure>();
+	private LinkedList<WorkspaceContent> broadcastQueue = new LinkedList<WorkspaceContent>();
 
 	/**
 	 * Default constructor
@@ -65,11 +66,17 @@ public class BroadcastQueueImpl extends FrameworkModuleImpl implements Broadcast
 
 	@Override
 	public void receiveBroadcast(Coalition coalition) {
-		broadcastQueue.addFirst((NodeStructure) coalition.getContent());
+		//TODO assumes WorkspaceContent == BroadcastContent
+		broadcastQueue.addFirst((WorkspaceContent) coalition.getContent());
 		// Keep the buffer at a fixed size
 		while (broadcastQueue.size() > broadcastQueueCapacity) {
 			broadcastQueue.removeLast();// remove oldest
 		}
+	}
+	
+	@Override
+	public Collection<WorkspaceContent> getAllBufferContent() {
+		return Collections.unmodifiableCollection(broadcastQueue);
 	}
 
 	@Override
@@ -106,7 +113,7 @@ public class BroadcastQueueImpl extends FrameworkModuleImpl implements Broadcast
 		logger.log(Level.FINER, "Decaying Broadcast Queue", TaskManager
 				.getCurrentTick());
 		synchronized (this) {
-			Iterator<NodeStructure> itr = broadcastQueue.iterator();
+			Iterator<WorkspaceContent> itr = broadcastQueue.iterator();
 			while (itr.hasNext()) {
 				NodeStructure ns = itr.next();
 				ns.decayNodeStructure(ticks);
@@ -121,6 +128,5 @@ public class BroadcastQueueImpl extends FrameworkModuleImpl implements Broadcast
 	public void learn(Coalition coalition) {
 		// Not applicable
 	}
-
 
 }

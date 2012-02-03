@@ -15,7 +15,7 @@ import java.util.Map;
 import edu.memphis.ccrg.lida.framework.shared.ExtendedId;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeType;
-import edu.memphis.ccrg.lida.framework.shared.UnifyingNode;
+import edu.memphis.ccrg.lida.framework.shared.RootableNode;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 import edu.memphis.ccrg.lida.pam.PamNode;
@@ -28,7 +28,7 @@ import edu.memphis.ccrg.lida.pam.PamNode;
 public class ArgumentImpl implements Argument {
 
 	private int argumentId;
-	private UnifyingNode node;
+	private RootableNode node;
 
 	/**
 	 * Default constructor
@@ -47,12 +47,12 @@ public class ArgumentImpl implements Argument {
 	}
 
 	@Override
-	public void bindNode(UnifyingNode node) {
+	public void bindNode(RootableNode node) {
 		this.node = node;
 	}
 
 	@Override
-	public UnifyingNode getBoundNode() {
+	public RootableNode getBoundNode() {
 		return node;
 	}
 
