@@ -61,11 +61,11 @@ public class AggregateCoalitionActivationTriggerTest {
 				return null;
 			}
 		};
-		coalition = new CoalitionImpl(ns, 0.0, codelet);
+		coalition = new CoalitionImpl(ns, codelet);
 		coalition.setActivation(0.1);
-		coalition2 = new CoalitionImpl(ns, 0.0, codelet);
+		coalition2 = new CoalitionImpl(ns, codelet);
 		coalition2.setActivation(0.2);
-		coalition3 = new CoalitionImpl(ns, 0.0, codelet);
+		coalition3 = new CoalitionImpl(ns, codelet);
 		coalition3.setActivation(0.3);
 
 		coalitions.add(coalition);

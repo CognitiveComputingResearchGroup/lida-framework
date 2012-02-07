@@ -79,7 +79,7 @@ public class EpisodicMemoryImplTest {
 	@Test
 	public void testReceiveBroadcast() {
 		em.setTranslator(translator);
-		Coalition c = new CoalitionImpl(content, 1.0, null);
+		Coalition c = new CoalitionImpl(content, null);
 		em.receiveBroadcast(c);
 		
 		assertTrue(NodeStructureImpl.compareNodeStructures(content, translator.ns));

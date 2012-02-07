@@ -32,10 +32,10 @@ import edu.memphis.ccrg.lida.pam.PamNodeImpl;
 
 /**
  * This is a JUnit class which can be used to test methods of the NodeStructureImpl class
- * @author Ryan J. McCall, Siminder Kaur
+ * @author Ryan J. McCall
+ * @author Siminder Kaur
  * 
  */
-
 public class NodeStructureImplTest {
 	
 	private Node node1, node2, node3, node4;
@@ -45,7 +45,7 @@ public class NodeStructureImplTest {
 	private static ElementFactory factory;
 	
 	/**
-	 * 
+s
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass(){

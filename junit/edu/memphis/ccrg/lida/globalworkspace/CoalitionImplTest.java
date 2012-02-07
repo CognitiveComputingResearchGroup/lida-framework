@@ -67,15 +67,17 @@ public class CoalitionImplTest {
 
 	@Test
 	public void testCoalitionImpl() {
-		coalition = new CoalitionImpl(content,0.7,codelet);
+		codelet.setBaseLevelActivation(0.7);
+		coalition = new CoalitionImpl(content,codelet);
 		double d = ((0.7*(node1.getActivation()+node2.getActivation()+node3.getActivation()+link1.getActivation()+link2.getActivation()))/ (content.getNodeCount() + content.getLinkCount()));
 		
 		assertEquals (d,coalition.getActivation(),0.00001);			
 	}
 
 	@Test
-	public void testGetContent() {					
-		coalition = new CoalitionImpl(content,1.0,codelet);
+	public void testGetContent() {	
+		codelet.setBaseLevelActivation(1.0);			
+		coalition = new CoalitionImpl(content,codelet);
 		assertTrue(NodeStructureImpl.compareNodeStructures(content,(NodeStructure) coalition.getContent()));		
 	}
 }

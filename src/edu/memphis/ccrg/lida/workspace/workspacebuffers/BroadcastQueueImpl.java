@@ -7,7 +7,6 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.workspace.workspacebuffers;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -72,11 +71,6 @@ public class BroadcastQueueImpl extends FrameworkModuleImpl implements Broadcast
 		while (broadcastQueue.size() > broadcastQueueCapacity) {
 			broadcastQueue.removeLast();// remove oldest
 		}
-	}
-	
-	@Override
-	public Collection<WorkspaceContent> getAllBufferContent() {
-		return Collections.unmodifiableCollection(broadcastQueue);
 	}
 
 	@Override

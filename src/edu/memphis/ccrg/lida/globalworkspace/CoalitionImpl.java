@@ -14,8 +14,6 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.UnmodifiableNodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl;
 
-//TODO Make Coalition a Factory element.  then we can change the way a coalition calculates its activation
-// and the type of content that it has.
 /**
  * The default implementation of {@link Coalition}.  Wraps content entering the 
  * {@link GlobalWorkspace} to compete for consciousness. Extends {@link ActivatibleImpl}.
@@ -27,57 +25,65 @@ import edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl;
 public class CoalitionImpl extends ActivatibleImpl implements Coalition {
 
 	private static long idCounter = 0;
+	/*
+	 * unique id
+	 */
 	private long id;
-	protected BroadcastContent content;
-	protected double attentionCodeletActivation;
-	protected AttentionCodelet attentionCodelet;
+	/**
+	 * the {@link BroadcastContent} of the coalition
+	 */
+	protected BroadcastContent broadcastContent;	
 	
+	/**
+	 * the {@link AttentionCodelet} that created the coalition
+	 */
+	protected AttentionCodelet creatingAttentionCodelet;
+	
+    /**
+     * Default constructor
+     */
     public CoalitionImpl(){
     	super();
 		id = idCounter++;
     }
 
     /**
-     * Constructs a {@link CoalitionImpl} with specified content and sets activation to be equal to
-     * the normalized sum of the activation of the {@link Linkable}s in the {@link NodeStructure}
-     * times the activation of the creating {@link AttentionCodelet}
-     * @param content conscious content
-     * @param activation activation of creating attention codelet
-     * @param codelet The {@link AttentionCodelet} that created this Coalition
+     * Constructs a {@link CoalitionImpl} with specified content that is being created by specified {@link AttentionCodelet}
+     * @param ns conscious content
+     * @param c The {@link AttentionCodelet} that created this Coalition
      * @see AttentionCodeletImpl
      */
-    public CoalitionImpl(NodeStructure content, double activation, AttentionCodelet codelet) {
+    public CoalitionImpl(NodeStructure ns, AttentionCodelet c) {
     	this();
-        this.content = (BroadcastContent) new UnmodifiableNodeStructureImpl(content,true);
-        attentionCodeletActivation = activation;
-        attentionCodelet = codelet;
+        broadcastContent = (BroadcastContent) new UnmodifiableNodeStructureImpl(ns,true);
+        creatingAttentionCodelet = c;
         updateActivation();
     }
 
-    /*
-     * Calculates coalition's activation based on BroadcastContent and the attention codelet's activation
+    /**
+     * Calculates the coalition's activation. This implementation uses the average activation of the broadcast content multiplied by
+     *  the attention codelet's base-level activation.
      */
     protected void updateActivation() {
-    	//TODO fully encapsulate content!
         double sum = 0.0;
-        NodeStructure ns = (NodeStructure) content;
+        NodeStructure ns = (NodeStructure) broadcastContent;
         for (Linkable lnk : ns.getLinkables()) {
             sum += lnk.getActivation();
         }
         int contentSize = ns.getLinkableCount();
-        if(contentSize != 0){
-        	setActivation(attentionCodeletActivation * sum / contentSize);
+        if(contentSize != 0 && creatingAttentionCodelet != null){
+        	setActivation(creatingAttentionCodelet.getBaseLevelActivation() * sum / contentSize);
         }
     }
 
     @Override
     public BroadcastContent getContent() {
-        return content;
+        return broadcastContent;
     }
 
     @Override
     public AttentionCodelet getCreatingAttentionCodelet() {
-        return attentionCodelet;
+        return creatingAttentionCodelet;
     }
 
     @Override

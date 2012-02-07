@@ -145,7 +145,7 @@ public class WorkspaceImplTest {
 		workspace.addSubModule(broadcastQueue);
 
 		content.addDefaultNode(node2);
-		Coalition c = new CoalitionImpl(content, 1.0, null);
+		Coalition c = new CoalitionImpl(content, null);
 		workspace.receiveBroadcast(c);
 		NodeStructure actual = (NodeStructure) broadcastQueue.broadcastContent;
 		assertNotNull(actual);

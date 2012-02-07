@@ -108,7 +108,7 @@ public class AttentionCodeletModuleTest{
 	
 	@Test
 	public void testLearning() {	
-		Coalition c = new CoalitionImpl(ns, 1.0, null);
+		Coalition c = new CoalitionImpl(ns, null);
 		attentionModule.receiveBroadcast(c);
 		//TODO finish
 		// more testing when fully implemented

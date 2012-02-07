@@ -44,7 +44,6 @@ public class GlobalWorkspaceImplTest {
 	private LinkImpl l;
 	private ExecutingMockTaskSpawner ts;
 	private MockBroadcastListener listener;
-	private AttentionCodelet codelet = new NeighborhoodAttentionCodelet();
 
 	@Before
 	public void setUp() throws Exception {
@@ -69,10 +68,17 @@ public class GlobalWorkspaceImplTest {
 		ns2.addDefaultNode(n1);
 		ns2.addDefaultNode(n2);
 		ns2.addDefaultLink(l);
+		
 
-		coalition = new CoalitionImpl(ns, 0.8,codelet);
-		coalition2 = new CoalitionImpl(ns2, 0.9,codelet);
-		coalition3 = new CoalitionImpl(ns, 0.1,codelet);
+		AttentionCodelet codelet = new NeighborhoodAttentionCodelet();
+		codelet.setBaseLevelActivation(0.8);
+		coalition = new CoalitionImpl(ns,codelet);
+		codelet = new NeighborhoodAttentionCodelet();
+		codelet.setBaseLevelActivation(0.9);
+		coalition2 = new CoalitionImpl(ns2,codelet);
+		codelet = new NeighborhoodAttentionCodelet();
+		codelet.setBaseLevelActivation(0.1);
+		coalition3 = new CoalitionImpl(ns,codelet);
 		
 		ElementFactory factory = ElementFactory.getInstance();
 		double threshold = 0.0;

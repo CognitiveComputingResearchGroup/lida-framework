@@ -19,7 +19,7 @@ import edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBuffer;
  * @author Javier Snaider
  * @author Ryan J. McCall
  */
-public interface Codelet extends FrameworkTask{
+public interface Codelet extends FrameworkTask {
 
 	/**
 	 * @return the sought content

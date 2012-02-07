@@ -87,7 +87,7 @@ public abstract class AttentionCodeletImpl extends CodeletImpl implements
         if (bufferContainsSoughtContent(currentSituationalModel)) {
             NodeStructure csmContent = retrieveWorkspaceContent(currentSituationalModel);
             if (csmContent.getLinkableCount() > 0) {
-                Coalition coalition = new CoalitionImpl(csmContent, getBaseLevelActivation(), this);
+                Coalition coalition = new CoalitionImpl(csmContent, this);
                 globalWorkspace.addCoalition(coalition);
                 logger.log(Level.FINER, "{1} adds new coalition with activation {2}",
                         new Object[]{TaskManager.getCurrentTick(), this, coalition.getActivation()});

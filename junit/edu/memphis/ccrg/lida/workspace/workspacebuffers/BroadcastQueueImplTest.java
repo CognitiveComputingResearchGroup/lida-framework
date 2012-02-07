@@ -121,7 +121,7 @@ public class BroadcastQueueImplTest {
 		params.put("workspace.broadcastQueueCapacity", -2);
 		broadcastQueue.init(params);
 		
-		Coalition c = new CoalitionImpl(content, 1.0, null);
+		Coalition c = new CoalitionImpl(content, null);
 		broadcastQueue.receiveBroadcast(c);
 		
 		NodeStructure ns = broadcastQueue.getPositionContent(0);
@@ -138,7 +138,7 @@ public class BroadcastQueueImplTest {
 		params.put("workspace.broadcastQueueCapacity", 2);
 		broadcastQueue.init(params);
 		
-		c = new CoalitionImpl(content2, 1.0, null);
+		c = new CoalitionImpl(content2, null);
 		broadcastQueue.receiveBroadcast(c);
 		
 		queue = (List<NodeStructure>) broadcastQueue.getModuleContent(0);
@@ -148,7 +148,7 @@ public class BroadcastQueueImplTest {
 		assertTrue(actual.containsNode(n4));
 		assertEquals(2, actual.getLinkableCount());
 		
-		c = new CoalitionImpl(new NodeStructureImpl(), 1.0, null);
+		c = new CoalitionImpl(new NodeStructureImpl(), null);
 		broadcastQueue.receiveBroadcast(c);
 		
 		queue = (List<NodeStructure>) broadcastQueue.getModuleContent(0);

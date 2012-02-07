@@ -7,8 +7,6 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.workspace.workspacebuffers;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,6 +14,7 @@ import java.util.logging.Logger;
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
+import edu.memphis.ccrg.lida.framework.shared.UnmodifiableNodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.workspace.WorkspaceContent;
 
@@ -36,9 +35,10 @@ public class WorkspaceBufferImpl extends FrameworkModuleImpl implements Workspac
 	 */
 	public WorkspaceBufferImpl() {
 	}
+	
 	@Override
 	public Object getModuleContent(Object... params) {
-		return buffer;
+		return new UnmodifiableNodeStructureImpl(buffer);
 	}
 
 	@Override
@@ -62,10 +62,5 @@ public class WorkspaceBufferImpl extends FrameworkModuleImpl implements Workspac
 	public WorkspaceContent getBufferContent(Map<String, Object> params) {
 		return (WorkspaceContent) buffer;
 	}
-	@Override
-	public Collection<WorkspaceContent> getAllBufferContent() {
-		Collection<WorkspaceContent> content = new ArrayList<WorkspaceContent>();
-		content.add((WorkspaceContent) buffer);
-		return content;
-	}
+	
 }
