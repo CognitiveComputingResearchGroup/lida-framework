@@ -8,8 +8,8 @@ import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 
 
 /**
- * A wrapper for {@link Condition}
- * @author Ryan J. McCall
+ * A wrapper for {@link Condition}. Used with negated context conditions.
+ * @author ?
  */
 public class ConditionWrapper implements Condition {
 

@@ -84,13 +84,13 @@ public class BasicActionSelectionTest {
 		assertNull(smm.action);
 		assertFalse(smm.actionReceived);
 		
-		as.selectAction();
+		as.attemptActionSelection();
 		
 		assertNull(smm.action);
 		assertFalse(smm.actionReceived);
 		
 		behav2.setActivation(0.80);
-		as.selectAction();
+		as.attemptActionSelection();
 		
 		assertTrue(smm.actionReceived);
 		assertEquals(action2,smm.action);		

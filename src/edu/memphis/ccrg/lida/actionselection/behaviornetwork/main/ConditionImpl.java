@@ -6,7 +6,8 @@ package edu.memphis.ccrg.lida.actionselection.behaviornetwork.main;
 import edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl;
 
 /**
- * Default implementation of {@link Condition}
+ * This class provides a generic implementation of Condition. Intended to be used
+ * for Conditions that are not Nodes. 
  * @author Javier Snaider
  */
 public class ConditionImpl extends ActivatibleImpl implements Condition {

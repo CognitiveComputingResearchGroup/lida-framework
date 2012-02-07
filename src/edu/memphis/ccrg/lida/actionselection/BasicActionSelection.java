@@ -119,7 +119,7 @@ public class BasicActionSelection extends FrameworkModuleImpl implements
 		}
 		@Override
 		protected void runThisFrameworkTask() {
-			if(selectAction() != null){
+			if(attemptActionSelection() != null){
 				setNextTicksPerRun(refractoryPeriodTicks);
 				candidateThreshold = maxActivationThreshold;
 			}else{
@@ -149,7 +149,7 @@ public class BasicActionSelection extends FrameworkModuleImpl implements
 	}
 
 	@Override
-	public Action selectAction() {
+	public Action attemptActionSelection() {
 		Behavior behavior = chooseBehavior();
 		if (behavior != null) {
 			Action action = behavior.getAction();

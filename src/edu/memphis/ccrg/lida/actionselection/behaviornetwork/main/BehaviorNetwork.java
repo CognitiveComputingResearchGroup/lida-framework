@@ -45,11 +45,21 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements ActionSelect
 
 	private static final Logger logger = Logger.getLogger(BehaviorNetwork.class
 			.getCanonicalName());
-
+	
 	/*
 	 * Starting value for candidateBehaviorThreshold
 	 */
 	private static final double DEFAULT_MAX_CANDIDATE_THRESHOLD = 0.9;
+	private static final double DEFAULT_BROADCAST_EXCITATION_FACTOR = 0.05;
+	private static final double DEFAULT_MEAN_ACTIVATION = 0.05;
+	private static final double DEFAULT_DESIRABILITY_THRESHOLD = 0.0;
+	private static final double DEFAULT_SUCCESSOR_EXCITATION_FACTOR = 0.04;
+	private static final double DEFAULT_PREDECESSOR_EXCITATION_FACTOR = 0.1;
+	private static final double DEFAULT_CONFLICTOR_EXCITATION_FACTOR = 0.04;
+	
+	private static final String DEFAULT_CANDIDATE_THRESHOLD_REDUCER_STRATEGY = "BasicCandidationThresholdReducer";
+	private static final String DEFAULT_SELECTOR_STRATEGY = "BasicSelector";
+	private static final String DEFAULT_PREDECESSOR_EXCITE_STRATEGY = "PredecessorExciteStrategy";
 
 	/*
 	 * Current threshold for becoming active (akin to THETA from Maes'
@@ -59,9 +69,6 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements ActionSelect
 	
 	private double maxCandidateThreshold = DEFAULT_MAX_CANDIDATE_THRESHOLD;
 
-	private static final double DEFAULT_BROADCAST_EXCITATION_FACTOR = 0.05;
-	
-	private static final double DEFAULT_MEAN_ACTIVATION = 0.05;
 	/*
 	 * The mean activation of behaviors. It is used for the Normalization (akin
 	 * to PI from Maes' implementation)
@@ -69,7 +76,6 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements ActionSelect
 	private double meanActivation = DEFAULT_MEAN_ACTIVATION;
 	
 	//TODO init for these two
-	private static final double DEFAULT_DESIRABILITY_THRESHOLD = 0.0;
 	/*
 	 * Threshold to identify goals
 	 */
@@ -80,39 +86,28 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements ActionSelect
 	 * Implementation)
 	 */
 	private double broadcastExcitationFactor = DEFAULT_BROADCAST_EXCITATION_FACTOR;
-
-	private static final double DEFAULT_SUCCESSOR_EXCITATION_FACTOR = 0.04;
-
+	
 	/*
 	 * Scales the strength of activation passed from behavior to successor.
 	 */
 	private double successorExcitationFactor = DEFAULT_SUCCESSOR_EXCITATION_FACTOR;
-
-	private static final double DEFAULT_PREDECESSOR_EXCITATION_FACTOR = 0.1;
 
 	/*
 	 * Scales the strength of activation passed from behavior to predecessor.
 	 */
 	private double predecessorExcitationFactor = DEFAULT_PREDECESSOR_EXCITATION_FACTOR;
 
-	private static final double DEFAULT_CONFLICTOR_EXCITATION_FACTOR = 0.04;
-
 	/*
 	 * Scales the strength of activation passed from behavior to conflictor.
 	 */
 	private double conflictorExcitationFactor = DEFAULT_CONFLICTOR_EXCITATION_FACTOR;
 
-	private static final String DEFAULT_CANDIDATE_THRESHOLD_REDUCER_STRATEGY = "BasicCandidationThresholdReducer";
-
-	private static final String DEFAULT_SELECTOR_STRATEGY = "BasicSelector";
-
-	private static final String DEFAULT_PREDECESSOR_EXCITE_STRATEGY = "PredecessorExciteStrategy";
 
 	/*
 	 * Function by which the behavior activation threshold is reduced
 	 */
 	private DecayStrategy candidateThresholdReducer;
-
+	//TODO make these methods that may be overidden
 	/*
 	 * Strategy to specify the way a winning behavior is chosen.
 	 */
@@ -120,11 +115,6 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements ActionSelect
 
 	// TODO this is unused, review this idea
 	private ExciteStrategy predecessorExciteStrategy;
-
-	/*
-	 * Pool of conditions in Procedural Memory
-	 */
-	//private ConditionPool conditionPool;
 
 	/*
 	 * Listeners of this action selection
@@ -147,12 +137,6 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements ActionSelect
 	 */
 	private ConcurrentMap<Condition, Set<Behavior>> behaviorsByContextCondition = new ConcurrentHashMap<Condition, Set<Behavior>>();
 
-//	/*
-//	 * Map of behaviors indexed by the elements appearing in their negated
-//	 * context conditions.
-//	 */
-//	private ConcurrentMap<Condition, Set<Behavior>> behaviorsByNegContextCondition = new ConcurrentHashMap<Condition, Set<Behavior>>();
-
 	/*
 	 * Map of behaviors indexed by the elements appearing in their add list.
 	 */
@@ -164,6 +148,12 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements ActionSelect
 	private ConcurrentMap<Condition, Set<Behavior>> behaviorsByDeletingItem = new ConcurrentHashMap<Condition, Set<Behavior>>();
 
 	private AtomicBoolean actionSelectionStarted = new AtomicBoolean(false);
+	
+//	/*
+//	 * Map of behaviors indexed by the elements appearing in their negated
+//	 * context conditions.
+//	 */
+//	private ConcurrentMap<Condition, Set<Behavior>> behaviorsByNegContextCondition = new ConcurrentHashMap<Condition, Set<Behavior>>();
 
 	/*
 	 * TODO comment after settling code using these
@@ -177,6 +167,16 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements ActionSelect
 	 */
 	public BehaviorNetwork() {
 		super();
+	}
+	
+	@Override
+	public void addActionSelectionListener(ActionSelectionListener listener) {
+		actionSelectionListeners.add(listener);
+	}
+	
+	@Override
+	public void addPreafferenceListener(PreafferenceListener listener) {
+		preafferenceListeners.add(listener);
 	}
 
 //	TODO Javadoc
@@ -243,40 +243,33 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements ActionSelect
 		
 		taskSpawner.addTask(new BehaviorNetworkBackgroundTask());
 	}
-
-	@Override
-	public void addActionSelectionListener(ActionSelectionListener listener) {
-		actionSelectionListeners.add(listener);
-	}
 	
-	@Override
-	public void addPreafferenceListener(PreafferenceListener listener) {
-		preafferenceListeners.add(listener);
+	private class BehaviorNetworkBackgroundTask extends FrameworkTaskImpl{
+		public void runThisFrameworkTask() {
+			passActivationAmongBehaviors();
+			normalizeActivation();//TODO discuss these two methods
+			attemptActionSelection(); 
+			logger.log(Level.FINEST, "BehaviorNetork executed one cycle.", TaskManager
+					.getCurrentTick());
+		}
 	}
 
-	// This way permits multiple instantiations of the same behavior
-	// because each one will
-	// have a different ID even if it was instantiated from the same Scheme.
-	// This can be resolved by either slowing the scheme activation rate or by
-	// having Behavior
-	// have a originatingScheme field.
 	@Override
 	public void receiveBehavior(Behavior b) {
-		logger.log(Level.FINER, "Received behavior: {1}", new Object[] {
+		logger.log(Level.FINEST, "Received behavior: {1}", new Object[] {
 				TaskManager.getCurrentTick(), b });
-		indexBehaviorByElements(b, b.getContextConditions(),
-				behaviorsByContextCondition);
-//		indexBehaviorByElements(b, b.getNegatedContextConditions(),
-//				behaviorsByNegContextCondition);
-		indexBehaviorByElements(b, b.getAddingList(), behaviorsByAddingItem);
-		indexBehaviorByElements(b, b.getDeletingList(), behaviorsByDeletingItem);
 
 		behaviors.put(b.getId(), b);
+		indexBehaviorByElements(b, b.getContextConditions(),
+				behaviorsByContextCondition);
+		indexBehaviorByElements(b, b.getAddingList(), behaviorsByAddingItem);
+		indexBehaviorByElements(b, b.getDeletingList(), behaviorsByDeletingItem);
+//		indexBehaviorByElements(b, b.getNegatedContextConditions(),
+//		behaviorsByNegContextCondition);
 	}
 
 	/*
-	 * Abstractly defined utility method to index the behaviors into a map by
-	 * elements
+	 * Utility method to index the behaviors into a map by elements.
 	 */
 	private void indexBehaviorByElements(Behavior behavior,
 			Collection<Condition> elements, Map<Condition, Set<Behavior>> map) {
@@ -292,32 +285,6 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements ActionSelect
 		}
 	}
 	
-	private class BehaviorNetworkBackgroundTask extends FrameworkTaskImpl{
-		public void runThisFrameworkTask() {
-			// envirnmentConditions= readEnvironment();
-//			passActivationFromBroadcast();
-			passActivationAmongBehaviors();
-			normalizeActivation();//TODO discuss these two methods
-			selectAction(); //TODO should not run every step as is.
-			logger.log(Level.FINEST, "BehaviorNetork executed one cycle.", TaskManager
-					.getCurrentTick());
-		}
-	}
-
-	// TODO comment methods
-	/*
-	 *
-	 */
-	private Set<Behavior> getSatisfiedBehaviors() {
-		Set<Behavior> satisfiedBehaviors = new HashSet<Behavior>();
-		for (Behavior b : behaviors.values()) {
-			if (b.isAllContextConditionsSatisfied()) {
-				satisfiedBehaviors.add(b);
-			}
-		}
-		return satisfiedBehaviors;
-	}
-	
 	/*
 	 *
 	 */
@@ -326,9 +293,9 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements ActionSelect
 		// Here the activation is updated directly and the new value is used to
 		// compute the passing activation.
 
-		// TODO consider alternative ways to iterate over the behaviors so that
-		// the order changes from iteration to iteration
+		Long[] randomOrdering = getRandomOrdering();
 		for (Behavior behavior : behaviors.values()) {
+			//TODO review: this is in Sidney's original BN implementation
 			if (behavior.isAllContextConditionsSatisfied()){
 				spreadActivationToSuccessors(behavior);
 			}else{
@@ -337,27 +304,41 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements ActionSelect
 			spreadActivationToConflictors(behavior);
 		}
 	}
+	//TODO test
+	private Long[] getRandomOrdering(){
+		Long[] keys = (Long[]) behaviors.keySet().toArray();
+		for(int i = 0; i < keys.length - 1; i++){
+			int swapPosition = (int) (Math.random() * (keys.length - 1 - i )) + 1 + i;
+			Long stored = keys[0];
+			keys[0] = keys[swapPosition];
+			keys[swapPosition] = stored;
+		}
+		return keys;
+	}
 
 	/*
 	 * Only excite successor if precondition is not yet satisfied.
 	 * 
 	 * @param behavior 
 	 */
-	private void spreadActivationToSuccessors(Behavior behavior) {
+	private void spreadActivationToSuccessors(Behavior b) {
 		// For successors with positive conditions
-		for (Condition addProposition : behavior.getAddingList()) {
-			Set<Behavior> successors = getSuccessors(addProposition);
+		for (Condition addCondition : b.getAddingList()) {
+			Set<Behavior> successors = getSuccessors(addCondition);
 			if (successors != null) {
-				spreadActivationSucc(behavior, addProposition, successors);
+				spreadActivationSucc(b, addCondition, successors);
 			}
 		}
-		// For successors with negated conditions
-		for (Condition deleteProposition : behavior.getDeletingList()) {
-			Set<Behavior> successors = getSuccessors(deleteProposition);
-			if (successors != null) {
-				spreadActivationSucc(behavior, deleteProposition, successors);
-			}
-		}
+//		// For successors with negated conditions
+//		for (Condition deleteProposition : behavior.getDeletingList()) {
+//			Set<Behavior> successors = getSuccessors(deleteProposition);
+//			if (successors != null) {
+//				spreadActivationSucc(behavior, deleteProposition, successors);
+//			}
+//		}
+	}
+	private Set<Behavior> getSuccessors(Condition addProposition) {
+		return behaviorsByContextCondition.get(addProposition);
 	}
 
 	/*
@@ -365,30 +346,20 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements ActionSelect
 	 * @param condition
 	 * @param successors
 	 */
-	private void spreadActivationSucc(Behavior behavior, Condition condition,
-			Set<Behavior> successors) {
+	private void spreadActivationSucc(Behavior b, Condition c, Set<Behavior> successors) {
 		for (Behavior successor : successors) {
-			// Grant activation to a successor if its precondition has
-			// not yet been satisfied
-			if (successor != behavior) {
-				if (!successor.isContextConditionSatisfied(condition)) {
+			if (successor != b) {
+				// Grant activation to a successor if its precondition has not yet been satisfied
+				if (!successor.isContextConditionSatisfied(c)) {
 					// TODO Check this formula
-					double amount = behavior.getActivation()
-							* successorExcitationFactor
-							/ successor.getUnsatisfiedContextCount();
+					double amount = (b.getActivation() / successor.getUnsatisfiedContextCount())* successorExcitationFactor;
 					successor.excite(amount);
-					logger
-							.log(Level.FINEST, behavior.getLabel() + "-->"
-									+ amount + " to " + successor + " for "
-									+ condition);
+					logger.log(Level.FINEST, "Behavior {1} excites successor, {2}, amount: {3} because of {4}",
+								new Object[]{TaskManager.getCurrentTick(), b, successor, amount, c});
 				}
 			}
 		}
-	}
-
-	private Set<Behavior> getSuccessors(Condition addProposition) {
-		return behaviorsByContextCondition.get(addProposition);
-	}
+	}	
 
 	/*
 	 * Don't bother exciting a predecessor for a precondition that is already
@@ -396,16 +367,13 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements ActionSelect
 	 * 
 	 * @param behavior
 	 */
-	private void spreadActivationToPredecessors(Behavior behavior) {
-
+	private void spreadActivationToPredecessors(Behavior b) {
 		// For positive conditions
-		for (Condition contextCondition : behavior.getContextConditions()) {
-			if (!behavior.isContextConditionSatisfied(contextCondition)) {
-				Set<Behavior> predecessors = null;
-				predecessors = behaviorsByAddingItem.get(contextCondition);
+		for (Condition contextCond : b.getContextConditions()) {
+			if (!b.isContextConditionSatisfied(contextCond)) {
+				Set<Behavior> predecessors = behaviorsByAddingItem.get(contextCond);
 				if (predecessors != null) {
-					spreadActivationPred(behavior, contextCondition,
-							predecessors);
+					spreadActivationPred(b, contextCond, predecessors);
 				}
 			}
 		}
@@ -429,29 +397,25 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements ActionSelect
 	 * @param contextCondition
 	 * @param predecessors
 	 */
-	private void spreadActivationPred(Behavior behavior,
-			Condition contextCondition, Set<Behavior> predecessors) {
+	private void spreadActivationPred(Behavior b, Condition c, Set<Behavior> predecessors) {
 		for (Behavior predecessor : predecessors) {
 			// TODO Check this formula
-			double granted = (behavior.getActivation() * predecessorExcitationFactor)
-					/ behavior.getUnsatisfiedContextCount();
-			predecessor.excite(granted);
-			logger.log(Level.FINEST, behavior.getActivation() + " "
-					+ behavior.getLabel() + "<--" + granted + " to "
-					+ predecessor + " for " + contextCondition);
+			double amount = (b.getActivation() * predecessorExcitationFactor) / b.getUnsatisfiedContextCount();
+			predecessor.excite(amount);
+			logger.log(Level.FINEST, "Behavior {1} excites predecessor, {2}, amount: {3} because of {4}",
+					new Object[]{TaskManager.getCurrentTick(), b, predecessor, amount, c});
 		}
 	}
 
-	private void spreadActivationToConflictors(Behavior behavior) {
+	private void spreadActivationToConflictors(Behavior b) {
 		boolean isMutualConflict = false;
-		for (Condition condition : behavior.getContextConditions()) {
+		for (Condition condition : b.getContextConditions()) {
 			Set<Behavior> conflictors = behaviorsByDeletingItem.get(condition);
 			if (conflictors != null) {
 				for (Behavior conflictor : conflictors) {
 					isMutualConflict = false;
-					if ((behavior != conflictor)
-							&& (behavior.getActivation() < conflictor
-									.getActivation())) {
+					if ((b != conflictor) && 
+							(b.getActivation() < conflictor.getActivation())) {
 
 						// TODO put all of the conflictors in a conflictor Map
 						// for each conflictor context condition
@@ -462,7 +426,7 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements ActionSelect
 							// if there is a mutual conflict
 							if (conflictorConflictors != null) {
 								isMutualConflict = conflictorConflictors
-										.contains(behavior);
+										.contains(b);
 								if (isMutualConflict){
 									break;
 								}
@@ -487,7 +451,7 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements ActionSelect
 					// No mutual conflict then inhibit the conflictor of
 					// behavior
 					if (!isMutualConflict){
-						auxSpreadConflictorActivation(behavior, conflictor);
+						auxSpreadConflictorActivation(b, conflictor);
 					}
 				}// for each conflictor
 			}
@@ -500,7 +464,7 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements ActionSelect
 		double inhibitionAmount = -(behavior.getActivation() * conflictorExcitationFactor)
 				/ behavior.getContextSize();
 		conflictor.excite(inhibitionAmount);
-		logger.log(Level.FINEST, "{1} inhibits {2} amount {3}", 
+		logger.log(Level.FINEST, "{1} inhibits conflictor {2} amount {3}", 
 				new Object[]{TaskManager.getCurrentTick(), behavior.getLabel(),conflictor.getLabel(),inhibitionAmount});
 	}
 	
@@ -594,7 +558,7 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements ActionSelect
 	 * reseted. If no behavior is selected, the BehaviorThreshold is reduced.
 	 */
 	@Override
-	public Action selectAction() {
+	public Action attemptActionSelection() {
 		Action a = null;
 		if (actionSelectionStarted.compareAndSet(false, true)) {
 			Behavior winningBehavior = selectorStrategy.selectBehavior(getSatisfiedBehaviors(), candidateThreshold);
@@ -611,6 +575,15 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements ActionSelect
 			actionSelectionStarted.set(false);
 		}
 		return a;
+	}
+	private Set<Behavior> getSatisfiedBehaviors() {
+		Set<Behavior> satisfiedBehaviors = new HashSet<Behavior>();
+		for (Behavior b : behaviors.values()) {
+			if (b.isAllContextConditionsSatisfied()) {
+				satisfiedBehaviors.add(b);
+			}
+		}
+		return satisfiedBehaviors;
 	}
 
 	private void reduceCandidateThreshold() {
@@ -651,6 +624,16 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements ActionSelect
 		// }
 	}
 
+	@Override
+	public void decayModule(long ticks) {
+		for (Behavior behavior : behaviors.values()) {
+			behavior.decay(ticks);
+			if(behavior.isRemovable()){
+				removeBehavior(behavior);
+			}
+		}
+	}
+
 	/*
 	 * Removes specified behavior from the behavior net, severing all links to
 	 * other behaviors and removing it from the specified stream which contained
@@ -662,9 +645,6 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements ActionSelect
 		for (Condition precondition : behavior.getContextConditions()){
 			behaviorsByContextCondition.get(precondition).remove(behavior);
 		}
-//		for (Condition precondition : behavior.getNegatedContextConditions()){
-//			behaviorsByContextCondition.get(precondition).remove(behavior);
-//		}
 		for (Condition addItem : behavior.getAddingList()){
 			behaviorsByAddingItem.get(addItem).remove(behavior);
 		}
@@ -672,17 +652,11 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements ActionSelect
 			behaviorsByDeletingItem.get(deleteItem).remove(behavior);
 		}
 		behaviors.remove(behavior.getId());
+//		for (Condition precondition : behavior.getNegatedContextConditions()){
+//		behaviorsByContextCondition.get(precondition).remove(behavior);
+//	}
 		logger.log(Level.FINEST, "Behavior {1} was removed from BehaviorNet.",
 				new Object[]{TaskManager.getCurrentTick(),behavior});
 	}
 
-	@Override
-	public void decayModule(long ticks) {
-		for (Behavior behavior : behaviors.values()) {
-			behavior.decay(ticks);
-			if(behavior.isRemovable()){
-				removeBehavior(behavior);
-			}
-		}
-	}
 }

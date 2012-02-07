@@ -26,7 +26,7 @@ public class MockActionSelectionImpl extends FrameworkModuleImpl implements Acti
 	}
 
 	@Override
-	public Action selectAction() {
+	public Action attemptActionSelection() {
 		return null;
 	}
 
@@ -36,7 +36,7 @@ public class MockActionSelectionImpl extends FrameworkModuleImpl implements Acti
 			@Override
 			public void run() {
 				while(true){
-					selectAction();
+					attemptActionSelection();
 					try {
 						Thread.sleep(100);
 					} catch (InterruptedException e) {

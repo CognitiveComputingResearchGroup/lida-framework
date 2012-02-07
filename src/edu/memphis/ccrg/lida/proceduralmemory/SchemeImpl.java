@@ -24,9 +24,10 @@ import edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl;
  * @author Javier Snaider
  */
 public class SchemeImpl extends LearnableImpl implements Scheme {
+	
 	//TODO fix the logging for String concatentation issues
 	private static final Logger logger = Logger.getLogger(SchemeImpl.class.getCanonicalName());
-	private static final double DEFAULT_CS_THRESHOLD = 0.5;
+	private static final double DEFAULT_CS_THRESHOLD = 0.0;
 	private static final double DEFAULT_RELIABILITY_THRESHOLD = 0.5;
 	private static long idCounter = 0;//TODO Factory support for Scheme
 		
@@ -120,7 +121,7 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 		}
 		double aggregateActivation = 0.0;
 		for(Condition c: context.values()){
-			//TODO consider Condition's weight!
+			//if required to use Condition weight, use it here
 			aggregateActivation += c.getActivation();
 		}
 		return aggregateActivation / context.size();
@@ -132,8 +133,8 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 		double aggregateNetDesirability = 0.0;
 		for(Condition c: addingList.values()){
 			if(c instanceof RootableNode){
-				//TODO consider Condition's weight!
-				aggregateNetDesirability += ((RootableNode) c).getDesirability(); 
+				//if required to use Condition weight, use it here
+				aggregateNetDesirability += ((RootableNode) c).getNetDesirability(); 
 				numConditions++;
 			}
 		}

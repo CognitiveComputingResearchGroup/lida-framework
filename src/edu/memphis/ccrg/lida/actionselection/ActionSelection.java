@@ -38,6 +38,6 @@ public interface ActionSelection extends FrameworkModule {
 	 * satisfied to execute
 	 * @return The selected {@link Action} or null if no action was selected.
 	 */
-	public Action selectAction();
+	public Action attemptActionSelection();
 
 }

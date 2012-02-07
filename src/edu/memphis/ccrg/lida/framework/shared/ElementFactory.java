@@ -1153,13 +1153,13 @@ public class ElementFactory {
 			b.setAction(s.getAction());
 			b.setActivation(s.getTotalActivation());
 		} catch (InstantiationException e) {
-			logger.log(Level.WARNING, "Error creating Node.", TaskManager
+			logger.log(Level.WARNING, "Error creating Behavior.", TaskManager
 					.getCurrentTick());
 		} catch (IllegalAccessException e) {
-			logger.log(Level.WARNING, "Error creating Node.", TaskManager
+			logger.log(Level.WARNING, "Error creating Behavior.", TaskManager
 					.getCurrentTick());
 		} catch (ClassNotFoundException e) {
-			logger.log(Level.WARNING, "Error creating Node.", TaskManager
+			logger.log(Level.WARNING, "Error creating Behavior.", TaskManager
 					.getCurrentTick());
 		}
 		return b;
