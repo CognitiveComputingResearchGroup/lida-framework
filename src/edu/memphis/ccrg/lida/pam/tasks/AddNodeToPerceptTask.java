@@ -7,6 +7,7 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.pam.tasks;
 
+import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskStatus;
 import edu.memphis.ccrg.lida.pam.PamNode;
@@ -18,21 +19,21 @@ import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
  */
 public class AddNodeToPerceptTask extends FrameworkTaskImpl {
 	
-	private PamNode node;
+	private Node node;
 	private PerceptualAssociativeMemory pam;
 
 	/**
 	 * Default constructor
-	 * @param pamNode {@link PamNode}
+	 * @param n the {@link Node} to add
 	 * @param pam {@link PerceptualAssociativeMemory}
 	 */
-	public AddNodeToPerceptTask(PamNode pamNode, PerceptualAssociativeMemory pam) {
-		node = pamNode;
+	public AddNodeToPerceptTask(Node n, PerceptualAssociativeMemory pam) {
+		node = n;
 		this.pam = pam;
 	}
 
 	/**
-	 * Adds {@link PamNode} to the percept then finishes.
+	 * Adds {@link Node} to the percept then finishes.
 	 */
 	@Override
 	protected void runThisFrameworkTask() {		

@@ -159,7 +159,7 @@ public class ElementFactory {
 	 * Returns the sole instance of this factory. Implements the Singleton
 	 * pattern.
 	 * 
-	 * @return NodeFactory sole instance of this class
+	 * @return the sole {@link ElementFactory} instance of this class
 	 */
 	public static ElementFactory getInstance() {
 		return instance;
