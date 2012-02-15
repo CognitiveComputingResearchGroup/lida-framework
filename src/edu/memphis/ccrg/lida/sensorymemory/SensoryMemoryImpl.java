@@ -34,7 +34,7 @@ public abstract class SensoryMemoryImpl extends FrameworkModuleImpl implements S
     /**
      * The listeners associated with this memory.
      */
-    protected List<SensoryMemoryListener> listeners
+    protected List<SensoryMemoryListener> sensoryMemoryListeners
             = new ArrayList<SensoryMemoryListener>();
     
     /**
@@ -59,7 +59,7 @@ public abstract class SensoryMemoryImpl extends FrameworkModuleImpl implements S
     }
     @Override
     public void addSensoryMemoryListener(SensoryMemoryListener l) {
-        listeners.add(l);
+        sensoryMemoryListeners.add(l);
     }
 
     @Override

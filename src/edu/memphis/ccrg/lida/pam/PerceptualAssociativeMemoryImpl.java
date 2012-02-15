@@ -412,8 +412,8 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 	}
 
 	@Override
-	public boolean containsLink(Link link) {
-		return pamNodeStructure.containsLink(link);
+	public boolean containsLink(Link l) {
+		return pamNodeStructure.containsLink(l);
 	}
 
 	@Override
@@ -433,8 +433,7 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 
 	@Override
 	public Object getModuleContent(Object... params) {
-		return new UnmodifiableNodeStructureImpl(
-				(NodeStructureImpl) pamNodeStructure);
+		return new UnmodifiableNodeStructureImpl(pamNodeStructure);
 	}
 
 	@Override
@@ -463,9 +462,7 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 		if (t >= 0.0 && t <= 1.0) {
 			PerceptualAssociativeMemoryImpl.perceptThreshold = t;
 		} else {
-			logger
-					.log(
-							Level.WARNING,
+			logger.log(Level.WARNING,
 							"Percept threshold must in range [0.0, 1.0]. Threshold will not be modified.",
 							TaskManager.getCurrentTick());
 		}

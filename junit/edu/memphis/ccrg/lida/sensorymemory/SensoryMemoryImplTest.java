@@ -41,21 +41,21 @@ public class SensoryMemoryImplTest {
     public void testAddListener() {
     	//test1
     	ModuleListener listener = new MockSensoryMemoryListener();
-        assertEquals(0,sensoryMemory.listeners.size());
+        assertEquals(0,sensoryMemory.sensoryMemoryListeners.size());
         
         sensoryMemory.addListener(listener);
         
-        assertEquals(1,sensoryMemory.listeners.size());
-        assertTrue(sensoryMemory.listeners.contains(listener));
+        assertEquals(1,sensoryMemory.sensoryMemoryListeners.size());
+        assertTrue(sensoryMemory.sensoryMemoryListeners.contains(listener));
         
         //test2
         ModuleListener badListener = new MockPamListener();
         
         sensoryMemory.addListener(badListener);
         
-        assertEquals(1,sensoryMemory.listeners.size());
-        assertTrue(sensoryMemory.listeners.contains(listener));
-        assertFalse(sensoryMemory.listeners.contains(badListener));
+        assertEquals(1,sensoryMemory.sensoryMemoryListeners.size());
+        assertTrue(sensoryMemory.sensoryMemoryListeners.contains(listener));
+        assertFalse(sensoryMemory.sensoryMemoryListeners.contains(badListener));
     }
 
     /**
@@ -64,12 +64,12 @@ public class SensoryMemoryImplTest {
     @Test
     public void testAddSensoryMemoryListener() {
         MockSensoryMemoryListener listener = new MockSensoryMemoryListener();
-        assertEquals(0,sensoryMemory.listeners.size());
+        assertEquals(0,sensoryMemory.sensoryMemoryListeners.size());
         
         sensoryMemory.addSensoryMemoryListener(listener);
         
-        assertEquals(1,sensoryMemory.listeners.size());
-        assertTrue(sensoryMemory.listeners.contains(listener));
+        assertEquals(1,sensoryMemory.sensoryMemoryListeners.size());
+        assertTrue(sensoryMemory.sensoryMemoryListeners.contains(listener));
         
         // test adding 2 listeners, one for SMM, and one for PAM
         // Do we need to check addSensoryMemoryListener() with paras of SMM or PAM? --Daqi

@@ -7,6 +7,7 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.pam.tasks;
 
+import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskStatus;
@@ -23,14 +24,14 @@ import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 public class AddLinkToPerceptTask extends FrameworkTaskImpl {
 	
 	private PerceptualAssociativeMemory pam;
-	private PamLink link;
+	private Link link;
 
 	/**
 	 * Default constructor
 	 * @param link {@link PamLink}
 	 * @param pam {@link PerceptualAssociativeMemory}
 	 */
-	public AddLinkToPerceptTask(PamLink link, PerceptualAssociativeMemory pam) {
+	public AddLinkToPerceptTask(Link link, PerceptualAssociativeMemory pam) {
 		this.pam = pam;
 		this.link = link;
 	}
