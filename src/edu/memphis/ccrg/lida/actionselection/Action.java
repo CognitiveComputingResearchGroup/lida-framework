@@ -14,7 +14,6 @@ import edu.memphis.ccrg.lida.framework.initialization.Initializable;
  * 
  * @author Ryan J. McCall
  * @author Javier Snaider
- * 
  */
 public interface Action extends Initializable {
 

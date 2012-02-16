@@ -4,7 +4,8 @@ import edu.memphis.ccrg.lida.framework.shared.activation.Activatible;
 
 
 /**
- * A requirement for a {@link Behavior} to be selected. Implementors should correctly override equals and hashcode
+ * A requirement for a {@link Behavior} to be selected. 
+ * Implementors should correctly override {@link Object#equals(Object)} and {@link Object#hashCode()}
  * since Conditions are used as keys in Maps. 
  * @author Javier Snaider
  */

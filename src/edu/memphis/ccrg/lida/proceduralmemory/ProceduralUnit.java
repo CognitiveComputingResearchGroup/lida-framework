@@ -73,26 +73,6 @@ public interface ProceduralUnit extends Activatible{
 	public int getContextSize();
 	
 	/**
-	 * Returns true if supplied condition is satisfied
-	 * @param c {@link Condition}
-     * @return true, if is context condition satisfied
-	 */
-	public boolean isContextConditionSatisfied(Condition c);
-	
-	/**
-	 * Returns true if all context conditions are satisfied
-	 * @return true, if is all context conditions satisfied
-	 */
-	public boolean isAllContextConditionsSatisfied();
-	
-	/**
-	 * Gets unsatisfied context count.
-	 * 
-	 * @return the unsatisfied context count
-	 */
-	public int getUnsatisfiedContextCount();
-	
-	/**
 	 * Gets adding list.
 	 * 
 	 * @return the adding list

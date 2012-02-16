@@ -42,6 +42,7 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior{
 		super();
 	}
 
+	//Behavior methods
 	@Override
 	public void setId(int id) {
 		behaviorId = id;
@@ -61,14 +62,14 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior{
 	public void setGeneratingScheme(Scheme s) {
 		scheme  = s;
 	}
-		
+	
+	//Object method
 	@Override
 	public String toString(){
 		return getLabel() + "-" + getId();
 	}
 	
 	//ProceduralUnit methods
-
 	@Override
 	public boolean addContextCondition(Condition c) {
 		throw new UnsupportedOperationException("Cannot modify a Behavior, only a Scheme");
@@ -89,15 +90,20 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior{
 		throw new UnsupportedOperationException("Cannot modify a Behavior, only a Scheme");
 	}	
 	
-	@Override
-	public boolean isContextConditionSatisfied(Condition c) {
-		return scheme.isContextConditionSatisfied(c);
-	}
-
-	@Override
-	public boolean isAllContextConditionsSatisfied() {
-		return scheme.isAllContextConditionsSatisfied();
-	}
+//	@Override
+//	public boolean isContextConditionSatisfied(Condition c) {
+//		return scheme.isContextConditionSatisfied(c);
+//	}
+//
+//	@Override
+//	public boolean isAllContextConditionsSatisfied() {
+//		return scheme.isAllContextConditionsSatisfied();
+//	}
+//
+//	@Override
+//	public int getUnsatisfiedContextCount() {
+//		return scheme.getUnsatisfiedContextCount();
+//	}
 
 	@Override
 	public Collection<Condition> getContextConditions() {
@@ -157,11 +163,6 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior{
 	@Override
 	public double getResultSize() {
 		return scheme.getResultSize();
-	}
-
-	@Override
-	public int getUnsatisfiedContextCount() {
-		return scheme.getUnsatisfiedContextCount();
 	}
 
 	@Override

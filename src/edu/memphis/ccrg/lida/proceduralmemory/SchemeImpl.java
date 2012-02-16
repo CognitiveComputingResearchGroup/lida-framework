@@ -23,8 +23,7 @@ import edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl;
  */
 public class SchemeImpl extends LearnableImpl implements Scheme {
 	
-	private static final double DEFAULT_CS_THRESHOLD = 0.0;
-	private static final double DEFAULT_RELIABILITY_THRESHOLD = 0.5;
+	private static final double DEFAULT_RELIABILITY_THRESHOLD = 0.5; //TODO this can be a property of procedural memory
 	private static long idCounter = 0;//TODO Factory support for Scheme
 		
 	private String label;
@@ -33,7 +32,6 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 	private int numberOfExecutions;
 	private int successfulExecutions;
 	private double reliabilityThreshold = DEFAULT_RELIABILITY_THRESHOLD; 
-	private double contextSatisfactionThreshold = DEFAULT_CS_THRESHOLD;
 	
 	private Action action;
 	private Map<Object,Condition> context = new HashMap<Object,Condition>();
@@ -177,31 +175,6 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 	}
 
 	@Override
-	public boolean isContextConditionSatisfied(Condition c) {
-		if (context.containsKey(c.getConditionId())){
-			return context.get(c.getConditionId()).getActivation() >= contextSatisfactionThreshold;
-		}
-//		if (negContext.containsKey(prop.getConditionId()))
-//				return (1.0 - negContext.get(prop.getConditionId()).getActivation()) >= contextSatisfactionThreshold;
-		return false;
-	}
-
-	@Override
-	public boolean isAllContextConditionsSatisfied() {
-		for(Condition c:context.values()){
-			if(c.getActivation() < contextSatisfactionThreshold){
-				return false;
-			}
-		}
-//		for(Condition c:negContext.values()){
-//			if((1.0 - c.getActivation()) < contextSatisfactionThreshold){
-//				return false;
-//			}
-//		}
-		return true;
-	}
-
-	@Override
 	public boolean addContextCondition(Condition c) {
 		return (context.put(c.getConditionId(),c) == null);
 	}
@@ -283,22 +256,6 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 	@Override
 	public double getResultSize() {
 		return addingList.size() + deletingList.size();
-	}
-
-	@Override
-	public int getUnsatisfiedContextCount() {
-		int count = 0;
-		for(Condition c: context.values()){
-			if(c.getActivation() < contextSatisfactionThreshold){
-				count++;
-			}
-		}
-//		for(Condition c:negContext.values()){
-//			if((1-c.getActivation()) < contextSatisfactionThreshold){
-//				count++;
-//			}
-//		}
-		return count;
 	}
 
 	@Override

@@ -102,8 +102,7 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 	private double goalOrientedness = DEFAULT_GOAL_ORIENTEDNESS;
 	
 	/**
-	 * This module can accept parameters for the decay and excite strategies for
-	 * behaviors instantiated in this module.  The parameters names are:<br><br/>
+	 * This module can initialize the following parameters:<br><br/>
 	 * 
 	 * <b>proceduralMemory.schemeSelectionThreshold</b> - amount of activation schemes must have to be instantiated, default is 0.0<br/>
 	 * <b>proceduralMemory.goalOrientedness</b> - for scheme activation calculation, the weight of desired content versus non-desired content. <br/>
