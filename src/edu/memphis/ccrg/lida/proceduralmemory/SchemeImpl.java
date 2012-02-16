@@ -10,8 +10,6 @@ package edu.memphis.ccrg.lida.proceduralmemory;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.actionselection.Action;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Condition;
@@ -25,8 +23,6 @@ import edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl;
  */
 public class SchemeImpl extends LearnableImpl implements Scheme {
 	
-	//TODO fix the logging for String concatentation issues
-	private static final Logger logger = Logger.getLogger(SchemeImpl.class.getCanonicalName());
 	private static final double DEFAULT_CS_THRESHOLD = 0.0;
 	private static final double DEFAULT_RELIABILITY_THRESHOLD = 0.5;
 	private static long idCounter = 0;//TODO Factory support for Scheme
@@ -205,26 +201,19 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 		return true;
 	}
 
-	// start add methods
 	@Override
-	public boolean addContextCondition(Condition condition) {
-		logger.log(Level.FINEST, "Adding context condition " +
-								 condition + " to " + label);
-		return (context.put(condition.getConditionId(),condition) == null);
+	public boolean addContextCondition(Condition c) {
+		return (context.put(c.getConditionId(),c) == null);
 	}
 
 	@Override
-	public boolean addToAddingList(Condition addResult) {
-		logger.log(Level.FINEST, "Adding add result " +
-				 addResult + " to " + label);
-		return (addingList.put(addResult.getConditionId(),addResult) == null);
+	public boolean addToAddingList(Condition c) {
+		return (addingList.put(c.getConditionId(),c) == null);
 	}
 
 	@Override
-	public boolean addToDeletingList(Condition deleteResult) {
-		logger.log(Level.FINEST, "Adding delete result " +
-				 deleteResult + " to " + label);
-		return (deletingList.put(deleteResult.getConditionId(),deleteResult) == null);
+	public boolean addToDeletingList(Condition c) {
+		return (deletingList.put(c.getConditionId(),c) == null);
 	}
 
 	@Override
@@ -269,18 +258,18 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 	}
 
 	@Override
-	public boolean containsContextCondition(Condition contextCondition) {
-		return context.containsKey(contextCondition.getConditionId());
+	public boolean containsContextCondition(Condition c) {
+		return context.containsKey(c.getConditionId());
 	}
 
 	@Override
-	public boolean containsAddingItem(Condition addItem) {
-		return addingList.containsKey(addItem.getConditionId());
+	public boolean containsAddingItem(Condition c) {
+		return addingList.containsKey(c.getConditionId());
 	}
 
 	@Override
-	public boolean containsDeletingItem(Condition deleteItem) {
-		return deletingList.containsKey(deleteItem.getConditionId());
+	public boolean containsDeletingItem(Condition c) {
+		return deletingList.containsKey(c.getConditionId());
 	}
 
 	/**
@@ -298,8 +287,8 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 
 	@Override
 	public int getUnsatisfiedContextCount() {
-		int count=0;
-		for(Condition c:context.values()){
+		int count = 0;
+		for(Condition c: context.values()){
 			if(c.getActivation() < contextSatisfactionThreshold){
 				count++;
 			}

@@ -13,12 +13,9 @@
 package edu.memphis.ccrg.lida.actionselection.behaviornetwork.main;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
 import edu.memphis.ccrg.lida.actionselection.Action;
 import edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl;
-import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
 
 /**
@@ -37,44 +34,6 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior{
 	 * The scheme from which this behavior was instantiated. 
 	 */
 	private Scheme scheme;
-	
-	private Map<Object, Double> incomingActivation = new HashMap<Object, Double>();
-	
-	public void addIncomingActivation(Object conditionId, double amount){
-		Double existing = incomingActivation.get(conditionId);
-		if(existing != null){
-			existing += amount;
-			if(existing > 1.0){
-				existing = 1.0;
-			}else if(existing < 0.0){
-				existing = 0.0;
-			}
-		}else{
-			//log
-		}
-	}
-	
-	@Override
-	public void decay(long t){
-		DecayStrategy ds = getDecayStrategy();
-		for(Object key: incomingActivation.keySet()){
-			double activ = incomingActivation.get(key);
-			double newActivat = ds.decay(activ, t); 
-			incomingActivation.put(key, newActivat);
-		}
-	}
-	
-	private double getAverageIncomingActivation(){
-		int activationSources = incomingActivation.size();
-		if(activationSources == 0){
-			return 0.0;
-		}
-		double incomingActivationSum = 0.0;
-		for(Double d: incomingActivation.values()){
-			incomingActivationSum += d;
-		}
-		return incomingActivationSum / activationSources;
-	}
 	
 	/**
 	 * Construct a new behavior with default parameters
@@ -101,21 +60,8 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior{
 	@Override
 	public void setGeneratingScheme(Scheme s) {
 		scheme  = s;
-		for(Condition c: scheme.getContextConditions()){
-			incomingActivation.put(c.getConditionId(), 0.0);
-		}
 	}
-	
-	//TODO discuss
-	private double rho = 0.5;
-	
-	@Override
-	public double getActivation(){
-		//expression below equivalent to: (1 - rho) activation + rho (scheme_activation)
-		double behaviorActivation = getAverageIncomingActivation();
-		return behaviorActivation + rho * (scheme.getActivation() - behaviorActivation);
-	}
-	
+		
 	@Override
 	public String toString(){
 		return getLabel() + "-" + getId();

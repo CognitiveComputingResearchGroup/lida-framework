@@ -51,6 +51,12 @@ public interface ProceduralMemory extends FrameworkModule{
 	public void removeScheme(Scheme s);
 	
 	/**
+	 * Returns a view of all {@link Scheme} objects currently in the {@link ProceduralMemory}.
+	 * @return a {@link Collection} of schemes
+	 */
+	public Collection<Scheme> getSchemes();
+	
+	/**
 	 * Returns a count of the schemes
 	 * @return number of schemes currently in this procedural memory.
 	 */
@@ -84,7 +90,6 @@ public interface ProceduralMemory extends FrameworkModule{
 	 */
 	public Condition addCondition(Condition c);
 
-	
 	/**
 	 * Gets condition
 	 * @param conditionId {@link Condition}'s id 

@@ -7,12 +7,14 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.framework.mockclasses;
 
+import java.util.Collection;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.actionselection.Action;
 import edu.memphis.ccrg.lida.actionselection.ActionSelection;
 import edu.memphis.ccrg.lida.actionselection.ActionSelectionListener;
 import edu.memphis.ccrg.lida.actionselection.PreafferenceListener;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.globalworkspace.Coalition;
@@ -25,27 +27,9 @@ public class MockActionSelectionImpl extends FrameworkModuleImpl implements Acti
 	public void addActionSelectionListener(ActionSelectionListener listener) {
 	}
 
-	@Override
-	public Action attemptActionSelection() {
-		return null;
-	}
 
 	@Override
 	public void init() {
-		Thread t = new Thread(new Runnable() {
-			@Override
-			public void run() {
-				while(true){
-					attemptActionSelection();
-					try {
-						Thread.sleep(100);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-				}
-			}
-		});
-		t.start();
 	}
 
 
@@ -71,6 +55,14 @@ public class MockActionSelectionImpl extends FrameworkModuleImpl implements Acti
 	public void addListener(ModuleListener listener) {
 		
 		
+	}
+
+
+	@Override
+	public Behavior selectBehavior(Collection<Behavior> behaviors,
+			double candidateThreshold) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

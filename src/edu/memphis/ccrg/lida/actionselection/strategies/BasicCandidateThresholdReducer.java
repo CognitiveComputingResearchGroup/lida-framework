@@ -16,7 +16,7 @@ import edu.memphis.ccrg.lida.framework.strategies.StrategyImpl;
 /**
  * @author Ryan J. McCall
  */
-public class BasicCandidationThresholdReducer extends StrategyImpl implements DecayStrategy {
+public class BasicCandidateThresholdReducer extends StrategyImpl implements DecayStrategy {
 	
     /*
 	 * Percent to reduce the behavior activation threshold by if no behavior is selected

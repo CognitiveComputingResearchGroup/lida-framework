@@ -33,18 +33,18 @@ public class BasicSelector extends StrategyImpl implements Selector {
 
 	private static Logger logger = Logger.getLogger(BasicSelector.class.getCanonicalName());
 
-	public Behavior selectBehavior(Collection<Behavior> behaviors, double threshold) {
+	public Behavior selectBehavior(Collection<Behavior> behaviors, double candidateThreshold) {
 		double maxActivation = 0.0;
 		List<Behavior> winners = new ArrayList<Behavior>();
-		for (Behavior current : behaviors) {
-			double currentActivation = current.getTotalActivation();
-			if (currentActivation > threshold) {
+		for (Behavior b : behaviors) {
+			double currentActivation = b.getTotalActivation();
+			if (currentActivation > candidateThreshold) {
 				if (currentActivation > maxActivation) {
 					winners.clear();
-					winners.add(current);
+					winners.add(b);
 					maxActivation = currentActivation;
 				} else if (currentActivation == maxActivation) {
-					winners.add(current);
+					winners.add(b);
 				}
 			}
 		}

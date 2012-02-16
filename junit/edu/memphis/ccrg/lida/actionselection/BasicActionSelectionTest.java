@@ -17,6 +17,8 @@ import java.util.Collection;
 import org.junit.Before;
 import org.junit.Test;
 
+import sun.security.action.GetBooleanAction;
+
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockSensoryMotorMemory;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockTaskSpawner;
@@ -84,13 +86,13 @@ public class BasicActionSelectionTest {
 		assertNull(smm.action);
 		assertFalse(smm.actionReceived);
 		
-		as.attemptActionSelection();
+		as.selectBehavior(as.getBehaviors(), as.getThreshold());
 		
 		assertNull(smm.action);
 		assertFalse(smm.actionReceived);
 		
 		behav2.setActivation(0.80);
-		as.attemptActionSelection();
+		as.selectBehavior(as.getBehaviors(), as.getThreshold());
 		
 		assertTrue(smm.actionReceived);
 		assertEquals(action2,smm.action);		

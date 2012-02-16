@@ -109,4 +109,10 @@ public class MockProceduralMemory extends FrameworkModuleImpl implements Procedu
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+	@Override
+	public Collection<Scheme> getSchemes() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

@@ -39,12 +39,11 @@ import edu.memphis.ccrg.lida.globalworkspace.Coalition;
  * Default implementation of {@link ProceduralMemory}. Indexes scheme by context
  * elements for quick access. Assumes that the {@link Condition} of {@link Scheme} are {@link Node} only.
  * @author Ryan J. McCall
- *
+ * @author Javier Snaider
  */
 public class ProceduralMemoryImpl extends FrameworkModuleImpl implements ProceduralMemory, BroadcastListener {
 
 	private static final Logger logger = Logger.getLogger(ProceduralMemoryImpl.class.getCanonicalName());
-	
 	private static final ElementFactory factory = ElementFactory.getInstance();
 
 	/*
@@ -58,7 +57,7 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 	private Map<Object, Set<Scheme>> addingSchemeMap = new ConcurrentHashMap<Object, Set<Scheme>>();
 
 	/*
-	 * Set of all schemes current in the module. Convenient for decaying the schemes' bla.
+	 * Set of all schemes current in the module. Convenient for decaying the schemes' base-level activation.
 	 */
 	private Set<Scheme> schemeSet = new ConcurrentHashSet<Scheme>();
 	
@@ -90,24 +89,31 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 	 */
 	private List<ProceduralMemoryListener> proceduralMemoryListeners = new ArrayList<ProceduralMemoryListener>();
 
-	private static final double DEFAULT_SCHEME_SELECTION_THRESHOLD = 0.0;
-	
+	private static final double DEFAULT_SCHEME_SELECTION_THRESHOLD = 0.0;	
 	/*
 	 * Determines how much activation a scheme should have to be instantiated
 	 */
 	private double schemeSelectionThreshold;
 	
+	private static final double DEFAULT_GOAL_ORIENTEDNESS = 0.5;
+	/*
+	 * In scheme activation calculation, the weight of desired content versus non-desired content.  
+	 */
+	private double goalOrientedness = DEFAULT_GOAL_ORIENTEDNESS;
+	
 	/**
 	 * This module can accept parameters for the decay and excite strategies for
 	 * behaviors instantiated in this module.  The parameters names are:<br><br/>
 	 * 
-	 * <b>proceduralMemory.schemeSelectionThreshold</b> - amount of activation schemes must have to be instantiated<br/>
+	 * <b>proceduralMemory.schemeSelectionThreshold</b> - amount of activation schemes must have to be instantiated, default is 0.0<br/>
+	 * <b>proceduralMemory.goalOrientedness</b> - for scheme activation calculation, the weight of desired content versus non-desired content. <br/>
 	 * 
 	 * @see edu.memphis.ccrg.lida.framework.FrameworkModuleImpl#init()
 	 */
 	@Override
 	public void init() {	
 		schemeSelectionThreshold = getParam("proceduralMemory.schemeSelectionThreshold", DEFAULT_SCHEME_SELECTION_THRESHOLD);
+		goalOrientedness = getParam("proceduralMemory.goalOrientedness",DEFAULT_GOAL_ORIENTEDNESS);
 	}
 
 	@Override
@@ -252,9 +258,9 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 	
 	@Override
 	public void learn(Coalition coalition) {
+		//TODO
 //		NodeStructure ns = (NodeStructure) coalition.getContent();
 		// make sure to use the correct way of adding new schemes see addScheme
-		//TODO
 	}
 	
 	@Override
@@ -286,8 +292,6 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 			}
 		}
 	}
-	
-	private double goalOrientedness = 0.5;//TODO parameter
 	
 	/**
 	 * Returns true if the specified scheme's salience is greater than the scheme selection threshold.
@@ -353,10 +357,15 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 	}
 
 	@Override
+	public Collection<Scheme> getSchemes() {
+		return Collections.unmodifiableCollection(schemeSet);
+	}	
+
+	@Override
 	public Object getModuleContent(Object... params) {
 		if("schemes".equals(params[0])){
 			return Collections.unmodifiableCollection(schemeSet);
 		}
 		return null;
-	}	
+	}
 }

@@ -7,10 +7,13 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.actionselection;
 
+import java.util.Collection;
+
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
 import edu.memphis.ccrg.lida.framework.FrameworkModule;
 
 /**
- * Interface for the action selection module of LIDA.
+ * Specification for the action selection module of LIDA.
  * 
  * @author Ryan J. McCall
  * 
@@ -18,26 +21,24 @@ import edu.memphis.ccrg.lida.framework.FrameworkModule;
 public interface ActionSelection extends FrameworkModule {
 
 	/**
-	 * Those classes that should be receiving selected actions from Action
-	 * Selection
+	 * Adds specified {@link ActionSelectionListener}.
 	 * 
-	 * @param listener
-	 *            listener of this action selection
+	 * @param l a module that receives selected actions from {@link ActionSelection}
 	 */
-	public void addActionSelectionListener(ActionSelectionListener listener);
+	public void addActionSelectionListener(ActionSelectionListener l);
 
 	/**
-	 * 
-	 * @param listener
-	 *            preafference listeners of this action selection
+	 * Adds specified {@link PreafferenceListener}
+	 * @param l a module that receives preafference from {@link ActionSelection}
 	 */
-	public void addPreafferenceListener(PreafferenceListener listener);
-
+	public void addPreafferenceListener(PreafferenceListener l);
+	
 	/**
-	 * Choose a single action among those activated and whose context are
-	 * satisfied to execute
-	 * @return The selected {@link Action} or null if no action was selected.
+	 * Selects a behavior (containing an action) for execution.
+	 * @param behaviors {@link Collection} of behaviors currently available in the module
+	 * @param candidateThreshold threshold for a behavior to be a candidate
+	 * @return winning Behavior or null if none was chosen
 	 */
-	public Action attemptActionSelection();
+	public Behavior selectBehavior(Collection<Behavior> behaviors, double candidateThreshold);
 
 }

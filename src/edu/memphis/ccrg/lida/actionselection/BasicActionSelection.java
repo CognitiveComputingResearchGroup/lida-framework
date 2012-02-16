@@ -8,6 +8,7 @@
 package edu.memphis.ccrg.lida.actionselection;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -147,10 +148,17 @@ public class BasicActionSelection extends FrameworkModuleImpl implements
 			
 		}
 	}
+	
+	Collection<Behavior> getBehaviors(){
+		return Collections.unmodifiableCollection(behaviors);
+	}
+	
+	double getThreshold(){
+		return candidateThreshold;
+	}
 
-	@Override
-	public Action attemptActionSelection() {
-		Behavior behavior = chooseBehavior();
+	private Action attemptActionSelection() {
+		Behavior behavior = selectBehavior(behaviors, candidateThreshold);
 		if (behavior != null) {
 			Action action = behavior.getAction();
 			logger.log(Level.FINE, "Action Selected: {1}",
@@ -163,7 +171,8 @@ public class BasicActionSelection extends FrameworkModuleImpl implements
 		return null;
 	}
 
-	private Behavior chooseBehavior() {
+	@Override
+	public Behavior selectBehavior(Collection<Behavior> behaviors, double candidateThreshold){
 		Behavior selected = null;
 		double highestActivation = -1.0;
 		for (Behavior b : behaviors) {
