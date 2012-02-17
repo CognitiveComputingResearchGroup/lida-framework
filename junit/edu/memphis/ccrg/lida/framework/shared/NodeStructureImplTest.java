@@ -167,10 +167,10 @@ s
 	}
 
 	/**
-	 * This method is used to test the NodeStructureImpl.addLink() method
+	 * This method is used to test the NodeStructureImpl.addDefaultLink() method
 	 */
 	@Test
-	public void testAddLink() {	
+	public void testAddDefaultLink() {	
 		ns1.addDefaultNode(node1);	
 		ns1.addDefaultNode(node2);	
 		Link stored = ns1.addDefaultLink(link1);

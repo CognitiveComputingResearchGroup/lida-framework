@@ -388,6 +388,28 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 									+ l, TaskManager.getCurrentTick());
 			return null;
 		}
+		//TODO review
+		int sourceId = l.getSource().getId();
+		ExtendedId sinkId = l.getSink().getExtendedId();
+		if (sinkId.isNodeId() && sourceId == sinkId.getSourceNodeId()) {
+			throw new IllegalArgumentException(
+					"Cannot create a link with the same source and sink.");
+		}
+		if (sinkId.isComplexLink()) {
+			logger.log(Level.WARNING,
+							"Sink cannot be a complex link. Must be a node or simple link.",
+							TaskManager.getCurrentTick());
+			return null;
+		}
+		Node source = getNode(sourceId);
+		Linkable sink = getLinkable(sinkId);
+		if (source == null || sink == null) {
+			logger.log(Level.WARNING,
+					"Source and/or Sink are not present in this NodeStructure",
+					TaskManager.getCurrentTick());
+			return null;
+		}
+		
 		Link link = links.get(l.getExtendedId());
 		if (link == null) {
 			link = getNewLink(l, linkType, l.getSource(), l.getSink(), l
