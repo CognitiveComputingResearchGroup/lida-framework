@@ -23,6 +23,7 @@ import edu.memphis.ccrg.lida.actionselection.PreafferenceListener;
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
+import edu.memphis.ccrg.lida.framework.initialization.Initializable;
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.ExtendedId;
 import edu.memphis.ccrg.lida.framework.shared.Link;
@@ -135,20 +136,20 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 	/**
      * Will set parameters with the following names:<br/><br/>
      * 
-     * pam.Upscale<br/>
-     * pam.Downscale<br/>
-     * pam.Selectivity<br/>
-     * pam.excitationTicksPerRun<br/>
-     * pam.propagationTicksPerRun<br/>
-     * 
-     * @see edu.memphis.ccrg.lida.framework.FrameworkModuleImpl#init()
+     * <b>pam.upscale</b> the scaling on the amount of activation passed upwards from Nodes of lower conceptual depth to those of higher depth<br/>
+     * <b>pam.downscale</b> the scaling on the amount of activation passed downwards from Nodes of higher conceptual depth to those of lower depth<br/>
+     * <b>pam.perceptThreshold</b> the amount of activation a Node or Link must have to be part of the percept (be sent to the Workspace)<br/>
+     * <b>pam.excitationTicksPerRun</b> the delay (in ticks) on the excitation of Nodes and Links after they receive some activation, default is 1 tick<br/>
+     * <b>pam.propagationTicksPerRun</b> the delay (in ticks) on the propagation of activation from a Node or Link, default is 1 tick<br/>
+     * <b>pam.propagateActivationThreshold</b> the amount of activation necessary to be propagated i.e. a lesser amount is not (worth being) passed<br/>
+     * @see Initializable
      */
 	@Override
 	public void init() {
-		upscaleFactor = (Double) getParam("pam.Upscale", DEFAULT_UPSCALE_FACTOR);
-		downscaleFactor = (Double) getParam("pam.Downscale",
+		upscaleFactor = (Double) getParam("pam.upscale", DEFAULT_UPSCALE_FACTOR);
+		downscaleFactor = (Double) getParam("pam.downscale",
 				DEFAULT_DOWNSCALE_FACTOR);
-		perceptThreshold = (Double) getParam("pam.Selectivity",
+		perceptThreshold = (Double) getParam("pam.perceptThreshold",
 				DEFAULT_PERCEPT_THRESHOLD);
 		excitationTaskTicksPerRun = (Integer) getParam(
 				"pam.excitationTicksPerRun", DEFAULT_EXCITATION_TASK_TICKS);

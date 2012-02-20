@@ -65,4 +65,11 @@ public class MockActionSelectionImpl extends FrameworkModuleImpl implements Acti
 		return null;
 	}
 
+
+	@Override
+	public Collection<Behavior> getBehaviors() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

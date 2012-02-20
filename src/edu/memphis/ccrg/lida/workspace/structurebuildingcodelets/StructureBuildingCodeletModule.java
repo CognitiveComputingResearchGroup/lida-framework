@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleName;
+import edu.memphis.ccrg.lida.framework.initialization.Initializable;
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.tasks.Codelet;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
@@ -62,11 +63,9 @@ public class StructureBuildingCodeletModule extends FrameworkModuleImpl implemen
 	/**
      * Will set parameters with the following names:<br/><br/>
      * 
-     * sbcModule.defaultCodeletType<br/>
-     * sbcModule.codeletActivation<br/>
-     * sbcModule.codeletRemovalThreshold<br/>
-     * 
-     * @see edu.memphis.ccrg.lida.framework.FrameworkModuleImpl#init()
+     * <b>sbcModule.defaultCodeletType</b> type of attention codelets obtained from this module<br/>
+     * <b>sbcModule.codeletActivation</b> initial activation of codelets obtained from this module<br/>
+     * <b>sbcModule.codeletRemovalThreshold</b> initial removal threshold for codelets obtained from this module<br/>
      */
 	@Override
 	public void init() {

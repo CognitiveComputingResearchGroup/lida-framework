@@ -15,6 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
+import edu.memphis.ccrg.lida.framework.initialization.Initializable;
 import edu.memphis.ccrg.lida.framework.shared.Linkable;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
@@ -47,9 +48,9 @@ public class BroadcastQueueImpl extends FrameworkModuleImpl implements Broadcast
 	/**
 	 * Will set parameters with the following names:<br/><br/>
 	 * 
-	 * workspace.broadcastQueueCapacity<br/>
+	 * <b>workspace.broadcastQueueCapacity</b> the number of recent broadcast maintained in this BroadcastQueue<br/>
 	 * 
-	 * @see edu.memphis.ccrg.lida.framework.FrameworkModuleImpl#init()
+	 * @see Initializable
 	 */
 	@Override
 	public void init() {
@@ -65,7 +66,7 @@ public class BroadcastQueueImpl extends FrameworkModuleImpl implements Broadcast
 
 	@Override
 	public void receiveBroadcast(Coalition coalition) {
-		//TODO assumes WorkspaceContent == BroadcastContent
+		//assumes WorkspaceContent == BroadcastContent
 		broadcastQueue.addFirst((WorkspaceContent) coalition.getContent());
 		// Keep the buffer at a fixed size
 		while (broadcastQueue.size() > broadcastQueueCapacity) {

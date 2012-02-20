@@ -9,6 +9,8 @@ package edu.memphis.ccrg.lida.framework.strategies;
 
 import java.util.Map;
 
+import edu.memphis.ccrg.lida.framework.initialization.Initializable;
+
 /**
  * Default implementation of sigmoid decay.  Uses two parameters in activation calculation.
  * Can pass these parameters when the strategy is initialized. (see factoriesData.xml).
@@ -28,6 +30,16 @@ public class SigmoidDecayStrategy extends StrategyImpl implements DecayStrategy 
 	
 	private static final double epsilon = 1e-10;
 	
+	/**
+	 * If this method is overridden, this init() must be called first! i.e. super.init();
+	 * Will set parameters with the following names:<br/><br/>
+     * 
+     * <b>a</b> slope component of the decay function's linear scaling, 1 / (1 + exp(-a* x + c))<br/>
+     * <b>c</b> intercept component of the decay function's linear scaling, 1 / (1 + exp(-a* x + c))<br/>
+     * If any parameter is not specified its default value will be used.
+     * 
+     * @see Initializable
+	 */
 	@Override
 	public void init() {
 		a = (Double) getParam("a", DEFAULT_A);

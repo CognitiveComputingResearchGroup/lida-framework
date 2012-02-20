@@ -72,21 +72,19 @@ public class EpisodicMemoryImpl extends FrameworkModuleImpl implements
 	/**
      * Will set parameters with the following names:<br/><br/>
      * 
-     * tem.numOfHardLoc<br/>
-     * tem.addressLength<br/>
-     * tem.wordLength<br/>
-     * tem.activationRadius
-     * 
-     * @see edu.memphis.ccrg.lida.framework.FrameworkModuleImpl#init()
+     * <b>em.numOfHardLoc</b> number of hard locations created in SDM to store data<br/>
+     * <b>em.addressLength</b> size of the hard locations' address<br/>
+     * <b>em.wordLength</b> size of the hard locations' words (storage)<br/>
+     * <b>em.activationRadius</b> size of the radius of the hypersphere used to find the "nearby" hard locations of an address</b>
      */
 	@Override
 	public void init() {
-		numOfHardLoc = (Integer) getParam("tem.numOfHardLoc",
+		numOfHardLoc = (Integer) getParam("em.numOfHardLoc",
 				DEF_HARD_LOCATIONS);
-		addressLength = (Integer) getParam("tem.addressLength",
+		addressLength = (Integer) getParam("em.addressLength",
 				DEF_ADDRESS_LENGTH);
-		wordLength = (Integer) getParam("tem.wordLength", DEF_WORD_LENGTH);
-		int radius = (Integer) getParam("tem.activationRadius",
+		wordLength = (Integer) getParam("em.wordLength", DEF_WORD_LENGTH);
+		int radius = (Integer) getParam("em.activationRadius",
 				DEF_ACCESS_RADIUS);
 		sdm = new SparseDistributedMemoryImpl(numOfHardLoc, radius, wordLength,
 				addressLength);

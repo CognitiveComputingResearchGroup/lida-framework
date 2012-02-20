@@ -9,6 +9,8 @@ package edu.memphis.ccrg.lida.framework.strategies;
 
 import java.util.Map;
 
+import edu.memphis.ccrg.lida.framework.initialization.Initializable;
+
 /**
  * Basic {@link DecayStrategy} governed by a linear curve.
  * @author Ryan J. McCall
@@ -35,6 +37,15 @@ public class LinearDecayStrategy extends StrategyImpl implements DecayStrategy {
 		m = DEFAULT_M;
 	}
 	
+	/**
+	 * If this method is overridden, this init() must be called first! i.e. super.init();
+	 * Will set parameters with the following names:<br/><br/>
+     * 
+     * <b>m</b> slope of the decay function<br/>
+     * If any parameter is not specified its default value will be used.
+     * 
+     * @see Initializable
+	 */
 	@Override
 	public void init() {
 		m = (Double) getParam("m", DEFAULT_M);

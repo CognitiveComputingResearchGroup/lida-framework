@@ -22,7 +22,8 @@ import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
  *
  */
 public class IndividualCoaltionActivationTrigger extends AggregateCoalitionActivationTrigger {
-	private Logger logger = Logger.getLogger(IndividualCoaltionActivationTrigger.class.getCanonicalName());
+	
+	private static final Logger logger = Logger.getLogger(IndividualCoaltionActivationTrigger.class.getCanonicalName());
 	
 	/**
 	 * Triggers a broadcast if any {@link Coalition} object's activation is over threshold.
@@ -31,12 +32,11 @@ public class IndividualCoaltionActivationTrigger extends AggregateCoalitionActiv
 	@Override
 	public void checkForTriggerCondition(Collection<Coalition> coalitions) {
 		for(Coalition c : coalitions){
-			if(c.getActivation() > threshold){ //TODO global max
+			if(c.getActivation() > threshold){
 				logger.log(Level.FINE,"Individual Activation trigger fires",TaskManager.getCurrentTick());
 				gw.triggerBroadcast(this);
 				break;
 			}
 		}
 	}
-
 }

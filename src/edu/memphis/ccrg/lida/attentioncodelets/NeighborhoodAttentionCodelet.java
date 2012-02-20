@@ -29,7 +29,7 @@ public class NeighborhoodAttentionCodelet extends DefaultAttentionCodelet {
     private static final Logger logger = Logger.getLogger(NeighborhoodAttentionCodelet.class.getCanonicalName());
 
     /**
-     * If this method is overridden, this init must be called first! i.e. super.init();
+     * If this method is overridden, this init() must be called first! i.e. super.init();
 	 * Will set parameters with the following names:<br/><br/>
      * 
      * <b>nodes</b> Labels of nodes that comprise this codelet's sought content<br/><br/>
@@ -41,22 +41,20 @@ public class NeighborhoodAttentionCodelet extends DefaultAttentionCodelet {
 	public void init() {
 		super.init();
 		super.attentionThreshold = 0.0;//want nodes regardless of their activation
-		if(containsParameter("nodes")){
-			String nodeLabels = (String) getParam("nodes", "");
-			if (nodeLabels != null && !nodeLabels.equals("")) {
-	            GlobalInitializer globalInitializer = GlobalInitializer.getInstance();
-	            String[] labels = nodeLabels.split(",");
-	            for (String label : labels) {
-	                label = label.trim();
-	                Node node = (Node) globalInitializer.getAttribute(label);
-	                if (node != null) {
-	                    soughtContent.addDefaultNode(node);
-	                }else{
-	                	logger.log(Level.WARNING, "could not find node with label: {0} in global initializer", label);
-	                }
-	            }
-	        }
-		}
+		String nodeLabels = getParam("nodes", "");
+		if (nodeLabels != null && !nodeLabels.equals("")) {
+            GlobalInitializer globalInitializer = GlobalInitializer.getInstance();
+            String[] labels = nodeLabels.split(",");
+            for (String label : labels) {
+                label = label.trim();
+                Node node = (Node) globalInitializer.getAttribute(label);
+                if (node != null) {
+                    soughtContent.addDefaultNode(node);
+                }else{
+                	logger.log(Level.WARNING, "could not find node with label: {0} in global initializer", label);
+                }
+            }
+        }
     }
     
     /**

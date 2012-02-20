@@ -149,7 +149,8 @@ public class BasicActionSelection extends FrameworkModuleImpl implements
 		}
 	}
 	
-	Collection<Behavior> getBehaviors(){
+	@Override
+	public Collection<Behavior> getBehaviors(){
 		return Collections.unmodifiableCollection(behaviors);
 	}
 	

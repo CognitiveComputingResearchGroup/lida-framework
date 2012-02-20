@@ -21,6 +21,7 @@ import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
+import edu.memphis.ccrg.lida.framework.initialization.Initializable;
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTask;
@@ -68,11 +69,11 @@ public class GlobalWorkspaceImpl extends FrameworkModuleImpl implements GlobalWo
     /**
      * Initializes parameters with the following names and types:<br/><br/>
      * 
-     * globalWorkspace.coalitionRemovalThreshold type=double<br/>
-     * globalWorkspace.coalitionDecayStrategy type=string<br/>
-     * globalWorkspace.refractoryPeriod type=int
+     * <b>globalWorkspace.coalitionRemovalThreshold type=double</b> amount of activation coalitions must have to remain in the GlobalWorkspace<br/>
+     * <b>globalWorkspace.coalitionDecayStrategy type=string</b> name of the decay strategy used by all coalitions in the GlobalWorkspace<br/>
+     * <b>globalWorkspace.refractoryPeriod type=int</b> minimum amount of time allowed between subsequent broadcasts<br/>
      * 
-     * @see edu.memphis.ccrg.lida.framework.FrameworkModuleImpl#init()
+     * @see Initializable
      */
     @Override
     public void init() {

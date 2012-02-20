@@ -18,8 +18,10 @@ public class RandomizingTaskSpawner extends TaskSpawnerImpl {
 	private double variation = DEFAULT_VARIATION;
 	
 	/**
-	 * This init method sets a parameter with name 'variation'
+	 * Sets a parameter with name "variation" of type double which represents the amount of possible variation if 
+	 * ticksPerRun is randomized.
 	 */
+	@Override
 	public void init(){
 		super.init();
 		variation = getParam("variation", DEFAULT_VARIATION);

@@ -23,6 +23,7 @@ import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Condition;
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
+import edu.memphis.ccrg.lida.framework.initialization.Initializable;
 import edu.memphis.ccrg.lida.framework.shared.ConcurrentHashSet;
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.Node;
@@ -107,7 +108,7 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 	 * <b>proceduralMemory.schemeSelectionThreshold</b> - amount of activation schemes must have to be instantiated, default is 0.0<br/>
 	 * <b>proceduralMemory.goalOrientedness</b> - for scheme activation calculation, the weight of desired content versus non-desired content. <br/>
 	 * 
-	 * @see edu.memphis.ccrg.lida.framework.FrameworkModuleImpl#init()
+	 * @see Initializable
 	 */
 	@Override
 	public void init() {	
@@ -137,11 +138,11 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 	}
 
 	/**
-	 * Adds specified scheme to this {@link ProceduralMemory}.</br>
+	 * Adds specified scheme to this {@link ProceduralMemory}.<br/>
 	 * Note: all conditions (context or adding) in the Scheme should have already been added as conditions 
 	 * using {@link #addCondition(Condition)}. The correct way to create a Scheme is to first add its conditions to
 	 * {@link ProceduralMemory} using {@link #addCondition(Condition)} AND then, use the returned references as the new
-	 * Conditions of the Scheme. Finally this method should be called to add the Scheme to this {@link ProceduralMemory}.</br>
+	 * Conditions of the Scheme. Finally this method should be called to add the Scheme to this {@link ProceduralMemory}.<br/>
 	 * The {@link BasicProceduralMemoryInitializer} uses this procedure for adding new Schemes.
 	 * @param scheme the {@link Scheme} to be added
 	 * @see BasicProceduralMemoryInitializer

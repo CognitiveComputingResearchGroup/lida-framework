@@ -84,7 +84,7 @@ public class LearnableImpl extends ActivatibleImpl implements Learnable {
 	}
 	
 	/**
-	 * If this method is overridden, this init must be called first! i.e. super.init();
+	 * If this method is overridden, this init() must be called first! i.e. super.init();
 	 * Will set parameters with the following names:<br/><br/>
      * 
      * <b>learnable.baseLevelActivation</b> initial base-level activation<br/>

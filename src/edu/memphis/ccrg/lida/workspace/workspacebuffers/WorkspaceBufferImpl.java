@@ -36,17 +36,6 @@ public class WorkspaceBufferImpl extends FrameworkModuleImpl implements Workspac
 	public WorkspaceBufferImpl() {
 	}
 	
-	@Override
-	public Object getModuleContent(Object... params) {
-		return new UnmodifiableNodeStructureImpl(buffer);
-	}
-
-	@Override
-	public void decayModule(long ticks){
-		logger.log(Level.FINE, "Decaying buffer.", TaskManager.getCurrentTick());
-		buffer.decayNodeStructure(ticks);
-	}
-
 	/*
 	 * Note that this method <i>merges</i> the specified content into the buffer.
 	 * Since {@link NodeStructure} copies all added Linkables, the resultant content 
@@ -61,6 +50,17 @@ public class WorkspaceBufferImpl extends FrameworkModuleImpl implements Workspac
 	@Override
 	public WorkspaceContent getBufferContent(Map<String, Object> params) {
 		return (WorkspaceContent) buffer;
+	}
+
+	@Override
+	public void decayModule(long ticks){
+		logger.log(Level.FINE, "Decaying buffer.", TaskManager.getCurrentTick());
+		buffer.decayNodeStructure(ticks);
+	}
+
+	@Override
+	public Object getModuleContent(Object... params) {
+		return new UnmodifiableNodeStructureImpl(buffer);
 	}
 	
 }

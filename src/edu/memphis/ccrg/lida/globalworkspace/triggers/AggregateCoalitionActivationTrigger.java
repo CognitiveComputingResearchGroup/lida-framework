@@ -66,6 +66,12 @@ public class AggregateCoalitionActivationTrigger implements BroadcastTrigger {
 		// not applicable
 	}
 
+	/**
+	 * This method expects a parameter with name "threshold" of type double representing the coalition activation threshold 
+	 * at which the trigger will fire.
+	 * 
+	 * @see BroadcastTrigger#init(Map, GlobalWorkspace)
+	 */
 	@Override
 	public void init(Map<String, Object> parameters, GlobalWorkspace gw) {
 		this.gw = gw;

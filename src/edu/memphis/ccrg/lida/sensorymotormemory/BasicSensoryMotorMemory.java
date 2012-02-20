@@ -20,6 +20,7 @@ import edu.memphis.ccrg.lida.environment.Environment;
 import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
+import edu.memphis.ccrg.lida.framework.initialization.Initializable;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.TaskStatus;
@@ -38,7 +39,7 @@ public class BasicSensoryMotorMemory extends FrameworkModuleImpl implements
 			.getLogger(BasicSensoryMotorMemory.class.getCanonicalName());
 
 	private static final int DEFAULT_BACKGROUND_TASK_TICKS = 1;
-	private int backgroundTaskTicks;
+	private int processActionTaskTicks;
 	private List<SensoryMotorMemoryListener> listeners = new ArrayList<SensoryMotorMemoryListener>();
 	private Map<Number, Object> actionAlgorithmMap = new HashMap<Number, Object>();
 	private Environment environment;
@@ -52,13 +53,13 @@ public class BasicSensoryMotorMemory extends FrameworkModuleImpl implements
 	/**
      * Will set parameters with the following names:<br/><br/>
      * 
-     * smm.backgroundTaskTicks<br/>
+     * <b>smm.processActionTaskTicks</b> delay (in ticks) on the processing of an Action receive from ActionSelection<br/>
      * 
-     * @see edu.memphis.ccrg.lida.framework.FrameworkModuleImpl#init()
+     * @see Initializable
      */
 	@Override
 	public void init() {
-		backgroundTaskTicks = (Integer)getParam("smm.backgroundTaskTicks", DEFAULT_BACKGROUND_TASK_TICKS);
+		processActionTaskTicks = (Integer)getParam("smm.processActionTaskTicks", DEFAULT_BACKGROUND_TASK_TICKS);
 	}
 	
 	@Override
@@ -107,7 +108,7 @@ public class BasicSensoryMotorMemory extends FrameworkModuleImpl implements
 	private class ProcessActionTask extends FrameworkTaskImpl {
 		private Action action;
 		public ProcessActionTask(Action a) {
-			super(backgroundTaskTicks);
+			super(processActionTaskTicks);
 			action = a;
 		}
 		@Override
@@ -116,7 +117,7 @@ public class BasicSensoryMotorMemory extends FrameworkModuleImpl implements
 			if(alg != null){
 				sendActuatorCommand(alg);
 			}else{
-				logger.log(Level.WARNING, "could not find algorithm for action {1}",
+				logger.log(Level.WARNING, "Could not find algorithm for action {1}",
 						new Object[]{TaskManager.getCurrentTick(),action});
 			}
 			setTaskStatus(TaskStatus.FINISHED);

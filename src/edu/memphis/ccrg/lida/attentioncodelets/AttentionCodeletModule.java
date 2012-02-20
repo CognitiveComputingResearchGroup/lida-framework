@@ -61,10 +61,10 @@ public class AttentionCodeletModule extends FrameworkModuleImpl implements
 	/**
      * Will set parameters with the following names:<br/><br/>
      * 
-     * <b>attentionModule.defaultCodeletType</b><br/>
-     * <b>attentionModule.codeletActivation</b><br/>
-     * <b>attentionModule.codeletRemovalThreshold</b><br/>
-     * <b>attentionModule.codeletReinforcement</b><br/>
+     * <b>attentionModule.defaultCodeletType</b> type of attention codelets obtained from this module<br/>
+     * <b>attentionModule.codeletActivation</b> initial activation of codelets obtained from this module<br/>
+     * <b>attentionModule.codeletRemovalThreshold</b> initial removal threshold for codelets obtained from this module<br/>
+     * <b>attentionModule.codeletReinforcement</b> amount of reinforcement codelets' base-level activation receives during learning<br/>
      */
 	@Override
 	public void init() {
@@ -149,7 +149,6 @@ public class AttentionCodeletModule extends FrameworkModuleImpl implements
 		// "deleted"
 	}
 	
-	//TODO Reinforcement amount might be a function of the broadcast
 	/**
 	 * Performs learning based on the {@link AttentionCodelet} that created the current<br/>
 	 * winning {@link Coalition}
@@ -165,6 +164,7 @@ public class AttentionCodeletModule extends FrameworkModuleImpl implements
 			logger.log(Level.FINER, "Created new codelet: {1}", 
 					new Object[]{TaskManager.getCurrentTick(),newCodelet});
 		}else if (coalitionCodelet != null){
+			//TODO Reinforcement amount might be a function of the broadcast's activation
 			coalitionCodelet.reinforceBaseLevelActivation(codeletReinforcement);
 			logger.log(Level.FINER, "Reinforcing codelet: {1}", 
 					new Object[]{TaskManager.getCurrentTick(),coalitionCodelet});
@@ -183,7 +183,7 @@ public class AttentionCodeletModule extends FrameworkModuleImpl implements
 
 	@Override
 	public void decayModule(long ticks) {
-		//TODO
+		//TODO not yet implemented
 	}
 	
 }

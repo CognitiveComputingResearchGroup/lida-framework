@@ -40,4 +40,10 @@ public interface ActionSelection extends FrameworkModule {
 	 * @return winning Behavior or null if none was chosen
 	 */
 	public Behavior selectBehavior(Collection<Behavior> behaviors, double candidateThreshold);
+	
+	/**
+	 * Returns a view of the behaviors currently in {@link ActionSelection}
+	 * @return a {@link Collection} of {@link Behavior} objects
+	 */
+	public Collection<Behavior> getBehaviors();
 }

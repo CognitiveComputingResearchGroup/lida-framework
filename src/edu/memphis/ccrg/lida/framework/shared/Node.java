@@ -10,8 +10,6 @@
  */
 package edu.memphis.ccrg.lida.framework.shared;
 
-import java.io.Serializable;
-
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Condition;
 import edu.memphis.ccrg.lida.pam.PamNode;
 
@@ -26,7 +24,7 @@ import edu.memphis.ccrg.lida.pam.PamNode;
  * @author Ryan J. McCall
  * 
  */
-public interface Node extends Linkable, Condition, Serializable {
+public interface Node extends Linkable, Condition{
 	
 	/**
 	 * Returns the grounding PamNode.

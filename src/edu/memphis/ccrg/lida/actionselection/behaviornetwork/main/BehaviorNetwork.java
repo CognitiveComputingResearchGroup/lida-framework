@@ -10,6 +10,7 @@ package edu.memphis.ccrg.lida.actionselection.behaviornetwork.main;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -590,6 +591,15 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements
 		// }
 		logger.log(Level.FINEST, "Behavior {1} was removed from BehaviorNet.",
 				new Object[] { TaskManager.getCurrentTick(), b });
+	}
+
+	@Override
+	public Collection<Behavior> getBehaviors() {
+		Collection<Behavior> aux = behaviors.values();
+		if(aux == null){
+			return null;
+		}
+		return Collections.unmodifiableCollection(aux);
 	}
 
 	// /*

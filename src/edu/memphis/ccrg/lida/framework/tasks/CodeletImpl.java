@@ -22,12 +22,6 @@ public abstract class CodeletImpl extends FrameworkTaskImpl implements Codelet {
 	 */
 	protected NodeStructure soughtContent = new NodeStructureImpl();
 	
-	/**
-	 * Default constructor
-	 */
-	public CodeletImpl() {
-	}
-
 	@Override
 	public NodeStructure getSoughtContent() {
 		return soughtContent;

@@ -9,6 +9,7 @@ package edu.memphis.ccrg.lida.sensorymemory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -21,9 +22,9 @@ import edu.memphis.ccrg.lida.pam.tasks.DetectionAlgorithm;
 import edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorMemory;
 
 /**
- * Default implementation of the {@link SensoryMemory} module. This module should
+ * Default <i> abstract </i> (i.e. must be overridden to be used) implementation of the {@link SensoryMemory} module. This module should
  * sense the environment, store the sensed data and processing it. It should expect access 
- * to its content from {@link DetectionAlgorithm}s and it should transmit content to
+ * to its content from {@link DetectionAlgorithm}s via method {@link SensoryMemory#getSensoryContent(String, Map)} and it may transmit content to
  * {@link SensoryMotorMemory}.
  * @author Ryan J. McCall
  */
@@ -32,13 +33,13 @@ public abstract class SensoryMemoryImpl extends FrameworkModuleImpl implements S
 	private static Logger logger = Logger.getLogger(SensoryMemoryImpl.class.getCanonicalName());
 	
     /**
-     * The listeners associated with this memory.
+     * The {@link SensoryMemoryListener} references associated with this module.
      */
     protected List<SensoryMemoryListener> sensoryMemoryListeners
             = new ArrayList<SensoryMemoryListener>();
     
     /**
-     * The environment associated with this memory.
+     * The {@link Environment} associated with this module.
      */
     protected Environment environment;
 
@@ -46,30 +47,50 @@ public abstract class SensoryMemoryImpl extends FrameworkModuleImpl implements S
      * Default Constructor.
      */
     public SensoryMemoryImpl() {
+    	super();
     }
 
     @Override
-    public void addListener(ModuleListener listener) {
-        if (listener instanceof SensoryMemoryListener) {
-            addSensoryMemoryListener((SensoryMemoryListener) listener);
+    public void addListener(ModuleListener l) {
+        if (l instanceof SensoryMemoryListener) {
+            addSensoryMemoryListener((SensoryMemoryListener) l);
         }else{
         	logger.log(Level.WARNING, "Cannot add listener {1}",
-					new Object[]{TaskManager.getCurrentTick(),listener});
+					new Object[]{TaskManager.getCurrentTick(),l});
         }
     }
+    
     @Override
     public void addSensoryMemoryListener(SensoryMemoryListener l) {
         sensoryMemoryListeners.add(l);
     }
 
     @Override
-    public void setAssociatedModule(FrameworkModule module, String moduleUsage) {
-        if (module instanceof Environment){
-             environment = (Environment) module;
+    public void setAssociatedModule(FrameworkModule m, String usage) {
+        if (m instanceof Environment){
+             environment = (Environment) m;
         }else{
         	logger.log(Level.WARNING, "Cannot add module {1}",
-					new Object[]{TaskManager.getCurrentTick(),module});
+					new Object[]{TaskManager.getCurrentTick(),m});
         }
     }
+
+    /* 
+     * Override with your implementation.
+     */
+	@Override
+	public abstract void runSensors();
+	
+    /* 
+     * Override with your implementation.
+     */
+    @Override
+	public abstract Object getSensoryContent(String modality, Map<String, Object> params);
+
+	/* 
+     * Override with your implementation.
+     */
+	@Override
+	public abstract void decayModule(long ticks);
     
 }

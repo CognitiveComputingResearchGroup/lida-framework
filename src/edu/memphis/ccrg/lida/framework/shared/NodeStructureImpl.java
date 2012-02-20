@@ -7,7 +7,6 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.framework.shared;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -33,13 +32,12 @@ import edu.memphis.ccrg.lida.workspace.WorkspaceContent;
  * are copied when added. This prevents having the same node (object) in two
  * different NS.
  * 
- * @see ExtendedId
  * @author Javier Snaider
  * @author Ryan J. McCall
- * 
+ * @see ExtendedId
  */
 public class NodeStructureImpl implements NodeStructure, BroadcastContent,
-		WorkspaceContent, Serializable {
+		WorkspaceContent{
 
 	private static final Logger logger = Logger
 			.getLogger(NodeStructureImpl.class.getCanonicalName());
@@ -124,79 +122,193 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 		this(original.getDefaultNodeType(), original.getDefaultLinkType());
 		internalMerge(original);
 	}
-
+	
 	@Override
-	public NodeStructure copy() {
-		return new NodeStructureImpl(this);
-	}
-
-	@Override
-	public synchronized Link addDefaultLink(Link l) {
-		if (l == null) {
-			logger.log(Level.WARNING, "Cannot add null.", TaskManager
+	public Node addDefaultNode(Node n) {
+		if (n == null) {
+			logger.log(Level.WARNING, "Cannot add null", TaskManager
 					.getCurrentTick());
 			return null;
 		}
 
-		double newActiv = l.getActivation();
-		Link oldLink = links.get(l.getExtendedId());
-		if (oldLink != null) { 
-			// if the link already exists in this node structure
-			// no check
-			if (oldLink.getActivation() < newActiv) {
-				oldLink.setActivation(newActiv);
-			}
-			return oldLink;
+		return addNode(n, defaultNodeType);
+	}
+
+	@Override
+	public Collection<Node> addDefaultNodes(Collection<Node> nodes) {
+		if (nodes == null) {
+			logger.log(Level.WARNING,
+					"Cannot add nodes. Node collection is null", TaskManager
+							.getCurrentTick());
+			return null;
 		}
-		Node source = l.getSource();
-		Linkable sink = l.getSink();
+		Collection<Node> storedNodes = new ArrayList<Node>();
+		for (Node n : nodes) {
+			if(n == null){
+				continue;
+			}
+			Node stored = addNode(n, defaultNodeType);
+			storedNodes.add(stored);
+		}
+		return storedNodes;
+	}
 
-		Node newSource = null;
-		Linkable newSink = null;
-
-		// If link's source is a node, but that node in not in this
-		// NodeStructure, return null
-		newSource = nodes.get(source.getId());
-		if (newSource == null) {
-			logger
-					.log(
-							Level.FINER,
-							"Source: "
-									+ source
-									+ " is not present in this NodeStructure, Link will not be added.",
-							TaskManager.getCurrentTick());
+	@Override
+	public synchronized Node addNode(Node n, String nodeType) {
+		if (n == null) {
+			logger.log(Level.WARNING, "Cannot add null", TaskManager
+					.getCurrentTick());
+			return null;
+		}
+		if (!factory.containsNodeType(nodeType)) {
+			logger.log(Level.WARNING,
+							"Factory does not contain node type {1}. Check that type is defined in factoryData.xml. Node {2} not added",
+							new Object[]{TaskManager.getCurrentTick(),nodeType,n});
 			return null;
 		}
 
+		Node node = nodes.get(n.getId());
+		if (node == null) {
+			node = getNewNode(n, nodeType);
+			if (node != null) {
+				nodes.put(node.getId(), node);
+				linkableMap.put(node, new HashSet<Link>());
+			} else {
+				logger.log(Level.WARNING, "Could not create new node of type: {1} ",
+						new Object[]{TaskManager.getCurrentTick(),nodeType});
+			}
+		} else {
+			double newActivation = n.getActivation();
+			if (node.getActivation() < newActivation) {
+				node.setActivation(newActivation);
+				node.updateNodeValues(node);
+			}
+		}
+		return node;
+	}
+
+	/**
+	 * If copy is false, this method adds a already generated {@link Node}
+	 *  to this NodeStructure without copying it.
+	 * If copy is true, {@link NodeStructure#addDefaultNode(Node)} is used.
+	 * If a Node with the same id is already in this NodeStructure, the new
+	 * Node is not added.
+	 * 
+	 * This method is intended for internal use only. 
+	 * @param n the Node to add
+	 * @param shouldCopy determines if the node is copied or not.
+	 * @return The Node stored in this NodeStructure
+	 */
+	protected Node addNode(Node n, boolean shouldCopy){
+		if(shouldCopy){
+			return addDefaultNode(n);
+		}else if (n == null){
+			logger.log(Level.WARNING, "Cannot add null", TaskManager
+					.getCurrentTick());
+			return null;
+		}else{
+			Node node = nodes.get(n.getId());
+			if (node == null) {
+					node=n;
+					nodes.put(node.getId(), node);
+					linkableMap.put(node, new HashSet<Link>());
+			} else {
+				logger.log(Level.FINE,
+						"Cannot add node, it is already in this NodeStructure.", TaskManager
+								.getCurrentTick());				
+			}
+			return node;
+		}
+	}
+
+	/**
+	 * This method can be overwritten to customize the Node Creation.
+	 * 
+	 * @param oNode The original Node
+	 * @param desiredType the {@link ElementFactory} name of the desired node type
+	 * @return The Node to be used in this NodeStructure
+	 */
+	protected Node getNewNode(Node oNode, String desiredType) {
+		return factory.getNode(defaultNodeType, oNode, desiredType);
+	}
+	
+	@Override
+	public synchronized Link addDefaultLink(Link l) {
+		if(!canAddLink(l)){
+			return null;
+		}
+
+		double newActivation = l.getActivation();
+		Link existingLink = links.get(l.getExtendedId());
+		if (existingLink != null) { 
+			if (existingLink.getActivation() < newActivation) {
+				existingLink.setActivation(newActivation);
+			}
+			return existingLink;
+		}
+		Node source = l.getSource();
+		Node newSource = nodes.get(source.getId());
+		Linkable sink = l.getSink();
+		Linkable newSink = null;
 		if (sink instanceof Node) {
 			Node snode = (Node) sink;
 			newSink = nodes.get(snode.getId());
-			if (newSink == null) {
-				logger
-						.log(
-								Level.FINER,
-								"Sink: "
-										+ sink
-										+ " is not present in this NodeStructure, Link will not be added.",
-								TaskManager.getCurrentTick());
-				return null;
-			}
 		} else {
 			newSink = links.get(sink.getExtendedId());
-			if (newSink == null) {
-				logger
-						.log(
-								Level.FINER,
-								"Sink: "
-										+ sink
-										+ " is not present in this NodeStructure, Link will not be added.",
-								TaskManager.getCurrentTick());
-				return null;
+		}
+		return generateNewLink(l, defaultLinkType, 
+							 newSource, newSink, l.getCategory(), 
+							 newActivation, l.getActivatibleRemovalThreshold(), 
+							 l.getGroundingPamLink());
+	}
+
+	@Override
+	public Collection<Link> addDefaultLinks(Collection<Link> links) {
+		if (links == null) {
+			logger.log(Level.WARNING,
+					"Cannot add links. Link collection is null", TaskManager
+							.getCurrentTick());
+			return null;
+		}
+		Collection<Link> storedLinks = new ArrayList<Link>();
+		// Add simple links
+		for (Link l : links) {
+			if(l == null){
+				continue;
+			}
+			if (l.isSimpleLink()) {
+				Link addedLink = addDefaultLink(l);
+				if(addedLink != null){
+					storedLinks.add(addedLink);
+				}
 			}
 		}
-		return generateNewLink(l, defaultLinkType, newSource, newSink, l
-				.getCategory(), newActiv, l.getActivatibleRemovalThreshold(), l
-				.getGroundingPamLink());
+		// Add complex links
+		for (Link l : links) {
+			if(l == null){
+				continue;
+			}
+			if (l.isSimpleLink() == false) {
+				Link addedLink = addDefaultLink(l);
+				if(addedLink != null){
+					storedLinks.add(addedLink);
+				}
+			}
+		}
+		return storedLinks;
+	}
+
+	@Override
+	public synchronized Link addDefaultLink(Node source, Linkable sink,
+			LinkCategory category, double activation, double removalThreshold) {
+		if (source == null || sink == null) {
+			logger.log(Level.WARNING,
+					"Source or sink is not present.  Cannot add link.", TaskManager
+							.getCurrentTick());
+		}
+
+		return addDefaultLink(source.getId(), sink.getExtendedId(), category,
+				activation, removalThreshold);
 	}
 
 	@Override
@@ -264,30 +376,88 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	}
 
 	@Override
-	public synchronized Link addDefaultLink(Node source, Linkable sink,
-			LinkCategory category, double activation, double removalThreshold) {
-		if (source == null || sink == null) {
+	public synchronized Link addLink(Link l, String linkType) {
+		if (!factory.containsLinkType(linkType)) {
 			logger.log(Level.WARNING,
-					"Source or sink is not present.  Cannot add link.", TaskManager
-							.getCurrentTick());
+							"Cannot add link {1} of type {2} because factory does not contain that Link type. Check that type is defined in factoryData xml file.",
+							new Object[]{TaskManager.getCurrentTick(),l,linkType});
+			return null;
 		}
-
-		return addDefaultLink(source.getId(), sink.getExtendedId(), category,
-				activation, removalThreshold);
+		if (!canAddLink(l)) {
+			return null;
+		}
+		Link link = links.get(l.getExtendedId());
+		if (link == null) {
+			//FIXME change to generateNewLink and merge with addDefaultLink(Link);
+			link = getNewLink(l, linkType, l.getSource(), l.getSink(), l
+					.getCategory());
+			if (link != null) {
+				links.put(link.getExtendedId(), link);
+				linkableMap.put(link, new HashSet<Link>());
+			} else {
+				logger.log(Level.WARNING, "Could not create new link of type: {1} ",
+						new Object[]{TaskManager.getCurrentTick(),linkType});
+			}
+		} else {
+			if(l.getActivation() > link.getActivation()){
+				link.setActivation(l.getActivation());
+			}
+			link.updateLinkValues(l);
+		}
+		return link;
+	}
+	
+	private boolean canAddLink(Link l){
+		if (l == null) {
+			logger.log(Level.WARNING, "Cannot add null", TaskManager
+					.getCurrentTick());
+			return false;
+		}
+		Node src = l.getSource();
+		Linkable sink = l.getSink();
+		if(src == null){
+			logger.log(Level.WARNING,
+					"Cannot add Link, its source is null.",
+					TaskManager.getCurrentTick());
+			return false;
+		}
+		if(sink == null){
+			logger.log(Level.WARNING,
+					"Cannot add Link, its sink is null.",
+					TaskManager.getCurrentTick());
+			return false;
+		}
+		if (!containsNode(src)) {
+			logger.log(Level.WARNING,
+					"Cannot add Link because its source is not present in this NodeStructure",
+					TaskManager.getCurrentTick());
+			return false;
+		}
+		if (!containsLinkable(sink)) {
+			logger.log(Level.WARNING,
+					"Cannot add Link because its sink is not present in this NodeStructure",
+					TaskManager.getCurrentTick());
+			return false;
+		}
+		ExtendedId srcId = src.getExtendedId();
+		ExtendedId sinkId = sink.getExtendedId();
+		if(sinkId.isComplexLink()){
+			logger.log(Level.WARNING,
+					"Cannot add Link because its sink is a complex Link, sinks must be a Node or simple Link.",
+					TaskManager.getCurrentTick());
+			return false;
+		}
+		if (srcId.equals(sinkId)) {
+			logger.log(Level.WARNING,
+					"Cannot add Link with the same source and sink.",
+					TaskManager.getCurrentTick());
+			return false;
+		}
+		return true;
 	}
 
 	/*
 	 * Generates a new Link with specified type and values.
-	 * 
-	 * @param newSource
-	 * 
-	 * @param newSink
-	 * 
-	 * @param type
-	 * 
-	 * @param activation
-	 * 
-	 * @param removalThreshold
 	 */
 	private Link generateNewLink(Link link, String linkType, Node newSource,
 			Linkable newSink, LinkCategory category, double activation,
@@ -316,220 +486,8 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 			linkableMap.put(newSink, tempLinks);
 		}
 		tempLinks.add(newLink);
-
-		return newLink;
-	}
-
-	@Override
-	public Collection<Link> addDefaultLinks(Collection<Link> links) {
-		if (links == null) {
-			logger.log(Level.WARNING,
-					"Cannot add links. Link collection is null", TaskManager
-							.getCurrentTick());
-			return null;
-		}
-
-		Collection<Link> copiedLinks = new ArrayList<Link>();
-		// Add simple links
-		for (Link l : links) {
-			if(l == null){
-				continue;
-			}
-			
-			if (l.isSimpleLink()) {
-				Link addedLink = addDefaultLink(l);
-				if(addedLink != null){
-					copiedLinks.add(addedLink);
-				}
-			}
-		}
-
-		// Add complex links
-		for (Link l : links) {
-			if(l == null){
-				continue;
-			}
-			
-			if (l.isSimpleLink() == false) {
-				Link addedLink = addDefaultLink(l);
-				if(addedLink != null){
-					copiedLinks.add(addedLink);
-				}
-			}
-		}
-		return copiedLinks;
-	}
-
-	@Override
-	public Node addDefaultNode(Node n) {
-		if (n == null) {
-			logger.log(Level.WARNING, "Cannot add null", TaskManager
-					.getCurrentTick());
-			return null;
-		}
-
-		return addNode(n, defaultNodeType);
-	}
-
-	@Override
-	public synchronized Link addLink(Link l, String linkType) {
-		if (l == null) {
-			logger.log(Level.WARNING, "Cannot add null", TaskManager
-					.getCurrentTick());
-			return null;
-		}
-		if (!factory.containsLinkType(linkType)) {
-			logger
-					.log(
-							Level.WARNING,
-							"Factory does not contain link type: "
-									+ linkType
-									+ " Check that type is defined in factoriesData.xml. Link not added: "
-									+ l, TaskManager.getCurrentTick());
-			return null;
-		}
-		//TODO review
-		int sourceId = l.getSource().getId();
-		ExtendedId sinkId = l.getSink().getExtendedId();
-		if (sinkId.isNodeId() && sourceId == sinkId.getSourceNodeId()) {
-			throw new IllegalArgumentException(
-					"Cannot create a link with the same source and sink.");
-		}
-		if (sinkId.isComplexLink()) {
-			logger.log(Level.WARNING,
-							"Sink cannot be a complex link. Must be a node or simple link.",
-							TaskManager.getCurrentTick());
-			return null;
-		}
-		Node source = getNode(sourceId);
-		Linkable sink = getLinkable(sinkId);
-		if (source == null || sink == null) {
-			logger.log(Level.WARNING,
-					"Source and/or Sink are not present in this NodeStructure",
-					TaskManager.getCurrentTick());
-			return null;
-		}
 		
-		Link link = links.get(l.getExtendedId());
-		if (link == null) {
-			link = getNewLink(l, linkType, l.getSource(), l.getSink(), l
-					.getCategory());
-			if (link != null) {
-				links.put(link.getExtendedId(), link);
-				linkableMap.put(link, new HashSet<Link>());
-			} else {
-				logger.log(Level.WARNING, "Could not create new link of type: {1} ",
-						new Object[]{TaskManager.getCurrentTick(),linkType});
-			}
-		} else {
-			link.updateLinkValues(l);
-		}
-
-		return link;
-	}
-
-	@Override
-	public synchronized Node addNode(Node n, String nodeType) {
-		if (n == null) {
-			logger.log(Level.WARNING, "Cannot add null", TaskManager
-					.getCurrentTick());
-			return null;
-		}
-
-		if (!factory.containsNodeType(nodeType)) {
-			logger
-					.log(
-							Level.WARNING,
-							"Factory does not contain node type: "
-									+ nodeType
-									+ " Check that type is defined in factoriesData.xml. Node not added: "
-									+ n, TaskManager.getCurrentTick());
-			return null;
-		}
-
-		Node node = nodes.get(n.getId());
-		if (node == null) {
-			node = getNewNode(n, nodeType);
-			if (node != null) {
-				nodes.put(node.getId(), node);
-				linkableMap.put(node, new HashSet<Link>());
-			} else {
-				logger.log(Level.WARNING, "Could not create new node of type: {1} ",
-						new Object[]{TaskManager.getCurrentTick(),nodeType});
-			}
-		} else {
-			double newActiv = n.getActivation();
-			if (node.getActivation() < newActiv) {
-				node.setActivation(newActiv);
-				node.updateNodeValues(node);
-			}
-		}
-		return node;
-	}
-
-	/**
-	 * If copy is false, this method adds a already generated {@link Node}
-	 *  to this NodeStructure without copying it.
-	 * If copy is true, {@link NodeStructure#addDefaultNode(Node)} is used.
-	 * If a Node with the same id is already in this NodeStructure, the new
-	 * Node is not added.
-	 * 
-	 * This method is intended for internal use only. 
-	 * @param n the Node to add
-	 * @param copy determines if the node is copied or not.
-	 * @return The Node stored in this NodeStructure
-	 */
-	protected Node addNode(Node n, boolean copy){
-		if(copy){
-			return addDefaultNode(n);
-		}else if (n != null){
-			Node node = nodes.get(n.getId());
-			if (node == null) {
-					node=n;
-					nodes.put(node.getId(), node);
-					linkableMap.put(node, new HashSet<Link>());
-			} else {
-				logger.log(Level.FINE,
-						"Cannot add node. It is already in this NodeStructure.", TaskManager
-								.getCurrentTick());				
-			}
-			return node;
-		}else{
-			logger.log(Level.WARNING, "Cannot add null", TaskManager
-					.getCurrentTick());
-			return null;
-		}
-	}
-	
-	@Override
-	public Collection<Node> addDefaultNodes(Collection<Node> nodes) {
-		if (nodes == null) {
-			logger.log(Level.WARNING,
-					"Cannot add nodes. Node collection is null", TaskManager
-							.getCurrentTick());
-			return null;
-		}
-
-		Collection<Node> storedNodes = new ArrayList<Node>();
-		for (Node n : nodes) {
-			if(n == null){
-				continue;
-			}
-			Node stored = addNode(n, defaultNodeType);
-			storedNodes.add(stored);
-		}
-		return storedNodes;
-	}
-
-	/**
-	 * This method can be overwritten to customize the Node Creation.
-	 * 
-	 * @param oNode The original Node
-	 * @param desiredType the {@link ElementFactory} name of the desired node type
-	 * @return The Node to be used in this NodeStructure
-	 */
-	protected Node getNewNode(Node oNode, String desiredType) {
-		return factory.getNode(defaultNodeType, oNode, desiredType);
+		return newLink;
 	}
 
 	/**
@@ -538,22 +496,27 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	 * 
 	 * @param oLink
 	 *            original {@link Link}
-	 * @param newType the {@link ElementFactory} name of the new node type
-	 * @param source
+	 * @param newType the {@link ElementFactory} name of the new {@link Link} type
+	 * @param src
 	 *            The new source
-	 * @param sink
+	 * @param snk
 	 *            The new sink
-	 * @param category
+	 * @param cat
 	 *            the type of the link
 	 * 
 	 * @return The link to be used in this NodeStructure
 	 */
-	protected Link getNewLink(Link oLink, String newType, Node source,
-			Linkable sink, LinkCategory category) {
-		Link newLink = factory.getLink(defaultLinkType, newType, source, sink,
-				category);
+	protected Link getNewLink(Link oLink, String newType, Node src,
+			Linkable snk, LinkCategory cat) {
+		Link newLink = factory.getLink(defaultLinkType, newType, src, snk,
+				cat);
 		newLink.updateLinkValues(oLink);
 		return newLink;
+	}
+
+	@Override
+	public NodeStructure copy() {
+		return new NodeStructureImpl(this);
 	}
 
 	@Override
@@ -590,6 +553,11 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 				addDefaultLink(l);
 			}
 		}
+	}
+	
+	@Override
+	public void removeNode(Node n) {
+		removeLinkable(n);
 	}
 
 	@Override
@@ -650,11 +618,6 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	}
 
 	@Override
-	public void removeNode(Node n) {
-		removeLinkable(n);
-	}
-
-	@Override
 	public synchronized void clearLinks() {
 		for (Link l : links.values()) {
 			removeLink(l);
@@ -681,8 +644,53 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	}
 
 	@Override
+	public Node getNode(int id) {
+		return nodes.get(id);
+	}
+
+	@Override
+	public Node getNode(ExtendedId id) {
+		if (id == null) {
+			return null;
+		}
+		if (id.isNodeId()) {
+			return nodes.get(id.getSourceNodeId());
+		} else {
+			return null;
+		}
+	}
+
+	@Override
+	public Collection<Node> getNodes() {
+		Collection<Node> aux = nodes.values();
+		if (aux == null) {
+			return null;
+		} else {
+			return Collections.unmodifiableCollection(aux);
+		}
+	}
+	
+	@Override
+	public int getNodeCount() {
+		return nodes.size();
+	}
+
+	@Override
 	public Link getLink(ExtendedId ids) {
 		return links.get(ids);
+	}
+
+	@Override
+	public Set<Link> getLinks(LinkCategory category) {
+		Set<Link> result = new ConcurrentHashSet<Link>();
+		if (links != null) {
+			for (Link l : links.values()) {
+				if (l.getCategory() == category) {
+					result.add(l);
+				}
+			}
+		}
+		return Collections.unmodifiableSet(result);
 	}
 
 	@Override
@@ -694,7 +702,38 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 			return Collections.unmodifiableCollection(aux);
 		}
 	}
+	
+	@Override
+	public int getLinkCount() {
+		return links.size();
+	}
 
+	
+	@Override
+	public Linkable getLinkable(ExtendedId ids) {
+		if (ids.isNodeId()) {
+			return getNode(ids);
+		} else {
+			return getLink(ids);
+		}
+	}
+
+	@Override
+	public Collection<Linkable> getLinkables() {
+		return Collections.unmodifiableCollection(linkableMap.keySet());
+	}
+
+	@Override
+	public Map<Linkable, Set<Link>> getLinkableMap() {
+		return Collections.unmodifiableMap(linkableMap);
+	}
+	
+
+	@Override
+	public int getLinkableCount() {
+		return linkableMap.size();
+	}
+	
 	@Override
 	public Set<Link> getAttachedLinks(Linkable linkable) {
 		if (linkable == null) {
@@ -728,89 +767,20 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	}
 
 	@Override
-	public Collection<Node> getNodes() {
-		Collection<Node> aux = nodes.values();
-		if (aux == null) {
-			return null;
-		} else {
-			return Collections.unmodifiableCollection(aux);
-		}
-	}
-
-	@Override
-	public Map<Linkable, Set<Link>> getLinkableMap() {
-		return Collections.unmodifiableMap(linkableMap);
-	}
-
-	@Override
-	public Node getNode(int id) {
-		return nodes.get(id);
-	}
-
-	@Override
-	public Node getNode(ExtendedId id) {
-		if (id == null) {
-			return null;
-		}
-		if (id.isNodeId()) {
-			return nodes.get(id.getSourceNodeId());
-		} else {
-			return null;
-		}
-	}
-
-	@Override
-	public int getLinkCount() {
-		return links.size();
-	}
-
-	@Override
-	public int getNodeCount() {
-		return nodes.size();
-	}
-
-	@Override
-	public int getLinkableCount() {
-		return linkableMap.size();
-	}
-
-	@Override
-	public Set<Link> getLinks(LinkCategory category) {
-		Set<Link> result = new ConcurrentHashSet<Link>();
-		if (links != null) {
-			for (Link l : links.values()) {
-				if (l.getCategory() == category) {
-					result.add(l);
+	public Map<Node, Link> getConnectedSources(Linkable linkable) {
+		Map<Node, Link> sourceLinkMap = new HashMap<Node, Link>();
+		Set<Link> candidateLinks = linkableMap.get(linkable);
+		if (candidateLinks != null) {
+			for (Link link : candidateLinks) {
+				Node source = link.getSource();
+				if (!source.equals(linkable)) {
+					sourceLinkMap.put(source, link);
 				}
 			}
 		}
-		return Collections.unmodifiableSet(result);
+		return Collections.unmodifiableMap(sourceLinkMap);
 	}
-
-	@Override
-	public Linkable getLinkable(ExtendedId ids) {
-		if (ids.isNodeId()) {
-			return getNode(ids);
-		} else {
-			return getLink(ids);
-		}
-	}
-
-	@Override
-	public String getDefaultLinkType() {
-		return defaultLinkType;
-	}
-
-	@Override
-	public String getDefaultNodeType() {
-		return defaultNodeType;
-	}
-
-	@Override
-	public Collection<Linkable> getLinkables() {
-		return Collections.unmodifiableCollection(linkableMap.keySet());
-	}
-
+	
 	@Override
 	public Map<Linkable, Link> getConnectedSinks(Node n) {
 		Map<Linkable, Link> sinkLinkMap = new HashMap<Linkable, Link>();
@@ -825,20 +795,30 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 		}
 		return Collections.unmodifiableMap(sinkLinkMap);
 	}
+	
+	@Override
+	public String getDefaultLinkType() {
+		return defaultLinkType;
+	}
 
 	@Override
-	public Map<Node, Link> getConnectedSources(Linkable linkable) {
-		Map<Node, Link> sourceLinkMap = new HashMap<Node, Link>();
-		Set<Link> candidateLinks = linkableMap.get(linkable);
-		if (candidateLinks != null) {
-			for (Link link : candidateLinks) {
-				Node source = link.getSource();
-				if (!source.equals(linkable)) {
-					sourceLinkMap.put(source, link);
-				}
-			}
-		}
-		return Collections.unmodifiableMap(sourceLinkMap);
+	public String getDefaultNodeType() {
+		return defaultNodeType;
+	}
+	
+	@Override
+	public boolean containsNode(Node n) {
+		return nodes.containsKey(n.getId());
+	}
+
+	@Override
+	public boolean containsNode(int id) {
+		return nodes.containsKey(id);
+	}
+
+	@Override
+	public boolean containsNode(ExtendedId id) {
+		return id.isNodeId() && nodes.containsKey(id.getSourceNodeId());
 	}
 
 	@Override
@@ -859,21 +839,6 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	@Override
 	public boolean containsLinkable(ExtendedId id) {
 		return (containsNode(id) || containsLink(id));
-	}
-
-	@Override
-	public boolean containsNode(int id) {
-		return nodes.containsKey(id);
-	}
-
-	@Override
-	public boolean containsNode(ExtendedId id) {
-		return id.isNodeId() && nodes.containsKey(id.getSourceNodeId());
-	}
-
-	@Override
-	public boolean containsNode(Node n) {
-		return nodes.containsKey(n.getId());
 	}
 
 	@Override

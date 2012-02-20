@@ -9,6 +9,8 @@ package edu.memphis.ccrg.lida.framework.strategies;
 
 import java.util.Map;
 
+import edu.memphis.ccrg.lida.framework.initialization.Initializable;
+
 /**
  * Default implementation of sigmoid excite.  Uses two parameters in activation calculation.
  * Can pass these parameters when the strategy is initialized. (see factoriesData.xml).
@@ -17,7 +19,6 @@ import java.util.Map;
  * 
  * @author Ryan J. McCall
  * @author Javier Snaider
- *
  */
 public class SigmoidExciteStrategy extends StrategyImpl implements ExciteStrategy {
 
@@ -29,16 +30,25 @@ public class SigmoidExciteStrategy extends StrategyImpl implements ExciteStrateg
 	
 	private static final double epsilon = 1e-10;
 	
+	/**
+	 * If this method is overridden, this init() must be called first! i.e. super.init();
+	 * Will set parameters with the following names:<br/><br/>
+     * 
+     * <b>a</b> slope component of the decay function's linear scaling, 1 / (1 + exp(-a* x + c))<br/>
+     * <b>c</b> intercept component of the decay function's linear scaling, 1 / (1 + exp(-a* x + c))<br/>
+     * If any parameter is not specified its default value will be used.
+     * 
+     * @see Initializable
+	 */
 	@Override
 	public void init() {
 		a = (Double) getParam("a", DEFAULT_A);
 		c = (Double) getParam("c", DEFAULT_C);
 	}
 
-	
 	/**
      * Excites the current activation according to some internal excite function.
-     * @param currentActivation activation of the entity before excite.
+     * @param curActiv activation of the entity before excite.
      * @param excitation amount of activation to adds
      * @param params optionally accepts 2 double parameters of sigmoid activation calculation.
      * @return new activation amount
@@ -54,7 +64,6 @@ public class SigmoidExciteStrategy extends StrategyImpl implements ExciteStrateg
 		}
 		return calcExcitation(curActiv, excitation, aa, cc);
 	}
-	
 	
 	/**
 	 * Excites the current activation according to some internal excite function.

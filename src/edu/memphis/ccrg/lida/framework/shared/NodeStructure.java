@@ -109,7 +109,9 @@ public interface NodeStructure {
 	public Collection<Node> addDefaultNodes(Collection<Node> nodes);
 
 	/**
-	 * Add a Node of a specified type to this NodeStructure
+	 * Add a Node of a specified type to this NodeStructure.<br/>
+	 * If a Node with the same id already exists in the NodeStructure the existing Node will
+	 * have its activation updated. In this case the Node's type doesn't change.
 	 * @param n Node
 	 * @param type name of node's type in {@link ElementFactory}
 	 * @return copy of node actually added.
