@@ -297,7 +297,7 @@ public class AgentXmlFactory implements AgentFactory {
 		FrameworkModule module = null;
 		String className = XmlUtils.getTextValue(moduleElement, "class");
 		String name = moduleElement.getAttribute("name").trim();
-		ModuleName moduleName = ModuleName.NoModule;
+		ModuleName moduleName = ModuleName.UnnamedModule;
 		try {
 			moduleName = ModuleName.addModuleName(name);
 		} catch (Exception e) {

@@ -39,7 +39,7 @@ public abstract class FrameworkModuleImpl extends InitializableImpl implements F
 	 * Default constructor
 	 */
 	public FrameworkModuleImpl() {
-		moduleName = ModuleName.NoModule;
+		moduleName = ModuleName.UnnamedModule;
 	}
 	
 	/**

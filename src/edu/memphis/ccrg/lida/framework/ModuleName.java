@@ -102,7 +102,6 @@ public class ModuleName {
 			"ActionSelection");
 	public final static ModuleName SensoryMotorMemory = new ModuleName(
 			"SensoryMotorMemory");
-
-	public final static ModuleName NoModule = new ModuleName("NoModule");
 	public final static ModuleName Agent = new ModuleName("Agent");
+	public final static ModuleName UnnamedModule = new ModuleName("UnnamedModule");
 }
