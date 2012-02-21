@@ -69,29 +69,10 @@ public class SubNodeStructureImpl extends NodeStructureImpl {
 		NodeStructure subNodeStructure = new NodeStructureImpl();
 		for (Node n : nodes) {
 			//Add nodes to the sub node structure and scan from each node
-			depthFirstSearch(n, 0, distance, subNodeStructure);
+			depthFirstSearch(n, distance, subNodeStructure);
 		}
 		//	Add Links to the sub node structure
 		for (Node subNodes : subNodeStructure.getNodes()) {
-
-				/*
-				 *  Add links for connected Sinks
-				 */
-				Map<Linkable, Link> sinks = getConnectedSinks(subNodes);
-
-				Set<Linkable> connectedSinks = sinks.keySet();
-				
-				for (Linkable linkable : connectedSinks) {
-					/*
-					 * Not checking complex Links, only consider nodes
-					 * linked to the given node
-					 */
-					if (linkable instanceof Node) {
-						if (subNodeStructure.containsLinkable(linkable)) {
-							subNodeStructure.addDefaultLink(sinks.get(linkable));
-						}
-					}
-				}
 				
 				/* 
 				 * Add links for connected Sources
@@ -142,7 +123,7 @@ public class SubNodeStructureImpl extends NodeStructureImpl {
 	 * coming from arguments. Also it involves all links between these 
 	 * above nodes.
 	 */
-	private void depthFirstSearch(Node currentNode, int step, int distance, NodeStructure subNodeStructure) {
+	private void depthFirstSearch(Node currentNode, int distanceLeftToGo, NodeStructure subNodeStructure) {
 		if (containsNode(currentNode)){
 			subNodeStructure.addDefaultNode(currentNode);
 		}else{
@@ -156,8 +137,8 @@ public class SubNodeStructureImpl extends NodeStructureImpl {
 		Set<Linkable> subLinkables = subSinks.keySet();
 		for (Linkable l : subLinkables) {
 			if (l instanceof Node) {
-				if (step < distance){
-					depthFirstSearch((Node) l, step + 1, distance, subNodeStructure);
+				if (0 < distanceLeftToGo){
+					depthFirstSearch((Node) l, distanceLeftToGo - 1, subNodeStructure);
 				}
 			}
 		}
@@ -168,8 +149,8 @@ public class SubNodeStructureImpl extends NodeStructureImpl {
 		Map<Node, Link> subSources = getConnectedSources(currentNode);
 		Set<Node> parentNodes = subSources.keySet();
 		for (Node n : parentNodes) {
-			if (step < distance){
-				depthFirstSearch(n, step + 1, distance, subNodeStructure);
+			if (0 < distanceLeftToGo){
+				depthFirstSearch(n, distanceLeftToGo - 1, subNodeStructure);
 			}
 		}
 	}
