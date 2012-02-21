@@ -49,7 +49,7 @@ public abstract class AttentionCodeletImpl extends CodeletImpl implements
 	 * Will set parameters with the following names:<br/><br/>
      * 
      * <b>refractoryPeriod</b> period in ticks that will pass after this codelet creates a coaltion before it can create another<br/> 
-     * <b>baseLevelActivation</b> initial base-level activation<br/> <br/> 
+     * <br/> 
      * 
      * If any parameter is not specified its default value will be used.
      * @see LearnableImpl#init()

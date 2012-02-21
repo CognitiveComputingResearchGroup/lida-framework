@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.initialization.GlobalInitializer;
+import edu.memphis.ccrg.lida.framework.initialization.Initializable;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.pam.PamLinkable;
@@ -67,6 +68,13 @@ public abstract class MultipleDetectionAlgorithm extends FrameworkTaskImpl imple
 		}
 	}
 	
+	/**
+	 * This task can be initialized with the following parameters:<br><br/>
+	 * 
+	 * <b>nodes type=string</b>labels of the Nodes in {@link PerceptualAssociativeMemory} this algorithm detects<br/>
+	 * 
+	 * @see Initializable
+	 */
 	@Override
 	public void init (){
 		super.init();

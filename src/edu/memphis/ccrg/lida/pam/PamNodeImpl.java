@@ -57,7 +57,8 @@ public class PamNodeImpl extends NodeImpl implements PamNode {
     }
 
     /** 
-     * Calls the {@link #init()} of the internal {@link Learnable}
+     * Calls the {@link #init()} of the internal {@link Learnable}.
+     * @see LearnableImpl#init()
      */
     @Override
     public void init() {

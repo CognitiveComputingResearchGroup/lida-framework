@@ -19,6 +19,7 @@ import java.util.logging.Logger;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
+import edu.memphis.ccrg.lida.framework.initialization.Initializable;
 import edu.memphis.ccrg.lida.framework.shared.ConcurrentHashSet;
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
@@ -76,6 +77,7 @@ public class BasicActionSelection extends FrameworkModuleImpl implements
      * <b>actionSelection.behaviorDecayStrategy</b> decay strategy of behaviors in this module<br/>
      * <b>actionSelection.thresholdDecayRate</b> decay rate of candidate threshold<br/><br/>
      * If any parameter is not specified its default value will be used.
+     * @see Initializable
 	 */
 	@Override
 	public void init() {

@@ -11,9 +11,9 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
-import java.util.logging.Logger;
 
 /**
  * Finds and returns a sub NodeStructure that contains all Nodes

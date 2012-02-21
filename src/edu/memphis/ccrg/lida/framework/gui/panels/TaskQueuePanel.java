@@ -25,11 +25,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableColumnModel;
+import javax.swing.table.TableColumn;
 
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTask;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
-import javax.swing.table.DefaultTableColumnModel;
-import javax.swing.table.TableColumn;
 
 /**
  * A {@link GuiPanel} which displays the current queue of tasks scheduled for execution in 

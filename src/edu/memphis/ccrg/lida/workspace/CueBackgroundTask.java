@@ -13,8 +13,10 @@ package edu.memphis.ccrg.lida.workspace;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import edu.memphis.ccrg.lida.episodicmemory.EpisodicMemory;
 import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.ModuleName;
+import edu.memphis.ccrg.lida.framework.initialization.Initializable;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
@@ -32,18 +34,25 @@ import edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBuffer;
  */
 public class CueBackgroundTask extends FrameworkTaskImpl {
 
-	private static final double DEFAULT_ACT_THRESHOLD = 0.4;
-	private double actThreshold = DEFAULT_ACT_THRESHOLD;
+	private static final double DEFAULT_CUEING_THRESHOLD = 0.4;
+	private double actThreshold = DEFAULT_CUEING_THRESHOLD;
 	private Workspace workspace;
 	
 	private static final Logger logger = Logger
 			.getLogger(CueBackgroundTask.class.getCanonicalName());
 
+	/**
+	 * Will set parameters with the following names:<br/><br/>
+	 * 
+	 * <b>workspace.cueingThreshold type=double</b> the amount of activation {@link WorkspaceContent} must have to cue {@link EpisodicMemory}<br/>
+	 * 
+	 * @see Initializable
+	 */
 	@Override
 	public void init() {
 		super.init();
-		actThreshold = (Double) getParam("workspace.actThreshold",
-				DEFAULT_ACT_THRESHOLD);
+		actThreshold = (Double) getParam("workspace.cueingThreshold",
+				DEFAULT_CUEING_THRESHOLD);
 	}
 
 	@Override

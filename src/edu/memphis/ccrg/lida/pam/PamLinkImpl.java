@@ -55,6 +55,7 @@ public class PamLinkImpl extends LinkImpl implements PamLink {
 
 	/** 
 	 * Calls the {@link #init()} of the internal {@link Learnable}
+	 * @see LearnableImpl#init()
 	 */
 	@Override
 	public void init(){

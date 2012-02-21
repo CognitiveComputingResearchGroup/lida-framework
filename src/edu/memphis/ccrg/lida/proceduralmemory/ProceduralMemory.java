@@ -10,9 +10,9 @@ package edu.memphis.ccrg.lida.proceduralmemory;
 
 import java.util.Collection;
 
+import edu.memphis.ccrg.lida.actionselection.Action;
 import edu.memphis.ccrg.lida.actionselection.ActionSelection;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Condition;
 import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 
@@ -23,19 +23,14 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
  * 
  * @author Ryan J. McCall
  */
-public interface ProceduralMemory extends FrameworkModule{
+public interface ProceduralMemory extends FrameworkModule {
 	
 	/**
-	 * Adds specified scheme to this {@link ProceduralMemory}.
-	 * @param s Scheme
+	 * Gets a new {@link Scheme} with specified {@link Action}
+	 * @param a the Scheme's action
+	 * @return a new {@link Scheme} 
 	 */
-	public void addScheme(Scheme s);
-		
-	/**
-	 * Adds specified schemes to this procedural memory.
-	 * @param schemes set of Schemes
-	 */
-	public void addSchemes(Collection<Scheme> schemes);
+	public Scheme getNewScheme(Action a);
 	
 	/**
 	 * Returns whether this procedural memory contains specified scheme.
@@ -63,7 +58,7 @@ public interface ProceduralMemory extends FrameworkModule{
 	public int getSchemeCount();
     
 	/**
-	 * Using the Broadcast, activate the relevant schemes of procedural memory 
+	 * Using the broadcast, activate the relevant schemes of {@link ProceduralMemory}
 	 */
 	public void activateSchemes();
 	
@@ -77,23 +72,10 @@ public interface ProceduralMemory extends FrameworkModule{
 	public boolean shouldInstantiate(Scheme s, NodeStructure broadcastBuffer);
 	
 	/**
-	 * Instantiates specified scheme.
-	 * @param s a scheme over threshold
+	 * Instantiates specified {@link Scheme}.
+	 * @param s a {@link Scheme} over instantiation threshold
+	 * @return a {@link Behavior}
 	 */
-	public void createInstantiation(Scheme s);
+	public Behavior createInstantiation(Scheme s);
 
-	/**
-	 * Adds condition to the condition pool if one with the same id is not already present.
-	 *
-	 * @param c {@link Condition} of a {@link Scheme} in this {@link ProceduralMemory}
-	 * @return the existing condition if one already exists or the newly added condition.
-	 */
-	public Condition addCondition(Condition c);
-
-	/**
-	 * Gets condition
-	 * @param conditionId {@link Condition}'s id 
-	 * @return {@link Condition} of a {@link Scheme} in this {@link ProceduralMemory}
-	 */
-	public Condition getCondition(Object conditionId);
 }

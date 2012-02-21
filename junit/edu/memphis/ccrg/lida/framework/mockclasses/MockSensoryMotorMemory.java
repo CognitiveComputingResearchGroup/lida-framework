@@ -7,8 +7,8 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.framework.mockclasses;
 
-import edu.memphis.ccrg.lida.actionselection.ActionSelectionListener;
 import edu.memphis.ccrg.lida.actionselection.Action;
+import edu.memphis.ccrg.lida.actionselection.ActionSelectionListener;
 import edu.memphis.ccrg.lida.sensorymotormemory.BasicSensoryMotorMemory;
 
 

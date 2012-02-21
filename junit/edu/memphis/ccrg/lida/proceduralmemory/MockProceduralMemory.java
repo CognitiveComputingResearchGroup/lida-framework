@@ -10,24 +10,13 @@ package edu.memphis.ccrg.lida.proceduralmemory;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Condition;
+import edu.memphis.ccrg.lida.actionselection.Action;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 
 public class MockProceduralMemory extends FrameworkModuleImpl implements ProceduralMemory {
-
-	@Override
-	public void addScheme(Scheme s) {
-		// not implemented
-
-	}
-
-	@Override
-	public void addSchemes(Collection<Scheme> schemes) {
-		// not implemented
-
-	}
 
 	@Override
 	public boolean containsScheme(Scheme s) {
@@ -52,8 +41,9 @@ public class MockProceduralMemory extends FrameworkModuleImpl implements Procedu
 	private Collection<Scheme> instantiated = new ArrayList<Scheme>();
 
 	@Override
-	public void createInstantiation(Scheme s) {
+	public Behavior createInstantiation(Scheme s) {
 		instantiated.add(s);
+		return null;
 	}
 	
 	@Override
@@ -93,18 +83,6 @@ public class MockProceduralMemory extends FrameworkModuleImpl implements Procedu
 	}
 
 	@Override
-	public Condition addCondition(Condition c) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Condition getCondition(Object conditionId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public boolean shouldInstantiate(Scheme s, NodeStructure broadcastBuffer) {
 		// TODO Auto-generated method stub
 		return false;
@@ -112,6 +90,12 @@ public class MockProceduralMemory extends FrameworkModuleImpl implements Procedu
 
 	@Override
 	public Collection<Scheme> getSchemes() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Scheme getNewScheme(Action a) {
 		// TODO Auto-generated method stub
 		return null;
 	}

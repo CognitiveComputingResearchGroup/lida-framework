@@ -8,13 +8,17 @@
 package edu.memphis.ccrg.lida.proceduralmemory;
 
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.actionselection.Action;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Condition;
 import edu.memphis.ccrg.lida.framework.shared.RootableNode;
 import edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl;
+import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 
 /**
  * Default implementation of {@link Scheme}
@@ -23,6 +27,7 @@ import edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl;
  */
 public class SchemeImpl extends LearnableImpl implements Scheme {
 	
+	private static final Logger logger = Logger.getLogger(SchemeImpl.class.getCanonicalName());
 	private static final double DEFAULT_RELIABILITY_THRESHOLD = 0.5; //TODO this can be a property of procedural memory
 	private static long idCounter = 0;//TODO Factory support for Scheme
 		
@@ -34,36 +39,44 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 	private double reliabilityThreshold = DEFAULT_RELIABILITY_THRESHOLD; 
 	
 	private Action action;
-	private Map<Object,Condition> context = new HashMap<Object,Condition>();
-	private Map<Object,Condition> addingList = new HashMap<Object,Condition>();
-	private Map<Object,Condition> deletingList = new HashMap<Object,Condition>();
-//	private Map<Object,Condition> negContext = new HashMap<Object,Condition>();
+	private Map<Object,Condition> context = new ConcurrentHashMap<Object,Condition>();
+	private Map<Object,Condition> addingList = new ConcurrentHashMap<Object,Condition>();
+	private Map<Object,Condition> deletingList = new ConcurrentHashMap<Object,Condition>();
+//	private Map<Object,Condition> negContext = new ConcurrentHashMap<Object,Condition>();
+	private ProceduralMemoryImpl pm;
 
 	/**
 	 * Constructs a new scheme with default values
 	 */
-	public SchemeImpl(){
+	SchemeImpl(){
 		id = idCounter++;
 	}
-
+	
 	/**
-	 * Constructs a new scheme with specified label and action
-	 * @param label Scheme's name
-	 * @param a scheme's {@link Action}
+	 * Intended for testing only
+	 * @param label {@link String}
+	 * @param a {@link Action}
 	 */
-	public SchemeImpl(String label, Action a) {
-		this();
+	SchemeImpl(String label, Action a){
 		this.label = label;
 		this.action = a;
 	}
 	
 	/**
-	 * For testing only
+	 * Intended for testing only
 	 * @param id Scheme's id
 	 */
 	SchemeImpl(long id){
 		this();
 		this.id = id;
+	}
+	
+	/**
+	 * Sets the {@link ProceduralMemoryImpl} to which this {@link SchemeImpl} belongs.
+	 * @param pm a {@link ProceduralMemoryImpl}
+	 */
+	void setProceduralMemory(ProceduralMemoryImpl pm){
+		this.pm = pm;
 	}
 	
 	//Scheme methods
@@ -176,12 +189,30 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 
 	@Override
 	public boolean addContextCondition(Condition c) {
-		return (context.put(c.getConditionId(),c) == null);
+		boolean wasAdded = false;
+		Condition stored = pm.addContextReference(this,c);
+		if(stored != null){
+			wasAdded = (context.put(c.getConditionId(),c) == null);
+			if(!wasAdded){
+				logger.log(Level.WARNING, "Error adding context condition {1}. Condition added to ProceduralMemory but not to Scheme.", 
+						new Object[]{TaskManager.getCurrentTick(),c});
+			}
+		}
+		return wasAdded;
 	}
 
 	@Override
 	public boolean addToAddingList(Condition c) {
-		return (addingList.put(c.getConditionId(),c) == null);
+		boolean wasAdded = false;
+		Condition stored = pm.addAddingCondition(this,c);
+		if(stored != null){
+			wasAdded = (addingList.put(c.getConditionId(),c) == null);
+			if(!wasAdded){
+				logger.log(Level.WARNING, "Error adding adding condition {1}. Condition added to ProceduralMemory but not to Scheme.", 
+						new Object[]{TaskManager.getCurrentTick(),c});
+			}
+		}
+		return wasAdded;		
 	}
 
 	@Override
@@ -191,17 +222,20 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 
 	@Override
 	public Collection<Condition> getContextConditions() {
-		return context.values();
+		Collection<Condition> aux = context.values();
+		return (aux == null)? null : Collections.unmodifiableCollection(aux);
 	}
 
 	@Override
 	public Collection<Condition> getAddingList() {
-		return addingList.values();
+		Collection<Condition> aux = addingList.values();
+		return (aux == null)? null : Collections.unmodifiableCollection(aux);
 	}
 
 	@Override
 	public Collection<Condition> getDeletingList() {
-		return deletingList.values();
+		Collection<Condition> aux = deletingList.values();
+		return (aux == null)? null : Collections.unmodifiableCollection(aux);
 	}
 
 	@Override
@@ -245,10 +279,7 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 		return deletingList.containsKey(c.getConditionId());
 	}
 
-	/**
-	 * Sets the scheme's label
-	 * @param label the label to set
-	 */
+	@Override
 	public void setLabel(String label) {
 		this.label = label;
 	}

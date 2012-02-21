@@ -85,4 +85,10 @@ public interface Scheme extends ProceduralUnit, Learnable{
 	 * @return threshold of reliability
 	 */
 	public double getReliabilityThreshold();
+
+	/**
+	 * Sets Scheme's label
+	 * @param l a String
+	 */
+	public void setLabel(String l);
 }

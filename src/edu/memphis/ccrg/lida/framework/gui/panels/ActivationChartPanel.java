@@ -22,8 +22,6 @@ import org.jfree.data.xy.XYSeriesCollection;
 
 import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.ModuleName;
-import edu.memphis.ccrg.lida.framework.gui.panels.GuiPanel;
-import edu.memphis.ccrg.lida.framework.gui.panels.GuiPanelImpl;
 import edu.memphis.ccrg.lida.framework.shared.activation.Learnable;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;

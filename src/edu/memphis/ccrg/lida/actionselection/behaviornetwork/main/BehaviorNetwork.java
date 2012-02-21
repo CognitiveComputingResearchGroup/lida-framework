@@ -25,6 +25,7 @@ import edu.memphis.ccrg.lida.actionselection.ActionSelection;
 import edu.memphis.ccrg.lida.actionselection.ActionSelectionListener;
 import edu.memphis.ccrg.lida.actionselection.PreafferenceListener;
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
+import edu.memphis.ccrg.lida.framework.initialization.Initializable;
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
@@ -152,7 +153,7 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements
 	 * <b>actionselection.initialCandidateThreshold</b> - double, the initial value for candidate threshold. candidate threshold is reset to this initial value after every action selection<br/>
 	 * <b>actionselection.candidateThresholdDecay</b> - string, factory name of the candidate threshold DecayStrategy<br/>
 	 * 
-	 * @see edu.memphis.ccrg.lida.framework.FrameworkModuleImpl#init()
+	 * @see Initializable
 	 */
 	@Override
 	public void init() {

@@ -30,9 +30,9 @@ import java.util.logging.Logger;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JScrollBar;
+import javax.swing.SwingUtilities;
 
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
-import javax.swing.SwingUtilities;
 
 /**
  * A {@link GuiPanel} to display the logs of the system.

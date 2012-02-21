@@ -19,6 +19,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import edu.memphis.ccrg.lida.actionselection.Action;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Condition;
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
@@ -90,11 +91,11 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 	 */
 	private List<ProceduralMemoryListener> proceduralMemoryListeners = new ArrayList<ProceduralMemoryListener>();
 
-	private static final double DEFAULT_SCHEME_SELECTION_THRESHOLD = 0.0;	
+	private static final double DEFAULT_SCHEME_SELECTION_THRESHOLD = 0.1;	
 	/*
 	 * Determines how much activation a scheme should have to be instantiated
 	 */
-	private double schemeSelectionThreshold;
+	private double schemeSelectionThreshold = DEFAULT_SCHEME_SELECTION_THRESHOLD;
 	
 	private static final double DEFAULT_GOAL_ORIENTEDNESS = 0.5;
 	/*
@@ -102,11 +103,18 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 	 */
 	private double goalOrientedness = DEFAULT_GOAL_ORIENTEDNESS;
 	
+	private static final String DEFAULT_SCHEME_CLASS = "edu.memphis.ccrg.lida.proceduralmemory.SchemeImpl";
+	/*
+	 * Qualified name of the {@link Scheme} class used by this module 
+	 */
+	private String schemeClass = DEFAULT_SCHEME_CLASS;
+	
 	/**
 	 * This module can initialize the following parameters:<br><br/>
 	 * 
-	 * <b>proceduralMemory.schemeSelectionThreshold</b> - amount of activation schemes must have to be instantiated, default is 0.0<br/>
-	 * <b>proceduralMemory.goalOrientedness</b> - for scheme activation calculation, the weight of desired content versus non-desired content. <br/>
+	 * <b>proceduralMemory.schemeSelectionThreshold type=double</b> amount of activation schemes must have to be instantiated, default is 0.0<br/>
+	 * <b>proceduralMemory.goalOrientedness type=double</b> for scheme activation calculation, the weight of desired content versus non-desired content. <br/>
+	 * <b>proceduralMemory.schemeClass type=string</b> qualified name of the {@link Scheme} class used by this module <br/>
 	 * 
 	 * @see Initializable
 	 */
@@ -114,6 +122,7 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 	public void init() {	
 		schemeSelectionThreshold = getParam("proceduralMemory.schemeSelectionThreshold", DEFAULT_SCHEME_SELECTION_THRESHOLD);
 		goalOrientedness = getParam("proceduralMemory.goalOrientedness",DEFAULT_GOAL_ORIENTEDNESS);
+		schemeClass = getParam("proceduralMemory.schemeClass",DEFAULT_SCHEME_CLASS);
 	}
 
 	@Override
@@ -125,86 +134,88 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 					new Object[]{TaskManager.getCurrentTick(), listener});
 		}
 	}
-
-	@Override
-	public void addSchemes(Collection<Scheme> schemes) {
-		if(schemes != null){
-			for (Scheme scheme : schemes){
-				addScheme(scheme);
-			}
-		}else{
-			logger.log(Level.WARNING, "Cannot add null Collection", TaskManager.getCurrentTick());
-		}
-	}
-
-	/**
-	 * Adds specified scheme to this {@link ProceduralMemory}.<br/>
-	 * Note: all conditions (context or adding) in the Scheme should have already been added as conditions 
-	 * using {@link #addCondition(Condition)}. The correct way to create a Scheme is to first add its conditions to
-	 * {@link ProceduralMemory} using {@link #addCondition(Condition)} AND then, use the returned references as the new
-	 * Conditions of the Scheme. Finally this method should be called to add the Scheme to this {@link ProceduralMemory}.<br/>
-	 * The {@link BasicProceduralMemoryInitializer} uses this procedure for adding new Schemes.
-	 * @param scheme the {@link Scheme} to be added
-	 * @see BasicProceduralMemoryInitializer
-	 */
-	@Override
-	public void addScheme(Scheme scheme) {
-		schemeSet.add(scheme);//for decaying scheme's BLA
-		
-		//TODO in future,cases when Condition is NodeStructure
-		//add context and adding list to condition pool
-		for(Condition c: scheme.getContextConditions()){
-			if(c instanceof Node){
-				addCondition(c);
-			}
-		}
-		for(Condition c: scheme.getAddingList()){
-			if(c instanceof Node){
-				addCondition(c);
-			}
-		}
-		
-		indexSchemeByElements(scheme, scheme.getContextConditions(), contextSchemeMap);
-		indexSchemeByElements(scheme, scheme.getAddingList(), addingSchemeMap);
-	}
 	
 	@Override
-	public Condition addCondition(Condition c){
-		Condition result = conditionPool.get(c.getConditionId());
-		if(result == null){
-			logger.log(Level.FINE,"Condition {1} added.",
+	public Scheme getNewScheme(Action a){
+		SchemeImpl s = null;
+		try {
+			s = (SchemeImpl) Class.forName(schemeClass).newInstance();
+			s.setAction(a);
+			s.setProceduralMemory(this);
+		} catch (InstantiationException e) {
+			logger.log(Level.WARNING, "Error creating Scheme.", TaskManager
+					.getCurrentTick());
+		} catch (IllegalAccessException e) {
+			logger.log(Level.WARNING, "Error creating Scheme.", TaskManager
+					.getCurrentTick());
+		} catch (ClassNotFoundException e) {
+			logger.log(Level.WARNING, "Error creating Scheme.", TaskManager
+					.getCurrentTick());
+		}
+		schemeSet.add(s);
+		return s;
+	}
+	
+	/**
+	 * Add a reference to specified Scheme for specified context condition. Thus the presence of Condition c
+	 * in the broadcast buffer will tend to activate s. The specified scheme should be one that will have c in its context conditions.
+	 * @param s a {@link Scheme} containing context {@link Condition} c
+	 * @param c the context {@link Condition}
+	 * @return the actual {@link Condition} in the condition pool that references the {@link Scheme} in this {@link ProceduralMemoryImpl}
+	 */
+	Condition addContextReference(Scheme s, Condition c){
+		Condition stored = addCondition(c);
+		if(stored != null){
+			indexSchemeByElement(s, stored, contextSchemeMap);
+		}
+		return stored;
+	}
+	
+	/**
+	 * Add a reference to specified Scheme for specified adding condition. Thus the presence of Condition c
+	 * in the broadcast buffer with positive desirability will tend to activate s. 
+	 * The specified scheme should be one that will have c in its adding conditions.
+	 * @param s a {@link Scheme} containing adding {@link Condition} c
+	 * @param c the adding {@link Condition}
+	 * @return the actual {@link Condition} in the condition pool that references the {@link Scheme} in this {@link ProceduralMemoryImpl}
+	 */
+	Condition addAddingCondition(Scheme s, Condition c){
+		Condition stored = addCondition(c);
+		if(stored != null){	
+			indexSchemeByElement(s, c, addingSchemeMap);
+		}
+		return stored;
+	}
+	
+	private Condition addCondition(Condition c){
+		if(c == null){
+			logger.log(Level.WARNING, "Cannot add null condition", TaskManager.getCurrentTick());
+			return null;
+		}
+		Condition stored = conditionPool.get(c.getConditionId());
+		if(stored == null){
+			logger.log(Level.FINE,"New Condition {1} added to condition pool.",
 					new Object[]{TaskManager.getCurrentTick(), c});
 			conditionPool.put(c.getConditionId(),c);
-			result = c;
+			stored = c;
 		}
-		return result;
-	}
-	
-	@Override
-	public Condition getCondition(Object conditionId){
-		return conditionPool.get(conditionId);
+		return stored;
 	}
 	
 	/*
-	 * For every element in elements, adds an entry to map where the key is an element
-	 * and the value is scheme.
-	 * @param scheme
-	 * @param elements
-	 * @param map
+	 * Adds specified Scheme to specified map indexed at Condition c
 	 */
-	private void indexSchemeByElements(Scheme scheme, Collection<Condition> elements, 
+	private void indexSchemeByElement(Scheme s, Condition c, 
 									   Map<Object, Set<Scheme>> map) {
-		for (Condition element : elements) {
-			synchronized (element) {
-				Object id = element.getConditionId();
+			synchronized (c) {
+				Object id = c.getConditionId();
 				Set<Scheme> values = map.get(id);
 				if (values == null) {
 					values = new ConcurrentHashSet<Scheme>();
 					map.put(id, values);
 				}
-				values.add(scheme);
+				values.add(s);
 			}
-		}
 	}
 	
 	/*
@@ -309,13 +320,14 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 	}
 
 	@Override
-	public void createInstantiation(Scheme s) {
+	public Behavior createInstantiation(Scheme s) {
 		logger.log(Level.FINE, "Instantiating scheme: {1} in ProceduralMemory",
 				new Object[]{TaskManager.getCurrentTick(),s});
 		Behavior b = factory.getBehavior(s);
 		for (ProceduralMemoryListener listener : proceduralMemoryListeners) {
 			listener.receiveBehavior(b);
 		}
+		return b;
 	}
 
 	@Override

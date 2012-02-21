@@ -74,40 +74,7 @@ public class BitVectorUtils {
 		return accum;
 	}
 
-	/**
-	 * Computes the difference two {@link BitVector} objects.
-	 * 
-	 * @param a a {@link BitVector}
-	 * @param b a {@link BitVector}
-	 * @return new {@link BitVector} containing the result of the subtraction
-	 */
-	public static BitVector getVectorDifference(BitVector a, BitVector b) {
-		BitVector r = b.copy();
-		r.not();
-		BitVector res = new BitVector(a.size());
-		for (int i = 0; i < a.size(); i++) {
-			boolean bit = (a.getQuick(i) ^ r.getQuick(i)) ? (Math.random() > .5)
-					: a.getQuick(i);
-			res.putQuick(i, bit);
-		}
-		return res;
-	}
  
-	/**
-	 * Computes the difference of two vectors.
-	 * 
-	 * @param a an int[] array
-	 * @param v a {@link BitVector}
-	 * @return the result as a new int[]
-	 */
-	public static int[] getVectorDifference(int[] a, BitVector v) {
-		int[] res = new int[a.length];
-		for (int i = 0; i < a.length; i++) {
-			res[i] = a[i]-((v.getQuick(i))?1:-1);
-		}
-		return res;
-	}
-
 	/**
 	 * Sums specified vectors.
 	 * 
@@ -186,74 +153,4 @@ public class BitVectorUtils {
 		res.xor(b);
 		return res;
 	}
-
-	/**
-	 * Discretize int vector.
-	 * 
-	 * @param buff
-	 *            the buff
-	 * @param bitSteps
-	 *            the bit steps
-	 * @return the bit vector[]
-	 */
-	public static BitVector[] discretizeIntVector(int[] buff, int bitSteps) {
-		BitVector[] weights = new BitVector[bitSteps];
-		int maxUnsignedValue=(1<<bitSteps);
-		for (int i = 0; i < weights.length; i++) {
-			weights[i] = new BitVector(buff.length);
-		}
-
-		for (int i = 0; i < buff.length; i++) {
-			int aux = buff[i];
-			//In case of 0, a value is chosen by random
-//			if (aux == 0) {
-//				aux = (Math.random() > .5) ? 1 : -1;
-//			}
-//			//The value is decreased by 1 in case of a positive value. In this way the value zero is used
-//			if (aux > 0) {
-//				aux--;
-//			}
-			//the value is biased by 4 to use only positive values
-			aux = aux + maxUnsignedValue/2;
-			//the value is truncated between 0 and maxUnsignedValue to be stored in bitSteps bits
-			aux = (aux >= maxUnsignedValue) ? maxUnsignedValue-1 : aux;
-			aux = (aux < 0) ? 0 : aux;
-			
-			for (int j = 0; j < bitSteps; j++) {
-				boolean b=((aux & (1 << j)) != 0);
-				weights[j].putQuick(i, b);
-			}
-		}
-		return weights;
-	}
-
-	/**
-	 * Denormalize vector.
-	 * 
-	 * @param weights
-	 *            the weights
-	 * @return the int[]
-	 */
-	public static int[] denormalizeVector(BitVector[] weights) {
-
-		int bitSteps=weights.length;
-		int maxUnsignedValue=1<<bitSteps;
-		int[] sum = new int[weights[0].size()];
-		for (int i = 0; i < sum.length; i++) {
-			int totDigit = 0;
-			for (int j = 0; j < bitSteps; j++) {
-				int aux = (weights[j].getQuick(i)) ? 1 : 0;
-				totDigit += aux << j;
-			}
-			totDigit = totDigit - maxUnsignedValue/2;
-
-//			if (totDigit >= 0) {
-//				totDigit++;
-//			}
-			sum[i] += totDigit;
-		}
-
-		return sum;
-	}
-
 }

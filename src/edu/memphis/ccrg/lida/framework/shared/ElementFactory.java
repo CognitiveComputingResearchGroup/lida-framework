@@ -219,6 +219,8 @@ public class ElementFactory {
 		//Default node type
 		addNodeType(defaultNodeType, defaultNodeClassName);
 		
+		addNodeType("RootableNodeImpl","edu.memphis.ccrg.lida.framework.shared.RootableNodeImpl");
+		
 		//PamNodeImpl type
 		LinkableDef newNodeDef = new LinkableDef(PamNodeImpl.class.getCanonicalName(), new HashMap<String, String>(), PamNodeImpl.class.getSimpleName(), params);
 		addNodeType(newNodeDef);

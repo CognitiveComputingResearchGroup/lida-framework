@@ -13,7 +13,6 @@ import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.actionselection.Action;
 import edu.memphis.ccrg.lida.actionselection.ActionImpl;
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Condition;
 import edu.memphis.ccrg.lida.framework.Agent;
 import edu.memphis.ccrg.lida.framework.initialization.FullyInitializable;
 import edu.memphis.ccrg.lida.framework.initialization.GlobalInitializer;
@@ -40,7 +39,7 @@ public class BasicProceduralMemoryInitializer implements Initializer {
 	@Override
 	public void initModule(FullyInitializable module, Agent agent,
 			Map<String, ?> params) {
-		ProceduralMemory proceduralMemory = (ProceduralMemory)module;
+		ProceduralMemory pm = (ProceduralMemory)module;
 	    GlobalInitializer initializer = GlobalInitializer.getInstance();
 	    	    
 	    for(String key: params.keySet()){
@@ -49,7 +48,7 @@ public class BasicProceduralMemoryInitializer implements Initializer {
 	    		String[] elements = schemeSpec.split("\\|");    
 	    		logger.log(Level.INFO,"Loading scheme: {0}",schemeSpec);
 	    		if(elements.length == 5){
-	    			String schemeLabel = elements[0].trim();
+	    			String label = elements[0].trim();
 	    			
 	    			String context = elements[1].trim();
 	    			NodeStructure contextNS = loadNodeStructure(initializer, context);
@@ -73,22 +72,15 @@ public class BasicProceduralMemoryInitializer implements Initializer {
 	    				logger.log(Level.WARNING,"could not parse base-level activation: {0}",blActivation);
 	    			}
 	    			
-	    			Scheme scheme = new SchemeImpl(schemeLabel, action);
-	    			scheme.setBaseLevelActivation(bla);
+	    			Scheme s = pm.getNewScheme(action);
+	    			s.setLabel(label);
+	    			s.setBaseLevelActivation(bla);
 	    			for(Node n : contextNS.getNodes()){
-	    				//addCondition() adds the Node to the procedural memory's condition pool if it is not already present
-	    				//This ensures that all Schemes share the same condition objects; namely, those that are in the pool.
-	    				Condition c = proceduralMemory.addCondition(n);
-	    				scheme.addContextCondition(c);
+	    				s.addContextCondition(n);
 	    			}
 	    			for(Node n : resultNS.getNodes()){
-	    				//addCondition() adds the Node to the procedural memory's condition pool if it is not already present
-	    				//This ensures that all Schemes share the same condition objects; namely, those that are in the pool.
-	    				Condition c = proceduralMemory.addCondition(n);
-	    				scheme.addToAddingList(c);
-	    			}
-	    	        proceduralMemory.addScheme(scheme);
-	    	        
+	    				s.addToAddingList(n);
+	    			}	    	        
 	    		}else{
 	    			logger.log(Level.WARNING, 
 	    					"scheme specification must have 5 parts separated by | " +

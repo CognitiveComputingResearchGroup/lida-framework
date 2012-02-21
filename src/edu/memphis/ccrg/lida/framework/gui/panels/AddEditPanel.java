@@ -36,6 +36,7 @@ public class AddEditPanel extends GuiPanelImpl {
 	}
 
 	/**
+	 * initializes this panel's name
 	 * @param name
 	 *            Panel name
 	 */

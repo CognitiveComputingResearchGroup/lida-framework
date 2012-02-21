@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.initialization.GlobalInitializer;
+import edu.memphis.ccrg.lida.framework.initialization.Initializable;
 import edu.memphis.ccrg.lida.framework.shared.Linkable;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
@@ -82,6 +83,13 @@ public abstract class BasicDetectionAlgorithm extends FrameworkTaskImpl
 		return linkable;
 	}
 
+	/**
+	 * This task can be initialized with the following parameters:<br><br/>
+	 * 
+	 * <b>node type=string</b>label of the Node in {@link PerceptualAssociativeMemory} this algorithm detects<br/>
+	 * 
+	 * @see Initializable
+	 */
 	@Override
 	public void init() {
 		super.init();

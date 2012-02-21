@@ -24,7 +24,6 @@ import org.junit.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-
 import edu.memphis.ccrg.lida.episodicmemory.LocalAssociationListener;
 import edu.memphis.ccrg.lida.framework.Agent;
 import edu.memphis.ccrg.lida.framework.AgentImpl;

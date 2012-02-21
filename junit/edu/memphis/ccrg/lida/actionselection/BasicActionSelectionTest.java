@@ -17,14 +17,12 @@ import java.util.Collection;
 import org.junit.Before;
 import org.junit.Test;
 
-import sun.security.action.GetBooleanAction;
-
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockSensoryMotorMemory;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockTaskSpawner;
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
+import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryImpl;
 import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
-import edu.memphis.ccrg.lida.proceduralmemory.SchemeImpl;
 
 public class BasicActionSelectionTest {
 	
@@ -40,10 +38,12 @@ public class BasicActionSelectionTest {
 	private Action action2 = new ActionImpl();
 	
 	@Before
-	public void setUp() throws Exception {			
-		scheme1= new SchemeImpl("scheme1",action1);
-		scheme2= new SchemeImpl("scheme2",action2);
-		
+	public void setUp() throws Exception {		
+		ProceduralMemoryImpl pm = new ProceduralMemoryImpl();
+		scheme1= pm.getNewScheme(action1);
+		scheme1.setLabel("scheme1");
+		scheme2= pm.getNewScheme(action2);
+		scheme2.setLabel("scheme2");
 		as = new BasicActionSelection();
 		as.setAssistingTaskSpawner(ts);
 		as.init();	

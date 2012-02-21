@@ -16,11 +16,8 @@ import org.junit.Test;
 
 import edu.memphis.ccrg.lida.actionselection.Action;
 import edu.memphis.ccrg.lida.actionselection.ActionImpl;
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.Node;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 
 public class SchemeImplTest{
 
@@ -34,7 +31,9 @@ public class SchemeImplTest{
 	public void setUp() throws Exception {		
 		action = new ActionImpl();
 
-		scheme = new SchemeImpl("1", action);
+		scheme = new SchemeImpl();
+		scheme.setLabel("1");
+		scheme.setAction(action);
 		node1 = factory.getNode();
 		node2 = factory.getNode();
 		node3 = factory.getNode();
