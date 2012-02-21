@@ -1150,8 +1150,6 @@ public class ElementFactory {
 			b = (Behavior) Class.forName(defaultBehaviorClassName).newInstance();
 			b.setId(behaviorIdCount++);
 			b.setGeneratingScheme(s);
-			b.setAction(s.getAction());
-			b.setActivation(s.getTotalActivation());
 		} catch (InstantiationException e) {
 			logger.log(Level.WARNING, "Error creating Behavior.", TaskManager
 					.getCurrentTick());

@@ -7,6 +7,7 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.framework.shared;
 
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
@@ -38,6 +39,7 @@ import edu.memphis.ccrg.lida.pam.PamNodeImpl;
  */
 public class NodeStructureImplTest {
 	
+	private static final double epsilon = 1e-09;
 	private Node node1, node2, node3, node4;
 	private Link link1, link2, link3;	
 	private PamNode category1, category2;	
@@ -344,9 +346,10 @@ s
 		assertTrue(l != null);
 		assertTrue(ns1.getLinkCount() == 3);
 		
-		l = ns1.addDefaultLink(node1.getId(), node3.getId(), category1, 0.0, 0.0);
-		assertTrue(l == null);
-		assertTrue(ns1.getLinkCount() == 3);
+		l = ns1.addDefaultLink(node1.getId(), node3.getId(), category1, 0.9, 0.0);
+		assertNotNull(l);
+		assertEquals(3, ns1.getLinkCount());
+		assertEquals(0.9,l.getActivation(),epsilon);
 	}
 	@Test
 	public void testAddLinkParams2(){
@@ -392,13 +395,14 @@ s
 		ns1.addDefaultNode(node1);	
 		ns1.addDefaultNode(node2);	
 		ns1.addDefaultLink(link1);
-		assertTrue("Problem with addLink", ns1.containsLink(link1));
+		assertTrue(ns1.containsLink(link1));
 		assertTrue(ns1.getLinkCount() == 1);
 		assertTrue(ns1.getLinkableCount() == 3);
 		Link anotherLink = ns1.addDefaultLink(node1, node2, link1.getCategory(),1.0,0.0);
-		assertTrue(anotherLink==null);
+		assertNotNull(anotherLink);
 		assertTrue(ns1.getLinkCount() == 1);
 		assertTrue(ns1.getLinkableCount() == 3);
+		assertEquals(1.0, anotherLink.getActivation(),epsilon);
 	}
 
 	@Test

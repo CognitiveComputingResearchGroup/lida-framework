@@ -99,7 +99,7 @@ public class HyperdimensionalTranslatorTest {
 //        NodeStructure result = instance.translate(data);
 //        assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        //fail("The test case is a prototype.");
+//        fail("The test case is a prototype.");
     }
 
     /**
@@ -111,9 +111,9 @@ public class HyperdimensionalTranslatorTest {
 //        NodeStructure structure = null;
 //        HyperdimensionalTranslator instance = new HyperdimensionalTranslator();
 //        BitVector expResult = null;
-        BitVector result = tr.translate(ns);
-        assertEquals(vector, result);
+//        BitVector result = tr.translate(ns);
+//        assertEquals(vector, result);
         // TODO review the generated test code and remove the default call to fail.
-        //fail("The test case is a prototype.");
+//        fail("The test case is a prototype.");
     }
 }

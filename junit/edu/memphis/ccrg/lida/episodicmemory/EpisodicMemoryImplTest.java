@@ -64,10 +64,10 @@ public class EpisodicMemoryImplTest {
 	@Test
 	public void testInit() {
 		Map<String,Object>params = new HashMap<String,Object>();
-		params.put("tem.numOfHardLoc", 20);
-		params.put("tem.addressLength", 100);
-		params.put("tem.activationRadius", 451);
-		params.put("tem.wordLength", 150);
+		params.put("em.numOfHardLoc", 20);
+		params.put("em.addressLength", 100);
+		params.put("em.activationRadius", 451);
+		params.put("em.wordLength", 150);
 		em.init(params);
 		SparseDistributedMemory sdm=em.getSdm();
 		BitVector addr = new BitVector(100);

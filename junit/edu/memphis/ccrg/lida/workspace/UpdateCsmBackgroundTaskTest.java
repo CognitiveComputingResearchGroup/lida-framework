@@ -65,8 +65,7 @@ public class UpdateCsmBackgroundTaskTest {
 		
 		//Step 3-3:
 		// Add node structure into workspaceBuffer of percetualBuffer
-		((NodeStructure)wMoudle.getSubmodule(ModuleName.PerceptualBuffer)
-				.getModuleContent()).mergeWith(ns);
+		perceptualBuffer.addBufferContent((WorkspaceContent) ns);
 
 		// Testing of setAssociateMoudle()
 		uct.setAssociatedModule(wMoudle, ModuleUsage.NOT_SPECIFIED);

@@ -125,12 +125,6 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	
 	@Override
 	public Node addDefaultNode(Node n) {
-		if (n == null) {
-			logger.log(Level.WARNING, "Cannot add null", TaskManager
-					.getCurrentTick());
-			return null;
-		}
-
 		return addNode(n, defaultNodeType);
 	}
 
@@ -166,7 +160,6 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 							new Object[]{TaskManager.getCurrentTick(),nodeType,n});
 			return null;
 		}
-
 		Node node = nodes.get(n.getId());
 		if (node == null) {
 			node = getNewNode(n, nodeType);
@@ -234,32 +227,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	
 	@Override
 	public synchronized Link addDefaultLink(Link l) {
-		if(!canAddLink(l)){
-			return null;
-		}
-
-		double newActivation = l.getActivation();
-		Link existingLink = links.get(l.getExtendedId());
-		if (existingLink != null) { 
-			if (existingLink.getActivation() < newActivation) {
-				existingLink.setActivation(newActivation);
-			}
-			return existingLink;
-		}
-		Node source = l.getSource();
-		Node newSource = nodes.get(source.getId());
-		Linkable sink = l.getSink();
-		Linkable newSink = null;
-		if (sink instanceof Node) {
-			Node snode = (Node) sink;
-			newSink = nodes.get(snode.getId());
-		} else {
-			newSink = links.get(sink.getExtendedId());
-		}
-		return generateNewLink(l, defaultLinkType, 
-							 newSource, newSink, l.getCategory(), 
-							 newActivation, l.getActivatibleRemovalThreshold(), 
-							 l.getGroundingPamLink());
+		return addLink(l, defaultLinkType);
 	}
 
 	@Override
@@ -301,12 +269,16 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	@Override
 	public synchronized Link addDefaultLink(Node source, Linkable sink,
 			LinkCategory category, double activation, double removalThreshold) {
-		if (source == null || sink == null) {
+		if(source == null) {
 			logger.log(Level.WARNING,
-					"Source or sink is not present.  Cannot add link.", TaskManager
+					"Cannot add link because source is null", TaskManager
 							.getCurrentTick());
 		}
-
+		if(sink == null){
+			logger.log(Level.WARNING,
+					"Cannot add link because sink is null", TaskManager
+							.getCurrentTick());
+		}
 		return addDefaultLink(source.getId(), sink.getExtendedId(), category,
 				activation, removalThreshold);
 	}
@@ -314,100 +286,76 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	@Override
 	public synchronized Link addDefaultLink(int sourceId, ExtendedId sinkId,
 			LinkCategory category, double activation, double removalThreshold) {
-		if (sinkId.isNodeId() && sourceId == sinkId.getSourceNodeId()) {
-			throw new IllegalArgumentException(
-					"Cannot create a link with the same source and sink.");
-		}
-		if (sinkId.isComplexLink()) {
-			logger
-					.log(
-							Level.WARNING,
-							"Sink cannot be a complex link. Must be a node or simple link.",
-							TaskManager.getCurrentTick());
-			return null;
-		}
-		Node source = getNode(sourceId);
-		Linkable sink = getLinkable(sinkId);
-		if (source == null || sink == null) {
-			logger.log(Level.WARNING,
-					"Source and/or Sink are not present in this NodeStructure",
-					TaskManager.getCurrentTick());
+		if(!isConnectionValid(sourceId, sinkId)){
 			return null;
 		}
 		ExtendedId newLinkId = new ExtendedId(sourceId, sinkId, category
 				.getId());
-		if (containsLink(newLinkId)) {
-			logger.log(Level.WARNING,
-					"Link already exists. Cannot add again.", TaskManager
-							.getCurrentTick());
-			return null;
+		Link link = getLink(newLinkId);
+		if (link == null) {
+			Node source = getNode(sourceId);
+			Linkable sink = getLinkable(sinkId);
+			link = generateNewLink(null, defaultLinkType, source, sink, category,
+					activation, removalThreshold, null);
+		}else if(activation > link.getActivation()){
+			link.setActivation(activation);
 		}
-
-		return generateNewLink(null, defaultLinkType, source, sink, category,
-				activation, removalThreshold, null);
+		return link;
 	}
 
 	@Override
 	public synchronized Link addDefaultLink(int sourceId, int sinkId,
 			LinkCategory category, double activation, double removalThreshold) {
-		if (sourceId == sinkId) {
-			throw new IllegalArgumentException(
-					"Cannot create a link with the same source and sink.");
+		if(!isConnectionValid(sourceId, new ExtendedId(sinkId))){
+			return null;
 		}
 		Node source = getNode(sourceId);
 		Linkable sink = getNode(sinkId);
-		if (source == null || sink == null) {
-			logger.log(Level.WARNING,
-					"Source and/or Sink are not present in this NodeStructure",
-					TaskManager.getCurrentTick());
-			return null;
-		}
 		ExtendedId newLinkId = new ExtendedId(sourceId, sink.getExtendedId(),
 				category.getId());
-		if (containsLink(newLinkId)) {
-			logger.log(Level.WARNING,
-					"Link already exists.  Cannot add again.", TaskManager
-							.getCurrentTick());
-			return null;
+		Link link = getLink(newLinkId);
+		if (link == null) {
+			link = generateNewLink(null, defaultLinkType, source, sink, category,
+					activation, removalThreshold, null);
+		}else if(activation > link.getActivation()){
+			link.setActivation(activation);
 		}
-
-		return generateNewLink(null, defaultLinkType, source, sink, category,
-				activation, removalThreshold, null);
+		return link;
 	}
 
 	@Override
-	public synchronized Link addLink(Link l, String linkType) {
-		if (!factory.containsLinkType(linkType)) {
+	public synchronized Link addLink(Link l, String type) {
+		if (!factory.containsLinkType(type)) {
 			logger.log(Level.WARNING,
 							"Cannot add link {1} of type {2} because factory does not contain that Link type. Check that type is defined in factoryData xml file.",
-							new Object[]{TaskManager.getCurrentTick(),l,linkType});
+							new Object[]{TaskManager.getCurrentTick(),l,type});
 			return null;
 		}
-		if (!canAddLink(l)) {
+		if (!isLinkValid(l)) {
 			return null;
 		}
+		double newActivation = l.getActivation();
 		Link link = links.get(l.getExtendedId());
 		if (link == null) {
-			//FIXME change to generateNewLink and merge with addDefaultLink(Link);
-			link = getNewLink(l, linkType, l.getSource(), l.getSink(), l
-					.getCategory());
-			if (link != null) {
-				links.put(link.getExtendedId(), link);
-				linkableMap.put(link, new HashSet<Link>());
+			Node source = l.getSource();
+			Node newSource = nodes.get(source.getId());
+			Linkable sink = l.getSink();
+			Linkable newSink = null;
+			if (sink instanceof Node) {
+				Node snode = (Node) sink;
+				newSink = nodes.get(snode.getId());
 			} else {
-				logger.log(Level.WARNING, "Could not create new link of type: {1} ",
-						new Object[]{TaskManager.getCurrentTick(),linkType});
+				newSink = links.get(sink.getExtendedId());
 			}
-		} else {
-			if(l.getActivation() > link.getActivation()){
-				link.setActivation(l.getActivation());
-			}
-			link.updateLinkValues(l);
+			link = generateNewLink(l,type,newSource,newSink,l.getCategory(),
+					newActivation, l.getActivatibleRemovalThreshold(), l.getGroundingPamLink());
+		} else if(newActivation > link.getActivation()){
+			link.setActivation(newActivation);
 		}
 		return link;
 	}
 	
-	private boolean canAddLink(Link l){
+	private boolean isLinkValid(Link l){
 		if (l == null) {
 			logger.log(Level.WARNING, "Cannot add null", TaskManager
 					.getCurrentTick());
@@ -427,27 +375,29 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 					TaskManager.getCurrentTick());
 			return false;
 		}
-		if (!containsNode(src)) {
+		return isConnectionValid(src.getId(), sink.getExtendedId());
+	}
+	
+	private boolean isConnectionValid(int srcId, ExtendedId sinkId){
+		if (!containsNode(srcId)) {
 			logger.log(Level.WARNING,
 					"Cannot add Link because its source is not present in this NodeStructure",
 					TaskManager.getCurrentTick());
 			return false;
 		}
-		if (!containsLinkable(sink)) {
+		if (!containsLinkable(sinkId)) {
 			logger.log(Level.WARNING,
 					"Cannot add Link because its sink is not present in this NodeStructure",
 					TaskManager.getCurrentTick());
 			return false;
 		}
-		ExtendedId srcId = src.getExtendedId();
-		ExtendedId sinkId = sink.getExtendedId();
 		if(sinkId.isComplexLink()){
 			logger.log(Level.WARNING,
 					"Cannot add Link because its sink is a complex Link, sinks must be a Node or simple Link.",
 					TaskManager.getCurrentTick());
 			return false;
 		}
-		if (srcId.equals(sinkId)) {
+		if (sinkId.isNodeId() && sinkId.equals(srcId)) {
 			logger.log(Level.WARNING,
 					"Cannot add Link with the same source and sink.",
 					TaskManager.getCurrentTick());
@@ -463,35 +413,39 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 			Linkable newSink, LinkCategory category, double activation,
 			double removalThreshold, PamLink groundingPamLink) {
 		Link newLink = getNewLink(link, linkType, newSource, newSink, category);
-		// set values of passed in parameters not handled by 'getNewLink'
-		newLink.setActivation(activation);
-		newLink.setActivatibleRemovalThreshold(removalThreshold);
-		newLink.setGroundingPamLink(groundingPamLink);
-
-		links.put(newLink.getExtendedId(), newLink);
-		if (!linkableMap.containsKey(newLink)) {
-			linkableMap.put(newLink, new HashSet<Link>());
+		if(newLink!=null){
+			// set values of passed in parameters not handled by 'getNewLink'
+			newLink.setActivation(activation);
+			newLink.setActivatibleRemovalThreshold(removalThreshold);
+			newLink.setGroundingPamLink(groundingPamLink);
+	
+			links.put(newLink.getExtendedId(), newLink);
+			if (!linkableMap.containsKey(newLink)) {
+				linkableMap.put(newLink, new HashSet<Link>());
+			}
+	
+			Set<Link> tempLinks = linkableMap.get(newSource);
+			if (tempLinks == null) {
+				tempLinks = new HashSet<Link>();
+				linkableMap.put(newSource, tempLinks);
+			}
+			tempLinks.add(newLink);
+	
+			tempLinks = linkableMap.get(newSink);
+			if (tempLinks == null) {
+				tempLinks = new HashSet<Link>();
+				linkableMap.put(newSink, tempLinks);
+			}
+			tempLinks.add(newLink);
+		}else{
+			logger.log(Level.WARNING, "Could not create new link of type: {1} ",
+					new Object[]{TaskManager.getCurrentTick(),linkType});
 		}
-
-		Set<Link> tempLinks = linkableMap.get(newSource);
-		if (tempLinks == null) {
-			tempLinks = new HashSet<Link>();
-			linkableMap.put(newSource, tempLinks);
-		}
-		tempLinks.add(newLink);
-
-		tempLinks = linkableMap.get(newSink);
-		if (tempLinks == null) {
-			tempLinks = new HashSet<Link>();
-			linkableMap.put(newSink, tempLinks);
-		}
-		tempLinks.add(newLink);
-		
 		return newLink;
 	}
 
 	/**
-	 * This method can be overwritten to customize the Link Creation. some of
+	 * This method can be overridden to customize the Link Creation. some of
 	 * the parameter could be redundant in some cases.
 	 * 
 	 * @param oLink
@@ -510,7 +464,9 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 			Linkable snk, LinkCategory cat) {
 		Link newLink = factory.getLink(defaultLinkType, newType, src, snk,
 				cat);
-		newLink.updateLinkValues(oLink);
+		if(newLink != null){
+			newLink.updateLinkValues(oLink);
+		}
 		return newLink;
 	}
 

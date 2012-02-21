@@ -92,10 +92,9 @@ public class BasicActionSelectionTest {
 		assertFalse(smm.actionReceived);
 		
 		behav2.setActivation(0.80);
-		as.selectBehavior(as.getBehaviors(), as.getThreshold());
+		Behavior res = as.selectBehavior(as.getBehaviors(), as.getThreshold());
 		
-		assertTrue(smm.actionReceived);
-		assertEquals(action2,smm.action);		
+		assertEquals(behav2, res);		
 	}
 	
 	@Test
