@@ -19,6 +19,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.apache.commons.collections15.collection.UnmodifiableCollection;
+
 import edu.memphis.ccrg.lida.actionselection.Action;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Condition;
@@ -31,6 +33,7 @@ import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.shared.RootableNode;
+import edu.memphis.ccrg.lida.framework.shared.UnmodifiableNodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.TaskStatus;
@@ -47,7 +50,31 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 
 	private static final Logger logger = Logger.getLogger(ProceduralMemoryImpl.class.getCanonicalName());
 	private static final ElementFactory factory = ElementFactory.getInstance();
-
+	/**
+	 * 
+	 * The possible type of usage for a condition inside a {@link Scheme}
+	 *
+	 */
+	public enum ConditionType{
+		/**
+		 * A {@link Condition} that is part of a scheme's context.
+		 */
+		CONTEXT, 
+		/**
+		 * A {@link Condition} that is part of a scheme's adding list.
+		 */
+		ADDINGLIST,
+		/**
+		 * A {@link Condition} that is part of a scheme's deleting list.
+		 * Not yet supported.
+		 */
+		DELETINGLIST,
+		/**
+		 * A {@link Condition} that is part of a scheme's negated context.
+		 * Not yet supported.
+		 */
+		NEGATEDCONTEXT
+		};
 	/*
 	 * Schemes indexed by Nodes in their context.
 	 */
@@ -126,17 +153,22 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 	}
 
 	@Override
-	public void addListener(ModuleListener listener) {
-		if (listener instanceof ProceduralMemoryListener) {
-			proceduralMemoryListeners.add((ProceduralMemoryListener) listener);
+	public void addListener(ModuleListener l) {
+		if (l instanceof ProceduralMemoryListener) {
+			proceduralMemoryListeners.add((ProceduralMemoryListener) l);
 		}else{
 			logger.log(Level.WARNING, "Requires ProceduralMemoryListener but received {1}", 
-					new Object[]{TaskManager.getCurrentTick(), listener});
+					new Object[]{TaskManager.getCurrentTick(), l});
 		}
 	}
 	
 	@Override
 	public Scheme getNewScheme(Action a){
+		if(a == null){
+			logger.log(Level.WARNING, "Action is null, cannot create scheme.",
+					TaskManager.getCurrentTick());
+			return null;
+		}
 		SchemeImpl s = null;
 		try {
 			s = (SchemeImpl) Class.forName(schemeClass).newInstance();
@@ -157,44 +189,21 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 	}
 	
 	/**
-	 * Add a reference to specified Scheme for specified context condition. Thus the presence of Condition c
-	 * in the broadcast buffer will tend to activate s. The specified scheme should be one that will have c in its context conditions.
-	 * @param s a {@link Scheme} containing context {@link Condition} c
-	 * @param c the context {@link Condition}
-	 * @return the actual {@link Condition} in the condition pool that references the {@link Scheme} in this {@link ProceduralMemoryImpl}
+	 * Add {@link Condition} c to the condition pool if it is not already stored. </br>
+	 * Returns the stored condition with same id as c.</br>
+	 * This method is intended to be used only by {@link SchemeImpl} to ensure that all schemes 
+	 * in the {@link ProceduralMemory} share the same condition instances.
+	 * @param c the condition to add to the condition pool.
+	 * @return c or the stored condition with same id as c
 	 */
-	Condition addContextReference(Scheme s, Condition c){
-		Condition stored = addCondition(c);
-		if(stored != null){
-			indexSchemeByElement(s, stored, contextSchemeMap);
-		}
-		return stored;
-	}
-	
-	/**
-	 * Add a reference to specified Scheme for specified adding condition. Thus the presence of Condition c
-	 * in the broadcast buffer with positive desirability will tend to activate s. 
-	 * The specified scheme should be one that will have c in its adding conditions.
-	 * @param s a {@link Scheme} containing adding {@link Condition} c
-	 * @param c the adding {@link Condition}
-	 * @return the actual {@link Condition} in the condition pool that references the {@link Scheme} in this {@link ProceduralMemoryImpl}
-	 */
-	Condition addAddingCondition(Scheme s, Condition c){
-		Condition stored = addCondition(c);
-		if(stored != null){	
-			indexSchemeByElement(s, c, addingSchemeMap);
-		}
-		return stored;
-	}
-	
-	private Condition addCondition(Condition c){
+	Condition addCondition(Condition c){
 		if(c == null){
 			logger.log(Level.WARNING, "Cannot add null condition", TaskManager.getCurrentTick());
 			return null;
 		}
 		Condition stored = conditionPool.get(c.getConditionId());
 		if(stored == null){
-			logger.log(Level.FINE,"New Condition {1} added to condition pool.",
+			logger.log(Level.FINEST,"New Condition {1} added to condition pool.",
 					new Object[]{TaskManager.getCurrentTick(), c});
 			conditionPool.put(c.getConditionId(),c);
 			stored = c;
@@ -202,11 +211,30 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 		return stored;
 	}
 	
-	/*
-	 * Adds specified Scheme to specified map indexed at Condition c
+	/**
+	 * Add a reference to specified Scheme from specified condition. Thus the presence of Condition c
+	 * in the broadcast buffer will tend to activate s. 
+	 * The specified scheme should be one that will have c in its conditions (e.g. in the Context or adding list)
+	 * Indexes Scheme s by Condition c of ConditionType type.
+	 * @param s the {@link Scheme} to index
+	 * @param c the condition 
+	 * @param type the type of the condition. This select the indexing map
 	 */
-	private void indexSchemeByElement(Scheme s, Condition c, 
-									   Map<Object, Set<Scheme>> map) {
+	void indexScheme(Scheme s, Condition c, ConditionType type) {
+		Map<Object, Set<Scheme>> map = null;
+		switch(type){
+			case CONTEXT:
+				map = contextSchemeMap;
+				break;
+			case ADDINGLIST:
+				map = addingSchemeMap;
+				break;
+			case DELETINGLIST:
+				break;
+			case NEGATEDCONTEXT:
+				break;
+		}
+		if (map !=null){
 			synchronized (c) {
 				Object id = c.getConditionId();
 				Set<Scheme> values = map.get(id);
@@ -216,6 +244,7 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 				}
 				values.add(s);
 			}
+		}
 	}
 	
 	/*
@@ -379,5 +408,21 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 			return Collections.unmodifiableCollection(schemeSet);
 		}
 		return null;
+	}
+	
+	/**
+	 * Gets the condition pool
+	 * @return an {@link UnmodifiableCollection} of the condition in the pool
+	 */
+	public Collection<Condition> getConditionPool(){
+		return Collections.unmodifiableCollection(conditionPool.values());
+	}
+	
+	/**
+	 * Gets the broadcast buffer.
+	 * @return an {@link NodeStructure} containing recent broadcasts
+	 */
+	public NodeStructure getBroadcastBuffer(){
+		return new UnmodifiableNodeStructureImpl(broadcastBuffer);
 	}
 }

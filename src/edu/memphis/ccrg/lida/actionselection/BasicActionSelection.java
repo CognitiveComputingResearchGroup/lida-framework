@@ -156,6 +156,10 @@ public class BasicActionSelection extends FrameworkModuleImpl implements
 		return Collections.unmodifiableCollection(behaviors);
 	}
 	
+	/**
+	 * Gets candidate threshold. This method is intended for testing only.
+	 * @return activation required to be a candidate for selection
+	 */
 	double getThreshold(){
 		return candidateThreshold;
 	}

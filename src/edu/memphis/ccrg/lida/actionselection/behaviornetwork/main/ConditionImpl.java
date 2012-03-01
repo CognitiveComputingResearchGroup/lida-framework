@@ -12,6 +12,7 @@ import edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl;
  */
 public class ConditionImpl extends ActivatibleImpl implements Condition {
 
+	@SuppressWarnings("unused")
 	private double desirability;
 	private Object id;
 	private double weight = 1.0;

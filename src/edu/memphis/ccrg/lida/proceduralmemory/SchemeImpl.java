@@ -19,6 +19,7 @@ import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Condition;
 import edu.memphis.ccrg.lida.framework.shared.RootableNode;
 import edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
+import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryImpl.ConditionType;
 
 /**
  * Default implementation of {@link Scheme}
@@ -188,36 +189,35 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 	}
 
 	@Override
-	public boolean addContextCondition(Condition c) {
+	public boolean addCondition(Condition c,ConditionType type) {
 		boolean wasAdded = false;
-		Condition stored = pm.addContextReference(this,c);
-		if(stored != null){
-			wasAdded = (context.put(c.getConditionId(),c) == null);
+		Condition condition = pm.addCondition(c);
+		if(condition != null){
+			Map<Object,Condition> map = null;
+			switch(type){
+				case CONTEXT:
+					map = context;
+					break;
+				case ADDINGLIST:
+					map = addingList;
+					break;
+				case DELETINGLIST:
+					map = deletingList;
+					break;
+				case NEGATEDCONTEXT:
+					break;
+			}
+			if(map != null){
+				wasAdded = (map.put(condition.getConditionId(),condition) == null);
+			}
 			if(!wasAdded){
-				logger.log(Level.WARNING, "Error adding context condition {1}. Condition added to ProceduralMemory but not to Scheme.", 
+				logger.log(Level.WARNING, "Error adding condition {1}. Condition added to ProceduralMemory but not to Scheme.", 
 						new Object[]{TaskManager.getCurrentTick(),c});
+			}else{
+				pm.indexScheme(this,condition,type);
 			}
 		}
 		return wasAdded;
-	}
-
-	@Override
-	public boolean addToAddingList(Condition c) {
-		boolean wasAdded = false;
-		Condition stored = pm.addAddingCondition(this,c);
-		if(stored != null){
-			wasAdded = (addingList.put(c.getConditionId(),c) == null);
-			if(!wasAdded){
-				logger.log(Level.WARNING, "Error adding adding condition {1}. Condition added to ProceduralMemory but not to Scheme.", 
-						new Object[]{TaskManager.getCurrentTick(),c});
-			}
-		}
-		return wasAdded;		
-	}
-
-	@Override
-	public boolean addToDeletingList(Condition c) {
-		return (deletingList.put(c.getConditionId(),c) == null);
 	}
 
 	@Override

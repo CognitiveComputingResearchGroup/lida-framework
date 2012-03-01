@@ -17,6 +17,7 @@ import java.util.Collection;
 import edu.memphis.ccrg.lida.actionselection.Action;
 import edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl;
 import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
+import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryImpl.ConditionType;
 
 /**
  * Default implementation of {@link Behavior}
@@ -69,21 +70,6 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior{
 		return getLabel() + "-" + getId();
 	}
 	
-	//ProceduralUnit methods
-	@Override
-	public boolean addContextCondition(Condition c) {
-		throw new UnsupportedOperationException("Cannot modify a Behavior, only a Scheme");
-	}
-
-	@Override
-	public boolean addToAddingList(Condition c) {
-		throw new UnsupportedOperationException("Cannot modify a Behavior, only a Scheme");
-	}
-
-	@Override
-	public boolean addToDeletingList(Condition c) {
-		throw new UnsupportedOperationException("Cannot modify a Behavior, only a Scheme");
-	}
 	
 	@Override
 	public void setAction(Action a) {
@@ -178,6 +164,11 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior{
 	@Override
 	public double getAverageContextActivation() {
 		return scheme.getAverageContextActivation();
+	}
+
+	@Override
+	public boolean addCondition(Condition c, ConditionType type) {
+		throw new UnsupportedOperationException("Method not supported");
 	}
 
 //	@Override

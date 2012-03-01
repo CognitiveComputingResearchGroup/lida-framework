@@ -22,6 +22,7 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.shared.activation.Learnable;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl;
+import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryImpl.ConditionType;
 
 /**
  * Basic {@link ProceduralMemory} {@link Initializer} which reads 
@@ -76,10 +77,10 @@ public class BasicProceduralMemoryInitializer implements Initializer {
 	    			s.setLabel(label);
 	    			s.setBaseLevelActivation(bla);
 	    			for(Node n : contextNS.getNodes()){
-	    				s.addContextCondition(n);
+	    				s.addCondition(n,ConditionType.CONTEXT);
 	    			}
 	    			for(Node n : resultNS.getNodes()){
-	    				s.addToAddingList(n);
+	    				s.addCondition(n, ConditionType.ADDINGLIST);
 	    			}	    	        
 	    		}else{
 	    			logger.log(Level.WARNING, 

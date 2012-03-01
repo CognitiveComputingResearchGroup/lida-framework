@@ -1,5 +1,6 @@
 package edu.memphis.ccrg.lida.proceduralmemory;
 
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -14,29 +15,77 @@ import org.junit.Test;
 import edu.memphis.ccrg.lida.actionselection.Action;
 import edu.memphis.ccrg.lida.actionselection.ActionImpl;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Condition;
+import edu.memphis.ccrg.lida.framework.mockclasses.MockTaskSpawner;
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
+import edu.memphis.ccrg.lida.framework.shared.ExtendedId;
 import edu.memphis.ccrg.lida.framework.shared.Node;
+import edu.memphis.ccrg.lida.framework.shared.NodeImpl;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.shared.RootableNode;
+import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
+import edu.memphis.ccrg.lida.globalworkspace.Coalition;
+import edu.memphis.ccrg.lida.globalworkspace.CoalitionImpl;
+import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryImpl.ConditionType;
 
 public class ProceduralMemoryImplTest {
 
 	private static final ElementFactory factory = ElementFactory.getInstance();
-	private ProceduralMemory pm;
+	private ProceduralMemoryImpl pm;
 	private Scheme s1, s2, s3;
 	private Condition c1, c2, c3, c4;
+	private MockTaskSpawner mockTs;
 	
 	@Before
 	public void setUp() throws Exception {
+		mockTs = new MockTaskSpawner();
 		pm = new ProceduralMemoryImpl();
+		pm.setAssistingTaskSpawner(mockTs);
 		c1 = factory.getNode("NodeImpl","c1");
 		c2 = factory.getNode("RootableNodeImpl","c2");
 		c3 = factory.getNode("NodeImpl","c3");
 		c4 = factory.getNode("RootableNodeImpl","c4");
-		s1 = new SchemeImpl("s1", new ActionImpl("action1"));
-		s2 = new SchemeImpl("s2", new ActionImpl("action2"));
-		s3 = new SchemeImpl("s3", new ActionImpl("action3"));
+		
+		Action a = new ActionImpl("action1");		
+		s1 = pm.getNewScheme(a);
+		s1.setLabel("s1");
+		
+		a = new ActionImpl("action2");
+		s2 = pm.getNewScheme(a);
+		s2.setLabel("s2");
+		
+		a = new ActionImpl("action3");
+		s3 = pm.getNewScheme(a);
+		s3.setLabel("s3");
+	}
+	
+	@Test
+	public void testGetNewScheme(){
+		Action a = new ActionImpl("action1");		
+		Scheme s = pm.getNewScheme(a);
+		assertNotNull(s);
+		assertEquals(a, s.getAction());
+		assertTrue(pm.containsScheme(s));
+	}
+	
+	@Test
+	public void testGetNewScheme2(){
+		Action a = new ActionImpl("action1");		
+		Scheme s = pm.getNewScheme(a);
+		assertNotNull(s);
+		assertEquals(a, s.getAction());
+		assertTrue(pm.containsScheme(s));
+		
+		s.addCondition(c1, ConditionType.CONTEXT);	
+		s.addCondition(c2, ConditionType.ADDINGLIST);
+		
+		pm.addCondition(c3);
+		Node duplicateCondition = new NodeImpl();
+		duplicateCondition.setId(((ExtendedId) c3.getConditionId()).getSourceNodeId());
+		s.addCondition(duplicateCondition, ConditionType.CONTEXT);
+		Condition actual = s.getContextCondition(c3.getConditionId());
+		assertEquals(c3, actual);
+		assertNotSame(duplicateCondition, actual);
 	}
 
 	@Test
@@ -48,8 +97,8 @@ public class ProceduralMemoryImplTest {
 		
 		c1.setActivation(0.89);
 		c2.setActivation(0.89);
-		s1.addContextCondition(c1);
-		s1.addToAddingList(c2);
+		s1.addCondition(c1,ConditionType.CONTEXT);
+		s1.addCondition(c2, ConditionType.ADDINGLIST);
 		NodeStructure ns = new NodeStructureImpl();
 		ns.addDefaultNode((Node) c1);
 		ns.addDefaultNode((Node) c2);
@@ -57,8 +106,8 @@ public class ProceduralMemoryImplTest {
 		
 		c1.setActivation(0.9);
 		c2.setActivation(0.89);
-		s1.addContextCondition(c1);
-		s1.addToAddingList(c2);
+		s1.addCondition(c1,ConditionType.CONTEXT);
+		s1.addCondition(c2, ConditionType.ADDINGLIST);
 		ns = new NodeStructureImpl();
 		ns.addDefaultNode((Node) c1);
 		ns.addDefaultNode((Node) c2);
@@ -71,8 +120,8 @@ public class ProceduralMemoryImplTest {
 		c1.setActivation(1.0);
 		c2.setActivation(0.0);
 		((RootableNode) c2).setDesirability(0.89);
-		s1.addContextCondition(c1);
-		s1.addToAddingList(c2);
+		s1.addCondition(c1,ConditionType.CONTEXT);
+		s1.addCondition(c2, ConditionType.ADDINGLIST);
 		ns = new NodeStructureImpl();
 		ns.addDefaultNode((Node) c1);
 		ns.addDefaultNode((Node) c2);
@@ -81,8 +130,8 @@ public class ProceduralMemoryImplTest {
 		c1.setActivation(1.0);
 		c2.setActivation(0.0);
 		((RootableNode) c2).setDesirability(0.9);
-		s1.addContextCondition(c1);
-		s1.addToAddingList(c2);
+		s1.addCondition(c1,ConditionType.CONTEXT);
+		s1.addCondition(c2, ConditionType.ADDINGLIST);
 		ns = new NodeStructureImpl();
 		ns.addDefaultNode((Node) c1);
 		ns.addDefaultNode((Node) c2);
@@ -90,58 +139,54 @@ public class ProceduralMemoryImplTest {
 	}
 	
 	@Test
-	public void testSendInstantiatedScheme() {
+	public void testCreateInstantiation() {
 		MockProceduralMemoryListener listener = new MockProceduralMemoryListener();
 		pm.addListener(listener);
-		Action a = new ActionImpl();
-		Scheme s = new SchemeImpl("foo", a);
 		
-		pm.createInstantiation(s);
-		
-		assertEquals(listener.behavior.getAction(), a);
-		assertEquals(listener.behavior.getLabel(), "foo");
-	}
-
-	@Test
-	public void testAddScheme() {
-		fail("Not yet implemented");
-	}
-	
-	@Test
-	public void testAddSchemes() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testAddCondition() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testGetCondition() {
-		fail("Not yet implemented");
+		pm.createInstantiation(s1);
+		assertEquals(s1, listener.behavior.getGeneratingScheme());
 	}
 
 	@Test
 	public void testReceiveBroadcast() {
-		fail("Not yet implemented");
+		NodeStructure ns = new NodeStructureImpl();
+		c1.setActivation(0.5);
+		ns.addDefaultNode((Node) c1);
+		Coalition coal = new CoalitionImpl(ns, null);
+		
+		pm.receiveBroadcast(coal);
+		
+		assertEquals(1, mockTs.tasks.size());
+		assertEquals(0, pm.getBroadcastBuffer().getLinkableCount());
+		assertEquals(0, pm.getConditionPool().size());
 	}
-
+	
 	@Test
-	public void testLearn() {
-		fail("Not yet implemented");
+	public void testReceiveBroadcast1() {
+		NodeStructure ns = new NodeStructureImpl();
+		c1.setActivation(0.5);
+		ns.addDefaultNode((Node) c1);
+		Coalition coal = new CoalitionImpl(ns, null);
+		s1.addCondition(c1, ConditionType.CONTEXT);
+		
+		pm.receiveBroadcast(coal);
+		
+		NodeStructure bb = pm.getBroadcastBuffer();
+		assertEquals(1, mockTs.tasks.size());
+		assertEquals(1, bb.getLinkableCount());
+		assertEquals(1, pm.getConditionPool().size());
+		assertEquals(c1,bb.getNode(((Node)c1).getId()));
 	}
-
+	
 	@Test
 	public void testActivateSchemes() {
 		fail("Not yet implemented");
 	}
 
-
 	@Test
-	public void testCreateInstantiation() {
-		fail("Not yet implemented");
+	public void testLearn() {
 	}
+
 
 	@Test
 	public void testDecayModule() {

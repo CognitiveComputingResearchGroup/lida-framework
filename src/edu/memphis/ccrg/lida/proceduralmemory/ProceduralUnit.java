@@ -6,6 +6,7 @@ import edu.memphis.ccrg.lida.actionselection.Action;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Condition;
 import edu.memphis.ccrg.lida.framework.shared.activation.Activatible;
+import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryImpl.ConditionType;
 
 /**
  * An abstraction of the commonality between {@link Scheme} and {@link Behavior}
@@ -38,9 +39,12 @@ public interface ProceduralUnit extends Activatible{
 	 * Adds the context condition.
 	 * 
 	 * @param c the condition
+	 * @param type the usage type of the condition
 	 * @return true, if successful
+	 * 
+	 * @see ConditionType
 	 */
-	public boolean addContextCondition(Condition c);
+	public boolean addCondition(Condition c, ConditionType type);
 	
 	/**
 	 * Returns whether {@link ProceduralUnit} contains specified context condition.
@@ -78,15 +82,7 @@ public interface ProceduralUnit extends Activatible{
 	 * @return the adding list
 	 */
 	public Collection<Condition> getAddingList();
-	
-	/**
-	 * Adds the to adding list.
-	 * 
-	 * @param c the condition
-	 * @return true, if successful
-	 */
-	public boolean addToAddingList(Condition c);
-	
+		
 	/**
 	 * Contains adding item.
 	 * 
@@ -108,14 +104,6 @@ public interface ProceduralUnit extends Activatible{
 	 * @return the deleting list
 	 */
 	public Collection<Condition> getDeletingList();	
-	
-	 /**
-	 * Adds the to deleting list.
-	 * 
-	 * @param c the delete condition
-	 * @return true, if successful
-	 */
-    public boolean addToDeletingList(Condition c);
     
     /**
 	 * Contains deleting item.

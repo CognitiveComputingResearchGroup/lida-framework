@@ -73,6 +73,8 @@ public class CoalitionImpl extends ActivatibleImpl implements Coalition {
         int contentSize = ns.getLinkableCount();
         if(contentSize != 0 && creatingAttentionCodelet != null){
         	setActivation(creatingAttentionCodelet.getBaseLevelActivation() * sum / contentSize);
+        }else{
+        	//TODO log and split boolean expr.
         }
     }
 

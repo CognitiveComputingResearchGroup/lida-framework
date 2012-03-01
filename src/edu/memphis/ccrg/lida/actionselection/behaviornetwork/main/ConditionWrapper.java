@@ -13,6 +13,7 @@ import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
  */
 public class ConditionWrapper implements Condition {
 
+	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(ConditionWrapper.class.getCanonicalName());
 	
 	private Condition c;

@@ -26,9 +26,9 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 public interface ProceduralMemory extends FrameworkModule {
 	
 	/**
-	 * Gets a new {@link Scheme} with specified {@link Action}
-	 * @param a the Scheme's action
-	 * @return a new {@link Scheme} 
+	 * Gets a new {@link Scheme} having specified {@link Action}.
+	 * @param a an {@link Action}
+	 * @return a new {@link Scheme} with {@link Action} a 
 	 */
 	public Scheme getNewScheme(Action a);
 	
@@ -63,19 +63,18 @@ public interface ProceduralMemory extends FrameworkModule {
 	public void activateSchemes();
 	
 	/**
-	 * A call-back method to determine if the Scheme s should be instantiated.
-	 * This method can be overidden by the user to provide custom functionality.
+	 * A call-back method to determine if the {@link Scheme} s should be instantiated.
+	 * This method can be overidden by subclasses to provide custom functionality.
 	 * @param s the {@link Scheme} to be checked
-	 * @param broadcastBuffer the buffer in {@link ProceduralMemory} containing recent broadcast Nodes 
+	 * @param broadcastBuffer the {@link NodeStructure} in {@link ProceduralMemory} containing recent broadcast 
 	 * @return true if the {@link Scheme} should be instantiated, false otherwise.
 	 */
 	public boolean shouldInstantiate(Scheme s, NodeStructure broadcastBuffer);
 	
 	/**
-	 * Instantiates specified {@link Scheme}.
+	 * Instantiates specified {@link Scheme} .
 	 * @param s a {@link Scheme} over instantiation threshold
-	 * @return a {@link Behavior}
+	 * @return a {@link Behavior}, an instantiation of {@link Scheme} s 
 	 */
 	public Behavior createInstantiation(Scheme s);
-
 }
