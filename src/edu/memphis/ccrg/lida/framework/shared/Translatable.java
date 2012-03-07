@@ -16,7 +16,13 @@ import cern.colt.bitvector.BitVector;
  */
 public interface Translatable {
     
+    /**
+     * @param vector BitVector
+     */
     public void setSdmId(BitVector vector);
     
+    /**
+     * @return BitVector
+     */
     public BitVector getSdmId();
 }

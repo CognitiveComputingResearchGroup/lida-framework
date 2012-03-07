@@ -31,7 +31,8 @@ public class HyperdimensionalTranslator extends BasicTranslator {
 //    private PerceptualAssociativeMemory pam;
         
     /** Vector used to map into the sets region of the space. */
-    private BitVector setVector;
+    @SuppressWarnings("unused")
+	private BitVector setVector;
     
     private Map<BitVector, Translatable> bvLookUpMap
             = new ConcurrentHashMap<BitVector, Translatable>();
@@ -51,6 +52,11 @@ public class HyperdimensionalTranslator extends BasicTranslator {
         super(size, pam);
     }
     
+    /**
+     * @param size
+     * @param pam
+     * @param setVector
+     */
     public HyperdimensionalTranslator(int size, PerceptualAssociativeMemory pam,
             BitVector setVector) {
         super(size, pam);

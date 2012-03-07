@@ -45,23 +45,37 @@ public class PamLinkImpl extends LinkImpl implements PamLink {
 	}
 	/**
 	 * Copy constructor
-	 * @param pamLink source {@link PamLinkImpl}
+	 * @param pl source {@link PamLinkImpl}
 	 */
-	public PamLinkImpl(PamLinkImpl pamLink) {
-		super(pamLink);
+	public PamLinkImpl(PamLinkImpl pl) {
+		super(pl);
 		groundingPamLink = this;
-		this.learnable=new LearnableImpl((LearnableImpl)pamLink.learnable);
+		learnable=new LearnableImpl((LearnableImpl)pl.learnable);
 	}
 
 	/** 
-	 * Calls the {@link #init()} of the internal {@link Learnable}
+	 * Must call the {@link #init()} of the internal {@link Learnable}.
 	 * @see LearnableImpl#init()
+	 * @see ElementFactory#getLink(String, edu.memphis.ccrg.lida.framework.shared.Node, edu.memphis.ccrg.lida.framework.shared.Linkable, edu.memphis.ccrg.lida.framework.shared.LinkCategory, String, String, double, double)
 	 */
 	@Override
 	public void init(){
 		learnable.init(getParameters());
 	}
 
+	//LINK
+	@Override
+	public void updateLinkValues(Link link) {
+		if(link instanceof PamLinkImpl){
+			PamLinkImpl pl = (PamLinkImpl) link;
+			learnable.setBaseLevelActivation(pl.getBaseLevelActivation());           
+		}else if(link != null){
+			logger.log(Level.FINEST, "Cannot set PamLinkImpl-specific values. Required: {1} \n Received: {2}",
+					new Object[]{TaskManager.getCurrentTick(),PamLinkImpl.class.getCanonicalName(),link.getClass()});
+		}
+	}
+
+	//OBJECT
 	@Override
 	public boolean equals(Object obj) {
 		if(obj instanceof PamLinkImpl){
@@ -70,6 +84,7 @@ public class PamLinkImpl extends LinkImpl implements PamLink {
 		}
 		return false;	
 	}
+	
 	@Override
 	public int hashCode() { 
 	    return getExtendedId().hashCode();
@@ -197,17 +212,5 @@ public class PamLinkImpl extends LinkImpl implements PamLink {
 	@Override
 	public void setTotalActivationStrategy(TotalActivationStrategy strategy) {
 		learnable.setTotalActivationStrategy(strategy);
-	}
-	
-	@Override
-	public void updateLinkValues(Link link) {
-		if(link instanceof PamLinkImpl){
-			PamLinkImpl pl = (PamLinkImpl) link;
-			this.learnable = new LearnableImpl((LearnableImpl)pl.learnable);
-		}else if(link != null){
-			logger.log(Level.FINEST, "Cannot set PamLinkImpl-specific values. Required: {1} \n Received: {2}",
-					new Object[]{TaskManager.getCurrentTick(),PamLinkImpl.class.getCanonicalName(),link.getClass()});
-		}
-	}
-	
+	}	
 }

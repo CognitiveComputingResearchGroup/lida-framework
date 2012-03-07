@@ -81,32 +81,7 @@ public class PerceptualAssociativeMemoryImplTest {
 		node3 = (PamNodeImpl) factory.getNode("PamNodeImpl", "Node 3");
 		decayStrategy = new SigmoidDecayStrategy();
 		exciteStrat = new SigmoidExciteStrategy();
-		tas = new TotalActivationStrategy() {
-			@Override
-			public double calculateTotalActivation(double bla, double ca) {
-				return 0;
-			}
-			@Override
-			public Object getParam(String name, Object defaultValue) {
-				return null;
-			}
-			@Override
-			public void init(Map<String, ?> parameters) {
-			}
-			@Override
-			public void init() {
-			}
-			@Override
-			public Map<String, ?> getParameters() {
-				return null;
-			}
-			@Override
-			public boolean containsParameter(String key) {
-				// TODO Auto-generated method stub
-				return false;
-			}
-		};
-		
+		tas = (TotalActivationStrategy) factory.getStrategy("DefaultTotalActivation");		
 		link1 = (PamLinkImpl) factory.getLink("PamLinkImpl", node1, node2, PerceptualAssociativeMemoryImpl.NONE);
 		link2 = (PamLinkImpl) factory.getLink("PamLinkImpl", node2, node3, PerceptualAssociativeMemoryImpl.NONE);
 	}
@@ -121,9 +96,9 @@ public class PerceptualAssociativeMemoryImplTest {
 		
 		PamNode res = pam.addDefaultNode(node2);
 		
-		assertTrue(res.getBaseLevelActivation()== node2.getBaseLevelActivation());
-		assertEquals(res.getTotalActivationStrategy(), node2.getTotalActivationStrategy());
-		assertTrue(res.getLearnableRemovalThreshold()== node2.getLearnableRemovalThreshold());
+		assertEquals(node2.getBaseLevelActivation(),res.getBaseLevelActivation(),epsilon);
+		assertEquals(node2.getTotalActivationStrategy(),res.getTotalActivationStrategy());
+		assertEquals(node2.getLearnableRemovalThreshold(),res.getLearnableRemovalThreshold(),epsilon);
 	}
 	
 	/**

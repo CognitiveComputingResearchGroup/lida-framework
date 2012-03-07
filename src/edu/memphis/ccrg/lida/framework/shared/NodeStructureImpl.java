@@ -171,9 +171,8 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 						new Object[]{TaskManager.getCurrentTick(),type});
 			}
 		} else if(type.equals(node.getFactoryType())){
-			double newActivation = n.getActivation();
-			if (node.getActivation() < newActivation) {
-				node.setActivation(newActivation);
+			if (node.getActivation() < n.getActivation()) {
+				node.setActivation(n.getActivation());
 			}
 			node.updateNodeValues(n);
 		} else {
@@ -181,6 +180,22 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 						new Object[]{TaskManager.getCurrentTick(),n,type,node,node.getFactoryType()});
 		}
 		return node;
+	}
+	
+	public synchronized Node addDefaultNode(String label, double a, double rt){
+		return addNode(defaultNodeType, label, a, rt);
+	}
+	
+	public synchronized Node addNode(String type, String label, double a, double rt){
+		Node n = factory.getNewNode(defaultNodeType, type);
+		if(n != null){
+			n.setLabel(label);
+			n.setActivation(a);
+			n.setActivatibleRemovalThreshold(rt);
+			nodes.put(n.getId(), n);
+			linkableMap.put(n, new HashSet<Link>());
+		}
+		return n;	
 	}
 
 	/**
@@ -289,21 +304,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	@Override
 	public synchronized Link addDefaultLink(int sourceId, ExtendedId sinkId,
 			LinkCategory category, double activation, double removalThreshold) {
-		if(!isConnectionValid(sourceId, sinkId)){
-			return null;
-		}
-		ExtendedId newLinkId = new ExtendedId(sourceId, sinkId, category
-				.getId());
-		Link link = getLink(newLinkId);
-		if (link == null) {
-			Node source = getNode(sourceId);
-			Linkable sink = getLinkable(sinkId);
-			link = generateNewLink(null, defaultLinkType, source, sink, category,
-					activation, removalThreshold, null);
-		}else if(activation > link.getActivation()){
-			link.setActivation(activation);
-		}
-		return link;
+		return addLink(defaultLinkType, sourceId, sinkId, category, activation, removalThreshold);
 	}
 
 	@Override
@@ -322,6 +323,25 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 					activation, removalThreshold, null);
 		}else if(activation > link.getActivation()){
 			link.setActivation(activation);
+		}
+		return link;
+	}
+	
+	public synchronized Link addLink(String type, int srcId, ExtendedId snkId,
+			LinkCategory cat, double a, double rt){
+		if(!isConnectionValid(srcId, snkId)){
+			return null;
+		}
+		ExtendedId newLinkId = new ExtendedId(srcId, snkId, cat
+				.getId());
+		Link link = getLink(newLinkId);
+		if (link == null) {
+			Node source = getNode(srcId);
+			Linkable sink = getLinkable(snkId);
+			link = generateNewLink(null, type, source, sink, cat,
+					a, rt, null);
+		}else if(a > link.getActivation()){
+			link.setActivation(a);
 		}
 		return link;
 	}
@@ -356,6 +376,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 			if(newActivation > link.getActivation()){
 				link.setActivation(newActivation);
 			}
+			link.updateLinkValues(l);
 		}else {
 			logger.log(Level.WARNING, "Cannot add Link {1} of type {2} because another Link {3} having a different type {4} and the same id is already present. Existing Link returned.", 
 					new Object[]{TaskManager.getCurrentTick(),l,type,link,link.getFactoryType()});
@@ -629,11 +650,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	@Override
 	public Collection<Node> getNodes() {
 		Collection<Node> aux = nodes.values();
-		if (aux == null) {
-			return null;
-		} else {
-			return Collections.unmodifiableCollection(aux);
-		}
+		return (aux == null)? null : Collections.unmodifiableCollection(aux);
 	}
 	
 	@Override
@@ -662,11 +679,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	@Override
 	public Collection<Link> getLinks() {
 		Collection<Link> aux = links.values();
-		if (aux == null) {
-			return null;
-		} else {
-			return Collections.unmodifiableCollection(aux);
-		}
+		return (aux == null)? null: Collections.unmodifiableCollection(aux);
 	}
 	
 	@Override
@@ -701,12 +714,12 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	}
 	
 	@Override
-	public Set<Link> getAttachedLinks(Linkable linkable) {
-		if (linkable == null) {
+	public Set<Link> getAttachedLinks(Linkable lnk) {
+		if (lnk == null) {
 			return null;
 		}
 
-		Set<Link> aux = linkableMap.get(linkable);
+		Set<Link> aux = linkableMap.get(lnk);
 		if (aux == null) {
 			return null;
 		} else {
@@ -715,17 +728,17 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	}
 
 	@Override
-	public Set<Link> getAttachedLinks(Linkable linkable, LinkCategory category) {
-		if (linkable == null) {
+	public Set<Link> getAttachedLinks(Linkable lnk, LinkCategory cat) {
+		if (lnk == null) {
 			return null;
 		}
-		Set<Link> temp = linkableMap.get(linkable);
+		Set<Link> temp = linkableMap.get(lnk);
 		if (temp == null) {
 			return null;
 		}
 		Set<Link> attachedLinks = new HashSet<Link>();
 		for (Link l : temp) {
-			if (l.getCategory() == category) {
+			if (l.getCategory() == cat) {
 				attachedLinks.add(l);
 			}
 		}
@@ -862,5 +875,4 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 
 		return true;
 	}
-
 }

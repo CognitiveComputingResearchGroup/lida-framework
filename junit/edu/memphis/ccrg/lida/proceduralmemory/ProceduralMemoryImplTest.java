@@ -460,7 +460,7 @@ public class ProceduralMemoryImplTest {
 		pm.receiveBroadcast(coal);		
 		pm.activateSchemes();
 		
-		assertEquals(s1, listener.behaviors.get(0).getGeneratingScheme());
+		assertSame(s1, listener.behaviors.get(0).getGeneratingScheme());
 		assertEquals(1, listener.behaviors.size());
 	}
 

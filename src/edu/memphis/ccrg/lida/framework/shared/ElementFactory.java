@@ -34,7 +34,6 @@ import edu.memphis.ccrg.lida.pam.PamLinkImpl;
 import edu.memphis.ccrg.lida.pam.PamNodeImpl;
 import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
 
-
 /**
  * Standard factory for the basic elements of the framework. Support for
  * {@link Node}, {@link Link}, {@link FrameworkTask}, and {@link NodeStructure}
@@ -640,13 +639,13 @@ public class ElementFactory {
 			link.init(linkDef.getParams());
 
 		} catch (InstantiationException e) {
-			logger.log(Level.WARNING, "Error creating Link.", TaskManager
+			logger.log(Level.WARNING, "InstantiationException creating Link.", TaskManager
 					.getCurrentTick());
 		} catch (IllegalAccessException e) {
-			logger.log(Level.WARNING, "Error creating Link.", TaskManager
+			logger.log(Level.WARNING, "IllegalAccessException creating Link.", TaskManager
 					.getCurrentTick());
 		} catch (ClassNotFoundException e) {
-			logger.log(Level.WARNING, "Error creating Link.", TaskManager
+			logger.log(Level.WARNING, "ClassNotFoundException creating Link.", TaskManager
 					.getCurrentTick());
 		}
 		return link;
@@ -742,6 +741,35 @@ public class ElementFactory {
 			
 			if(required != null && required.isAssignableFrom(desired)){
 				newNode = getNode(oNode, desiredType);
+			}
+		} catch (ClassNotFoundException exc) {
+//			logger.log(Level.SEVERE, "Cannot find class name", TaskManager.getCurrentTick());
+			exc.printStackTrace();
+		} 
+		return newNode;
+	}
+	
+	public Node getNewNode(String requiredType, String desiredType) {
+		LinkableDef requiredDef = nodeClasses.get(requiredType);
+		if(requiredDef == null){
+			logger.log(Level.WARNING, "Factory does not contain node type: {1}", 
+					new Object[]{TaskManager.getCurrentTick(),requiredType});
+			return null;
+		}
+		LinkableDef desiredDef = nodeClasses.get(desiredType);
+		if(desiredDef == null){
+			logger.log(Level.WARNING, "Factory does not contain node type: {1}", 
+					new Object[]{TaskManager.getCurrentTick(),desiredType});
+			return null;
+		}
+		
+		Node newNode = null;
+		try {
+			Class<?> required = Class.forName(requiredDef.getClassName());
+			Class<?> desired = Class.forName(desiredDef.getClassName());
+			
+			if(required != null && required.isAssignableFrom(desired)){
+				newNode = getNode(desiredType);
 			}
 		} catch (ClassNotFoundException exc) {
 //			logger.log(Level.SEVERE, "Cannot find class name", TaskManager.getCurrentTick());
@@ -877,13 +905,13 @@ public class ElementFactory {
 			setActivatibleStrategies(n, decayStrategy, exciteStrategy);
 			n.init(nodeDef.getParams());
 		} catch (InstantiationException e) {
-			logger.log(Level.WARNING, "Error creating Node.", TaskManager
+			logger.log(Level.WARNING, "InstantiationException creating Node.", TaskManager
 					.getCurrentTick());
 		} catch (IllegalAccessException e) {
-			logger.log(Level.WARNING, "Error creating Node.", TaskManager
+			logger.log(Level.WARNING, "IllegalAccessException creating Node.", TaskManager
 					.getCurrentTick());
 		} catch (ClassNotFoundException e) {
-			logger.log(Level.WARNING, "Error creating Node.", TaskManager
+			logger.log(Level.WARNING, "ClassNotFoundException creating Node.", TaskManager
 					.getCurrentTick());
 		}
 		return n;
@@ -1097,13 +1125,13 @@ public class ElementFactory {
 			}
 			task.init(mergedParams);		
 		} catch (InstantiationException e) {
-			logger.log(Level.WARNING, "Error {1} creating FrameworkTask of type {2}", 
+			logger.log(Level.WARNING, "{1} creating FrameworkTask of type {2}", 
 					new Object[]{TaskManager.getCurrentTick(), e, taskType});
 		} catch (IllegalAccessException e) {
-			logger.log(Level.WARNING, "Error {1} creating FrameworkTask of type {2}", 
+			logger.log(Level.WARNING, "{1} creating FrameworkTask of type {2}", 
 					new Object[]{TaskManager.getCurrentTick(), e, taskType});
 		} catch (ClassNotFoundException e) {
-			logger.log(Level.WARNING, "Error {1} creating FrameworkTask of type {2}", 
+			logger.log(Level.WARNING, "{1} creating FrameworkTask of type {2}", 
 					new Object[]{TaskManager.getCurrentTick(), e, taskType});
 		}
 		return task;
@@ -1144,25 +1172,45 @@ public class ElementFactory {
 	}
 
 	/**
-	 * Returns a new Behavior based on specified {@link Scheme}
+	 * Returns a new Behavior based on specified {@link Scheme} of default behavior type.
 	 * @param s a {@link Scheme} 
-	 * @return a new {@link Behavior} based on the {@link Scheme}
+	 * @return a new {@link Behavior}
 	 */
 	public Behavior getBehavior(Scheme s) {
+		return getBehavior(s, defaultBehaviorClassName);
+	}
+	
+	/**
+	 * Returns a new {@link Behavior} of specified class based on specified {@link Scheme}. 
+	 * @param s the {@link Scheme} generating the behavior.
+	 * @param className qualified name of the desired {@link Behavior} class
+	 * @return a new {@link Behavior}
+	 */
+	public Behavior getBehavior(Scheme s, String className){
+		if(s == null){
+			logger.log(Level.WARNING, "Cannot create a Behavior with null Scheme.", TaskManager
+					.getCurrentTick());
+			return null;
+		}
+		if(className == null){
+			logger.log(Level.WARNING, "Cannot create a Behavior, specified class name is null.", TaskManager
+					.getCurrentTick());
+			return null;
+		}
 		Behavior b = null;
 		try {
-			b = (Behavior) Class.forName(defaultBehaviorClassName).newInstance();
+			b = (Behavior) Class.forName(className).newInstance();
 			b.setId(behaviorIdCount++);
 			b.setGeneratingScheme(s);
 		} catch (InstantiationException e) {
-			logger.log(Level.WARNING, "Error creating Behavior.", TaskManager
-					.getCurrentTick());
+			logger.log(Level.WARNING, "InstantiationException encountered creating object of class {1}.", 
+					new Object[]{TaskManager.getCurrentTick(),className});
 		} catch (IllegalAccessException e) {
-			logger.log(Level.WARNING, "Error creating Behavior.", TaskManager
-					.getCurrentTick());
+			logger.log(Level.WARNING, "IllegalAccessException encountered creating object of class {1}.", 
+					new Object[]{TaskManager.getCurrentTick(),className});
 		} catch (ClassNotFoundException e) {
-			logger.log(Level.WARNING, "Error creating Behavior.", TaskManager
-					.getCurrentTick());
+			logger.log(Level.WARNING, "ClassNotFoundException encountered creating object of class {1}.", 
+					new Object[]{TaskManager.getCurrentTick(),className});
 		}
 		return b;
 	}

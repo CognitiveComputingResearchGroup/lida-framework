@@ -11,6 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import cern.colt.bitvector.BitVector;
+import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeImpl;
 import edu.memphis.ccrg.lida.framework.shared.activation.Learnable;
@@ -35,7 +36,8 @@ public class PamNodeImpl extends NodeImpl implements PamNode {
      */
     private LearnableImpl learnable;
     private BitVector sdmId;
-    private static final int DEFAULT_BITVECTOR_LENGTH = 1000;
+    @SuppressWarnings("unused")
+	private static final int DEFAULT_BITVECTOR_LENGTH = 1000;
 
     /**
      * Default constructor
@@ -48,17 +50,18 @@ public class PamNodeImpl extends NodeImpl implements PamNode {
 
     /**
      * Copy constructor
-     * @param pamNode source {@link PamNodeImpl}
+     * @param pn source {@link PamNodeImpl}
      */
-    public PamNodeImpl(PamNodeImpl pamNode) {
-        super(pamNode);
+    public PamNodeImpl(PamNodeImpl pn) {
+        super(pn);
         groundingPamNode = this;
-        learnable = new LearnableImpl(pamNode.learnable);
+        learnable = new LearnableImpl(pn.learnable);
     }
 
     /** 
-     * Calls the {@link #init()} of the internal {@link Learnable}.
+     * Must call the {@link #init()} of the internal {@link Learnable}.
      * @see LearnableImpl#init()
+     * @see ElementFactory#getNode(String, String, String, String, double, double)
      */
     @Override
     public void init() {
@@ -69,18 +72,17 @@ public class PamNodeImpl extends NodeImpl implements PamNode {
     public void updateNodeValues(Node n) {
         if (n instanceof PamNodeImpl) {
             PamNodeImpl pn = (PamNodeImpl) n;
-            //FIXME
-            learnable = new LearnableImpl(pn.learnable);
-        } else if (n != null) {
+            learnable.setBaseLevelActivation(pn.getBaseLevelActivation());   
+        } else {
             logger.log(Level.FINEST, "Cannot set PamNodeImpl-specific values. Required: {1} \n Received: {2}",
-                    new Object[]{TaskManager.getCurrentTick(), PamNodeImpl.class.getCanonicalName(), n.getClass()});
+                    new Object[]{TaskManager.getCurrentTick(), PamNodeImpl.class.getCanonicalName(), n});
         }
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (obj instanceof PamNodeImpl) {
-            return getId() == ((PamNodeImpl) obj).getId();
+    public boolean equals(Object o) {
+        if (o instanceof PamNodeImpl) {
+            return getId() == ((PamNodeImpl) o).getId();
         }
         return false;
     }
@@ -97,8 +99,8 @@ public class PamNodeImpl extends NodeImpl implements PamNode {
     }
 
     @Override
-    public void setActivation(double activation) {
-        learnable.setActivation(activation);
+    public void setActivation(double a) {
+        learnable.setActivation(a);
     }
 
     @Override

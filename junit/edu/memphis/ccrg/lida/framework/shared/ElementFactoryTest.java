@@ -9,9 +9,10 @@ package edu.memphis.ccrg.lida.framework.shared;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,6 +22,9 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import edu.memphis.ccrg.lida.actionselection.Action;
+import edu.memphis.ccrg.lida.actionselection.ActionImpl;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
 import edu.memphis.ccrg.lida.attentioncodelets.NeighborhoodAttentionCodelet;
 import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.ModuleName;
@@ -45,6 +49,8 @@ import edu.memphis.ccrg.lida.framework.tasks.MockFrameworkTask;
 import edu.memphis.ccrg.lida.pam.PamLinkImpl;
 import edu.memphis.ccrg.lida.pam.PamNode;
 import edu.memphis.ccrg.lida.pam.PamNodeImpl;
+import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryImpl;
+import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
 import edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.BasicStructureBuildingCodelet;
 
 public class ElementFactoryTest {
@@ -708,15 +714,56 @@ public class ElementFactoryTest {
 	}
 	
 	@Test
-	public void testGetInstantiation(){
-		fail("TODO!");
-//		scheme.setBaseLevelActivation(0.99);
-//		scheme.setAction(action);
-//		
-//		Behavior b = scheme.getInstantiation();
-//		assertEquals(scheme, b.getGeneratingScheme());
-//		assertEquals(action, b.getAction());
-//		assertEquals(0.99, b.getActivation(), 0.000001);
+	public void testGetBehavior(){
+		ProceduralMemoryImpl pm = new ProceduralMemoryImpl();
+		Action a = new ActionImpl();
+		Scheme s = pm.getNewScheme(a);
+		Behavior b = factory.getBehavior(s);
+		assertSame(s, b.getGeneratingScheme());
+		Behavior b2 = factory.getBehavior(s);
+		assertNotSame(b,b2);
+		assertSame(b.getGeneratingScheme(),b2.getGeneratingScheme());
+	}
+	
+	@Test
+	public void testGetBehavior0(){
+		ProceduralMemoryImpl pm = new ProceduralMemoryImpl();
+		Action a = new ActionImpl();
+		Scheme s = pm.getNewScheme(a);
+		String name = "edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.BehaviorImpl";
+		Behavior b = factory.getBehavior(s,name);
+		assertSame(s, b.getGeneratingScheme());
+		Behavior b2 = factory.getBehavior(s, name);
+		assertNotSame(b,b2);
+		assertSame(b.getGeneratingScheme(),b2.getGeneratingScheme());
+	}
+	
+	@Test
+	public void testGetBehavior1(){
+		Scheme s = null;
+		String name = "edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.BehaviorImpl";
+		Behavior b = factory.getBehavior(s,name);
+		assertNull(b);
+	}
+	
+	@Test
+	public void testGetBehavior2(){
+		ProceduralMemoryImpl pm = new ProceduralMemoryImpl();
+		Action a = new ActionImpl();
+		Scheme s = pm.getNewScheme(a);
+		String name = "BADNAME.BehaviorImpl";
+		Behavior b = factory.getBehavior(s,name);
+		assertNull(b);
+	}
+	
+	@Test
+	public void testGetBehavior3(){
+		ProceduralMemoryImpl pm = new ProceduralMemoryImpl();
+		Action a = new ActionImpl();
+		Scheme s = pm.getNewScheme(a);
+		String name = null;
+		Behavior b = factory.getBehavior(s,name);
+		assertNull(b);
 	}
 
 }

@@ -226,6 +226,27 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 		PamLink newlink = (PamLink) pamNodeStructure.addDefaultLink(link);
 		return newlink;
 	}
+	
+	public PamNode addNode(String label){
+		return addNode(pamNodeStructure.getDefaultNodeType(), label);
+	}
+	
+	public PamNode addNode(String type, String label){
+		PamNode n = (PamNode) pamNodeStructure.addNode(type, label,0.0,0.0);
+		if(n != null){
+			nodesByLabel.put(n.getLabel(), n);
+		}
+		return n;
+	}
+	
+	public PamLink addPamLink(Node src, Linkable snk, LinkCategory cat){
+		return addPamLink(pamNodeStructure.getDefaultLinkType(), src, snk, cat);
+	}
+	
+	public PamLink addPamLink(String type, Node src, Linkable snk, LinkCategory cat){
+		return (PamLink)pamNodeStructure.addLink(type, src.getId(), snk.getExtendedId(), 
+														cat, 0.0, 0.0);
+	}
 
 	@Override
 	public void addDetectionAlgorithm(DetectionAlgorithm detector) {
@@ -277,7 +298,6 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 
 	//TODO parameter
 	/**
-	 * TODO
 	 */
 	protected static final double DEFAULT_REINFORCEMENT = 0.1;
 	
