@@ -591,9 +591,9 @@ public class ElementFactory {
 	 * @param category
 	 *            Link's category
 	 * @param decayStrategy
-	 *            Link's DecayStrategy
+	 *            Link's {@link DecayStrategy}
 	 * @param exciteStrategy
-	 *            Link's ExciteStrategy
+	 *            Link's {@link ExciteStrategy}
 	 * @param activation
 	 *            initial activation
 	 * @param removalThreshold threshold of activation required to remain active
@@ -630,6 +630,7 @@ public class ElementFactory {
 
 			String className = linkDef.getClassName();
 			link = (Link) Class.forName(className).newInstance();
+			link.setFactoryType(linkType);
 			link.setSource(source);
 			link.setSink(sink);
 			link.setCategory(category);
@@ -743,6 +744,7 @@ public class ElementFactory {
 				newNode = getNode(oNode, desiredType);
 			}
 		} catch (ClassNotFoundException exc) {
+//			logger.log(Level.SEVERE, "Cannot find class name", TaskManager.getCurrentTick());
 			exc.printStackTrace();
 		} 
 		return newNode;
@@ -865,15 +867,15 @@ public class ElementFactory {
 			}
 
 			String className = nodeDef.getClassName();
-			n = (Node) Class.forName(className).newInstance();
+			n = (Node)Class.forName(className).newInstance();
 
-			n.setLabel(nodeLabel);
 			n.setId(nodeIdCount++);
+			n.setFactoryType(nodeType);
+			n.setLabel(nodeLabel);
 			n.setActivation(activation);
 			n.setActivatibleRemovalThreshold(removalThreshold);
 			setActivatibleStrategies(n, decayStrategy, exciteStrategy);
 			n.init(nodeDef.getParams());
-			
 		} catch (InstantiationException e) {
 			logger.log(Level.WARNING, "Error creating Node.", TaskManager
 					.getCurrentTick());

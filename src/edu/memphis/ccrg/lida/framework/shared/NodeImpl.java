@@ -16,26 +16,41 @@ import edu.memphis.ccrg.lida.pam.PamNode;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 
 /**
- * Default {@link Node} Implementation
+ * Default {@link Node} implementation.
  *
  * @author Javier Snaider
+ * @see ElementFactory
  */
 public class NodeImpl extends ActivatibleImpl implements Node {
 
 	private static final Logger logger = Logger.getLogger(NodeImpl.class.getCanonicalName());
-
 	private static final double DEFAULT_WEIGHT = 1.0;
 	
 	private int id;
 	private ExtendedId extendedId;
 	private String label ="Node";
 	private String name;
-	private double desirability;
+	private String factoryName;
+	
 	/**
 	 * {@link PamNode} in {@link PerceptualAssociativeMemory} which grounds this {@link Node}
 	 */
 	protected PamNode groundingPamNode;
 	
+	/**
+	 * @param n the factoryName to set
+	 */
+	public void setFactoryType(String n) {
+		factoryName = n;
+	}
+
+	/**
+	 * @return the factoryName
+	 */
+	public String getFactoryType() {
+		return factoryName;
+	}
+
 	/**
 	 * Default constructor
 	 */
@@ -54,19 +69,19 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 		this.extendedId = n.extendedId;
 		this.groundingPamNode = n.groundingPamNode;
 		this.label=n.label;
-		this.desirability=n.desirability;
 		name = label + "["+id+"]";
-
 	}
 	
 	@Override
 	public ExtendedId getExtendedId() {
 		return extendedId;
 	}
+	
 	@Override
 	public int getId() {
 		return id;
 	}
+	
 	@Override
 	public void setId(int id) {
 		this.id = id;
@@ -146,7 +161,6 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 			id = other.id;
 			extendedId = other.extendedId;
 			label = other.label;
-			desirability = other.desirability;
 			groundingPamNode = other.groundingPamNode;
 		} 
 	}

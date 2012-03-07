@@ -13,12 +13,14 @@ import java.util.logging.Logger;
 import edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.pam.PamLink;
+import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 
 /**
  * A Link that connects a Node to a Linkable (Node or Link).
  * 
  * @author Ryan J. McCall
  * @author Javier Snaider
+ * @see ElementFactory
  */
 public class LinkImpl extends ActivatibleImpl implements Link {
 
@@ -43,9 +45,13 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 	 * Category of this Link.
 	 */
 	private LinkCategory category;
+	/*
+	 * Type of this link in the ElementFactory 
+	 */
+	private String factoryType;
 	
 	/**
-	 * PamLink in PAM that grounds this Link.
+	 * {@link PamLink} in a {@link PerceptualAssociativeMemory} that grounds this Link.
 	 */
 	protected PamLink groundingPamLink;
 	
@@ -220,4 +226,13 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 		}
 	}
 
+	@Override
+	public String getFactoryType() {
+		return factoryType;
+	}
+
+	@Override
+	public void setFactoryType(String t) {
+		factoryType = t;
+	}
 }

@@ -24,7 +24,7 @@ import edu.memphis.ccrg.lida.pam.PamNode;
  * @author Ryan J. McCall
  * 
  */
-public interface Node extends Linkable, Condition{
+public interface Node extends Linkable, Condition {
 	
 	/**
 	 * Returns the grounding PamNode.

@@ -69,6 +69,7 @@ public class PamNodeImpl extends NodeImpl implements PamNode {
     public void updateNodeValues(Node n) {
         if (n instanceof PamNodeImpl) {
             PamNodeImpl pn = (PamNodeImpl) n;
+            //FIXME
             learnable = new LearnableImpl(pn.learnable);
         } else if (n != null) {
             logger.log(Level.FINEST, "Cannot set PamNodeImpl-specific values. Required: {1} \n Received: {2}",

@@ -49,7 +49,7 @@ public class CoalitionImpl extends ActivatibleImpl implements Coalition {
 
     /**
      * Constructs a {@link CoalitionImpl} with specified content that is being created by specified {@link AttentionCodelet}
-     * @param ns conscious content
+     * @param ns the {@link BroadcastContent}
      * @param c The {@link AttentionCodelet} that created this Coalition
      * @see AttentionCodeletImpl
      */

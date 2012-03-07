@@ -251,40 +251,37 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 	 * Assumes Conditions are Nodes only 
 	 */
 	@Override
-	public void receiveBroadcast(Coalition coalition) {
-		NodeStructure ns = (NodeStructure) coalition.getContent();
-		for(Node broadcastNode: ns.getNodes()){		
+	public void receiveBroadcast(Coalition coal) {
+		NodeStructure ns = (NodeStructure) coal.getContent();
+		for(Node bNode: ns.getNodes()){		
 			//For each broadcast node check if it is in the condition pool 
-			//i.e. there is at least 1 scheme that has context or result condition including this node
-			Node conditionNode = (Node) conditionPool.get(broadcastNode.getConditionId());
-			if(conditionNode != null){
-				//If there is such a node check if the Node is already in the broadcast buffer.
-				boolean isNotInBuffer = !broadcastBuffer.containsNode(conditionNode);
-				if(isNotInBuffer){
-					//Adds a reference to the condition Node (from condition pool) 
-					//to the broadcast buffer without copying
-					broadcastBuffer.addNode(conditionNode, false);
+			//i.e. there is at least 1 scheme that has context or result condition equal to the node.
+			Node condition = (Node) conditionPool.get(bNode.getConditionId());
+			if(condition != null){ //won't add any nodes to broadcast buffer that aren't already in the condition pool
+				if(!broadcastBuffer.containsNode(condition)){
+					//Add a reference to the condition pool Node to the broadcast buffer without copying
+					broadcastBuffer.addNode(condition, false);
 				}
 				//Update the activation of the condition-pool/broadcast-buffer node if needed 
-				if(broadcastNode.getActivation() > conditionNode.getActivation() || isNotInBuffer){
-					conditionNode.setActivation(broadcastNode.getActivation());
+				if(bNode.getActivation() > condition.getActivation()){
+					condition.setActivation(bNode.getActivation());
 				}
 				//Update the desirability of the condition-pool/broadcast-buffer node if needed
-				if(broadcastNode instanceof RootableNode){
-					RootableNode uBroadcastNode = (RootableNode) broadcastNode;
-					if(conditionNode instanceof RootableNode){
-						RootableNode uConditionNode = (RootableNode)conditionNode;
-						if(uBroadcastNode.getDesirability() > uConditionNode.getDesirability()||isNotInBuffer){
-							uConditionNode.setDesirability(uBroadcastNode.getDesirability());
+				if(bNode instanceof RootableNode){
+					RootableNode rootableBroadcastNode = (RootableNode) bNode;
+					if(condition instanceof RootableNode){
+						RootableNode rootableCondition = (RootableNode)condition;
+						if(rootableBroadcastNode.getDesirability() > rootableCondition.getDesirability()){
+							rootableCondition.setDesirability(rootableBroadcastNode.getDesirability());
 						}	
 					}else{
 						logger.log(Level.WARNING, "Expected condition to be UnifyingNode but was {1}", 
-								new Object[]{TaskManager.getCurrentTick(),conditionNode.getClass()});
+								new Object[]{TaskManager.getCurrentTick(),condition.getClass()});
 					}
 				}
 			}
 		}	
-		learn(coalition);
+		learn(coal);
 		//Spawn a new task to activate and instantiate relevant schemes.
 		//This task runs only once in the next tick
 		taskSpawner.addTask(new FrameworkTaskImpl() {
@@ -379,10 +376,11 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 		removeFromMap(scheme, scheme.getAddingList(), addingSchemeMap);
 	}
 	
-	private <E> void removeFromMap(Scheme scheme, Collection<E> keys, Map<?, Set<Scheme>> map){
-		for(E key: keys){
-			if(map.containsKey(key)){
-				map.get(key).remove(scheme);
+	private void removeFromMap(Scheme s, Collection<Condition> conditions, Map<Object, Set<Scheme>> map){
+		for(Condition c: conditions){
+			Set<Scheme> schemes = map.get(c.getConditionId());
+			if(schemes != null){
+				schemes.remove(s);
 			}
 		}
 	}

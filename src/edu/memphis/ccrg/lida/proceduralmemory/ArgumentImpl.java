@@ -275,4 +275,16 @@ public class ArgumentImpl implements Argument {
 	@Override
 	public void setNodeType(NodeType t) {
 	}
+
+	@Override
+	public String getFactoryType() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setFactoryType(String n) {
+		// TODO Auto-generated method stub
+		
+	}
 }

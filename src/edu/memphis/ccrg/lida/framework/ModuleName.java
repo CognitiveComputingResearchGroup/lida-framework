@@ -12,13 +12,16 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import edu.memphis.ccrg.lida.attentioncodelets.AttentionCodeletModule;
+import edu.memphis.ccrg.lida.episodicmemory.EpisodicMemory;
+import edu.memphis.ccrg.lida.sensorymemory.SensoryMemory;
+import edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBuffer;
+
 /**
  * Encapsulation of the name of a {@link FrameworkModule}.  Provides several public-static instances by default. 
  * @author Javier Snaider
  * @author Ryan J. McCall
- *
  */
-@SuppressWarnings(value = {"all"})
 public class ModuleName {
 
 	/**
@@ -67,41 +70,90 @@ public class ModuleName {
 		return Collections.unmodifiableCollection(moduleNames.values());
 	}
 
+	/**
+	 * Name of an {@link edu.memphis.ccrg.lida.environment.Environment} module
+	 */
 	public final static ModuleName Environment = new ModuleName("Environment");
+	/**
+	 * Name of a {@link SensoryMemory} module
+	 */
 	public final static ModuleName SensoryMemory = new ModuleName(
 			"SensoryMemory");
+	/**
+	 * Name of a {@link edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory} module
+	 */
 	public final static ModuleName PerceptualAssociativeMemory = new ModuleName(
 			"PerceptualAssociativeMemory");
-
+	/**
+	 * Name of an {@link EpisodicMemory} module
+	 */
 	public final static ModuleName TransientEpisodicMemory = new ModuleName(
 			"TransientEpisodicMemory");
+	/**
+	 * Name of an {@link EpisodicMemory} module
+	 */
 	public final static ModuleName DeclarativeMemory = new ModuleName(
 			"DeclarativeMemory");
-
+	/**
+	 * Name of a {@link edu.memphis.ccrg.lida.workspace.Workspace} module
+	 */
 	public final static ModuleName Workspace = new ModuleName("Workspace");
+	/**
+	 * Name of a {@link WorkspaceBuffer} module
+	 */
 	public final static ModuleName PerceptualBuffer = new ModuleName(
 			"PerceptualBuffer");
+	/**
+	 * Name of a {@link WorkspaceBuffer} module
+	 */
 	public final static ModuleName EpisodicBuffer = new ModuleName(
 			"EpisodicBuffer");
+	/**
+	 * Name of a {@link edu.memphis.ccrg.lida.workspace.workspacebuffers.BroadcastQueue} module
+	 */
 	public final static ModuleName BroadcastQueue = new ModuleName(
 			"BroadcastQueue");
-
+	/**
+	 * Name of a {@link WorkspaceBuffer} module
+	 */
 	public final static ModuleName CurrentSituationalModel = new ModuleName(
 			"CurrentSituationalModel");
-
+	/**
+	 * Name of an {@link AttentionCodeletModule} 
+	 */
 	public final static ModuleName AttentionModule = new ModuleName(
 			"AttentionModule");
+	/**
+	 * Name of a {@link edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.StructureBuildingCodeletModule} 
+	 */
 	public final static ModuleName StructureBuildingCodeletModule = new ModuleName(
 			"StructureBuildingCodeletModule");
+	/**
+	 * Name of a {@link edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace} module
+	 */
 	public final static ModuleName GlobalWorkspace = new ModuleName(
 			"GlobalWorkspace");
-
+	/**
+	 * Name of a {@link edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemory} module
+	 */
 	public final static ModuleName ProceduralMemory = new ModuleName(
 			"ProceduralMemory");
+	/**
+	 * Name of an {@link edu.memphis.ccrg.lida.actionselection.ActionSelection} module
+	 */
 	public final static ModuleName ActionSelection = new ModuleName(
 			"ActionSelection");
+	/**
+	 * Name of a {@link edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorMemory} module
+	 */
 	public final static ModuleName SensoryMotorMemory = new ModuleName(
 			"SensoryMotorMemory");
+	/**
+	 * Name of an {@link Agent} module
+	 */
 	public final static ModuleName Agent = new ModuleName("Agent");
+	/**
+	 * Name of an unnamed module
+	 */
 	public final static ModuleName UnnamedModule = new ModuleName("UnnamedModule");
 }

@@ -148,34 +148,37 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	}
 
 	@Override
-	public synchronized Node addNode(Node n, String nodeType) {
+	public synchronized Node addNode(Node n, String type) {
 		if (n == null) {
 			logger.log(Level.WARNING, "Cannot add null", TaskManager
 					.getCurrentTick());
 			return null;
 		}
-		if (!factory.containsNodeType(nodeType)) {
+		if (!factory.containsNodeType(type)) {
 			logger.log(Level.WARNING,
 							"Factory does not contain node type {1}. Check that type is defined in factoryData.xml. Node {2} not added",
-							new Object[]{TaskManager.getCurrentTick(),nodeType,n});
+							new Object[]{TaskManager.getCurrentTick(),type,n});
 			return null;
 		}
 		Node node = nodes.get(n.getId());
 		if (node == null) {
-			node = getNewNode(n, nodeType);
+			node = getNewNode(n, type);
 			if (node != null) {
 				nodes.put(node.getId(), node);
 				linkableMap.put(node, new HashSet<Link>());
 			} else {
 				logger.log(Level.WARNING, "Could not create new node of type: {1} ",
-						new Object[]{TaskManager.getCurrentTick(),nodeType});
+						new Object[]{TaskManager.getCurrentTick(),type});
 			}
-		} else {
+		} else if(type.equals(node.getFactoryType())){
 			double newActivation = n.getActivation();
 			if (node.getActivation() < newActivation) {
 				node.setActivation(newActivation);
-				node.updateNodeValues(node);
 			}
+			node.updateNodeValues(n);
+		} else {
+			logger.log(Level.WARNING, "Cannot add Node {1} of type {2} because another Node {3} having a different type {4} and the same id is already present. Existing Node returned.", 
+						new Object[]{TaskManager.getCurrentTick(),n,type,node,node.getFactoryType()});
 		}
 		return node;
 	}
@@ -349,8 +352,13 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 			}
 			link = generateNewLink(l,type,newSource,newSink,l.getCategory(),
 					newActivation, l.getActivatibleRemovalThreshold(), l.getGroundingPamLink());
-		} else if(newActivation > link.getActivation()){
-			link.setActivation(newActivation);
+		} else if(type.equals(link.getFactoryType())){
+			if(newActivation > link.getActivation()){
+				link.setActivation(newActivation);
+			}
+		}else {
+			logger.log(Level.WARNING, "Cannot add Link {1} of type {2} because another Link {3} having a different type {4} and the same id is already present. Existing Link returned.", 
+					new Object[]{TaskManager.getCurrentTick(),l,type,link,link.getFactoryType()});
 		}
 		return link;
 	}
@@ -493,20 +501,22 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 			return;
 		}
 		// Add nodes
-		addDefaultNodes(ns.getNodes());
+		for(Node n: ns.getNodes()){
+			addNode(n, n.getFactoryType());
+		}
 
 		Collection<Link> cl = ns.getLinks();
 		// Add simple links
 		for (Link l : cl) {
 			if (l.isSimpleLink()) {
-				addDefaultLink(l);
+				addLink(l,l.getFactoryType());
 			}
 		}
 
 		// Add complex links
 		for (Link l : cl) {
 			if (l.isSimpleLink() == false) {
-				addDefaultLink(l);
+				addLink(l,l.getFactoryType());
 			}
 		}
 	}

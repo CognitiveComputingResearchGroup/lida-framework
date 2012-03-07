@@ -14,6 +14,7 @@ import edu.memphis.ccrg.lida.framework.shared.activation.Activatible;
  * A object that can have links attached to it.
  * 
  * @author Javier Snaider
+ * @author Ryan J. McCall
  */
 public interface Linkable extends Activatible, Initializable {
 
@@ -30,5 +31,19 @@ public interface Linkable extends Activatible, Initializable {
 	 * @return a general id for Linkables.
 	 */
 	public ExtendedId getExtendedId();
+	
+    /**
+     * Gets factory type
+     * @return the factory type of the Linkable 
+     * @see ElementFactory
+     */
+    public String getFactoryType();
+    
+    /**
+     * Sets factory type
+     * @param t the factory type of the Linkable
+     * @see ElementFactory
+     */
+    public void setFactoryType(String t);
 
 }

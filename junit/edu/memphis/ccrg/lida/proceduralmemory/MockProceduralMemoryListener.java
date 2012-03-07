@@ -7,15 +7,20 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.proceduralmemory;
 
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
+import java.util.ArrayList;
+import java.util.List;
 
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
 
 public class MockProceduralMemoryListener implements ProceduralMemoryListener {
 
-	public Behavior behavior;
+	public List<Behavior> behaviors = new ArrayList<Behavior>();
+	public int timesCalled;
+	
 	@Override
-	public void receiveBehavior(Behavior behavior) {
-		this.behavior = behavior;
+	public void receiveBehavior(Behavior b) {
+		timesCalled++;
+		behaviors.add(b);
 	}
 
 }
