@@ -45,6 +45,14 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 	private Map<Object,Condition> deletingList = new ConcurrentHashMap<Object,Condition>();
 //	private Map<Object,Condition> negContext = new ConcurrentHashMap<Object,Condition>();
 	private ProceduralMemoryImpl pm;
+	/*
+	 * The weight of the context in the calculation of scheme salience
+	 */
+	private static double contextWeight = 1.0;
+	/*
+	 * The weight of the adding list in the calculation of scheme salience
+	 */
+	private static double addingListWeight = 1.0;
 
 	/**
 	 * Constructs a new scheme with default values
@@ -122,8 +130,12 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 		return innate;
 	}
 	
-	@Override
-	public double getAverageContextActivation(){
+
+	/**
+	 * Gets the average activation of this unit's context conditions.
+	 * @return average activation of unit's context
+	 */
+	protected double getAverageContextActivation(){
 		if(context.size() == 0){
 			return 0.0;
 		}
@@ -134,9 +146,12 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 		}
 		return aggregateActivation / context.size();
 	}
-	
-	@Override
-	public double getAverageAddingListNetDesirability(){
+		
+	/**
+	 * Gets the average net desirability of this unit's adding list
+	 * @return average net desirability of this unit's adding list
+	 */
+	protected double getAverageAddingListNetDesirability(){
 		int numConditions = 0;
 		double aggregateNetDesirability = 0.0;
 		for(Condition c: addingList.values()){
@@ -155,7 +170,9 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 	
 	@Override
 	public double getActivation(){
-		return (getAverageContextActivation()+getAverageAddingListNetDesirability())/2;
+		double overallSalience = contextWeight * getAverageContextActivation()+
+									addingListWeight * getAverageAddingListNetDesirability();
+		return (overallSalience > 1.0)? 1.0 :overallSalience;		
 	}
 	
 	//Learnable override
@@ -336,5 +353,41 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 	@Override
 	public String toString(){
 		return getLabel() + "-" + getId();
+	}
+
+	/**
+	 * @param w the contextWeight to set
+	 */
+	static void setContextWeight(double w) {
+		if(w >= 0.0){
+			SchemeImpl.contextWeight = w;
+		}else{
+			logger.log(Level.WARNING, "Context weight must be positive", TaskManager.getCurrentTick());
+		}
+	}
+
+	/**
+	 * @return the contextWeight
+	 */
+	static double getContextWeight() {
+		return contextWeight;
+	}
+
+	/**
+	 * @param w the addingListWeight to set
+	 */
+	static void setAddingListWeight(double w) {
+		if(w >= 0.0){
+			SchemeImpl.addingListWeight = w;
+		}else{
+			logger.log(Level.WARNING, "Adding list weight must be positive", TaskManager.getCurrentTick());
+		}
+	}
+
+	/**
+	 * @return the addingListWeight
+	 */
+	static double getAddingListWeight() {
+		return addingListWeight;
 	}
 }

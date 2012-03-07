@@ -124,11 +124,7 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 	 */
 	private double schemeSelectionThreshold = DEFAULT_SCHEME_SELECTION_THRESHOLD;
 	
-	private static final double DEFAULT_GOAL_ORIENTEDNESS = 0.5;
-	/*
-	 * In scheme activation calculation, the weight of desired content versus non-desired content.  
-	 */
-	private double goalOrientedness = DEFAULT_GOAL_ORIENTEDNESS;
+	private static final double DEFAULT_CONDITION_WEIGHT = 1.0;//for Javier
 	
 	private static final String DEFAULT_SCHEME_CLASS = "edu.memphis.ccrg.lida.proceduralmemory.SchemeImpl";
 	/*
@@ -140,7 +136,8 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 	 * This module can initialize the following parameters:<br><br/>
 	 * 
 	 * <b>proceduralMemory.schemeSelectionThreshold type=double</b> amount of activation schemes must have to be instantiated, default is 0.0<br/>
-	 * <b>proceduralMemory.goalOrientedness type=double</b> for scheme activation calculation, the weight of desired content versus non-desired content. <br/>
+	 * <b>proceduralMemory.contextWeight type=double</b> The weight of context conditions for the calculation of scheme activation. Should be positive<br/>
+	 * <b>proceduralMemory.addingListWeight type=double</b> The weight of adding list conditions for the calculation of scheme activation. Should be positive<br/>
 	 * <b>proceduralMemory.schemeClass type=string</b> qualified name of the {@link Scheme} class used by this module <br/>
 	 * 
 	 * @see Initializable
@@ -148,7 +145,8 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 	@Override
 	public void init() {	
 		schemeSelectionThreshold = getParam("proceduralMemory.schemeSelectionThreshold", DEFAULT_SCHEME_SELECTION_THRESHOLD);
-		goalOrientedness = getParam("proceduralMemory.goalOrientedness",DEFAULT_GOAL_ORIENTEDNESS);
+		SchemeImpl.setContextWeight(getParam("proceduralMemory.contextWeight",DEFAULT_CONDITION_WEIGHT));
+		SchemeImpl.setAddingListWeight(getParam("proceduralMemory.addingListWeight",DEFAULT_CONDITION_WEIGHT));
 		schemeClass = getParam("proceduralMemory.schemeClass",DEFAULT_SCHEME_CLASS);
 	}
 
@@ -275,7 +273,7 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 							rootableCondition.setDesirability(rootableBroadcastNode.getDesirability());
 						}	
 					}else{
-						logger.log(Level.WARNING, "Expected condition to be UnifyingNode but was {1}", 
+						logger.log(Level.WARNING, "Expected condition to be RootableNode but was {1}", 
 								new Object[]{TaskManager.getCurrentTick(),condition.getClass()});
 					}
 				}
@@ -340,9 +338,7 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 	 */
 	@Override
 	public boolean shouldInstantiate(Scheme s, NodeStructure broadcastBuffer){
-		double overallSalience = (1-goalOrientedness) * s.getAverageContextActivation()+
-									goalOrientedness * s.getAverageAddingListNetDesirability();
-		return overallSalience >= schemeSelectionThreshold;
+		return s.getTotalActivation() >= schemeSelectionThreshold;
 	}
 
 	@Override

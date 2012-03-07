@@ -126,17 +126,5 @@ public interface ProceduralUnit extends Activatible{
 	 * 
 	 * @return the size of this unit's result
 	 */
-    public double getResultSize();
-    	
-	/**
-	 * Gets the average activation of this unit's context conditions.
-	 * @return average activation of unit's context
-	 */
-	public double getAverageContextActivation();
-	
-	/**
-	 * Gets the average net desirability of this unit's adding list
-	 * @return average net desirability of this unit's adding list
-	 */
-	public double getAverageAddingListNetDesirability();		
+    public double getResultSize();		
 }

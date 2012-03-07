@@ -157,16 +157,6 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior{
 	}
 
 	@Override
-	public double getAverageAddingListNetDesirability() {
-		return scheme.getAverageAddingListNetDesirability();
-	}
-
-	@Override
-	public double getAverageContextActivation() {
-		return scheme.getAverageContextActivation();
-	}
-
-	@Override
 	public boolean addCondition(Condition c, ConditionType type) {
 		throw new UnsupportedOperationException("Method not supported");
 	}

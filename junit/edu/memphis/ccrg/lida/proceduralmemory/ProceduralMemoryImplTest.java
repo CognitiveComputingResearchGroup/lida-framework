@@ -4,8 +4,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,10 +18,10 @@ import org.junit.Test;
 
 import edu.memphis.ccrg.lida.actionselection.Action;
 import edu.memphis.ccrg.lida.actionselection.ActionImpl;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Condition;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockTaskSpawner;
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
-import edu.memphis.ccrg.lida.framework.shared.ExtendedId;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeImpl;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
@@ -40,7 +43,7 @@ public class ProceduralMemoryImplTest {
 	private static final double epsilon = 10e-9;
 	private ProceduralMemoryImpl pm;
 	private Scheme s1, s2, s3;
-	private Condition c1, c3;
+	private Node c1, c3;
 	private RootableNode c2, c4;
 	private MockTaskSpawner mockTs;
 	
@@ -50,6 +53,13 @@ public class ProceduralMemoryImplTest {
 	public void setUp(){
 		mockTs = new MockTaskSpawner();
 		pm = new ProceduralMemoryImpl();
+		Map<String,Object> params = new HashMap<String,Object>();
+		params.put("proceduralMemory.schemeSelectionThreshold", 0.9);
+		params.put("proceduralMemory.contextWeight", 1.0);
+		params.put("proceduralMemory.addingListWeight", 1.0);
+		pm.init(params);
+
+		
 		pm.setAssistingTaskSpawner(mockTs);
 		c1 = factory.getNode("NodeImpl","c1");
 		c2 = (RootableNode) factory.getNode("RootableNodeImpl","c2");
@@ -75,7 +85,20 @@ public class ProceduralMemoryImplTest {
 	}
 	@Test
 	public void testDecayModule() {
-		//TODO test after learning implemented
+		pm.addCondition(c1);
+		NodeStructure ns = new NodeStructureImpl();
+		c1.setActivation(1.0);
+		ns.addDefaultNode(c1);
+		Coalition coal = new CoalitionImpl(ns, null);
+		pm.receiveBroadcast(coal);
+		Node bufferNode = pm.getBroadcastBuffer().getNode(c1.getId());
+		assertEquals(1.0, bufferNode.getActivation(), epsilon);
+		
+		pm.decayModule(5);
+		
+		assertEquals(0.5, bufferNode.getActivation(), epsilon);
+		
+		//TODO add to this test after learning implemented
 	}
 	
 	@Test
@@ -83,8 +106,23 @@ public class ProceduralMemoryImplTest {
 		Action a = new ActionImpl("action1");		
 		Scheme s = pm.getNewScheme(a);
 		assertNotNull(s);
-		assertEquals(a, s.getAction());
+		assertSame(a, s.getAction());
 		assertTrue(pm.containsScheme(s));
+	}
+	
+	@Test
+	public void testGetNewScheme0(){	
+		Scheme s = pm.getNewScheme(null);
+		assertNull(s);
+	}
+	
+	@Test
+	public void testGetNewScheme1(){	
+		Action a = new ActionImpl("action1");		
+		Scheme s = pm.getNewScheme(a);
+		Scheme s0 = pm.getNewScheme(a);
+		assertNotSame(s, s0);
+		assertSame(s.getAction(), s0.getAction());
 	}
 	
 	@Test
@@ -92,7 +130,7 @@ public class ProceduralMemoryImplTest {
 		Action a = new ActionImpl("action1");		
 		Scheme s = pm.getNewScheme(a);
 		assertNotNull(s);
-		assertEquals(a, s.getAction());
+		assertSame(a, s.getAction());
 		assertTrue(pm.containsScheme(s));
 		
 		s.addCondition(c1, ConditionType.CONTEXT);	
@@ -101,12 +139,12 @@ public class ProceduralMemoryImplTest {
 		//Try PM with C3 before adding a duplicate of C3 to the Scheme
 		pm.addCondition(c3);
 		Node duplicateCondition = new NodeImpl();
-		duplicateCondition.setId(((ExtendedId) c3.getConditionId()).getSourceNodeId());
+		duplicateCondition.setId(c3.getId());
 		s.addCondition(duplicateCondition, ConditionType.CONTEXT);
 		
 		//Actual should be C3
 		Condition actual = s.getContextCondition(c3.getConditionId());
-		assertEquals(c3, actual);
+		assertSame(c3, actual);
 		assertNotSame(duplicateCondition, actual);
 	}
 
@@ -114,7 +152,8 @@ public class ProceduralMemoryImplTest {
 	public void testShouldInstantiate() {
 		Map<String,Object> params = new HashMap<String,Object>();
 		params.put("proceduralMemory.schemeSelectionThreshold", 0.9);
-		params.put("proceduralMemory.goalOrientedness", 0.0);		
+		params.put("proceduralMemory.contextWeight", 1.0);
+		params.put("proceduralMemory.addingListWeight", 0.0);		
 		pm.init(params);
 		
 		//Scheme has insufficiently activated conditions
@@ -139,7 +178,8 @@ public class ProceduralMemoryImplTest {
 		
 		//Switch goal orientedness
 		params.put("proceduralMemory.schemeSelectionThreshold", 0.9);
-		params.put("proceduralMemory.goalOrientedness", 1.0);		
+		params.put("proceduralMemory.contextWeight", 0.0);
+		params.put("proceduralMemory.addingListWeight", 1.0);				
 		pm.init(params);
 		
 		//Insufficient 
@@ -172,7 +212,7 @@ public class ProceduralMemoryImplTest {
 		
 		pm.createInstantiation(s1);
 		assertEquals(1, listener.behaviors.size());
-		assertEquals(s1, listener.behaviors.get(0).getGeneratingScheme());
+		assertSame(s1, listener.behaviors.get(0).getGeneratingScheme());
 	}
 
 	@Test
@@ -181,7 +221,7 @@ public class ProceduralMemoryImplTest {
 		c1.setActivation(0.5);
 		ns.addDefaultNode((Node) c1);
 		Coalition coal = new CoalitionImpl(ns, null);
-		
+		//wont add c1 because c1 is not in the condition pool
 		pm.receiveBroadcast(coal);
 		
 		assertEquals(1, mockTs.tasks.size());
@@ -191,20 +231,28 @@ public class ProceduralMemoryImplTest {
 	
 	@Test
 	public void testReceiveBroadcast1() {
+		//Condition c1 exists, not in buffer, copy of c1 comes in broadcast
 		NodeStructure ns = new NodeStructureImpl();
-		c1.setActivation(0.5);
-		ns.addDefaultNode((Node) c1);
+		Node bNode = new NodeImpl();
+		bNode.setId(c1.getId());
+		bNode.setActivation(0.2);
+		ns.addDefaultNode(bNode);
 		Coalition coal = new CoalitionImpl(ns, null);
 		s1.addCondition(c1, ConditionType.CONTEXT);
 		
 		pm.receiveBroadcast(coal);
-		
+
 		NodeStructure bb = pm.getBroadcastBuffer();
 		assertEquals(1, mockTs.tasks.size());
 		assertEquals(1, bb.getLinkableCount());
 		assertEquals(1, pm.getConditionPool().size());
-		assertEquals(c1,bb.getNode(((Node)c1).getId()));
-		assertEquals(c1,pm.getConditionPool().iterator().next());
+		Node actualBB = bb.getNode(c1.getId());
+		assertSame(c1, actualBB);
+		Node actualCondition = (Node) pm.getConditionPool().iterator().next();
+		assertSame(c1, actualCondition);
+		//Activation should match broadcast
+		assertEquals(0.2, actualBB.getActivation(),epsilon);
+		assertEquals(0.2, actualCondition.getActivation(),epsilon);
 	}
 	
 	@Test
@@ -216,10 +264,10 @@ public class ProceduralMemoryImplTest {
 					 epsilon);		
 		
 		NodeStructure ns = new NodeStructureImpl();
-		Node duplicateCondition = new NodeImpl();
-		duplicateCondition.setId(((ExtendedId) c1.getConditionId()).getSourceNodeId());
-		duplicateCondition.setActivation(0.2);
-		ns.addDefaultNode(duplicateCondition);
+		Node bNode = new NodeImpl();
+		bNode.setId(c1.getId());
+		bNode.setActivation(0.2);
+		ns.addDefaultNode(bNode);
 		Coalition coal = new CoalitionImpl(ns, null);
 		
 		pm.receiveBroadcast(coal);
@@ -230,9 +278,9 @@ public class ProceduralMemoryImplTest {
 		assertEquals(1, pm.getConditionPool().size());
 		Node actual = bb.getNode(((Node)c1).getId());
 		//Both buffers only contain C1
-		assertEquals(c1,actual);
+		assertSame(c1,actual);
 		Condition c1Condition = pm.getConditionPool().iterator().next();
-		assertEquals(c1,c1Condition);
+		assertSame(c1,c1Condition);
 		//Activation has been updated by broadcast
 		assertEquals(0.2, actual.getActivation(),epsilon);
 		assertEquals(0.2, c1Condition.getActivation(),epsilon);
@@ -247,10 +295,10 @@ public class ProceduralMemoryImplTest {
 					 epsilon);		
 		
 		NodeStructure ns = new NodeStructureImpl();
-		Node duplicateCondition = new NodeImpl();
-		duplicateCondition.setId(((ExtendedId) c1.getConditionId()).getSourceNodeId());
-		duplicateCondition.setActivation(0.2);
-		ns.addDefaultNode(duplicateCondition);
+		Node bNode = new NodeImpl();
+		bNode.setId(c1.getId());
+		bNode.setActivation(0.2);
+		ns.addDefaultNode(bNode);
 		Coalition coal = new CoalitionImpl(ns, null);
 		
 		pm.receiveBroadcast(coal);
@@ -259,14 +307,14 @@ public class ProceduralMemoryImplTest {
 		assertEquals(1, mockTs.tasks.size());
 		assertEquals(1, bb.getLinkableCount());
 		assertEquals(1, pm.getConditionPool().size());
-		Node actual = bb.getNode(((Node)c1).getId());
+		Node actualBB = bb.getNode(((Node)c1).getId());
 		//Both buffers only contain C1
-		assertEquals(c1,actual);
+		assertSame(c1,actualBB);
 		Condition c1Condition = pm.getConditionPool().iterator().next();
-		assertEquals(c1,c1Condition);
+		assertSame(c1,c1Condition);
 		//Activation has been updated by broadcast
 		assertEquals(0.3, c1Condition.getActivation(),epsilon);
-		assertEquals(0.3, actual.getActivation(),epsilon);
+		assertEquals(0.3, actualBB.getActivation(),epsilon);
 	}
 	
 	@Test
@@ -281,11 +329,11 @@ public class ProceduralMemoryImplTest {
 		assertEquals(0.2,((RootableNode) stored).getDesirability(),epsilon);
 		
 		NodeStructure ns = new NodeStructureImpl();
-		RootableNode duplicateCondition = new RootableNodeImpl();
-		duplicateCondition.setId(((ExtendedId) c2.getConditionId()).getSourceNodeId());
-		duplicateCondition.setActivation(0.2);
-		duplicateCondition.setDesirability(0.3);
-		ns.addNode(duplicateCondition, "RootableNodeImpl");
+		RootableNode bNode = new RootableNodeImpl();
+		bNode.setId(c2.getId());
+		bNode.setActivation(0.2);
+		bNode.setDesirability(0.3);
+		ns.addNode(bNode, "RootableNodeImpl");
 		Coalition coal = new CoalitionImpl(ns, null);
 		
 		pm.receiveBroadcast(coal);
@@ -296,9 +344,9 @@ public class ProceduralMemoryImplTest {
 		assertEquals(1, pm.getConditionPool().size());
 		Node bufferNode = bb.getNode(((Node)c2).getId());
 		//Both buffers only contain C1
-		assertEquals(c2,bufferNode);
+		assertSame(c2,bufferNode);
 		Condition c2Condition = pm.getConditionPool().iterator().next();
-		assertEquals(c2,c2Condition);
+		assertSame(c2,c2Condition);
 		//Activation has been updated by broadcast
 		assertEquals(0.2, bufferNode.getActivation(),epsilon);
 		assertEquals(0.2, c2Condition.getActivation(),epsilon);
@@ -318,11 +366,11 @@ public class ProceduralMemoryImplTest {
 		assertEquals(0.2,((RootableNode) stored).getDesirability(),epsilon);
 		
 		NodeStructure ns = new NodeStructureImpl();
-		RootableNode duplicateCondition = new RootableNodeImpl();
-		duplicateCondition.setId(((ExtendedId) c2.getConditionId()).getSourceNodeId());
-		duplicateCondition.setActivation(0.21);
-		duplicateCondition.setDesirability(0.001);
-		ns.addNode(duplicateCondition, "RootableNodeImpl");
+		RootableNode bNode = new RootableNodeImpl();
+		bNode.setId(c2.getId());
+		bNode.setActivation(0.21);
+		bNode.setDesirability(0.001);
+		ns.addNode(bNode, "RootableNodeImpl");
 		Coalition coal = new CoalitionImpl(ns, null);
 		
 		pm.receiveBroadcast(coal);
@@ -333,9 +381,9 @@ public class ProceduralMemoryImplTest {
 		assertEquals(1, pm.getConditionPool().size());
 		Node bufferNode = bb.getNode(((Node)c2).getId());
 		//Both buffers only contain C1
-		assertEquals(c2,bufferNode);
+		assertSame(c2,bufferNode);
 		Condition c2Condition = pm.getConditionPool().iterator().next();
-		assertEquals(c2,c2Condition);
+		assertSame(c2,c2Condition);
 		//Activation has been updated by broadcast
 		assertEquals(0.21, bufferNode.getActivation(),epsilon);
 		assertEquals(0.21, c2Condition.getActivation(),epsilon);
@@ -356,7 +404,7 @@ public class ProceduralMemoryImplTest {
 		pm.receiveBroadcast(coal);		
 		pm.activateSchemes();
 		
-		assertEquals(s1, listener.behaviors.get(0).getGeneratingScheme());
+		assertSame(s1, listener.behaviors.get(0).getGeneratingScheme());
 		assertEquals(1, listener.behaviors.size());
 	}
 	
@@ -379,9 +427,14 @@ public class ProceduralMemoryImplTest {
 		pm.receiveBroadcast(coal);		
 		pm.activateSchemes();
 		
-		assertEquals(s2, listener.behaviors.get(0).getGeneratingScheme());
-		assertEquals(s1, listener.behaviors.get(1).getGeneratingScheme());
-		assertEquals(2, listener.behaviors.size());
+		Collection<Scheme> actuals = new ArrayList<Scheme>();
+		for(Behavior b: listener.behaviors){
+			actuals.add(b.getGeneratingScheme());
+		}
+
+		assertTrue(actuals.contains(s1));
+		assertTrue(actuals.contains(s2));
+		assertEquals(2, actuals.size());
 	}
 	
 	@Test
