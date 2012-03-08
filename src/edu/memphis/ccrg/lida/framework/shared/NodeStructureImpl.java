@@ -30,7 +30,7 @@ import edu.memphis.ccrg.lida.workspace.WorkspaceContent;
  * link must be present before it can be added. Links can connect two nodes
  * (simple link) or can connect a node and another SIMPLE link. Nodes and links
  * are copied when added. This prevents having the same node (object) in two
- * different NS.
+ * different NodeStructures.
  * 
  * @author Javier Snaider
  * @author Ryan J. McCall
