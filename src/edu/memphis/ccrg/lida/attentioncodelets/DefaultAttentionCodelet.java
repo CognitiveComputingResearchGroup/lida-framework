@@ -93,8 +93,7 @@ public class DefaultAttentionCodelet extends AttentionCodeletImpl {
 		NodeStructure bufferNS = buffer.getBufferContent(null);
 		NodeStructure retrievedSubGraph = new NodeStructureImpl();
 		if (bufferNS != null) {
-			// TODO add getNeighborhood(originNode, maxDistanceFromOrigin, requiredActivation) method in NodeStructure?
-			//or method here.
+			// FIXME call getSubNodeStructure(originNode, maxDistanceFromOrigin, requiredActivation) method in NodeStructure
 			for (Node n : soughtContent.getNodes()) {// typically a small number
 				if (bufferNS.containsNode(n)) {
 					retrievedSubGraph.addDefaultNode(bufferNS.getNode(n.getId()));

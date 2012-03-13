@@ -30,7 +30,7 @@ public class PredecessorExciteStrategy extends StrategyImpl implements ExciteStr
 	@Override
 	public double excite(double currentActivation, double excitation,
 			Map<String, ? extends Object> params) {
-		// TODO use params
+		// FIXME use params
 		return excite(currentActivation, excitation);
 	}
 }

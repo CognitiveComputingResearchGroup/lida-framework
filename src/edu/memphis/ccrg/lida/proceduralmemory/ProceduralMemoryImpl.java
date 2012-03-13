@@ -293,8 +293,8 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 	
 	@Override
 	public void learn(Coalition coalition) {
-		//TODO
-//		NodeStructure ns = (NodeStructure) coalition.getContent();
+		//TODO implement learning
+		//		NodeStructure ns = (NodeStructure) coalition.getContent();
 		// make sure to use the correct way of adding new schemes see addScheme
 	}
 	

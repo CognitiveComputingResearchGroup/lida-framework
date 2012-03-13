@@ -296,7 +296,7 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 		// TODO task to use preafferent signal
 	}
 
-	//TODO parameter
+	//FIXME parameter
 	/**
 	 */
 	protected static final double DEFAULT_REINFORCEMENT = 0.1;
@@ -552,13 +552,13 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 
 	@Override
 	public LinkCategory addLinkCategory(LinkCategory cat) {
+		LinkCategory result = null;
 		if (cat instanceof PamNode) {
-			cat = (LinkCategory) pamNodeStructure.addNode((Node) cat,
+			result = (LinkCategory) pamNodeStructure.addNode((Node) cat,
 					DEFAULT_NONDECAYING_PAMNODE);
 			linkCategories.put(cat.getId(), cat);
-			return cat;
 		}
-		return null;
+		return result;
 	}
 
 	/*
@@ -570,12 +570,12 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 	 * @return stored LinkCategory
 	 */
 	private LinkCategory addInternalLinkCategory(LinkCategory cat) {
+		LinkCategory result = null;
 		if (cat instanceof PamNode) {
-			cat = (LinkCategory) pamNodeStructure.addNode((Node) cat, false);
+			result = (LinkCategory) pamNodeStructure.addNode((Node) cat, false);
 			linkCategories.put(cat.getId(), cat);
-			return cat;
 		}
-		return null;
+		return result;
 	}
 
 	/**

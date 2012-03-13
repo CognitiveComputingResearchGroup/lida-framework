@@ -25,18 +25,18 @@ public class BasicCandidateThresholdReducer extends StrategyImpl implements Deca
     
     private static final double ACTIVATION_LOWER_BOUND = 0.0;
     
-    //TODO init for parameters
+    //FIXME init for parameters
 
 	@Override
 	public double decay(double currentActivation, long ticks, Object... params) {
-		//TODO use params
+		//FIXME use params
 		return reduceActivationThreshold(currentActivation);
 	}
 
 	@Override
 	public double decay(double currentActivation, long ticks,
 			Map<String, ? extends Object> params) {
-		//TODO use params
+		//FIXME use params
 		return reduceActivationThreshold(currentActivation);
 	}
 

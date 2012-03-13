@@ -90,7 +90,7 @@ public class ElementFactory {
 	 */
 	private String defaultNodeType = NodeImpl.class.getSimpleName();
 	
-	//TODO allow configuration of this variable
+	//FIXME allow configuration of this variable
 	private String defaultBehaviorClassName = BehaviorImpl.class.getCanonicalName();
 	
 	/*

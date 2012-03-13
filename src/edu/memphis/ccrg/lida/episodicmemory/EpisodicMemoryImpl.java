@@ -181,7 +181,7 @@ public class EpisodicMemoryImpl extends FrameworkModuleImpl implements
 
 	@Override
 	public void learn(Coalition coalition) {
-		//TODO 
+		//TODO implement learning
 	}
 
 	/**
