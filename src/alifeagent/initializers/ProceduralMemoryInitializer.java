@@ -193,9 +193,9 @@ public class ProceduralMemoryInitializer implements Initializer {
     }
 
     protected void auxAddScheme(String name, NodeStructure context, Action action, NodeStructure result) {
-        Scheme scheme = new SchemeImpl(name, action);
-        scheme.setContext(context);
-        scheme.setAddingResult(result);
-        proceduralMemory.addScheme(scheme);
+//        Scheme scheme = new SchemeImpl(name, action);
+//        scheme.setContext(context);
+//        scheme.setAddingResult(result);
+//        proceduralMemory.addScheme(scheme);
     }
 }

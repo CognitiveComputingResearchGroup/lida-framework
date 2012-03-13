@@ -67,10 +67,11 @@
             <class>edu.memphis.ccrg.lida.pam.PamNodeImpl</class>
             <defaultstrategy>defaultDecay</defaultstrategy>
             <defaultstrategy>defaultExcite</defaultstrategy>
-            <param name="baseLevelDecayStrategy" type="string">slowDecay</param>
-            <param name="baseLevelExciteStrategy" type="string">slowExcite</param>
-            <param name="baseLevelRemovalThreshold" type="double">0.0</param>
-            <param name="baseLevelActivation" type="double">0.1</param>
+            <param name="learnable.baseLevelActivation" type="double">0.1</param>
+	    <param name="learnable.baseLevelRemovalThreshold" type="double">0.0</param>
+            <param name="learnable.baseLevelDecayStrategy" type="string">slowDecay</param>
+	    <param name="learnable.baseLevelExciteStrategy" type="string">slowExcite</param>
+	    <param name="learnable.totalActivationStrategy" type="string">DefaultTotalActivation</param>
         </node>
     </nodes>
     <links>
@@ -83,10 +84,11 @@
             <class>edu.memphis.ccrg.lida.pam.PamLinkImpl</class>
             <defaultstrategy>defaultDecay</defaultstrategy>
             <defaultstrategy>defaultExcite</defaultstrategy>
-            <param name="baseLevelDecayStrategy" type="string">slowDecay</param>
-            <param name="baseLevelExciteStrategy" type="string">slowExcite</param>
-            <param name="baseLevelRemovalThreshold" type="double">0.0</param>
-            <param name="baseLevelActivation" type="double">0.1</param>
+             <param name="learnable.baseLevelActivation" type="double">0.1</param>
+	    <param name="learnable.baseLevelRemovalThreshold" type="double">0.0</param>
+            <param name="learnable.baseLevelDecayStrategy" type="string">slowDecay</param>
+	    <param name="learnable.baseLevelExciteStrategy" type="string">slowExcite</param>
+	    <param name="learnable.totalActivationStrategy" type="string">DefaultTotalActivation</param>
         </link>
     </links>
     <tasks>
@@ -95,30 +97,55 @@
             </class>
             <ticksperrun>5</ticksperrun>
             <associatedmodule>SensoryMemory</associatedmodule>
+             <param name="learnable.baseLevelActivation" type="double">0.0</param>
+	    <param name="learnable.baseLevelRemovalThreshold" type="double">-1.0</param>
+            <param name="learnable.baseLevelDecayStrategy" type="string">slowDecay</param>
+	    <param name="learnable.baseLevelExciteStrategy" type="string">slowExcite</param>
+	    <param name="learnable.totalActivationStrategy" type="string">DefaultTotalActivation</param>
         </task>
         <task name="BasicDetector">
             <class>edu.memphis.ccrg.lida.pam.tasks.BasicDetectionAlgorithm</class>
             <ticksperrun>3</ticksperrun>
             <associatedmodule>SensoryMemory</associatedmodule>
             <associatedmodule>PerceptualAssociativeMemory</associatedmodule>
+            <param name="learnable.baseLevelActivation" type="double">0.0</param>
+	    <param name="learnable.baseLevelRemovalThreshold" type="double">-1.0</param>
+            <param name="learnable.baseLevelDecayStrategy" type="string">slowDecay</param>
+	    <param name="learnable.baseLevelExciteStrategy" type="string">slowExcite</param>
+	    <param name="learnable.totalActivationStrategy" type="string">DefaultTotalActivation</param>
         </task>
         <task name="HealthDetector">
             <class>alifeagent.featuredetectors.HealthDetector</class>
             <ticksperrun>3</ticksperrun>
             <associatedmodule>SensoryMemory</associatedmodule>
             <associatedmodule>PerceptualAssociativeMemory</associatedmodule>
+             <param name="learnable.baseLevelActivation" type="double">0.0</param>
+	    <param name="learnable.baseLevelRemovalThreshold" type="double">-1.0</param>
+            <param name="learnable.baseLevelDecayStrategy" type="string">slowDecay</param>
+	    <param name="learnable.baseLevelExciteStrategy" type="string">slowExcite</param>
+	    <param name="learnable.totalActivationStrategy" type="string">DefaultTotalActivation</param>
         </task>
         <task name="GoodHealthDetector">
             <class>alifeagent.featuredetectors.GoodHealthDetector</class>
             <ticksperrun>3</ticksperrun>
             <associatedmodule>SensoryMemory</associatedmodule>
             <associatedmodule>PerceptualAssociativeMemory</associatedmodule>
+             <param name="learnable.baseLevelActivation" type="double">0.0</param>
+	    <param name="learnable.baseLevelRemovalThreshold" type="double">-1.0</param>
+            <param name="learnable.baseLevelDecayStrategy" type="string">slowDecay</param>
+	    <param name="learnable.baseLevelExciteStrategy" type="string">slowExcite</param>
+	    <param name="learnable.totalActivationStrategy" type="string">DefaultTotalActivation</param>
         </task>
         <task name="FairHealthDetector">
             <class>alifeagent.featuredetectors.FairHealthDetector</class>
             <ticksperrun>3</ticksperrun>
             <associatedmodule>SensoryMemory</associatedmodule>
             <associatedmodule>PerceptualAssociativeMemory</associatedmodule>
+             <param name="learnable.baseLevelActivation" type="double">0.0</param>
+	    <param name="learnable.baseLevelRemovalThreshold" type="double">-1.0</param>
+            <param name="learnable.baseLevelDecayStrategy" type="string">slowDecay</param>
+	    <param name="learnable.baseLevelExciteStrategy" type="string">slowExcite</param>
+	    <param name="learnable.totalActivationStrategy" type="string">DefaultTotalActivation</param>
         </task>
         <!-- INSERT YOUR CODE HERE ************************* -->
 
@@ -133,6 +160,11 @@
             <ticksperrun>15</ticksperrun>
             <associatedmodule>SensoryMemory</associatedmodule>
             <associatedmodule>PerceptualAssociativeMemory</associatedmodule>
+             <param name="learnable.baseLevelActivation" type="double">0.0</param>
+	    <param name="learnable.baseLevelRemovalThreshold" type="double">-1.0</param>
+            <param name="learnable.baseLevelDecayStrategy" type="string">slowDecay</param>
+	    <param name="learnable.baseLevelExciteStrategy" type="string">slowExcite</param>
+	    <param name="learnable.totalActivationStrategy" type="string">DefaultTotalActivation</param>
         </task>
         <task name="BasicAttentionCodelet">
             <class>edu.memphis.ccrg.lida.attentioncodelets.BasicAttentionCodelet
@@ -142,6 +174,11 @@
             <associatedmodule function="TO_WRITE_TO">GlobalWorkspace</associatedmodule>
             <param name="refractoryPeriod" type="int">50</param>
             <param name="coalitionDecayStrategy" type="string">coalitionDecay</param>
+             <param name="learnable.baseLevelActivation" type="double">0.0</param>
+	    <param name="learnable.baseLevelRemovalThreshold" type="double">-1.0</param>
+            <param name="learnable.baseLevelDecayStrategy" type="string">slowDecay</param>
+	    <param name="learnable.baseLevelExciteStrategy" type="string">slowExcite</param>
+	    <param name="learnable.totalActivationStrategy" type="string">DefaultTotalActivation</param>
         </task>
         <task name="NeighborhoodAttentionCodelet">
             <class>edu.memphis.ccrg.lida.attentioncodelets.NeighborhoodAttentionCodelet
@@ -151,18 +188,33 @@
             <associatedmodule function="TO_WRITE_TO">GlobalWorkspace</associatedmodule>
             <param name="refractoryPeriod" type="int">50</param>
             <param name="coalitionDecayStrategy" type="string">coalitionDecay</param>
+             <param name="learnable.baseLevelActivation" type="double">0.0</param>
+	    <param name="learnable.baseLevelRemovalThreshold" type="double">-1.0</param>
+            <param name="learnable.baseLevelDecayStrategy" type="string">slowDecay</param>
+	    <param name="learnable.baseLevelExciteStrategy" type="string">slowExcite</param>
+	    <param name="learnable.totalActivationStrategy" type="string">DefaultTotalActivation</param>
         </task>
         <task name="CueBackgroundTask">
             <class>edu.memphis.ccrg.lida.workspace.CueBackgroundTask</class>
             <ticksperrun>15</ticksperrun>
             <associatedmodule>Workspace</associatedmodule>
             <param name="workspace.actThreshold" type="double">0.4</param>
+             <param name="learnable.baseLevelActivation" type="double">0.0</param>
+	    <param name="learnable.baseLevelRemovalThreshold" type="double">-1.0</param>
+            <param name="learnable.baseLevelDecayStrategy" type="string">slowDecay</param>
+	    <param name="learnable.baseLevelExciteStrategy" type="string">slowExcite</param>
+	    <param name="learnable.totalActivationStrategy" type="string">DefaultTotalActivation</param>
         </task>
         <task name="UpdateCsmBackgroundTask">
             <class>edu.memphis.ccrg.lida.workspace.UpdateCsmBackgroundTask
             </class>
             <ticksperrun>5</ticksperrun>
             <associatedmodule>Workspace</associatedmodule>
+             <param name="learnable.baseLevelActivation" type="double">0.0</param>
+	    <param name="learnable.baseLevelRemovalThreshold" type="double">-1.0</param>
+            <param name="learnable.baseLevelDecayStrategy" type="string">slowDecay</param>
+	    <param name="learnable.baseLevelExciteStrategy" type="string">slowExcite</param>
+	    <param name="learnable.totalActivationStrategy" type="string">DefaultTotalActivation</param>
         </task>
     </tasks>
 </LidaFactories>

@@ -32,7 +32,7 @@ public class ObjectDetector extends BasicDetectionAlgorithm{
 		super.init();
 		Integer position = (Integer)getParam("position", 0);
 		detectorParams.put("position", position);
-		String obj = (String)getParam("object", null);
+		String obj = (String)getParam("object", "");
 		detectorParams.put("object", obj);
 	}
 
