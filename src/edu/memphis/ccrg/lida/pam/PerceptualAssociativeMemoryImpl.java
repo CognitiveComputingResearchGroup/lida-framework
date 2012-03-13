@@ -227,23 +227,42 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 		return newlink;
 	}
 	
-	public PamNode addNode(String label){
+	public PamNode addDefaultNode(String label){
 		return addNode(pamNodeStructure.getDefaultNodeType(), label);
 	}
 	
 	public PamNode addNode(String type, String label){
-		PamNode n = (PamNode) pamNodeStructure.addNode(type, label,0.0,0.0);
+		if(label == null){
+			logger.log(Level.WARNING, "Cannot add a Node to Pam with a null label", 
+					TaskManager.getCurrentTick());
+			return null;
+		}
+		
+		PamNode n = nodesByLabel.get(label);
 		if(n != null){
-			nodesByLabel.put(n.getLabel(), n);
+			logger.log(Level.WARNING, "A Node with the label {1} already exists in PAM", 
+					new Object[]{TaskManager.getCurrentTick(),label});
+		}else{		
+			n = (PamNode) pamNodeStructure.addNode(type,label,0.0,0.0);
+			if(n != null){
+				nodesByLabel.put(n.getLabel(), n);
+			}
 		}
 		return n;
 	}
 	
-	public PamLink addPamLink(Node src, Linkable snk, LinkCategory cat){
-		return addPamLink(pamNodeStructure.getDefaultLinkType(), src, snk, cat);
+	public PamLink addDefaultLink(Node src, Linkable snk, LinkCategory cat){
+		return addLink(pamNodeStructure.getDefaultLinkType(), src, snk, cat);
 	}
 	
-	public PamLink addPamLink(String type, Node src, Linkable snk, LinkCategory cat){
+	//TODO finish javadoc and testing
+	public PamLink addLink(String type, Node src, Linkable snk, LinkCategory cat){
+		if(!linkCategories.containsKey(cat.getId())){
+			logger.log(Level.WARNING, "Cannot add new Link. Pam does not contain LinkCategory {1}",
+					TaskManager.getCurrentTick());
+			return null;
+		}
+		
 		return (PamLink)pamNodeStructure.addLink(type, src.getId(), snk.getExtendedId(), 
 														cat, 0.0, 0.0);
 	}

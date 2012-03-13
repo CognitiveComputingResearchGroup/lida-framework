@@ -182,12 +182,14 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 		return node;
 	}
 	
+	@Override
 	public synchronized Node addDefaultNode(String label, double a, double rt){
 		return addNode(defaultNodeType, label, a, rt);
 	}
 	
+	@Override
 	public synchronized Node addNode(String type, String label, double a, double rt){
-		Node n = factory.getNewNode(defaultNodeType, type);
+		Node n = factory.getNode(defaultNodeType, null, type);
 		if(n != null){
 			n.setLabel(label);
 			n.setActivation(a);
@@ -311,17 +313,22 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 
 	@Override
 	public synchronized Link addDefaultLink(int sourceId, int sinkId,
-			LinkCategory category, double activation, double removalThreshold) {
+			LinkCategory cat, double activation, double removalThreshold) {
+		if(cat == null){
+			logger.log(Level.WARNING,
+					"Cannot add new link because category is null.",TaskManager.getCurrentTick());
+			return null;
+		}
 		if(!isConnectionValid(sourceId, new ExtendedId(sinkId))){
 			return null;
 		}
 		Node source = getNode(sourceId);
 		Linkable sink = getNode(sinkId);
 		ExtendedId newLinkId = new ExtendedId(sourceId, sink.getExtendedId(),
-				category.getId());
+				cat.getId());
 		Link link = getLink(newLinkId);
 		if (link == null) {
-			link = generateNewLink(null, defaultLinkType, source, sink, category,
+			link = generateNewLink(null, defaultLinkType, source, sink, cat,
 					activation, removalThreshold, null);
 		}else if(activation > link.getActivation()){
 			link.setActivation(activation);
@@ -329,8 +336,20 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 		return link;
 	}
 	
+	@Override
 	public synchronized Link addLink(String type, int srcId, ExtendedId snkId,
 			LinkCategory cat, double a, double rt){
+		if (!factory.containsLinkType(type)) {
+			logger.log(Level.WARNING,
+							"Cannot add new link of type {2} because factory does not contain that Link type. Check that type is defined in factoryData xml file.",
+							new Object[]{TaskManager.getCurrentTick(),type});
+			return null;
+		}
+		if(cat == null){
+			logger.log(Level.WARNING,
+					"Cannot add new link because category is null.",TaskManager.getCurrentTick());
+			return null;
+		}
 		if(!isConnectionValid(srcId, snkId)){
 			return null;
 		}
@@ -342,8 +361,13 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 			Linkable sink = getLinkable(snkId);
 			link = generateNewLink(null, type, source, sink, cat,
 					a, rt, null);
-		}else if(a > link.getActivation()){
-			link.setActivation(a);
+		}else if(type.equals(link.getFactoryType())){ 
+			if(a > link.getActivation()){
+				link.setActivation(a);
+			}
+		}else{
+			logger.log(Level.WARNING, "Cannot add new Link of type {2} because another Link {3} having a different type {4} and the same id is already present. Existing Link returned.", 
+					new Object[]{TaskManager.getCurrentTick(),type,link,link.getFactoryType()});
 		}
 		return link;
 	}
@@ -386,6 +410,11 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 		return link;
 	}
 	
+	/*
+	 * Returns true if Link l can currently be added to the NodeStructure.
+	 * Calls isConnectionValid().
+	 * @see #isConnectionValid
+	 */
 	private boolean isLinkValid(Link l){
 		if (l == null) {
 			logger.log(Level.WARNING, "Cannot add null", TaskManager
@@ -409,6 +438,9 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 		return isConnectionValid(src.getId(), sink.getExtendedId());
 	}
 	
+	/*
+	 * Returns true if a Link from specified source to specified sink can be added
+	 */
 	private boolean isConnectionValid(int srcId, ExtendedId sinkId){
 		if (!containsNode(srcId)) {
 			logger.log(Level.WARNING,

@@ -24,7 +24,7 @@ public class DefaultAttentionCodelet extends AttentionCodeletImpl {
 	private static final Logger logger = Logger
 			.getLogger(DefaultAttentionCodelet.class.getCanonicalName());
 
-	private static final double DEFAULT_ATTENTION_THRESHOLD = 0.5;
+	private static final double DEFAULT_ATTENTION_THRESHOLD = 0.0;
 	/**
 	 * Activation which content must have in order to be added to the {@link Coalition}
 	 */

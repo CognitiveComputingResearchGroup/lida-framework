@@ -11,6 +11,10 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.collections15.collection.UnmodifiableCollection;
+import org.apache.commons.collections15.map.UnmodifiableMap;
+import org.apache.commons.collections15.set.UnmodifiableSet;
+
 /**
  * A NodeStructure holds a collection of {@link Node}s an {@link Link}s. It is used
  * as a main conceptual representation among LIDA modules.
@@ -20,9 +24,93 @@ import java.util.Set;
  * @see NodeStructureImpl
  */
 public interface NodeStructure {
+	
+	/**
+	 * Creates, adds and returns a new {@link Node} of default type with specified attributes.
+	 * @param label label of new {@link Node}
+	 * @param a initial activation of new {@link Node}
+	 * @param rt initial removal threshold of new {@link Node}
+	 * @return the {@link Node} added to the NodeStructure or null 
+	 */
+	public Node addDefaultNode(String label, double a, double rt);//TODO test
+	
+	/**
+	 * Adds a copy of specified {@link Node} to this NodeStructure. The copy will be of the default
+	 * type of this NodeStructure, NOT of the type of the specified node. If Node with the same
+	 * id already exists the the old node's activation is updated ONLY IF it is higher than the existing activation.
+	 * @param n Node to add.
+	 * @return The copied Node that is stored in this NodeStructure or the existing, updated, Node already there.
+	 */
+	public Node addDefaultNode(Node n);
+	
+	/**
+	 * @return copied and/or updated nodes that are now present in this NodeStructure
+	 * @see #addDefaultNode(Node)
+	 * @param nodes Node to be added.
+	 */
+	public Collection<Node> addDefaultNodes(Collection<Node> nodes);
 
 	/**
-	 * Copies specified {@link Link} and then adds the copy to this NodeStructure. If Link with the same 
+	 * Creates, adds and returns a new {@link Node} of specified type with specified attributes.
+	 * @param type Factory type of new {@link Node}
+	 * @param label label of new {@link Node}
+	 * @param a initial activation of new {@link Node}
+	 * @param rt initial removal threshold of new {@link Node}
+	 * @return the {@link Node} added to the NodeStructure or null 
+	 */
+	public Node addNode(String type, String label, double a, double rt);//TODO test
+	
+	/**
+	 * Add a Node of a specified type to this NodeStructure.<br/>
+	 * If a Node with the same id already exists in the NodeStructure the existing Node will
+	 * have its activation updated. In this case the Node's type doesn't change.
+	 * @param n Node
+	 * @param type name of node's type in {@link ElementFactory}
+	 * @return copy of node actually added.
+	 */
+	public Node addNode(Node n, String type);
+	
+	/**
+	 * Creates and adds a new Link of default type with specified attributes.  Source and sink must
+	 * already be in this NodeStructure.
+	 * @param source Link's source {@link Node}
+	 * @param sink Link's sink, a {@link Node} or a {@link Link}	
+	 * @param category Link's {@link LinkCategory}
+	 * @param activation initial link activation
+	 * @param removalThreshold amount of activation Link must maintain to remain in this NodeStructure after decaying.
+	 * @return created Link or null if either source or sink are not already present. 
+	 */
+	public Link addDefaultLink(Node source, Linkable sink, LinkCategory category, double activation, double removalThreshold);
+
+	/**
+	 * Creates and adds a new Link of default type with specified attributes.  Source and sink must
+	 * already be in this NodeStructure.
+	 * @param idSource id of link's source
+	 * @param idSink {@link ExtendedId} of link's sink
+	 * @param type Link's {@link LinkCategory}
+	 * @param activation initial link activation
+	 * @param removalThreshold amount of activation Link must maintain to remain in this NodeStructure after decaying.
+	 * @return created Link or null if either source or sink are not already present. 
+	 */
+	public Link addDefaultLink(int idSource, ExtendedId idSink,
+			LinkCategory type, double activation, double removalThreshold);
+
+	/**
+	 * Creates and adds a new Link of default type with specified attributes.  Source and sink must
+	 * already be in this NodeStructure.  Allows multiple links from the same source and sink as long
+	 * as their LinkCategory differs.
+	 * @param idSource id of link's source
+	 * @param idSink id of link's sink
+	 * @param type Link's {@link LinkCategory}
+	 * @param activation initial link activation
+	 * @param removalThreshold amount of activation Link must maintain to remain in this NodeStructure after decaying.
+	 * @return created Link or null if either source or sink are not already present. 
+	 */
+	public Link addDefaultLink(int idSource, int idSink,
+			LinkCategory type, double activation, double removalThreshold);
+
+	/**
+	 * Adds a copy, of default link type, based on the specified {@link Link}, to this NodeStructure. If Link with the same 
 	 * id already exists then the old Link's activation is updated.
 	 * Copied link will have the default link type of this {@link NodeStructure} when
 	 * it is added.
@@ -48,87 +136,39 @@ public interface NodeStructure {
 	public Collection<Link> addDefaultLinks(Collection<Link> links);
 	
 	/**
+	 * Creates and adds a new {@link Link} of specified type with specified attributes.  Source and sink must
+	 * already be in this NodeStructure.
+	 * 
+	 * @param type Factory type of the link to be created
+	 * @param srcId id of link's source
+	 * @param snkId {@link ExtendedId} of link's sink
+	 * @param cat Link's {@link LinkCategory}
+	 * @param a initial link activation
+	 * @param rt removal threshold, amount of activation Link must maintain to remain in this NodeStructure after decaying.
+	 * @return created Link or null if either source or sink are not already present. 
+	 */
+	public Link addLink(String type, int srcId, ExtendedId snkId,
+			LinkCategory cat, double a, double rt);	//TODO test
+	
+	/**
 	 * Adds copy of specified Link. Copy is of specified type.
 	 * @param l original {@link Link}
 	 * @param linkType type of copied {@link Link}
 	 * @return new {@link Link} or null if such a link cannot be created.
 	 */
 	public Link addLink(Link l, String linkType);
-	
-	/**
-	 * @param source Link's source {@link Node}
-	 * @param sink Link's sink, a {@link Node} or a {@link Link}	
-	 * @param category Link's {@link LinkCategory}
-	 * @param activation initial link activation
-	 * @param removalThreshold amount of activation Link must maintain to remain in this NodeStructure after decaying.
-	 * @return created Link or null if either source or sink are not already present. 
-	 */
-	public Link addDefaultLink(Node source, Linkable sink, LinkCategory category, double activation, double removalThreshold);
-
-	/**
-	 * Creates and adds a new Link with specified attributes.  Source and sink must
-	 * already be in this NodeStructure.
-	 * @param idSource id of link's source
-	 * @param idSink {@link ExtendedId} of link's sink
-	 * @param type Link's {@link LinkCategory}
-	 * @param activation initial link activation
-	 * @param removalThreshold amount of activation Link must maintain to remain in this NodeStructure after decaying.
-	 * @return created Link or null if either source or sink are not already present. 
-	 */
-	public Link addDefaultLink(int idSource, ExtendedId idSink,
-			LinkCategory type, double activation, double removalThreshold);
-
-	/**
-	 * Creates and adds a new Link with specified attributes.  Source and sink must
-	 * already be in this NodeStructure.  Allows multiple links from the same source and sink as long
-	 * as their LinkCategory differs.
-	 * @param idSource id of link's source
-	 * @param idSink id of link's sink
-	 * @param type Link's {@link LinkCategory}
-	 * @param activation initial link activation
-	 * @param removalThreshold amount of activation Link must maintain to remain in this NodeStructure after decaying.
-	 * @return created Link or null if either source or sink are not already present. 
-	 */
-	public Link addDefaultLink(int idSource, int idSink,
-			LinkCategory type, double activation, double removalThreshold);
-
-	/**
-	 * Adds a COPY of specified Node to this NodeStructure. The copy will be of the default
-	 * type of this NodeStructure, NOT of the type of the specified node. If Node with the same
-	 * id already exists the the old node's activation is updated ONLY IF it is higher than the existing activation.
-	 * @param n Node to add.
-	 * @return The copied Node that is stored in this NodeStructure or the existing, updated, Node already there.
-	 */
-	public Node addDefaultNode(Node n);
-	
-	/**
-	 * @return copied and/or updated nodes that are now present in this NodeStructure
-	 * @see #addDefaultNode(Node)
-	 * @param nodes Node to be added.
-	 */
-	public Collection<Node> addDefaultNodes(Collection<Node> nodes);
-
-	/**
-	 * Add a Node of a specified type to this NodeStructure.<br/>
-	 * If a Node with the same id already exists in the NodeStructure the existing Node will
-	 * have its activation updated. In this case the Node's type doesn't change.
-	 * @param n Node
-	 * @param type name of node's type in {@link ElementFactory}
-	 * @return copy of node actually added.
-	 */
-	public Node addNode(Node n, String type);
-
-	/**
-	 * Removes specified {@link Link} if present.
-	 * @param l Link to remove.
-	 */
-	public void removeLink(Link l);
 
 	/**
 	 * Removes specified {@link Node} if present.
 	 * @param n Node to remove.
 	 */
 	public void removeNode(Node n);
+	
+	/**
+	 * Removes specified {@link Link} if present.
+	 * @param l Link to remove.
+	 */
+	public void removeLink(Link l);
 
 	/**
 	 * Removes specified {@link Linkable} if present.
@@ -143,12 +183,12 @@ public interface NodeStructure {
 	public void removeLinkable(ExtendedId id);
 
 	/**
-	 * Removes all links from this {@link NodeStructure}
+	 * Removes all links from this {@link NodeStructure}.
 	 */
 	public void clearLinks();
 
 	/**
-	 * Removes all nodes and links from this nodestructure
+	 * Removes all nodes and links from this NodeStructure.
 	 *
 	 */
 	public void clearNodeStructure();
@@ -210,7 +250,7 @@ public interface NodeStructure {
 	public void mergeWith(NodeStructure ns);
 
 	/**
-	 * Returns a deep copy of this {@link NodeStructure}
+	 * Returns a deep copy of this {@link NodeStructure}.
 	 * @return {@link NodeStructure}
 	 */
 	public NodeStructure copy();
@@ -224,125 +264,122 @@ public interface NodeStructure {
 	public void decayNodeStructure(long ticks);
 
 	/**
-	 * Gets Link with specified ExtendedId if present.
-	 * @param ids {@link ExtendedId} of sought Link.
-	 * @return Link or null if no Link exists.
-	 */
-	public Link getLink(ExtendedId ids);
-
-	/**
-	 * Returns the Links of this NodeStructure
-	 * @return an unmodifiable Collection of all Links
-	 */
-	public Collection<Link> getLinks();
-	
-	/**
-	 * Returns all Links of this NodeStructure with specified {@link LinkCategory}
-	 * @param cat LinkCategory to search for. 
-	 * @return Links having specified {@link LinkCategory}
-	 */
-	public Set<Link> getLinks(LinkCategory cat);
-
-	/**
-	 * Gets all {@link Link}s directly connected to specified Linkable.
-	 * @param l Linkable to find Links to and from.
-	 * @return an unmodifiable Set of all Links connected to specified Linkable.
-	 */
-	public Set<Link> getAttachedLinks(Linkable l);
-
-	/**
-	 * Gets all {@link Link}s directly connected to specified Linkable with specified {@link LinkCategory}
-	 * @param linkable a Linkable
-	 * @param cat LinkCategory
-	 * @return Links
-	 */
-	public Set<Link> getAttachedLinks(Linkable linkable, LinkCategory cat);
-
-	/**
-	 * Returns a copy of the node in this nodestructure with specified id
+	 * Returns a copy of the node in this NodeStructure with specified id.
 	 * @param id id of node
 	 * @return Node with specified id or null if not present
 	 */
 	public Node getNode(int id);
 
 	/**
-	 * Returns a copy of the node in this nodestructure with specified ExtendedId
+	 * Returns a copy of the node in this NodeStructure with specified {@link ExtendedId}.
 	 * @param eid ExtendedId of node
 	 * @return Node with specified ExtendedId or null if not present
 	 */
 	public Node getNode(ExtendedId eid);
 
 	/**
-	 * Returns all {@link Node}s
-	 * @return All {@link Node}s in this NodeStructure.
+	 * Returns all {@link Node}s.
+	 * @return all {@link Node}s in this NodeStructure
 	 */
 	public Collection<Node> getNodes();
 
 	/**
-	 * Gets {@link Linkable} with specified {@link ExtendedId}
-	 * @param eid {@link ExtendedId}
-	 * @return a Linkable
+	 * Gets {@link Link} with specified {@link ExtendedId} if present.
+	 * @param id {@link ExtendedId} of sought Link
+	 * @return Link or null if no Link exists
 	 */
-	public Linkable getLinkable(ExtendedId eid);
+	public Link getLink(ExtendedId id);
 
 	/**
-	 * Returns all Linkables, all Nodes and Links, in this {@link NodeStructure}
+	 * Returns the Links of this NodeStructure.
+	 * @return an {@link UnmodifiableCollection} of all Links
+	 */
+	public Collection<Link> getLinks();
+	
+	/**
+	 * Returns all Links of this NodeStructure with specified {@link LinkCategory}.
+	 * @param cat the {@link LinkCategory} to search for
+	 * @return Links having specified {@link LinkCategory}
+	 */
+	public Set<Link> getLinks(LinkCategory cat);
+
+	/**
+	 * Gets all {@link Link} objects directly connected to specified {@link Linkable}.
+	 * @param l the Linkable whose attached links will be returned
+	 * @return an {@link UnmodifiableSet} of all Links connected to specified {@link Linkable}
+	 */
+	public Set<Link> getAttachedLinks(Linkable l);
+
+	/**
+	 * Gets all {@link Link}s directly connected to specified {@link Linkable} with specified {@link LinkCategory}
+	 * @param lnk a {@link Linkable}
+	 * @param cat LinkCategory
+	 * @return Links
+	 */
+	public Set<Link> getAttachedLinks(Linkable lnk, LinkCategory cat);
+
+	/**
+	 * Gets {@link Linkable} with specified {@link ExtendedId}.
+	 * @param id {@link ExtendedId}
+	 * @return a Linkable
+	 */
+	public Linkable getLinkable(ExtendedId id);
+
+	/**
+	 * Returns all Linkables, all Nodes and Links, currently in this {@link NodeStructure}.
 	 * @return all Linkables
 	 */
 	public Collection<Linkable> getLinkables();
 
 	/**
-	 * Returns linkableMap
-	 * @return An unmodifiable Map of the linkables of this NodeStructure and their links.s
+	 * Returns a map of all the {@link Linkable} objects currently in the NodeStructure and their attached links.
+	 * @return an {@link UnmodifiableMap} of the {@link Linkable} objects in this NodeStructure and their attached links.
 	 */
 	public Map<Linkable, Set<Link>> getLinkableMap();
 
 	/**
-	 * Returns a count of nodes
-	 * @return number of nodes
-	 */
-	public int getNodeCount();
-
-	/**
-	 * returns a count of links
-	 * @return number of links
-	 */
-	public int getLinkCount();
-
-	/**
-	 * Returns count of {@link Linkable}s
-	 * @return number of {@link Linkable}s
-	 */
-	public int getLinkableCount();
-
-	/**
-	 * Gets defaultNodeType
-	 * @return node type used when creating new nodes that are being added to this NodeStructure.
-	 */
-	public String getDefaultNodeType();
-
-	/**
-	 * Gets defaultLinkType
-	 * @return link type used when creating new link copies that are being added to this NodeStructure.
-	 */
-	public String getDefaultLinkType();
-
-	/**
- 	 * Finds and returns a {@link Map} of all sink {@link Linkable}s connected to specified {@link Node}.
- 	 * Keys are the connected sinks  
- 	 * Values are the {@link Link}s connecting the sinks to the specified {@link Node}
+ 	 * Returns a {@link Map} of all sink {@link Linkable} objects connected to specified {@link Node}.
+ 	 * The keys of the map are the connected sinks and the values are the Links connecting the sinks to the specified {@link Node}.
 	 * @param n supplied node
 	 * @return map of sinks and links connecting node to them
 	 */
 	public Map<Linkable, Link> getConnectedSinks(Node n);
 	
 	/**
-	 * Finds and returns a {@link Map} of all source Nodes connected to specified {@link Linkable}.  
- 	 * Keys are the connected sources  
- 	 * Values are the {@link Link}s connecting the sources to the specified {@link Linkable}
-	 * @param linkable specified linkable
-	 * @return map of sources and links connecting Linkable to them
+	 * Returns a {@link Map} of all Nodes connected to specified {@link Linkable} as a source.  
+ 	 * The keys of the map are the connected sources and the values are the Links connecting the sources to the specified {@link Linkable}
+	 * @param lnk the {@link Linkable} whose connected sources will be returned
+	 * @return {@link Map} of all sources connected to lnk and the links connecting them to lnk
 	 */
-	public Map<Node, Link> getConnectedSources(Linkable linkable);
+	public Map<Node, Link> getConnectedSources(Linkable lnk);
+	
+	/**
+	 * Gets the number of nodes.
+	 * @return number of nodes currently in the NodeStructure
+	 */
+	public int getNodeCount();
 
+	/**
+	 * Gets the number of links.
+	 * @return number of links currently in the NodeStructure
+	 */
+	public int getLinkCount();
+
+	/**
+	 * Gets the number of linkables (nodes and links).
+	 * @return number of {@link Linkable} objects currently in the NodeStructure
+	 */
+	public int getLinkableCount();
+
+	/**
+	 * Gets default {@link Node} type of the NodeStructure.
+	 * @return default type of {@link Node} objects in the NodeStructure
+	 */
+	public String getDefaultNodeType();
+
+	/**
+	 * Gets default {@link Link} type of the NodeStructure.
+	 * @return link type of {@link Link} objects in the NodeStructure
+	 */
+	public String getDefaultLinkType();
 }

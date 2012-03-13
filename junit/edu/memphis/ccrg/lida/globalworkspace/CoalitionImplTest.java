@@ -15,6 +15,7 @@ import org.junit.Test;
 
 import edu.memphis.ccrg.lida.attentioncodelets.AttentionCodelet;
 import edu.memphis.ccrg.lida.attentioncodelets.NeighborhoodAttentionCodelet;
+import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.LinkImpl;
 import edu.memphis.ccrg.lida.framework.shared.NodeImpl;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
@@ -27,6 +28,8 @@ import edu.memphis.ccrg.lida.pam.PamNodeImpl;
  * @author Siminder Kaur, Nisrine
  */
 public class CoalitionImplTest {
+	
+	private static final ElementFactory factory = ElementFactory.getInstance();
 	
 	private CoalitionImpl coalition;
 	private NodeImpl node1,node2,node3;
@@ -52,8 +55,8 @@ public class CoalitionImplTest {
 		node3.setActivation(0.6);
 	
 		PamNode cat = new PamNodeImpl();
-		link1 = new LinkImpl(node1,node2,cat);
-		link2 = new LinkImpl(node2,node3,cat);
+		link1 = (LinkImpl) factory.getLink(node1,node2,cat);
+		link2 = (LinkImpl) factory.getLink(node2,node3,cat);
 		
 		link1.setActivation(0.5);
 		link1.setActivation(0.7);

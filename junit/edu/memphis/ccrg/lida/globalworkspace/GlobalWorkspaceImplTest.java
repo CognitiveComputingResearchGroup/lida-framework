@@ -30,11 +30,13 @@ import edu.memphis.ccrg.lida.pam.PamNodeImpl;
 
 /**
  * This is a JUnit class which can be used to test methods of the GlobalWorkspaceImpl class
- * @author Siminder Kaur, Ryan J. McCall
+ * @author Siminder Kaur
+ * @author Ryan J. McCall
  */
 
 public class GlobalWorkspaceImplTest {
 
+	private static final ElementFactory factory = ElementFactory.getInstance();
 	private GlobalWorkspaceImpl gw;
 	private Coalition coalition, coalition2, coalition3;
 	private NodeStructureImpl ns = new NodeStructureImpl();
@@ -57,7 +59,7 @@ public class GlobalWorkspaceImplTest {
 		n1.setId(1);
 		n2.setId(2);
 		n3.setId(3);
-		l = new LinkImpl(n1, n2, new PamNodeImpl());
+		l = (LinkImpl) factory.getLink(n1, n2, new PamNodeImpl());
 
 		ns.addDefaultNode(n1);
 		ns.addDefaultNode(n2);

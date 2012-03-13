@@ -32,7 +32,7 @@ public class UnmodifiableNodeStructureImpl implements NodeStructure, BroadcastCo
 	}
 
 	/**
-	 * Default Constructor.
+	 * Copy Constructor.
 	 * @param sourceNodeStructure supplied NodeStructure
 	 * @param shouldCopy If true, the supplied NodeStructure will be copied.  Otherwise supplied NodeStructure
 	 * will be used directly.
@@ -224,12 +224,43 @@ public class UnmodifiableNodeStructureImpl implements NodeStructure, BroadcastCo
 		throw new UnsupportedOperationException("UnmodifiableNodeStructure cannot be modified");
 	}
 
+	/**
+	 * @throws UnsupportedOperationException Cannot modify this object once created.
+	 */
 	@Override
 	public Link addDefaultLink(Node source, Linkable sink,
 			LinkCategory category, double activation, double removalThreshold) {
 		throw new UnsupportedOperationException("UnmodifiableNodeStructure cannot be modified");
 	}
 
+	/**
+	 * @throws UnsupportedOperationException Cannot modify this object once created.
+	 */
+	@Override
+	public Node addDefaultNode(String label, double a, double rt) {
+		throw new UnsupportedOperationException("UnmodifiableNodeStructure cannot be modified");
+	}
+
+	/**
+	 * @throws UnsupportedOperationException Cannot modify this object once created.
+	 */
+	@Override
+	public Link addLink(String type, int srcId, ExtendedId snkId,
+			LinkCategory cat, double a, double rt) {
+		throw new UnsupportedOperationException("UnmodifiableNodeStructure cannot be modified");
+	}
+
+	/**
+	 * @throws UnsupportedOperationException Cannot modify this object once created.
+	 */
+	@Override
+	public Node addNode(String type, String label, double a, double rt) {
+		throw new UnsupportedOperationException("UnmodifiableNodeStructure cannot be modified");
+	}
+
+	/**
+	 * @throws UnsupportedOperationException Cannot modify this object once created.
+	 */
 	@Override
 	public void decayNodeStructure(long ticks) {
 		throw new UnsupportedOperationException("UnmodifiableNodeStructure cannot be modified");

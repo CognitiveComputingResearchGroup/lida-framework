@@ -329,12 +329,8 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 	}
 	
 	/**
-	 * Returns true if the specified scheme's salience is greater than the scheme selection threshold.
-	 * The scheme's salience is the weighted average of the average context activation and the average 
-	 * net desirability of the adding list conditions.
-	 * The weighting can be set with 'goalOrientedness' parameter both it and the scheme selection threshold
-	 * can be set in the {@link #init()} method.
-	 * @see edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemory#shouldInstantiate(edu.memphis.ccrg.lida.proceduralmemory.Scheme, edu.memphis.ccrg.lida.framework.shared.NodeStructure)
+	 * Returns true if the specified scheme's total activation is greater than the scheme selection threshold.
+	 * </br>The threshold can be set in the {@link #init()} method.
 	 */
 	@Override
 	public boolean shouldInstantiate(Scheme s, NodeStructure broadcastBuffer){

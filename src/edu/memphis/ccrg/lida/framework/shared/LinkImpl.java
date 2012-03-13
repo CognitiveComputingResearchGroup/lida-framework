@@ -63,20 +63,31 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 	}
 	
 	/**
-	 * @param source source {@link Node}
-	 * @param sink sink {@link Linkable}
-	 * @param category link's {@link LinkCategory}
+	 * Constructs a new {@link Link} with specified parameters.
+	 * @param src source {@link Node}
+	 * @param snk sink {@link Linkable}
+	 * @param cat link's {@link LinkCategory}
 	 */
-	public LinkImpl(Node source, Linkable sink, LinkCategory category) {
-		this.source = source;
-		if(source.equals(sink)){
+	public LinkImpl(Node src, Linkable snk, LinkCategory cat) {
+		if(src == null){
+			throw new IllegalArgumentException("Cannot create a link with null source.");
+		}
+		if(snk == null){
+			throw new IllegalArgumentException("Cannot create a link with null sink.");
+		}
+		if(cat == null){
+			throw new IllegalArgumentException("Cannot create a link with null category.");
+		}
+		
+		if(src.equals(snk)){
 			throw new IllegalArgumentException("Cannot create a link with the same source and sink.");
 		}
-		if(sink.getExtendedId().isComplexLink()){
+		if(snk.getExtendedId().isComplexLink()){
 			throw new IllegalArgumentException("Sink cannot be a complex link. Must be a node or simple link.");
 		}
-		this.sink = sink;
-		this.category = category;
+		this.source = src;
+		this.sink = snk;
+		this.category = cat;
 		updateExtendedId();
 	}
 
@@ -218,12 +229,12 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 	 */
 	@Override
 	public void updateLinkValues(Link link) {
-		if(link instanceof LinkImpl){
-			LinkImpl other = (LinkImpl) link;
-			this.extendedId = other.extendedId;
-			this.category = other.category;
-			this.groundingPamLink = other.groundingPamLink;
-		}
+//		if(link instanceof LinkImpl){
+//			LinkImpl other = (LinkImpl) link;
+//			this.extendedId = other.extendedId;
+//			this.category = other.category;
+//			this.groundingPamLink = other.groundingPamLink;
+//		}
 	}
 
 	@Override

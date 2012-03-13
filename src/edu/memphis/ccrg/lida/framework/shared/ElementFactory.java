@@ -713,6 +713,38 @@ public class ElementFactory {
 	}
 
 	/**
+	 * Creates new node of specified type with specified label. Uses strategies
+	 * based on specified node type, or the default strategies if the node type
+	 * has no strategies defined.
+	 * 
+	 * @param type
+	 *            type of new node
+	 * @param label
+	 *            label of new node
+	 * @return the node
+	 */
+	public Node getNode(String type, String label) {
+		LinkableDef nodeDef = nodeClasses.get(type);
+		if (nodeDef == null) {
+			logger.log(Level.WARNING, "Node type {1} does not exist.", 
+					new Object[]{TaskManager.getCurrentTick(),type});
+			return null;
+		}
+		String decayB = nodeDef.getDefaultStrategies().get(decayStrategyType);
+		String exciteB = nodeDef.getDefaultStrategies().get(exciteStrategyType);
+		if (decayB == null) {
+			decayB = defaultDecayType;
+		}
+		if (exciteB == null) {
+			exciteB = defaultExciteType;
+		}
+
+		Node n = getNode(type, decayB, exciteB, label, 
+				Activatible.DEFAULT_ACTIVATION, Activatible.DEFAULT_ACTIVATIBLE_REMOVAL_THRESHOLD);
+		return n;
+	}
+
+	/**
 	 * Creates a copy of specified node of desired type.  Desired type
 	 * must pass is-a test with requireType.
 	 * @param requiredType Default node type of {@link NodeStructure} 
@@ -740,39 +772,14 @@ public class ElementFactory {
 			Class<?> desired = Class.forName(desiredDef.getClassName());
 			
 			if(required != null && required.isAssignableFrom(desired)){
-				newNode = getNode(oNode, desiredType);
+				if(oNode == null){//Get a new Node from scratch
+					newNode = getNode(desiredType, "Node");
+				}else{ //Get a new Node based on oNode
+					newNode = getNode(oNode, desiredType);
+				}
 			}
 		} catch (ClassNotFoundException exc) {
-//			logger.log(Level.SEVERE, "Cannot find class name", TaskManager.getCurrentTick());
-			exc.printStackTrace();
-		} 
-		return newNode;
-	}
-	
-	public Node getNewNode(String requiredType, String desiredType) {
-		LinkableDef requiredDef = nodeClasses.get(requiredType);
-		if(requiredDef == null){
-			logger.log(Level.WARNING, "Factory does not contain node type: {1}", 
-					new Object[]{TaskManager.getCurrentTick(),requiredType});
-			return null;
-		}
-		LinkableDef desiredDef = nodeClasses.get(desiredType);
-		if(desiredDef == null){
-			logger.log(Level.WARNING, "Factory does not contain node type: {1}", 
-					new Object[]{TaskManager.getCurrentTick(),desiredType});
-			return null;
-		}
-		
-		Node newNode = null;
-		try {
-			Class<?> required = Class.forName(requiredDef.getClassName());
-			Class<?> desired = Class.forName(desiredDef.getClassName());
-			
-			if(required != null && required.isAssignableFrom(desired)){
-				newNode = getNode(desiredType);
-			}
-		} catch (ClassNotFoundException exc) {
-//			logger.log(Level.SEVERE, "Cannot find class name", TaskManager.getCurrentTick());
+			logger.log(Level.SEVERE, "Cannot find Class type.", TaskManager.getCurrentTick());
 			exc.printStackTrace();
 		} 
 		return newNode;
@@ -815,9 +822,9 @@ public class ElementFactory {
 			return null;
 		}
 		Node n = getNode(nodeType,  decayStrategy, exciteStrategy, oNode.getLabel(),oNode.getActivation(), oNode.getActivatibleRemovalThreshold());
-		n.updateNodeValues(oNode);
 		n.setGroundingPamNode(oNode.getGroundingPamNode());
-		n.setId(oNode.getId());	//sets extended id as well.		
+		n.setId(oNode.getId());	//sets extended id as well.
+		n.updateNodeValues(oNode);
 		return n;
 	}
 
@@ -832,38 +839,6 @@ public class ElementFactory {
 	 */
 	public Node getNode(String nodeType) {
 		return getNode(nodeType, "Node");
-	}
-
-	/**
-	 * Creates new node of specified type with specified label. Uses strategies
-	 * based on specified node type, or the default strategies if the node type
-	 * has no strategies defined.
-	 * 
-	 * @param nodeType
-	 *            type of new node
-	 * @param nodeLabel
-	 *            label of new node
-	 * @return the node
-	 */
-	public Node getNode(String nodeType, String nodeLabel) {
-		LinkableDef nodeDef = nodeClasses.get(nodeType);
-		if (nodeDef == null) {
-			logger.log(Level.WARNING, "Node type {1} does not exist.", 
-					new Object[]{TaskManager.getCurrentTick(),nodeType});
-			return null;
-		}
-		String decayB = nodeDef.getDefaultStrategies().get(decayStrategyType);
-		String exciteB = nodeDef.getDefaultStrategies().get(exciteStrategyType);
-		if (decayB == null) {
-			decayB = defaultDecayType;
-		}
-		if (exciteB == null) {
-			exciteB = defaultExciteType;
-		}
-
-		Node n = getNode(nodeType, decayB, exciteB, nodeLabel, 
-				Activatible.DEFAULT_ACTIVATION, Activatible.DEFAULT_ACTIVATIBLE_REMOVAL_THRESHOLD);
-		return n;
 	}
 
 	/**

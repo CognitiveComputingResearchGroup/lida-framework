@@ -158,13 +158,13 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 	 */
 	@Override
 	public void updateNodeValues(Node n) {
-		if(n instanceof NodeImpl){
-			NodeImpl other = (NodeImpl) n;
-			id = other.id;
-			extendedId = other.extendedId;
-			label = other.label;
-			groundingPamNode = other.groundingPamNode;
-		} 
+//		if(n instanceof NodeImpl){
+//			NodeImpl other = (NodeImpl) n;
+//			id = other.id;
+//			extendedId = other.extendedId;
+//			label = other.label;
+//			groundingPamNode = other.groundingPamNode;
+//		} 
 	}
 
 	@Override

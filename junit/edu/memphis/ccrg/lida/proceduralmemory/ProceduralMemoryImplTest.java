@@ -151,10 +151,11 @@ public class ProceduralMemoryImplTest {
 	@Test
 	public void testShouldInstantiate() {
 		Map<String,Object> params = new HashMap<String,Object>();
-		params.put("proceduralMemory.schemeSelectionThreshold", 0.9);
-		params.put("proceduralMemory.contextWeight", 1.0);
-		params.put("proceduralMemory.addingListWeight", 0.0);		
+		params.put("proceduralMemory.schemeSelectionThreshold", 0.9);	
 		pm.init(params);
+		
+		SchemeImpl.setContextWeight(1.0);
+		SchemeImpl.setAddingListWeight(0.0);
 		
 		//Scheme has insufficiently activated conditions
 		c1.setActivation(0.89);
