@@ -22,7 +22,6 @@ public interface Initializable {
 	 * @param parameters Map of parameters indexed by their String names
 	 */
 	public void init(Map<String, ?> parameters);
-//	TODO add another map for default parameters. first will be runtime-specified parameters.
 
 	/**
 	 * This is a convenience method to initialize this Object with parameters. 

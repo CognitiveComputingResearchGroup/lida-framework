@@ -41,8 +41,8 @@ public class AddLinkToPerceptTask extends FrameworkTaskImpl {
 	 */
 	@Override
 	protected void runThisFrameworkTask() {		
-		pam.addNodeToPercept((Node) link.getSink());
-		pam.addLinkToPercept(link);
+		pam.addToPercept((Node) link.getSink());
+		pam.addToPercept(link);
 		setTaskStatus(TaskStatus.FINISHED);
 	}
 	

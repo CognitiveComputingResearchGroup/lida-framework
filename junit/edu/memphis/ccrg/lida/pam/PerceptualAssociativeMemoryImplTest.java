@@ -232,7 +232,7 @@ public class PerceptualAssociativeMemoryImplTest {
 	public void testAddPamListener(){
 		MockPamListener pl = new MockPamListener();
 		pam.addPamListener(pl);
-		pam.addNodeStructureToPercept(new NodeStructureImpl());
+		pam.addToPercept(new NodeStructureImpl());
 		
 		NodeStructure ns = pl.ns;
 		assertEquals(0,ns.getNodeCount());
@@ -338,7 +338,7 @@ public class PerceptualAssociativeMemoryImplTest {
 		nodeStructure.addDefaultNode(node2);
 		nodeStructure.addDefaultNode(node3);
 		
-		pam.addNodeStructureToPercept(nodeStructure);
+		pam.addToPercept(nodeStructure);
 		
 		NodeStructure ns = pl.ns;
 		assertEquals(3, ns.getNodeCount());
@@ -354,7 +354,7 @@ public class PerceptualAssociativeMemoryImplTest {
 		pam.addPamListener(pl);
 		assertNull(pl.n);
 		
-		pam.addNodeToPercept(node1);
+		pam.addToPercept(node1);
 		
 		assertEquals(node1, pl.n);
 	}
@@ -365,7 +365,7 @@ public class PerceptualAssociativeMemoryImplTest {
 		pam.addPamListener(pl);
 		assertNull(pl.l);
 		
-		pam.addLinkToPercept(link1);
+		pam.addToPercept(link1);
 		
 		assertEquals(link1, pl.l);
 	}

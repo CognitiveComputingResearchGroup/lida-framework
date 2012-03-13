@@ -57,7 +57,6 @@ public class BasicSchemeActivationStrategy extends StrategyImpl implements Schem
 		logger.log(Level.FINEST, "activating schemes from broadcast",
 				TaskManager.getCurrentTick());
 		Set<Scheme> toInstantiate = new HashSet<Scheme>();
-		//TODO use condition pool to excite
 		Map<?, Set<Scheme>> schemeMap = (Map<?, Set<Scheme>>) params[0];
 		for (Linkable lnk: broadcast.getLinkables()) {	
 			Set<Scheme> schemes = schemeMap.get(lnk.getExtendedId());

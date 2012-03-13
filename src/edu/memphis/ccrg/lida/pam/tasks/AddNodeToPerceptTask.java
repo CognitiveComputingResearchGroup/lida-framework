@@ -37,7 +37,7 @@ public class AddNodeToPerceptTask extends FrameworkTaskImpl {
 	 */
 	@Override
 	protected void runThisFrameworkTask() {		
-		pam.addNodeToPercept(node);
+		pam.addToPercept(node);
 		setTaskStatus(TaskStatus.FINISHED);
 	}
 }

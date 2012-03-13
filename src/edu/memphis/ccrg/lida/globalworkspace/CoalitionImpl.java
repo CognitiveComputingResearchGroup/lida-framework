@@ -7,12 +7,16 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.globalworkspace;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import edu.memphis.ccrg.lida.attentioncodelets.AttentionCodelet;
 import edu.memphis.ccrg.lida.attentioncodelets.AttentionCodeletImpl;
 import edu.memphis.ccrg.lida.framework.shared.Linkable;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.UnmodifiableNodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl;
+import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 
 /**
  * The default implementation of {@link Coalition}.  Wraps content entering the 
@@ -24,6 +28,7 @@ import edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl;
  */
 public class CoalitionImpl extends ActivatibleImpl implements Coalition {
 
+	private static final Logger logger = Logger.getLogger(CoalitionImpl.class.getCanonicalName());
 	private static long idCounter = 0;
 	/*
 	 * unique id
@@ -71,10 +76,12 @@ public class CoalitionImpl extends ActivatibleImpl implements Coalition {
             sum += lnk.getActivation();
         }
         int contentSize = ns.getLinkableCount();
-        if(contentSize != 0 && creatingAttentionCodelet != null){
-        	setActivation(creatingAttentionCodelet.getBaseLevelActivation() * sum / contentSize);
+        if(contentSize == 0){
+        	logger.log(Level.FINEST, "Coalition has no content", TaskManager.getCurrentTick());
+        }else if(creatingAttentionCodelet == null){
+        	logger.log(Level.FINEST, "Coalition has no attention codelet", TaskManager.getCurrentTick());
         }else{
-        	//TODO log and split boolean expr.
+        	setActivation(creatingAttentionCodelet.getBaseLevelActivation() * sum / contentSize);
         }
     }
 

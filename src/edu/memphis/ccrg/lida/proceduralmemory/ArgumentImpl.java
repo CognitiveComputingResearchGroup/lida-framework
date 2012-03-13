@@ -278,13 +278,13 @@ public class ArgumentImpl implements Argument {
 
 	@Override
 	public String getFactoryType() {
-		// TODO Auto-generated method stub
+		// TODO implement
 		return null;
 	}
 
 	@Override
 	public void setFactoryType(String n) {
-		// TODO Auto-generated method stub
+		// TODO implement
 		
 	}
 }

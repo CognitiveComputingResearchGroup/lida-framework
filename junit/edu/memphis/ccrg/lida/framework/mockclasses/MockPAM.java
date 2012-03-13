@@ -92,7 +92,7 @@ public class MockPAM extends FrameworkModuleImpl implements PerceptualAssociativ
 	}
 
 	@Override
-	public void addNodeStructureToPercept(NodeStructure ns) {
+	public void addToPercept(NodeStructure ns) {
 		nsPercept = ns;
 	}
 
@@ -227,12 +227,12 @@ public class MockPAM extends FrameworkModuleImpl implements PerceptualAssociativ
 
 	public Link linkPercept;
 	@Override
-	public void addLinkToPercept(Link l) {
+	public void addToPercept(Link l) {
 		linkPercept = l;
 	}
 	public Node nodePercept;
 	@Override
-	public void addNodeToPercept(Node n) {
+	public void addToPercept(Node n) {
 		nodePercept = n;
 	}
 

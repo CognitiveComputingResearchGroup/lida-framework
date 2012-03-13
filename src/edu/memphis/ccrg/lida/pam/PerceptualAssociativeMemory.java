@@ -113,23 +113,22 @@ public interface PerceptualAssociativeMemory extends FrameworkModule{
 	 */
 	public void propagateActivationToParents(PamNode pamNode);
 
-	//TODO give these three the same method name!
 	/**
 	 * Adds a NodeStructure to the percept.
 	 *
 	 * @param ns NodeStructure
 	 */
-	public void addNodeStructureToPercept(NodeStructure ns);
+	public void addToPercept(NodeStructure ns);
 	/**
 	 * Adds {@link Node} to the percept.
 	 * @param n Node to add
 	 */
-	public void addNodeToPercept(Node n);
+	public void addToPercept(Node n);
 	/**
 	 * Adds {@link Link} to the percept.
 	 * @param l Link to add
 	 */
-	public void addLinkToPercept(Link l);
+	public void addToPercept(Link l);
 	
 	/**
 	 * Returns LinkCategory with specified id.

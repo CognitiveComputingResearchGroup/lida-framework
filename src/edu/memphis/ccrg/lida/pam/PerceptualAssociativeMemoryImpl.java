@@ -335,7 +335,6 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 
 	@Override
 	public void receiveExcitation(PamLinkable pl, double amount) {
-		// TODO support for link
 		if (pl instanceof PamLink) {
 			logger.log(Level.WARNING, "Does not support pam links yet",
 					TaskManager.getCurrentTick());
@@ -402,21 +401,21 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 	}
 
 	@Override
-	public void addNodeStructureToPercept(NodeStructure ns) {
+	public void addToPercept(NodeStructure ns) {
 		for (PamListener pl : pamListeners) {
 			pl.receivePercept(ns);
 		}
 	}
 
 	@Override
-	public void addLinkToPercept(Link l) {
+	public void addToPercept(Link l) {
 		for (PamListener pl : pamListeners) {
 			pl.receivePercept(l);
 		}
 	}
 
 	@Override
-	public void addNodeToPercept(Node n) {
+	public void addToPercept(Node n) {
 		for (PamListener pl : pamListeners) {
 			pl.receivePercept(n);
 		}

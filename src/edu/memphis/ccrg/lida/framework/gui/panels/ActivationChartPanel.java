@@ -180,7 +180,7 @@ public class ActivationChartPanel extends GuiPanelImpl {
 		selectedModule = agent.getSubmodule(ModuleName.PerceptualAssociativeMemory);
 		moduleComboBox.addItem(selectedModule);
 		
-		//order affects color of series, TODO find out how to choose colorsS
+		//order affects color of series, TODO find out how to choose colors
         dataset.addSeries(series3);
         dataset.addSeries(series2);
         dataset.addSeries(series1);
