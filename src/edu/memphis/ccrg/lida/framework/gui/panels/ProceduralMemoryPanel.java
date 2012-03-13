@@ -58,6 +58,7 @@ public class ProceduralMemoryPanel extends GuiPanelImpl {
 		refreshButton
 				.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
 		refreshButton.addActionListener(new java.awt.event.ActionListener() {
+			@Override
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				refreshButtonActionPerformed(evt);
 			}

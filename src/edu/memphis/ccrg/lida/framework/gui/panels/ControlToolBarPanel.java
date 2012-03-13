@@ -20,6 +20,8 @@ package edu.memphis.ccrg.lida.framework.gui.panels;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.SwingConstants;
+
 import edu.memphis.ccrg.lida.framework.gui.FrameworkGui;
 import edu.memphis.ccrg.lida.framework.gui.commands.Command;
 import edu.memphis.ccrg.lida.framework.gui.commands.SetTimeScaleCommand;
@@ -86,7 +88,8 @@ public class ControlToolBarPanel extends GuiPanelImpl {
         startPauseButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         startPauseButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         startPauseButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            @Override
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
                 startPauseButtonActionPerformed(evt);
             }
         });
@@ -104,7 +107,7 @@ public class ControlToolBarPanel extends GuiPanelImpl {
         toolbar.add(jLabel3);
 
         currentTickTextField.setEditable(false);
-        currentTickTextField.setHorizontalAlignment(javax.swing.JTextField.TRAILING);
+        currentTickTextField.setHorizontalAlignment(SwingConstants.TRAILING);
         currentTickTextField.setToolTipText("Current tick");
         currentTickTextField.setMaximumSize(new java.awt.Dimension(100, 24));
         currentTickTextField.setMinimumSize(new java.awt.Dimension(70, 24));
@@ -119,13 +122,14 @@ public class ControlToolBarPanel extends GuiPanelImpl {
         ticksModeTB.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         ticksModeTB.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         ticksModeTB.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            @Override
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ticksModeTBActionPerformed(evt);
             }
         });
         toolbar.add(ticksModeTB);
 
-        tiksTB.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        tiksTB.setHorizontalAlignment(SwingConstants.RIGHT);
         tiksTB.setText("0");
         tiksTB.setToolTipText("Enter a number of ticks here.  The system will run this number of ticks when adjacent 'Add' button is pressed and the system is in step mode.");
         tiksTB.setMaximumSize(new java.awt.Dimension(100, 24));
@@ -140,7 +144,8 @@ public class ControlToolBarPanel extends GuiPanelImpl {
         addTicksButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         addTicksButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         addTicksButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            @Override
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addTicksButtonActionPerformed(evt);
             }
         });
@@ -157,7 +162,8 @@ public class ControlToolBarPanel extends GuiPanelImpl {
         tickDurationSpinner.setMinimumSize(new java.awt.Dimension(63, 24));
         tickDurationSpinner.setPreferredSize(new java.awt.Dimension(63, 24));
         tickDurationSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+            @Override
+			public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 tickDurationSpinnerStateChanged(evt);
             }
         });

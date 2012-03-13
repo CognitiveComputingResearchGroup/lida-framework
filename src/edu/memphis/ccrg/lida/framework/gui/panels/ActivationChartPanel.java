@@ -82,7 +82,8 @@ public class ActivationChartPanel extends GuiPanelImpl {
 
         moduleComboBox.setPreferredSize(new java.awt.Dimension(200, 22));
         moduleComboBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            @Override
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
                 moduleComboBoxActionPerformed(evt);
             }
         });
@@ -102,7 +103,8 @@ public class ActivationChartPanel extends GuiPanelImpl {
         displayButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         displayButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         displayButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            @Override
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
                 displayButtonActionPerformed(evt);
             }
         });

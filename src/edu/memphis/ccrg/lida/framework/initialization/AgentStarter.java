@@ -103,8 +103,7 @@ public class AgentStarter {
 	 */
 	private static void run() {
 		//Load factories data
-		FactoriesDataXmlLoader factoriesDataLoader=new FactoriesDataXmlLoader();
-		factoriesDataLoader.loadFactoriesData(agentProperties);
+		FactoriesDataXmlLoader.loadFactoriesData(agentProperties);
 		
 		// Create model: Agent
 		Agent agent = new AgentXmlFactory().getAgent(agentProperties);

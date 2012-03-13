@@ -1090,6 +1090,7 @@ public class ElementFactory {
 			if (taskDef == null) {
 				logger.log(Level.WARNING, "Factory does not contain FrameworkTask type {1}",
 						new Object[]{TaskManager.getCurrentTick(),taskType});
+				return null;
 			}
 
 			String className = taskDef.getClassName();

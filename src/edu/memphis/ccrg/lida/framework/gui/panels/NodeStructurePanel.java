@@ -89,7 +89,8 @@ public class NodeStructurePanel extends GuiPanelImpl {
         refreshButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         refreshButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         refreshButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            @Override
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
                 refreshButtonActionPerformed(evt);
             }
         });
@@ -105,7 +106,8 @@ public class NodeStructurePanel extends GuiPanelImpl {
         relaxButton.setPreferredSize(new java.awt.Dimension(50, 25));
         relaxButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         relaxButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            @Override
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
                 relaxButtonActionPerformed(evt);
             }
         });

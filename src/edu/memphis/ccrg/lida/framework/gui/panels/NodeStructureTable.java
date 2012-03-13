@@ -77,7 +77,8 @@ public class NodeStructureTable extends GuiPanelImpl {
         refreshButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         refreshButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         refreshButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            @Override
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
                 refreshButtonActionPerformed(evt);
             }
         });
@@ -207,11 +208,23 @@ public class NodeStructureTable extends GuiPanelImpl {
             }
             switch (columnIndex) {
                 case 0:
-                    return node.getLabel();
+                	if(node == null){
+                    	return "";
+                    }else{
+                    	return node.getLabel();
+                    }                    
                 case 1:
-                	return node.getId();
+                	if(node == null){
+                    	return "";
+                    }else{
+                    	return node.getId();
+                    } 
                 case 2:
-                    return df.format(node.getActivation());
+                	if(node == null){
+                    	return "";
+                    }else{
+                    	return df.format(node.getActivation());
+                    } 
                 case 3:
                     if (node instanceof PamNode) {
                         return df.format(((PamNode) node).getBaseLevelActivation());

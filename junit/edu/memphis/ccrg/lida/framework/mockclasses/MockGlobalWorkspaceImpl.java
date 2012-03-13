@@ -63,16 +63,20 @@ public class MockGlobalWorkspaceImpl extends GlobalWorkspaceImpl implements Glob
 		
 	}
 
+	@Override
 	public void setCoalitionDecayStrategy(DecayStrategy coalitionDecayStrategy) {
 	}
 
+	@Override
 	public DecayStrategy getCoalitionDecayStrategy() {
 		return null;
 	}
 
+	@Override
 	public void setCoalitionRemovalThreshold(double coalitionRemovalThreshold) {
 	}
 
+	@Override
 	public double getCoalitionRemovalThreshold() {
 		return 0;
 	}

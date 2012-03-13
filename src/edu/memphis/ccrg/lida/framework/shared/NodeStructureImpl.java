@@ -291,11 +291,13 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 			logger.log(Level.WARNING,
 					"Cannot add link because source is null", TaskManager
 							.getCurrentTick());
+			return null;
 		}
 		if(sink == null){
 			logger.log(Level.WARNING,
 					"Cannot add link because sink is null", TaskManager
 							.getCurrentTick());
+			return null;
 		}
 		return addDefaultLink(source.getId(), sink.getExtendedId(), category,
 				activation, removalThreshold);

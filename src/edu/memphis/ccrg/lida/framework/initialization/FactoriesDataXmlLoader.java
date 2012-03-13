@@ -50,7 +50,7 @@ public class FactoriesDataXmlLoader {
 	 * @param properties
 	 *            {@link Properties}
 	 */
-	public void loadFactoriesData(Properties properties) {
+	public static void loadFactoriesData(Properties properties) {
 		String fileName = properties.getProperty(FACTORY_DATA_PROPERTY_NAME,
 				DEFAULT_XML_FILE_PATH);
 		Document dom = XmlUtils
@@ -62,7 +62,7 @@ public class FactoriesDataXmlLoader {
 	 * Parses the xml document creating the elements for {@link ElementFactory}
 	 * @param dom the xml dom Document
 	 */
-	void parseDocument(Document dom) {
+	static void parseDocument(Document dom) {
 		if(dom == null){
 			logger.log(Level.SEVERE, "Document dom was null. Factory data will not be loaded.");
 			return;
@@ -82,19 +82,19 @@ public class FactoriesDataXmlLoader {
 		fillTasks(tasks);
 	}
 
-	private void fillNodes(Map<String, LinkableDef> nodes) {
+	private static void fillNodes(Map<String, LinkableDef> nodes) {
 		for (LinkableDef ld : nodes.values()) {
 			nfactory.addNodeType(ld);
 		}
 	}
 
-	private void fillLinks(Map<String, LinkableDef> links) {
+	private static void fillLinks(Map<String, LinkableDef> links) {
 		for (LinkableDef ld : links.values()) {
 			nfactory.addLinkType(ld);
 		}
 	}
 
-	private void fillStrategies(Map<String, StrategyDef> strategies) {
+	private static void fillStrategies(Map<String, StrategyDef> strategies) {
 		for (StrategyDef sd : strategies.values()) {
 			if (sd.getType().equalsIgnoreCase("decay")) {
 				nfactory.addDecayStrategy(sd.getName(), sd);
@@ -105,7 +105,7 @@ public class FactoriesDataXmlLoader {
 		}
 	}
 
-	private void fillTasks(Map<String, FrameworkTaskDef> tasks) {
+	private static void fillTasks(Map<String, FrameworkTaskDef> tasks) {
 		for (FrameworkTaskDef cd : tasks.values()) {
 			nfactory.addFrameworkTaskType(cd);
 		}
@@ -116,7 +116,7 @@ public class FactoriesDataXmlLoader {
 	 * @param element Dom element
 	 * @return a Map with the {@link StrategyDef} indexed by name
 	 */
-	Map<String, StrategyDef> getStrategies(Element element) {
+	static Map<String, StrategyDef> getStrategies(Element element) {
 		Map<String, StrategyDef> strat = new HashMap<String, StrategyDef>();
 		List<Element> list = XmlUtils.getChildrenInGroup(element,
 				"strategies", "strategy");
@@ -133,7 +133,7 @@ public class FactoriesDataXmlLoader {
 	 * @param e Dom element
 	 * @return the {@link Strategy} definition
 	 */
-	StrategyDef getStrategyDef(Element e) {
+	static StrategyDef getStrategyDef(Element e) {
 		StrategyDef strategy = new StrategyDef();
 		String className = XmlUtils.getTextValue(e, "class");
 		String name = e.getAttribute("name");
@@ -164,7 +164,7 @@ public class FactoriesDataXmlLoader {
 	 *            Map with {@link StrategyDef} indexed by name
 	 * @return a Map of {@link LinkableDef} indexed by name
 	 */
-	Map<String, LinkableDef> getLinkables(Element element, String groupName,
+	static Map<String, LinkableDef> getLinkables(Element element, String groupName,
 			String childName, Map<String, StrategyDef> strategies) {
 		Map<String, LinkableDef> linkables = new HashMap<String, LinkableDef>();
 		List<Element> list = XmlUtils.getChildrenInGroup(element, groupName,
@@ -184,7 +184,7 @@ public class FactoriesDataXmlLoader {
 	 *            Map with {@link StrategyDef} indexed by name
 	 * @return the {@link Linkable} definition
 	 */
-	LinkableDef getLinkable(Element e, Map<String, StrategyDef> strategies) {
+	static LinkableDef getLinkable(Element e, Map<String, StrategyDef> strategies) {
 		LinkableDef node = new LinkableDef();
 		String className = XmlUtils.getTextValue(e, "class");
 		String name = e.getAttribute("name");
@@ -220,7 +220,7 @@ public class FactoriesDataXmlLoader {
 	 *            Map with {@link StrategyDef} indexed by name
 	 * @return a Map of {@link FrameworkTaskDef} indexed by name
 	 */
-	Map<String, FrameworkTaskDef> getTasks(Element element,
+	static Map<String, FrameworkTaskDef> getTasks(Element element,
 			Map<String, StrategyDef> strategies) {
 		Map<String, FrameworkTaskDef> tasks = new HashMap<String, FrameworkTaskDef>();
 		List<Element> list = XmlUtils.getChildrenInGroup(element, "tasks",
@@ -241,7 +241,7 @@ public class FactoriesDataXmlLoader {
 	 * @param element Dom element
 	 * @return a Map with the associated modules
 	 */
-	Map<ModuleName,String> getAssociatedModules(Element element) {
+	static Map<ModuleName,String> getAssociatedModules(Element element) {
 		Map<ModuleName,String> associatedModules = new HashMap<ModuleName, String>();
 		List<Element> nl = XmlUtils.getChildren(element,"associatedmodule");
 		String elementName = element.getAttribute("name");
@@ -267,7 +267,7 @@ public class FactoriesDataXmlLoader {
 	 *            Map with {@link StrategyDef} indexed by name
 	 * @return the {@link FrameworkTaskDef} definition
 	 */
-	FrameworkTaskDef getTaskDef(Element e, Map<String, StrategyDef> strategies) {
+	static FrameworkTaskDef getTaskDef(Element e, Map<String, StrategyDef> strategies) {
 		FrameworkTaskDef taskDef = null;
 		String className = XmlUtils.getTextValue(e, "class");
 		String name = e.getAttribute("name");
@@ -299,7 +299,7 @@ public class FactoriesDataXmlLoader {
 	 * @param strategies
 	 *            Map with {@link StrategyDef} indexed by name
 	 */
-	void checkStrategies(List<String> strat, Map<String, StrategyDef> strategies) {
+	static void checkStrategies(List<String> strat, Map<String, StrategyDef> strategies) {
 		Iterator<String> it = strat.iterator();
 		String b;
 		while (it.hasNext()) {

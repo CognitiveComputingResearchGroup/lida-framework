@@ -56,6 +56,7 @@ public class LoggingPanel extends GuiPanelImpl {
 
 	@Override
 	public void initPanel(String[] params) {
+		//TODO may be better way to handle null params
 		GuiLogHandler handler = new GuiLogHandler();
 		logger.addHandler(handler);
 		String otherName = null;
@@ -78,7 +79,7 @@ public class LoggingPanel extends GuiPanelImpl {
 			String logN = el.nextElement();
 			if (logN.regionMatches(0, defaultLoggerName, 0, defaultLoggerName.length())) {
 				loggerNameToAddd.add(logN);
-			} else {
+			} else if(params != null){
 				for (int i = 0; i < params.length; i++) {
 					otherName = params[i].trim();
 					if (otherName != null
@@ -132,6 +133,7 @@ public class LoggingPanel extends GuiPanelImpl {
 
 		clearButton.setText("Clear log");
 		clearButton.addActionListener(new java.awt.event.ActionListener() {
+			@Override
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				clearButtonActionPerformed(evt);
 			}
@@ -142,6 +144,7 @@ public class LoggingPanel extends GuiPanelImpl {
 						"FINER", "FINEST", "ALL", "OFF" }));
 		levelComboBox.setSelectedItem("INFO");
 		levelComboBox.addActionListener(new java.awt.event.ActionListener() {
+			@Override
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				levelComboBoxActionPerformed(evt);
 			}
@@ -153,6 +156,7 @@ public class LoggingPanel extends GuiPanelImpl {
 		loggerComboBox.setModel(new DefaultComboBoxModel());
 		loggerComboBox.setSelectedItem("INFO");
 		loggerComboBox.addActionListener(new java.awt.event.ActionListener() {
+			@Override
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				loggerComboBoxActionPerformed(evt);
 			}

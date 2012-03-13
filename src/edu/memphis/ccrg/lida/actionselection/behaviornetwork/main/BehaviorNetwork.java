@@ -231,6 +231,7 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements
 	}
 
 	private class BehaviorNetworkBackgroundTask extends FrameworkTaskImpl {
+		@Override
 		public void runThisFrameworkTask() {
 			passActivationFromSchemes();
 			passActivationAmongBehaviors();

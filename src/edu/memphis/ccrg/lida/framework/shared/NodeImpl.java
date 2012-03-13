@@ -40,6 +40,7 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 	/**
 	 * @param n the factoryName to set
 	 */
+	@Override
 	public void setFactoryType(String n) {
 		factoryName = n;
 	}
@@ -47,6 +48,7 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 	/**
 	 * @return the factoryName
 	 */
+	@Override
 	public String getFactoryType() {
 		return factoryName;
 	}

@@ -95,31 +95,31 @@ public class FrameworkGui extends javax.swing.JFrame implements FrameworkGuiEven
      * {@link FrameworkGuiController} as the controller. Reads the {@link Properties}
      * file and creates and configures the {@link GuiPanel}s specified therein.
      *
-     * @param agent
+     * @param a
      *            {@link Agent} the model.
-     * @param controller
+     * @param cont
      *            {@link FrameworkGuiController} the controller
-     * @param panelProperties
-     *            for configuration
+     * @param prop
+     *            {@link Properties} for configuration
      */
-    public FrameworkGui(Agent agent, FrameworkGuiController controller,
-            Properties panelProperties) {
-        if (agent == null || controller == null || panelProperties == null) {
-            logger.log(Level.WARNING, "Null argument", TaskManager.getCurrentTick());
-        }
-
+    public FrameworkGui(Agent a, FrameworkGuiController cont,
+            Properties prop) {
         initComponents();
-
-        this.agent = agent;
-        this.controller = controller;
-        TaskManager tm = agent.getTaskManager();
-        tm.addFrameworkGuiEventListener(this);
-        //tm.setGuiEventsInterval(DEFAULT_GUI_EVENT_INTERVAL); //TODO parameter or command
-
-        loadPanels(panelProperties);
+        if (a == null) {
+            logger.log(Level.WARNING, "Agent is null. Panels will not be loaded.", TaskManager.getCurrentTick());
+        }else if (cont == null) {
+            logger.log(Level.WARNING, "Controller is null. Panels will not be loaded.", TaskManager.getCurrentTick());
+        }else if (prop == null) {
+            logger.log(Level.WARNING, "Properties are null. Panels will not be loaded.", TaskManager.getCurrentTick());
+        }else{
+            agent = a;
+            controller = cont;
+            TaskManager tm = a.getTaskManager();
+            tm.addFrameworkGuiEventListener(this);
+            loadPanels(prop);
+        }
         pack();
         setExtendedState(MAXIMIZED_BOTH);
-        //pack();
     }
 
     /*
@@ -444,7 +444,8 @@ public class FrameworkGui extends javax.swing.JFrame implements FrameworkGuiEven
 
         guiRefreshRateMunuItem.setText("Gui Refresh Rate...");
         guiRefreshRateMunuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            @Override
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
                 guiRefreshRateMunuItemActionPerformed(evt);
             }
         });
@@ -452,7 +453,8 @@ public class FrameworkGui extends javax.swing.JFrame implements FrameworkGuiEven
 
         exitMenuItem.setText("Exit");
         exitMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            @Override
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
                 exitMenuItemActionPerformed(evt);
             }
         });
@@ -464,7 +466,8 @@ public class FrameworkGui extends javax.swing.JFrame implements FrameworkGuiEven
 
         addPanelMenuItem.setText("Add new panel");
         addPanelMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            @Override
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addPanelMenuItemActionPerformed(evt);
             }
         });
@@ -490,7 +493,8 @@ public class FrameworkGui extends javax.swing.JFrame implements FrameworkGuiEven
 
         contentsMenuItem.setText("Help");
         contentsMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            @Override
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
                 contentsMenuItemActionPerformed(evt);
             }
         });
@@ -498,7 +502,8 @@ public class FrameworkGui extends javax.swing.JFrame implements FrameworkGuiEven
 
         aboutMenuItem.setText("About");
         aboutMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            @Override
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
                 aboutMenuItemActionPerformed(evt);
             }
         });

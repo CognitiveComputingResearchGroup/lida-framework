@@ -98,7 +98,7 @@ public class BasicProceduralMemoryInitializer implements Initializer {
 	 * @param nsSpecification
 	 * @return NodeStructure
 	 */
-	private NodeStructure loadNodeStructure(GlobalInitializer initializer, String nsSpecification) {		
+	private static NodeStructure loadNodeStructure(GlobalInitializer initializer, String nsSpecification) {		
 		String[] contextNodes = nsSpecification.substring(nsSpecification.indexOf('(') + 1, nsSpecification.indexOf(')')).trim().split(",");
 		int startLinks = nsSpecification.indexOf(')')+ 1;
 		String contexLinksSpec = nsSpecification.substring(startLinks);

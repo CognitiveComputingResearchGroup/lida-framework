@@ -33,6 +33,7 @@ public class BasicSelector extends StrategyImpl implements Selector {
 
 	private static Logger logger = Logger.getLogger(BasicSelector.class.getCanonicalName());
 
+	@Override
 	public Behavior selectBehavior(Collection<Behavior> behaviors, double candidateThreshold) {
 		double maxActivation = 0.0;
 		List<Behavior> winners = new ArrayList<Behavior>();
