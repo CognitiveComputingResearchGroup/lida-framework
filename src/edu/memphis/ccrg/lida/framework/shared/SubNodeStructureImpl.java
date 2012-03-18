@@ -61,6 +61,13 @@ public class SubNodeStructureImpl extends NodeStructureImpl {
 					TaskManager.getCurrentTick());
 			return null;
 		}
+		
+		if (threshold < 0){
+			logger.log(Level.WARNING, "Desired threshold should not be negative.",
+					TaskManager.getCurrentTick());
+			return null;
+		}
+		
 		//	Distance should be not bigger than number of all links.
 		if (distance > getLinkCount()){
 			distance = getLinkCount();
@@ -69,7 +76,11 @@ public class SubNodeStructureImpl extends NodeStructureImpl {
 		NodeStructure subNodeStructure = new NodeStructureImpl();
 		for (Node n : nodes) {
 			//Add nodes to the sub node structure and scan from each node
-			depthFirstSearch(n, distance, subNodeStructure);
+			if (threshold == 0){
+				depthFirstSearchWithoutThreshold(n, distance, subNodeStructure);
+			} else {
+				depthFirstSearchWithThreshold(n, distance, subNodeStructure, threshold);
+			}
 		}
 		//	Add Links to the sub node structure
 		for (Node subNodes : subNodeStructure.getNodes()) {
@@ -85,7 +96,7 @@ public class SubNodeStructureImpl extends NodeStructureImpl {
 				Set<Node> connectedSources = sources.keySet(); 
 				
 				for (Node n : connectedSources) {
-					if (subNodeStructure.containsLinkable(n)) {
+					if (subNodeStructure.containsNode(n)) {
 						subNodeStructure.addDefaultLink(sources.get(n));
 					}
 				}
@@ -102,12 +113,7 @@ public class SubNodeStructureImpl extends NodeStructureImpl {
 						subNodeStructure.addDefaultLink(link);
 				}
 		}
-		//TODO separate method
-		for (Node n:subNodeStructure.getNodes()){
-			if(n.getActivation()<threshold){
-				subNodeStructure.removeNode(n);
-			}
-		}
+
 		return subNodeStructure;
 	}
 	
@@ -115,7 +121,7 @@ public class SubNodeStructureImpl extends NodeStructureImpl {
 	 * @param currentNode One specified node that be considered as neighbor nodes
 	 * or specified nodes in sub NodeStructure 
 	 * @param step The distance between specified nodes and this current Node
-	 * @param distance The farthest distance between specified nodes and
+	 * @param distanceLeftToGo The farthest distance between specified nodes and
 	 * its neighbor nodes
 	 * @param subNodeStructure Nodes contained in subNodeStructure. 
 	 * It involves specified nodes and all neighbor nodes whose distance
@@ -123,7 +129,7 @@ public class SubNodeStructureImpl extends NodeStructureImpl {
 	 * coming from arguments. Also it involves all links between these 
 	 * above nodes.
 	 */
-	private void depthFirstSearch(Node currentNode, int distanceLeftToGo, NodeStructure subNodeStructure) {
+	private void depthFirstSearchWithoutThreshold(Node currentNode, int distanceLeftToGo, NodeStructure subNodeStructure) {
 		if (containsNode(currentNode)){
 			subNodeStructure.addDefaultNode(currentNode);
 		}else{
@@ -138,7 +144,7 @@ public class SubNodeStructureImpl extends NodeStructureImpl {
 		for (Linkable l : subLinkables) {
 			if (l instanceof Node) {
 				if (0 < distanceLeftToGo){
-					depthFirstSearch((Node) l, distanceLeftToGo - 1, subNodeStructure);
+					depthFirstSearchWithoutThreshold((Node) l, distanceLeftToGo - 1, subNodeStructure);
 				}
 			}
 		}
@@ -150,7 +156,54 @@ public class SubNodeStructureImpl extends NodeStructureImpl {
 		Set<Node> parentNodes = subSources.keySet();
 		for (Node n : parentNodes) {
 			if (0 < distanceLeftToGo){
-				depthFirstSearch(n, distanceLeftToGo - 1, subNodeStructure);
+				depthFirstSearchWithoutThreshold(n, distanceLeftToGo - 1, subNodeStructure);
+			}
+		}
+	}
+
+	
+	/*
+	 * @param currentNode One specified node that be considered as neighbor nodes
+	 * or specified nodes in sub NodeStructure 
+	 * @param step The distance between specified nodes and this current Node
+	 * @param distanceLeftToGo The farthest distance between specified nodes and
+	 * its neighbor nodes
+	 * @param subNodeStructure Nodes contained in subNodeStructure. 
+	 * @param threshold Lower bound of Node's activation
+	 * It involves specified nodes and all neighbor nodes whose distance
+	 * from one of specified nodes is not bigger than farthest distance 
+	 * coming from arguments, and those nodes' activation is not lower than threshold.
+	 * Also it involves all links between these above nodes.
+	 */
+	private void depthFirstSearchWithThreshold(Node currentNode, int distanceLeftToGo, 
+			NodeStructure subNodeStructure, double threshold) {
+		if ((containsNode(currentNode)) &&(currentNode.getActivation() >= threshold)){
+			subNodeStructure.addDefaultNode(currentNode);
+		}else{
+			return;
+		}
+
+		/*
+		 *  Get all connected Sinks
+		 */
+		Map<Linkable, Link> subSinks = getConnectedSinks(currentNode);
+		Set<Linkable> subLinkables = subSinks.keySet();
+		for (Linkable l : subLinkables) {
+			if (l instanceof Node) {
+				if (0 < distanceLeftToGo){
+					depthFirstSearchWithThreshold((Node) l, distanceLeftToGo - 1, subNodeStructure, threshold);
+				}
+			}
+		}
+
+		/*
+		 *  Get all connected Sources
+		 */
+		Map<Node, Link> subSources = getConnectedSources(currentNode);
+		Set<Node> parentNodes = subSources.keySet();
+		for (Node n : parentNodes) {
+			if (0 < distanceLeftToGo){
+				depthFirstSearchWithThreshold(n, distanceLeftToGo - 1, subNodeStructure, threshold);
 			}
 		}
 	}
