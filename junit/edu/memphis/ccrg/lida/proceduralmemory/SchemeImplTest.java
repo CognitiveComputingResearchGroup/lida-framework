@@ -21,7 +21,7 @@ import edu.memphis.ccrg.lida.framework.shared.Node;
 
 public class SchemeImplTest{
 
-	private Scheme scheme;
+	private SchemeImpl scheme;
 	private Action action;
 	private Node node1, node2, node3;
 	
@@ -70,23 +70,24 @@ public class SchemeImplTest{
 	}
 	@Test
 	public void test3(){		
-		assertTrue(0 == scheme.getExecutions());
+		assertTrue(0 == scheme.getNumExecutions());
 		assertTrue(0.0 == scheme.getReliability());
-		assertFalse(scheme.isReliable());
+		assertTrue(scheme.isReliable());
 		
 		scheme.actionSuccessful();
 		
-		assertTrue(0 == scheme.getExecutions());
+		assertTrue(0 == scheme.getNumExecutions());
 		assertTrue(0.0 == scheme.getReliability());
-		assertFalse(scheme.isReliable());
+		assertTrue(scheme.isReliable());
 		
 		scheme.actionExecuted();
 		scheme.actionExecuted();
 		scheme.actionExecuted();
 		scheme.actionExecuted();
 		
-		assertTrue(4 == scheme.getExecutions());
+		assertTrue(4 == scheme.getNumExecutions());
 		assertTrue(0.25 == scheme.getReliability());
+		SchemeImpl.setReliabilityThreshold(0.3);
 		assertFalse(scheme.isReliable());
 		
 		scheme.actionSuccessful();

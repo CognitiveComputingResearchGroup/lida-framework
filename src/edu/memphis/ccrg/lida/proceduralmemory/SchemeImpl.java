@@ -29,15 +29,13 @@ import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryImpl.ConditionType
 public class SchemeImpl extends LearnableImpl implements Scheme {
 	
 	private static final Logger logger = Logger.getLogger(SchemeImpl.class.getCanonicalName());
-	private static final double DEFAULT_RELIABILITY_THRESHOLD = 0.5; //TODO this can be a property of procedural memory
 	private static long idCounter = 0;//TODO Factory support for Scheme
 		
 	private String label;
 	private long id;
-	private boolean innate;
-	private int numberOfExecutions;
-	private int successfulExecutions;
-	private double reliabilityThreshold = DEFAULT_RELIABILITY_THRESHOLD; 
+	private boolean isInnate;
+	private int numExecutions;
+	private int numSuccessfulExecutions;
 	
 	private Action action;
 	private Map<Object,Condition> context = new ConcurrentHashMap<Object,Condition>();
@@ -45,6 +43,7 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 	private Map<Object,Condition> deletingList = new ConcurrentHashMap<Object,Condition>();
 //	private Map<Object,Condition> negContext = new ConcurrentHashMap<Object,Condition>();
 	private ProceduralMemoryImpl pm;
+	
 	/*
 	 * The weight of the context in the calculation of scheme salience
 	 */
@@ -53,6 +52,10 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 	 * The weight of the adding list in the calculation of scheme salience
 	 */
 	private static double addingListWeight = 1.0;
+	/*
+	 * Threshold for Schemes to be reliable
+	 */
+	private static double reliabilityThreshold = 0.0; 
 
 	/**
 	 * Constructs a new scheme with default values
@@ -83,6 +86,7 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 	/**
 	 * Sets the {@link ProceduralMemoryImpl} to which this {@link SchemeImpl} belongs.
 	 * @param pm a {@link ProceduralMemoryImpl}
+	 * @see ProceduralMemoryImpl#getNewScheme(Action)
 	 */
 	void setProceduralMemory(ProceduralMemoryImpl pm){
 		this.pm = pm;
@@ -101,18 +105,18 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 	
 	@Override
 	public void actionExecuted() {
-		numberOfExecutions++;
+		numExecutions++;
 	}
 
 	@Override
 	public void actionSuccessful() {
-		successfulExecutions++;		
+		numSuccessfulExecutions++;		
 	}
 
 	@Override
 	public double getReliability() {
-		return (numberOfExecutions > 0) ? 
-				((double) successfulExecutions)/numberOfExecutions : 0.0;
+		return (numExecutions > 0) ? 
+				((double) numSuccessfulExecutions)/numExecutions : 0.0;
 	}
 
 	@Override
@@ -122,12 +126,12 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 	
 	@Override
 	public void setInnate(boolean in) {
-		innate = in;
+		isInnate = in;
 	}
 
 	@Override
 	public boolean isInnate() {
-		return innate;
+		return isInnate;
 	}
 	
 
@@ -170,15 +174,15 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 	
 	@Override
 	public double getActivation(){
-		double overallSalience = contextWeight * getAverageContextActivation()+
+		double overallSalience = contextWeight * getAverageContextActivation() +
 									addingListWeight * getAverageAddingListNetDesirability();
-		return (overallSalience > 1.0)? 1.0 :overallSalience;		
+		return (overallSalience > 1.0)? 1.0:overallSalience;		
 	}
 	
 	//Learnable override
 	@Override
 	public void decayBaseLevelActivation(long ticks){
-		if(!innate){
+		if(!isInnate){
 			super.decayBaseLevelActivation(ticks);
 		}
 	}
@@ -186,18 +190,24 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 	//ProceduralUnit methods
 
 	@Override
-	public int getExecutions() {
-		return numberOfExecutions;
+	public int getNumExecutions() {
+		return numExecutions;
 	}
 	
-	@Override
-	public double getReliabilityThreshold() {
+	/**
+	 * Gets reliabilityThreshold
+	 * @return threshold of reliability
+	 */
+	static double getReliabilityThreshold() {
 		return reliabilityThreshold;
 	}
 
-	@Override
-	public void setReliabilityThreshold(double t) {
-		reliabilityThreshold = t;
+	/**
+	 * Sets reliabilityThreshold
+	 * @param t threshold of reliability
+	 */
+	static void setReliabilityThreshold(double t) {
+		SchemeImpl.reliabilityThreshold = t;
 	}
 
 	@Override

@@ -7,6 +7,7 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.framework.shared;
 
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotSame;
@@ -56,6 +57,7 @@ import edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.BasicStructureB
 public class ElementFactoryTest {
 
 	private static ElementFactory factory;
+	private static final double epsilon = 10e-9;
 	private Node node1, node2;
 	private PamNode pamNode1;
 	private Link link1;
@@ -268,8 +270,8 @@ public class ElementFactoryTest {
 	@Test
 	public void testGetStrategy() {
 		//already tested standard usage in previous tests
-		Strategy foo = factory.getStrategy("1984");
-		assertTrue(foo == null);
+		Strategy s = factory.getStrategy("1984");
+		assertNull(s);
 	}
 
 	@Test
@@ -455,6 +457,7 @@ public class ElementFactoryTest {
 		assertEquals("blah", newNode.getLabel());
 		assertEquals(oNode.getGroundingPamNode(), newNode.getGroundingPamNode());
 	}
+	
 
 	@Test
 	public void testGetNode3() {
@@ -469,18 +472,48 @@ public class ElementFactoryTest {
 		Node n = factory.getNode(requiredType, oNode, desiredType);
 		
 		assertTrue(n instanceof PamNodeImpl);
-		assertTrue(n.getActivation() == 0.11);
-		assertTrue(n.getActivatibleRemovalThreshold() == 0.22);
+		assertEquals(n.getActivation(), 0.11,epsilon);
+		assertEquals(n.getActivatibleRemovalThreshold(), 0.22, epsilon);
 		assertEquals("blah", n.getLabel());
 		assertEquals(oNode.getGroundingPamNode(), n.getGroundingPamNode());
 		
 		//sub test
 		requiredType = "PamNodeImpl";
 		desiredType = "NodeImpl";
-		
 		n = factory.getNode(requiredType, oNode, desiredType);
+		assertNull(n);
 		
-		assertTrue(n == null);
+		//sub test
+		requiredType = "NodeImpl";
+		n = factory.getNode(requiredType, oNode, desiredType);
+		assertTrue(n instanceof NodeImpl);
+		assertEquals(n.getActivation(), 0.11,epsilon);
+	}
+	
+	@Test
+	public void testGetNode3Null(){
+		String requiredType = "NodeImpl";
+		String desiredType = "PamNodeImpl";
+		Node oNode = null;
+		
+		Node n = factory.getNode(requiredType, oNode, desiredType);
+		
+		assertTrue(n instanceof PamNodeImpl);
+		assertEquals(n.getActivation(), Activatible.DEFAULT_ACTIVATION,epsilon);
+		assertEquals(n.getActivatibleRemovalThreshold(), Activatible.DEFAULT_ACTIVATIBLE_REMOVAL_THRESHOLD, epsilon);
+		assertEquals(n, n.getGroundingPamNode());
+		
+		//sub test
+		requiredType = "PamNodeImpl";
+		desiredType = "NodeImpl";
+		n = factory.getNode(requiredType, oNode, desiredType);
+		assertNull(n);
+		
+		//sub test
+		requiredType = "NodeImpl";
+		n = factory.getNode(requiredType, oNode, desiredType);
+		assertTrue(n instanceof NodeImpl);
+		assertEquals(n.getActivation(), Activatible.DEFAULT_ACTIVATION,epsilon);
 	}
 
 	@Test
@@ -527,7 +560,59 @@ public class ElementFactoryTest {
 		n = factory.getNode("PamNodeImpl", "specialDecay", "specialExcite", null, 0.99, 0.11);
 		assertTrue(n instanceof PamNodeImpl);
 	}
+	
+	@Test
+	public void testGetNodeFactoryType(){
+		Node n = factory.getNode();
+		assertEquals("NodeImpl", n.getFactoryType());
+		
+		n = factory.getNode(n);
+		assertEquals("NodeImpl", n.getFactoryType());
+		
+		n = factory.getNode("PamNodeImpl");
+		assertEquals("PamNodeImpl", n.getFactoryType());
+		
+		n = factory.getNode(n, "NodeImpl");
+		assertEquals("NodeImpl", n.getFactoryType());
+		n = factory.getNode(n, "PamNodeImpl");
+		assertEquals("PamNodeImpl", n.getFactoryType());
+		
+		n = factory.getNode("NodeImpl", "");
+		assertEquals("NodeImpl", n.getFactoryType());
+		
+		n = factory.getNode(n, "", "");
+		assertEquals("NodeImpl", n.getFactoryType());
+		
+		n = factory.getNode("NodeImpl", n, "PamNodeImpl");
+		assertEquals("PamNodeImpl", n.getFactoryType());
+		
+		n = factory.getNode("PamNodeImpl", n, "PamNodeImpl");
+		assertEquals("PamNodeImpl", n.getFactoryType());
+		
+		n = factory.getNode("NodeImpl", "", "", "", 0.0, 0.0);
+		assertEquals("NodeImpl", n.getFactoryType());
+	}
 
+	@Test
+	public void testGetLinkFactoryType(){
+		Link l = factory.getLink(node1, node2, category1);
+		assertEquals("LinkImpl", l.getFactoryType());
+		
+		l = factory.getLink("PamLinkImpl", node1, node2, category1);
+		assertEquals("PamLinkImpl", l.getFactoryType());
+		
+		l = factory.getLink(node1, node2, category1, 0, 0);
+		assertEquals("LinkImpl", l.getFactoryType());
+		
+		l = factory.getLink("LinkImpl", "PamLinkImpl", node1, node2, category1);
+		assertEquals("PamLinkImpl", l.getFactoryType());
+		l = factory.getLink("LinkImpl", "LinkImpl", node1, node2, category1);
+		assertEquals("LinkImpl", l.getFactoryType());
+		
+		l = factory.getLink("LinkImpl", node2, node1, category1, null, null, 0, 0);
+		assertEquals("LinkImpl", l.getFactoryType());
+	}
+	
 	//TODO test various parameter possibilities
 	@Test
 	public void testGetCodelet0() {

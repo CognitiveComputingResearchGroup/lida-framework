@@ -337,6 +337,23 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	}
 	
 	@Override
+	public synchronized Link addLink(String type, Node src, Linkable sink, LinkCategory cat, double a, double rt){
+		if(src == null){
+			logger.log(Level.WARNING,
+					"Cannot add link because source is null", TaskManager
+							.getCurrentTick());
+			return null;
+		}
+		if(sink == null){
+			logger.log(Level.WARNING,
+					"Cannot add link because sink is null", TaskManager
+							.getCurrentTick());
+			return null;	
+		}
+		return addLink(type, src.getId(), sink.getExtendedId(), cat, a, rt);
+	}
+	
+	@Override
 	public synchronized Link addLink(String type, int srcId, ExtendedId snkId,
 			LinkCategory cat, double a, double rt){
 		if (!factory.containsLinkType(type)) {

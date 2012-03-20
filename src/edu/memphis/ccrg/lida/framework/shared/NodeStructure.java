@@ -149,6 +149,20 @@ public interface NodeStructure {
 	 */
 	public Link addLink(String type, int srcId, ExtendedId snkId,
 			LinkCategory cat, double a, double rt);	//TODO test
+
+	/**
+	 * Creates and adds a new {@link Link} of specified type with specified attributes.  Source and sink must
+	 * already be in this NodeStructure.
+	 * @param type Factory type of the link to be created
+	 * @param src the link's source {@link Node}
+	 * @param sink the link's sink {@link Linkable}
+	 * @param cat the link's {@link LinkCategory}
+	 * @param a initial link activation
+	 * @param rt removal threshold, amount of activation Link must maintain to remain in this NodeStructure after decaying.
+	 * @return created Link or null if either source or sink are not already present. 
+	 */
+	public Link addLink(String type, Node src, Linkable sink, LinkCategory cat,
+			double a, double rt);
 	
 	/**
 	 * Adds copy of specified Link. Copy is of specified type.
@@ -382,4 +396,5 @@ public interface NodeStructure {
 	 * @return link type of {@link Link} objects in the NodeStructure
 	 */
 	public String getDefaultLinkType();
+
 }

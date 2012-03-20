@@ -10,12 +10,12 @@
  */
 package edu.memphis.ccrg.lida.pam;
 
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -50,10 +50,12 @@ import edu.memphis.ccrg.lida.pam.tasks.DetectionAlgorithm;
 
 /**
  * Tests {@link PerceptualAssociativeMemoryImpl}
- * @author Ryan J. McCall, Siminder Kaur
+ * @author Ryan J. McCall
+ * @author Siminder Kaur
  */
 public class PerceptualAssociativeMemoryImplTest {
 	
+	private static ElementFactory factory;
 	private PerceptualAssociativeMemoryImpl pam;
 	private NodeStructure nodeStructure;
 	private PamNodeImpl node1,node2,node3;
@@ -62,14 +64,12 @@ public class PerceptualAssociativeMemoryImplTest {
 	private TotalActivationStrategy tas;
 	private PamLinkImpl link1,link2;
 	
-	private static ElementFactory factory;
 	
 	@BeforeClass
 	public static void setUpBeforeClass(){
 		factory = ElementFactory.getInstance();
-		FactoriesDataXmlLoader factoryLoader = new FactoriesDataXmlLoader();
 		Properties prop = ConfigUtils.loadProperties(AgentStarter.DEFAULT_PROPERTIES_PATH);
-		factoryLoader.loadFactoriesData(prop);
+		FactoriesDataXmlLoader.loadFactoriesData(prop);
 	}
 	
 	@Before
@@ -80,6 +80,7 @@ public class PerceptualAssociativeMemoryImplTest {
 		node1 = (PamNodeImpl) factory.getNode("PamNodeImpl", "Node 1");
 		node2 = (PamNodeImpl) factory.getNode("PamNodeImpl", "Node 2");
 		node3 = (PamNodeImpl) factory.getNode("PamNodeImpl", "Node 3");
+		
 		decayStrategy = new SigmoidDecayStrategy();
 		exciteStrat = new SigmoidExciteStrategy();
 		tas = (TotalActivationStrategy) factory.getStrategy("DefaultTotalActivation");		
@@ -97,14 +98,17 @@ public class PerceptualAssociativeMemoryImplTest {
 		assertEquals(0.0,n.getActivatibleRemovalThreshold(),epsilon);
 		assertTrue(pam.containsNode(n));
 		assertEquals(n,pam.getNode("hi"));
+		
+		PamNode n2 = pam.addDefaultNode("hi");
+		assertSame(n, n2);
 	}
 	
 	@Test
 	public void testAddNode_Type_Label(){
-		factory.addNodeType("mockPamNode","edu.memphis.ccrg.lida.pam.MockPamNodeImplSubclass");
+		factory.addNodeType("mockPamNode","edu.memphis.ccrg.lida.pam.PamNodeImplSubclass");
 		
 		PamNode n = pam.addNode("mockPamNode","hi");
-		assertTrue(n instanceof MockPamNodeImplSubclass);
+		assertTrue(n instanceof PamNodeImplSubclass);
 		assertEquals("hi", n.getLabel());
 		assertEquals("mockPamNode",n.getFactoryType());
 		assertEquals(0.0,n.getActivation(),epsilon);
@@ -112,9 +116,11 @@ public class PerceptualAssociativeMemoryImplTest {
 		assertTrue(pam.containsNode(n));
 		assertEquals(n,pam.getNode("hi"));
 		
+		int nodeCount = pam.getNodes().size();
 		//try to add another node of different type
 		PamNode n2 = pam.addNode("PamNodeImpl", "hi");
 		assertSame(n, n2);
+		assertEquals(nodeCount, pam.getNodes().size());
 	}
 	
 	@Test
@@ -125,25 +131,25 @@ public class PerceptualAssociativeMemoryImplTest {
 		n = pam.addNode("PamNodeImpl", null);
 		assertNull(n);
 		
-		n = pam.addNode("Spaghetti", "hi");
+		n = pam.addNode("Bad type", "hi");
 		assertNull(n);
 	}
 	
 	@Test
 	public void addDefaultLink_Node_Linkable_LinkCategory(){
-		pam.addDefaultNode(node1);
-		pam.addDefaultNode(node2);
 		pam.addLinkCategory(node3);
 		
-		PamLink pl = pam.addDefaultLink(node1,node2,node3);
+		PamNode newNode1 = pam.addDefaultNode("1");
+		PamNode newNode2 = pam.addDefaultNode("2");
+		PamLink pl = pam.addDefaultLink(newNode1,newNode2,node3);
 		
 		assertTrue(pl instanceof PamLinkImpl);
 		assertEquals("PamLinkImpl",pl.getFactoryType());
 		assertEquals(0.0,pl.getActivation(),epsilon);
 		assertEquals(0.0,pl.getActivatibleRemovalThreshold(),epsilon);
 		assertTrue(pam.containsLink(pl));
-		assertEquals(node1,pl.getSource());
-		assertEquals(node2,pl.getSink());
+		assertEquals(newNode1,pl.getSource());
+		assertEquals(newNode2,pl.getSink());
 		assertEquals(node3,pl.getCategory());
 	}
 	
@@ -152,28 +158,77 @@ public class PerceptualAssociativeMemoryImplTest {
 		PamLink l = pam.addLink("PamLinkImpl",node1,node2,node3);
 		assertNull(l);
 		
-		pam.addDefaultNode(node1);
-		l = pam.addLink("PamLinkImpl",node1,node2,node3);
+		PamNode newNode1 = pam.addDefaultNode("1");
+		PamNode newNode2 = pam.addDefaultNode("2");
+		l = pam.addLink("PamLinkImpl",newNode1,node2,node3);
 		assertNull(l);
 		
-		pam.addDefaultNode(node2);
-		l = pam.addLink("PamLinkImpl",node1,node2,node3);
+		l = pam.addLink("PamLinkImpl",newNode1,newNode2,node3);
 		assertNull(l);
+		
+		pam.addLinkCategory(node3);
+		l = pam.addLink("PamLinkImpl",newNode1,newNode2,node3);
+		assertNotNull(l);
 	}
 	
 	@Test
 	public void addLink_Type_Node_Linkable_LinkCategory2(){
-		//TODO bad arguments
+		PamLink l = pam.addLink("PamLinkImpl", null, null, null);
+		assertNull(l);
+
+		PamNode newNode1 = pam.addDefaultNode("1");
+		PamNode newNode2 = pam.addDefaultNode("2");
+		l = pam.addLink("PamLinkImpl", newNode1, null, null);
+		assertNull(l);
+		
+		l = pam.addLink("PamLinkImpl", newNode1, newNode2, null);
+		assertNull(l);
+		
+		pam.addLinkCategory(node3); //link1 not present
+		l = pam.addLink("PamLinkImpl", newNode1, link1, node3);
+		assertNull(l);
+		
+		pam.addLinkCategory(node3);
+		l = pam.addLink("LinkImpl", newNode1, newNode2, node3);
+		assertNull(l);
+		
+		l = pam.addLink("BADTYPE", newNode1, newNode2, node3);
+		assertNull(l);
 	}
 	
 	@Test
 	public void addLink_Type_Node_Linkable_LinkCategory3(){
-		//TODO normal subtype
+		factory.addLinkType("testPamLink","edu.memphis.ccrg.lida.pam.PamLinkImplSubclass");
+		
+		PamNode newNode1 = pam.addDefaultNode("1");
+		PamNode newNode2 = pam.addDefaultNode("2");
+		pam.addLinkCategory(node3);
+		PamLink pl = pam.addLink("testPamLink", newNode1, newNode2, node3);
+		
+		assertTrue(pl instanceof PamLinkImplSubclass);
+		assertEquals("testPamLink",pl.getFactoryType());
+		assertEquals(0.0,pl.getActivation(),epsilon);
+		assertEquals(0.0,pl.getActivatibleRemovalThreshold(),epsilon);
+		assertTrue(pam.containsLink(pl));
+		assertEquals(newNode1,pl.getSource());
+		assertEquals(newNode2,pl.getSink());
+		assertEquals(node3,pl.getCategory());
 	}
 	
 	@Test
 	public void addLink_Type_Node_Linkable_LinkCategory4(){
-		//TODO existing link
+		PamNode newNode1 = pam.addDefaultNode("1");
+		PamNode newNode2 = pam.addDefaultNode("2");
+		pam.addLinkCategory(node3);
+		PamLink pl = pam.addLink("PamLinkImpl", newNode1, newNode2, node3);
+		
+		assertNotNull(pl);
+		assertTrue(pam.containsLink(pl));
+		
+		int linkCount = pam.getLinks().size();
+		PamLink pl2 = pam.addLink("testPamLink", newNode1, newNode2, node3);
+		assertSame(pl,pl2);
+		assertEquals(linkCount, pam.getLinks().size());
 	}
 
 	@Test
@@ -216,6 +271,8 @@ public class PerceptualAssociativeMemoryImplTest {
 		}
 		assertTrue(pam.containsNode(node2));
 		assertTrue(pam.containsNode(node3));
+		
+		
 		assertEquals(2, pam.getNodes().size() - pam.getLinkCategories().size());
 	}
 	@Test

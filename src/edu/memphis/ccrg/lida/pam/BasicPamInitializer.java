@@ -56,11 +56,12 @@ public class BasicPamInitializer implements Initializer {
         			"empty string found in nodes specification, node labels must be non-empty");
                 }else{
                 	logger.log(Level.INFO, "loading PamNode: {0}", label);
-	                PamNode node = (PamNode) factory.getNode("PamNodeImpl", label);
+                	PamNode node = pam.addDefaultNode(label);
+//	                PamNode node = (PamNode) factory.getNode("PamNodeImpl", label);
 	                if(node == null){
-	                	logger.log(Level.WARNING, "failed to get node {0}", label);
+	                	logger.log(Level.WARNING, "failed to get node '{0}' from pam", label);
 	                }else{
-	                	node = pam.addDefaultNode(node);
+//	                	node = pam.addDefaultNode(node);
 	                	globalInitializer.setAttribute(label, node);
 	                }
                 }
@@ -86,8 +87,9 @@ public class BasicPamInitializer implements Initializer {
                 Node source = pam.getNode(nodes[0].trim());
                 Node sink = pam.getNode(nodes[1].trim());
                 if (source != null && sink != null) {
-                    Link link = factory.getLink("PamLinkImpl", source, sink, PerceptualAssociativeMemoryImpl.PARENT);
-                    pam.addDefaultLink(link);
+//                    Link link = factory.getLink("PamLinkImpl", source, sink, PerceptualAssociativeMemoryImpl.PARENT);
+//                    pam.addDefaultLink(link);
+                    pam.addDefaultLink(source, sink, PerceptualAssociativeMemoryImpl.PARENT);
                 } else {
                     logger.log(Level.WARNING, "could not find source or sink " + linkDef, TaskManager.getCurrentTick());
                 }

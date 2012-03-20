@@ -90,7 +90,7 @@ public class ElementFactory {
 	 */
 	private String defaultNodeType = NodeImpl.class.getSimpleName();
 	
-	//FIXME allow configuration of this variable
+	//TODO a Definition for behavior is needed
 	private String defaultBehaviorClassName = BehaviorImpl.class.getCanonicalName();
 	
 	/*
@@ -240,23 +240,6 @@ public class ElementFactory {
 		addLinkType(newLinkDef);
 	}
 	
-	//TODO consider
-//	public String getDefaultStrategyName(String type){
-//		if("decay".equalsIgnoreCase(type)){
-//			return getDefaultDecayType();
-//		}else if("excite".equalsIgnoreCase(type)){
-//			return getDefaultExciteType();
-//		}else if("node".equalsIgnoreCase(type)){
-//			return getDefaultNodeType();
-//		}else if("link".equalsIgnoreCase(type)){
-//			return getDefaultLinkType();
-//		}else if("totalActivation".equalsIgnoreCase(type)){
-//			return defaultTotalActivationType;
-//		}else{
-//			return null;
-//		}
-//	}
-
 	/**
 	 * Adds a {@link DecayStrategy} indexed by specified name.
 	 * 
@@ -1139,10 +1122,10 @@ public class ElementFactory {
 			if (containsLinkType(linkType)) {
 				return new NodeStructureImpl(nodeType, linkType);
 			}
-			logger.log(Level.WARNING, "Factory does not contain link type {1}", 
+			logger.log(Level.WARNING, "Cannot get NodeStructure. Factory does not contain link type {1}", 
 					new Object[]{TaskManager.getCurrentTick(),linkType});
 		}
-		logger.log(Level.WARNING, "Factory does not contain node type {1}", 
+		logger.log(Level.WARNING, "Cannot get NodeStructure. Factory does not contain node type {1}", 
 				new Object[]{TaskManager.getCurrentTick(),nodeType});
 		return null;
 	}

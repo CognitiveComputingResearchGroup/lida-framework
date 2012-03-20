@@ -28,12 +28,53 @@ import edu.memphis.ccrg.lida.pam.tasks.PropagationTask;
  */
 public interface PerceptualAssociativeMemory extends FrameworkModule{
 
+
+	/**
+	 * Adds a new {@link PamNode} of default type to PAM with specified label.
+	 * Label must be unique. If not, existing node with specified label is returned.
+	 * @param label the label of the new {@link PamNode}
+	 * @return the new {@link PamNode} added to PAM, the existing Node with specified label or null
+	 */
+	public PamNode addDefaultNode(String label);
+
+	/**
+	 * Adds a new {@link PamNode} of specified type to PAM with specified label.  Type should refer to a subclass of {@link PamNodeImpl}.
+	 * Label must be unique. If not, existing node with specified label is returned.
+	 * @param type the type of the new {@link PamNode}
+	 * @param label the label of the new {@link PamNode}
+	 * @return the new {@link PamNode} added to PAM, the existing Node with specified label or null
+	 */
+	public PamNode addNode(String type, String label);
+
+	/**
+	 * Adds a new {@link PamLink} of default type to PAM. If a link with the same attributes already exists
+	 * the existing link will be returned instead.
+	 * @param src the link's source
+	 * @param snk the link's sink
+	 * @param cat the link's category
+	 * @return the new PamLink, the existing PamLink, or null
+	 */
+	public PamLink addDefaultLink(Node src, Linkable snk, LinkCategory cat);
+
+	/**
+	 * 
+	 * Adds a new {@link PamLink} of specified type to PAM. Type should refer to a subclass of {@link PamLinkImpl}.
+	 * If a link with the same attributes already exists the existing link will be returned instead. 
+	 * @param type link's type
+	 * @param src the link's source
+	 * @param snk the link's sink
+	 * @param cat the link's category
+	 * @return the new PamLink, the existing PamLink, or null
+	 */
+	public PamLink addLink(String type, Node src, Linkable snk, LinkCategory cat);
+	
 	/**
 	 * Adds a COPY of specified node to this {@link PerceptualAssociativeMemory}.
 	 * Node will be of Pam's default type. 
 	 * @param node PamNode
 	 * @return Copied PamNode actually stored in this PAM.
 	 */
+	@Deprecated
 	public PamNode addDefaultNode(Node node);
 	
 	/**
@@ -42,6 +83,7 @@ public interface PerceptualAssociativeMemory extends FrameworkModule{
 	 * @param nodes nodes to add
 	 * @return Copied PamNodes actually stored in this PAM
 	 */
+	@Deprecated
 	public Set<PamNode> addDefaultNodes(Set<? extends Node> nodes);
 	
 	/**
@@ -51,6 +93,7 @@ public interface PerceptualAssociativeMemory extends FrameworkModule{
 	 * @param link  PamLink to add
 	 * @return Copied PamLink actually stored in this PAM
 	 */
+	@Deprecated
 	public PamLink addDefaultLink(Link link);
 	
 	/**
@@ -60,6 +103,7 @@ public interface PerceptualAssociativeMemory extends FrameworkModule{
 	 * @param links  PamLinks to add
 	 * @return Copied PamLinks actually stored in this PAM
 	 */
+	@Deprecated
 	public Set<PamLink> addDefaultLinks(Set<? extends Link> links);
 	
 	/**

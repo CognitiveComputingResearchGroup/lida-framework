@@ -257,6 +257,15 @@ public class UnmodifiableNodeStructureImpl implements NodeStructure, BroadcastCo
 	public Node addNode(String type, String label, double a, double rt) {
 		throw new UnsupportedOperationException("UnmodifiableNodeStructure cannot be modified");
 	}
+	
+	/**
+	 * @throws UnsupportedOperationException Cannot modify this object once created.
+	 */
+	@Override
+	public Link addLink(String type, Node src, Linkable sink, LinkCategory cat,
+			double a, double rt) {
+		throw new UnsupportedOperationException("UnmodifiableNodeStructure cannot be modified");
+	}
 
 	/**
 	 * @throws UnsupportedOperationException Cannot modify this object once created.

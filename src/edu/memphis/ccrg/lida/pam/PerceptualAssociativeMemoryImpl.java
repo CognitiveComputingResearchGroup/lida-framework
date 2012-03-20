@@ -67,9 +67,9 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 	 */
 	protected PamNodeStructure pamNodeStructure = new PamNodeStructure("PamNodeImpl", "PamLinkImpl");	
 	
-	//TODO more than just nodes?
+	//TODO consider links as well
 	/**
-	 * Pam's pamnode indexed by label 
+	 * All {@link PamNode} objects currently in {@link PerceptualAssociativeMemoryImpl} indexed by their label. 
 	 */
 	protected Map<String, PamNode> nodesByLabel = new ConcurrentHashMap<String, PamNode>();
 
@@ -182,6 +182,7 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 		return propagationTaskTicksPerRun;
 	}
 
+	@Deprecated
 	@Override
 	public Set<PamNode> addDefaultNodes(Set<? extends Node> nodes) {
 		if (nodes == null) {
@@ -194,6 +195,7 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 		return storedNodes;
 	}
 
+	@Deprecated
 	@Override
 	public PamNode addDefaultNode(Node n) {
 		if (n == null) {
@@ -206,6 +208,7 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 		return node;
 	}
 
+	@Deprecated
 	@Override
 	public Set<PamLink> addDefaultLinks(Set<? extends Link> links) {
 		if (links == null) {
@@ -218,6 +221,7 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 		return copiedLinks;
 	}
 
+	@Deprecated
 	@Override
 	public PamLink addDefaultLink(Link link) {
 		if (link == null) {
@@ -227,10 +231,12 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 		return newlink;
 	}
 	
+	@Override
 	public PamNode addDefaultNode(String label){
 		return addNode(pamNodeStructure.getDefaultNodeType(), label);
 	}
 	
+	@Override
 	public PamNode addNode(String type, String label){
 		if(label == null){
 			logger.log(Level.WARNING, "Cannot add a Node to Pam with a null label", 
@@ -251,20 +257,24 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 		return n;
 	}
 	
+	@Override
 	public PamLink addDefaultLink(Node src, Linkable snk, LinkCategory cat){
 		return addLink(pamNodeStructure.getDefaultLinkType(), src, snk, cat);
 	}
 	
-	//TODO finish javadoc and testing
+	@Override
 	public PamLink addLink(String type, Node src, Linkable snk, LinkCategory cat){
+		if(cat == null){
+			logger.log(Level.WARNING, "Cannot add new Link. Category is null",
+					TaskManager.getCurrentTick());
+			return null;
+		}
 		if(!linkCategories.containsKey(cat.getId())){
 			logger.log(Level.WARNING, "Cannot add new Link. Pam does not contain LinkCategory {1}",
 					TaskManager.getCurrentTick());
 			return null;
 		}
-		
-		return (PamLink)pamNodeStructure.addLink(type, src.getId(), snk.getExtendedId(), 
-														cat, 0.0, 0.0);
+		return (PamLink)pamNodeStructure.addLink(type,src,snk,cat,0.0,0.0);
 	}
 
 	@Override

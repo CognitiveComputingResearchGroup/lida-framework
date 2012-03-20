@@ -20,7 +20,7 @@ import edu.memphis.ccrg.lida.framework.shared.activation.Learnable;
  * 
  * @author Ryan J. McCall
  */
-public interface Scheme extends ProceduralUnit, Learnable{
+public interface Scheme extends ProceduralUnit, Learnable {
 
 	/**
 	 * Sets unique identifier for {@link Scheme}. Should be used by {@link ElementFactory} only.
@@ -45,7 +45,7 @@ public interface Scheme extends ProceduralUnit, Learnable{
 	 * Gets the number of executions
 	 * @return how many times this scheme's action has been executed
 	 */
-	public int getExecutions();
+	public int getNumExecutions();
 	
 	/**
 	 * Called when Scheme's action produces expected result.
@@ -63,6 +63,18 @@ public interface Scheme extends ProceduralUnit, Learnable{
 	 */
 	public boolean isReliable();
 
+//	/**
+//	 * Sets reliabilityThreshold
+//	 * @param threshold threshold of reliability
+//	 */
+//	public void setReliabilityThreshold(double threshold);
+//
+//	/**
+//	 * Gets reliabilityThreshold
+//	 * @return threshold of reliability
+//	 */
+//	public double getReliabilityThreshold();
+
 	/**
 	 * Sets innate
 	 * @param innate whether this {@link Scheme} is hard-wired and cannot be decayed.
@@ -73,18 +85,6 @@ public interface Scheme extends ProceduralUnit, Learnable{
 	 * @return true if this scheme should not be decayed.
 	 */
 	public boolean isInnate();
-
-	/**
-	 * Sets reliabilityThreshold
-	 * @param threshold threshold of reliability
-	 */
-	public void setReliabilityThreshold(double threshold);
-
-	/**
-	 * Gets reliabilityThreshold
-	 * @return threshold of reliability
-	 */
-	public double getReliabilityThreshold();
 
 	/**
 	 * Sets Scheme's label
