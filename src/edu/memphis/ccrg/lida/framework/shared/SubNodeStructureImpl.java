@@ -50,7 +50,8 @@ public class SubNodeStructureImpl extends NodeStructureImpl {
 	 */
 	public  NodeStructure getSubNodeStructure(Collection<Node> nodes,
 			int distance, double threshold) {
-		
+		//TODO remove isEmpty check and put it in its own if block or simply ignore it
+		//in general 2 special cases should not be handled in the same block. 
 		if (nodes == null || nodes.isEmpty()){
 			logger.log(Level.WARNING, "Collection of specified nodes should not be empty.",
 					TaskManager.getCurrentTick());
@@ -76,6 +77,12 @@ public class SubNodeStructureImpl extends NodeStructureImpl {
 		NodeStructure subNodeStructure = new NodeStructureImpl();
 		for (Node n : nodes) {
 			//Add nodes to the sub node structure and scan from each node
+			
+			//FIXME RM: the difference b/w the 2 methods below seems to be 1 boolean statement which
+			//in one case returns immediately. So you can just check that statement before you call 1 method.
+			// I don't like having 2 large and nearly identical methods.
+			// So check if n is greater than threshold and only if it is, then call depthFirstSearch passing the threshold
+			
 			if (threshold == 0){
 				depthFirstSearchWithoutThreshold(n, distance, subNodeStructure);
 			} else {
@@ -83,6 +90,7 @@ public class SubNodeStructureImpl extends NodeStructureImpl {
 			}
 		}
 		//	Add Links to the sub node structure
+		//TODO RM: Change subnodes to singular
 		for (Node subNodes : subNodeStructure.getNodes()) {
 				
 				/* 
@@ -103,12 +111,15 @@ public class SubNodeStructureImpl extends NodeStructureImpl {
 		}
 
 		//To add leftover complex links.
+		//TODO RM: Change subnodes to singular
 		for (Node subNodes : subNodeStructure.getNodes()) {
 			// Add complex link for every node present in subNodeStructure
 				Map<Linkable, Link> sinks = getConnectedSinks(subNodes);
 
 				Collection<Link> linksConnectedToLinkableInSNS = sinks.values();
+				//TODO RM: Get the keys instead
 				for (Link link : linksConnectedToLinkableInSNS) {
+					//TODO RM: If Linkable is a link and the sub graph contains it. 
 					if (!link.isSimpleLink())
 						subNodeStructure.addDefaultLink(link);
 				}
