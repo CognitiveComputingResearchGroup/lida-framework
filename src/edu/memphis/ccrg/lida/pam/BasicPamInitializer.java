@@ -15,8 +15,6 @@ import edu.memphis.ccrg.lida.framework.Agent;
 import edu.memphis.ccrg.lida.framework.initialization.FullyInitializable;
 import edu.memphis.ccrg.lida.framework.initialization.GlobalInitializer;
 import edu.memphis.ccrg.lida.framework.initialization.Initializer;
-import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
-import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 
@@ -43,7 +41,7 @@ public class BasicPamInitializer implements Initializer {
     public void initModule(FullyInitializable module, Agent agent,
             Map<String, ?> params) {
         PerceptualAssociativeMemory pam = (PerceptualAssociativeMemory) module;
-        ElementFactory factory = ElementFactory.getInstance();
+//        ElementFactory factory = ElementFactory.getInstance();
 
         String nodeLabels = (String) params.get("nodes");
         if (nodeLabels != null) {

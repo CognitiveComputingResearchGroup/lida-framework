@@ -236,10 +236,14 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 
 	/**
 	 * This method can be overwritten to customize the Node Creation.
+	 * This implementation returns a new {@link Node} of specified type that is 
+	 * compatible in the NodeStrucutreImpl. If an original node is specified the 
+	 * new Node will copy the relevant attributes of the original. 
 	 * 
-	 * @param oNode The original Node
+	 * @param oNode The original Node or null
 	 * @param desiredType the {@link ElementFactory} name of the desired node type
-	 * @return The Node to be used in this NodeStructure
+	 * @return a new Node if is no original was specified, or a copy of the specified original node
+	 * @see ElementFactory#getNode(String, Node, String)
 	 */
 	protected Node getNewNode(Node oNode, String desiredType) {
 		return factory.getNode(defaultNodeType, oNode, desiredType);

@@ -733,7 +733,7 @@ public class ElementFactory {
 	 * @param requiredType Default node type of {@link NodeStructure} 
 	 * @param oNode {@link Node} to be copied.
 	 * @param desiredType type of copied node
-	 * @return copy of oNode of desired type or null
+	 * @return copy of oNode of desired type, or a new node of desired type, or null
 	 */
 	public Node getNode(String requiredType, Node oNode, String desiredType) {
 		LinkableDef requiredDef = nodeClasses.get(requiredType);
