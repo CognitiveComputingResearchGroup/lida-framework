@@ -94,10 +94,6 @@ public class BasicActionSelection extends FrameworkModuleImpl implements
 		ElementFactory factory = ElementFactory.getInstance();
 		String decayType = (String)getParam("actionSelection.behaviorDecayStrategy", factory.getDefaultDecayType());
 		behaviorDecayStrategy = factory.getDecayStrategy(decayType);
-		if(behaviorDecayStrategy == null){
-			logger.log(Level.WARNING,"factory doesn't have decay strategy");
-			behaviorDecayStrategy = factory.getDefaultDecayStrategy();
-		}
 		
 		thresholdDecayRate = (Double) getParam("actionSelection.thresholdDecayRate", DEFAULT_THRESHOLD_DECAY_RATE);
 	}
@@ -140,6 +136,7 @@ public class BasicActionSelection extends FrameworkModuleImpl implements
 			synchronized(this){	
 				b.setDecayStrategy(behaviorDecayStrategy);
 				b.setActivatibleRemovalThreshold(defaultRemovalThreshold);
+				b.setActivation(b.getScheme().getTotalActivation());
 				behaviors.add(b);
 			}
 			logger.log(Level.FINE, "Behavior added {1}",

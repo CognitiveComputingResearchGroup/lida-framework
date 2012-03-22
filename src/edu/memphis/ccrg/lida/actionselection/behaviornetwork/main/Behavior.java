@@ -35,12 +35,12 @@ public interface Behavior extends ProceduralUnit {
 	 * 
 	 * @return the generating scheme
 	 */
-	public Scheme getGeneratingScheme();
+	public Scheme getScheme();
 	
 	/**
 	 * Sets generating scheme.
 	 * 
 	 * @param s the new generating scheme
 	 */
-	public void setGeneratingScheme(Scheme s);
+	public void setScheme(Scheme s);
 }

@@ -34,6 +34,7 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.shared.RootableNode;
 import edu.memphis.ccrg.lida.framework.shared.UnmodifiableNodeStructureImpl;
+import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.TaskStatus;
@@ -132,12 +133,18 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 	 */
 	private String schemeClass = DEFAULT_SCHEME_CLASS;
 	
+	/*
+	 * DecayStrategy used by all conditions in the condition pool (and broadcast buffer). 
+	 */
+	private DecayStrategy conditionDecay;
+	
 	/**
 	 * This module can initialize the following parameters:<br><br/>
 	 * 
 	 * <b>proceduralMemory.schemeSelectionThreshold type=double</b> amount of activation schemes must have to be instantiated, default is 0.0<br/>
 	 * <b>proceduralMemory.contextWeight type=double</b> The weight of context conditions for the calculation of scheme activation. Should be positive<br/>
 	 * <b>proceduralMemory.addingListWeight type=double</b> The weight of adding list conditions for the calculation of scheme activation. Should be positive<br/>
+	 * <b>proceduralMemory.conditionDecayStrategy type=string</b> The DecayStrategy used by all conditions in the condition pool (and broadcast buffer).<br/> 
 	 * <b>proceduralMemory.schemeClass type=string</b> qualified name of the {@link Scheme} class used by this module <br/>
 	 * 
 	 * @see Initializable
@@ -147,6 +154,8 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 		schemeSelectionThreshold = getParam("proceduralMemory.schemeSelectionThreshold", DEFAULT_SCHEME_SELECTION_THRESHOLD);
 		SchemeImpl.setContextWeight(getParam("proceduralMemory.contextWeight",DEFAULT_CONDITION_WEIGHT));
 		SchemeImpl.setAddingListWeight(getParam("proceduralMemory.addingListWeight",DEFAULT_CONDITION_WEIGHT));
+		String decayName = getParam("proceduralMemory.conditionDecayStrategy", factory.getDefaultDecayType());
+		conditionDecay = factory.getDecayStrategy(decayName);		
 		schemeClass = getParam("proceduralMemory.schemeClass",DEFAULT_SCHEME_CLASS);
 	}
 
@@ -203,6 +212,7 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 		if(stored == null){
 			logger.log(Level.FINEST,"New Condition {1} added to condition pool.",
 					new Object[]{TaskManager.getCurrentTick(), c});
+			c.setDecayStrategy(conditionDecay);
 			conditionPool.put(c.getConditionId(),c);
 			stored = c;
 		}

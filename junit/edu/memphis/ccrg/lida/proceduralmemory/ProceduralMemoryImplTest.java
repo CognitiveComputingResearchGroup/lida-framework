@@ -213,7 +213,7 @@ public class ProceduralMemoryImplTest {
 		
 		pm.createInstantiation(s1);
 		assertEquals(1, listener.behaviors.size());
-		assertSame(s1, listener.behaviors.get(0).getGeneratingScheme());
+		assertSame(s1, listener.behaviors.get(0).getScheme());
 	}
 
 	@Test
@@ -405,7 +405,7 @@ public class ProceduralMemoryImplTest {
 		pm.receiveBroadcast(coal);		
 		pm.activateSchemes();
 		
-		assertSame(s1, listener.behaviors.get(0).getGeneratingScheme());
+		assertSame(s1, listener.behaviors.get(0).getScheme());
 		assertEquals(1, listener.behaviors.size());
 	}
 	
@@ -430,7 +430,7 @@ public class ProceduralMemoryImplTest {
 		
 		Collection<Scheme> actuals = new ArrayList<Scheme>();
 		for(Behavior b: listener.behaviors){
-			actuals.add(b.getGeneratingScheme());
+			actuals.add(b.getScheme());
 		}
 
 		assertTrue(actuals.contains(s1));
@@ -461,7 +461,7 @@ public class ProceduralMemoryImplTest {
 		pm.receiveBroadcast(coal);		
 		pm.activateSchemes();
 		
-		assertSame(s1, listener.behaviors.get(0).getGeneratingScheme());
+		assertSame(s1, listener.behaviors.get(0).getScheme());
 		assertEquals(1, listener.behaviors.size());
 	}
 

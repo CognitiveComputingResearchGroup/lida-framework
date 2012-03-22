@@ -55,12 +55,12 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior{
 	}
 
 	@Override
-	public Scheme getGeneratingScheme() {
+	public Scheme getScheme() {
 		return scheme;
 	}
 
 	@Override
-	public void setGeneratingScheme(Scheme s) {
+	public void setScheme(Scheme s) {
 		scheme  = s;
 	}
 	

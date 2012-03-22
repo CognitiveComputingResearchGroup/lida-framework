@@ -99,9 +99,9 @@ public class BasicActionSelectionTest {
 	
 	@Test
 	public void testDecayModule() {	
-		behav1.setActivation(0.1);
-		behav2.setActivation(0.5);
-		as.receiveBehavior(behav1);
+		scheme1.setBaseLevelActivation(0.1);
+		scheme2.setBaseLevelActivation(0.5);
+ 		as.receiveBehavior(behav1);
 		as.receiveBehavior(behav2);
 
 		as.decayModule(1);

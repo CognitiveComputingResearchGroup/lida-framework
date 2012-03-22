@@ -804,10 +804,10 @@ public class ElementFactoryTest {
 		Action a = new ActionImpl();
 		Scheme s = pm.getNewScheme(a);
 		Behavior b = factory.getBehavior(s);
-		assertSame(s, b.getGeneratingScheme());
+		assertSame(s, b.getScheme());
 		Behavior b2 = factory.getBehavior(s);
 		assertNotSame(b,b2);
-		assertSame(b.getGeneratingScheme(),b2.getGeneratingScheme());
+		assertSame(b.getScheme(),b2.getScheme());
 	}
 	
 	@Test
@@ -817,10 +817,10 @@ public class ElementFactoryTest {
 		Scheme s = pm.getNewScheme(a);
 		String name = "edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.BehaviorImpl";
 		Behavior b = factory.getBehavior(s,name);
-		assertSame(s, b.getGeneratingScheme());
+		assertSame(s, b.getScheme());
 		Behavior b2 = factory.getBehavior(s, name);
 		assertNotSame(b,b2);
-		assertSame(b.getGeneratingScheme(),b2.getGeneratingScheme());
+		assertSame(b.getScheme(),b2.getScheme());
 	}
 	
 	@Test
