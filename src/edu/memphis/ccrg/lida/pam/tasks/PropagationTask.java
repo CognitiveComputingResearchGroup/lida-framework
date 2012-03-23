@@ -56,9 +56,11 @@ public class PropagationTask extends FrameworkTaskImpl {
 	 */
 	@Override
 	protected void runThisFrameworkTask() {
-		//TODO use a 'propagation' strategy here
+		//TODO consider a 'propagation' strategy here
 		link.excite(excitationAmount);
-		sink.excite(link.getActivation() * pam.getUpscaleFactor());
+		//TODO discuss, previous code just below
+//		sink.excite(link.getActivation() * pam.getUpscaleFactor());
+		sink.excite(link.getTotalActivation());
 		if(pam.isOverPerceptThreshold(sink)){
 			AddLinkToPerceptTask task = new AddLinkToPerceptTask(link, pam);
 			pam.getAssistingTaskSpawner().addTask(task);
