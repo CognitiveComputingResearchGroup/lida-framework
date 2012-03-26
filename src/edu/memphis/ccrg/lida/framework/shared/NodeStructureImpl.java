@@ -150,7 +150,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	@Override
 	public synchronized Node addNode(Node n, String type) {
 		if (n == null) {
-			logger.log(Level.WARNING, "Cannot add null", TaskManager
+			logger.log(Level.WARNING, "Cannot add null Node.", TaskManager
 					.getCurrentTick());
 			return null;
 		}
@@ -216,7 +216,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 		if(shouldCopy){
 			return addDefaultNode(n);
 		}else if (n == null){
-			logger.log(Level.WARNING, "Cannot add null", TaskManager
+			logger.log(Level.WARNING, "Cannot add null Node.", TaskManager
 					.getCurrentTick());
 			return null;
 		}else{

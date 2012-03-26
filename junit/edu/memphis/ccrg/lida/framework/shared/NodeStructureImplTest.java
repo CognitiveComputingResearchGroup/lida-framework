@@ -7,6 +7,7 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.framework.shared;
 
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -26,10 +27,13 @@ import org.junit.Test;
 import edu.memphis.ccrg.lida.framework.initialization.AgentStarter;
 import edu.memphis.ccrg.lida.framework.initialization.ConfigUtils;
 import edu.memphis.ccrg.lida.framework.initialization.FactoriesDataXmlLoader;
+import edu.memphis.ccrg.lida.framework.shared.activation.Activatible;
 import edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy;
 import edu.memphis.ccrg.lida.pam.PamLink;
+import edu.memphis.ccrg.lida.pam.PamLinkImplSubclass;
 import edu.memphis.ccrg.lida.pam.PamNode;
 import edu.memphis.ccrg.lida.pam.PamNodeImpl;
+import edu.memphis.ccrg.lida.pam.PamNodeImplSubclass;
 
 /**
  * This is a JUnit class which can be used to test methods of the NodeStructureImpl class
@@ -52,16 +56,10 @@ s
 	@BeforeClass
 	public static void setUpBeforeClass(){
 		factory = ElementFactory.getInstance();
-		FactoriesDataXmlLoader factoryLoader = new FactoriesDataXmlLoader();
 		Properties prop = ConfigUtils.loadProperties(AgentStarter.DEFAULT_PROPERTIES_PATH);
-		factoryLoader.loadFactoriesData(prop);
+		FactoriesDataXmlLoader.loadFactoriesData(prop);
 	}
 	
-	/**
-	 * This method is called before running each test case to initialize the objects
-	 * @throws Exception e
-	 * 
-	 */
 	@Before
 	public void setUp() throws Exception {		
 		node1 = factory.getNode();
@@ -149,10 +147,15 @@ s
 		assertTrue(ns1.getNode(9).getActivation() == 0.5);
 		
 		ns1.addDefaultNode(node1);
-		assertTrue(ns1.containsNode(node1));
-		//TODO test decay
-//		assertTrue(ns1.getNode(9).getActivation() == 0.0);			
+		assertTrue(ns1.containsNode(node1));	
 	}
+	
+	@Test
+	public void testAddDefaultNode3(){
+		assertNull(ns1.addDefaultNode(null));
+		assertNull(ns1.addDefaultNodes(null));
+	}
+	
 	@Test
 	public void testAddNodesPlural(){
 		Collection<Node> nodes = new ArrayList<Node>();
@@ -167,7 +170,122 @@ s
 		assertTrue(ns1.getLinkableCount() == 2);
 		assertTrue(ns1.getNodeCount() == 2);
 	}
-
+		
+	@Test
+	public void addNullInCollection1(){
+		Collection<Node> nodes = new ArrayList<Node>();
+		nodes.add(null);
+		nodes.add(node1);
+		
+		ns1.addDefaultNodes(nodes);
+		
+		assertEquals(1, ns1.getNodeCount());
+		assertTrue(ns1.containsNode(node1));
+	}
+	
+	@Test
+	public void addNodeCopy(){
+		Node res = ns1.addNode(null, true);
+		assertNull(res);
+		
+		res = ns1.addNode(null, false);
+		assertNull(res);
+		
+		Node stored = ns1.addNode(node1, false);
+		assertSame(stored, node1);
+		stored = ns1.getNode(node1.getId());
+		assertSame(stored, node1);
+		
+		//should return existing node if try to add again without copying
+		assertEquals(1, ns1.getNodeCount());
+		Node node1Stored = ns1.addNode(node1, false);
+		assertEquals(1, ns1.getNodeCount());
+		assertSame(node1Stored, node1);
+		
+		//add without copying
+		stored = ns1.addNode(node2, true);
+		assertNotSame(stored, node2);
+		assertEquals(stored, node2);
+		assertEquals(2, ns1.getNodeCount());
+		
+		stored = ns1.addNode(node1, true);
+		assertSame(stored, node1Stored);
+		assertEquals(2, ns1.getNodeCount());
+	}
+	
+	@Test
+	public void testAddNodeType(){
+		//basic test
+		Node n = ns1.addNode(node1, "NodeImpl");
+		assertEquals(1, ns1.getNodeCount());
+		assertTrue(n instanceof NodeImpl);
+		
+		//error cases
+		assertNull(ns1.addNode(null, "NodeImpl"));
+		assertNull(ns1.addNode(node2, null));
+		assertNull(ns1.addNode(node1, "badType154"));
+		assertEquals(1, ns1.getNodeCount());
+		
+		//update activation
+		assertTrue(n.getActivation() < 0.5);
+		node1.setActivation(0.5);
+		n = ns1.addNode(node1, "NodeImpl");
+		assertEquals(n.getActivation(),0.5,epsilon);
+		assertEquals(1, ns1.getNodeCount());
+		
+		//try to add same node specifying different types
+		node1.setActivation(1.0);
+		Node n2 = ns1.addNode(node1,"PamNodeImpl");
+		assertSame(n, n2);
+		assertEquals(n.getActivation(),n2.getActivation(),epsilon);
+		assertEquals(1, ns1.getNodeCount());
+		
+		//same as above but order of types is reversed
+		node2.setActivation(0.5);
+		ns1.addNode(node2, "PamNodeImpl");
+		node2.setActivation(1.0);
+		Node n3 = ns1.addNode(node2, "NodeImpl");
+		assertEquals(2, ns1.getNodeCount());
+		assertEquals(0.5, n3.getActivation(),epsilon);
+	}
+	
+	@Test
+	public void testAddNewDefaultNode(){
+		Node n = ns1.addDefaultNode("a", 0.123, 0.456);
+		assertEquals(ns1.getDefaultNodeType(),n.getFactoryType());
+		assertEquals(1, ns1.getNodeCount());
+		assertEquals("a",n.getLabel());
+		assertEquals(0.123, n.getActivation(),epsilon);
+		assertEquals(0.456, n.getActivatibleRemovalThreshold(),epsilon);
+		
+		Node n2 = ns1.addDefaultNode("a", 0.123, 0.456);
+		assertNotSame(n, n2);
+		assertFalse(n.equals(n2));
+		assertEquals(2, ns1.getNodeCount());
+		
+		n = ns1.addDefaultNode(null, 0.123, 0.456);
+		assertNull(n.getLabel());
+		
+		n = ns1.addDefaultNode("a", -0.123, -0.456);
+		assertEquals(0,n.getActivation(),epsilon);
+		assertEquals(-0.456,n.getActivatibleRemovalThreshold(),epsilon);
+	}
+	
+	@Test
+	public void testAddNewTypeNode(){
+		assertNull(ns1.addNode(null, "a", 0.0, 0.0));
+		assertNull(ns1.addNode("badatre43","a",0,0));
+		Node n = ns1.addNode("NodeImpl","",0,0);
+		assertTrue(ns1.containsNode(n));
+		assertEquals(1, ns1.getNodeCount());
+		assertTrue(n instanceof NodeImpl);
+		
+		n = ns1.addNode("PamNodeImpl","",0,0);
+		assertEquals(2, ns1.getNodeCount());
+		assertTrue(n instanceof PamNodeImpl);
+		
+	}
+	
 	/**
 	 * This method is used to test the NodeStructureImpl.addDefaultLink() method
 	 */
@@ -246,7 +364,7 @@ s
 	public void addNullLink(){
 		assertNull(ns1.addDefaultLink(null));
 	}
-	
+
 	@Test
 	public void addNullInCollection(){
 		Collection<Link> links = new ArrayList<Link>();
@@ -259,29 +377,6 @@ s
 		
 		assertEquals(1, ns1.getLinkCount());
 		assertTrue(ns1.containsLink(link1));
-	}
-	
-	@Test
-	public void addNullInCollection1(){
-		Collection<Node> nodes = new ArrayList<Node>();
-		nodes.add(null);
-		nodes.add(node1);
-		
-		ns1.addDefaultNodes(nodes);
-		
-		assertEquals(1, ns1.getNodeCount());
-		assertTrue(ns1.containsNode(node1));
-	}
-	
-	@Test
-	public void addNodeCopyFail(){
-		Node res = ns1.addNode(null, true);
-		assertNull(res);
-		
-		res = ns1.addNode(null, false);
-		assertNull(res);
-		
-		//TODO other cases
 	}
 	
 	@Test
@@ -816,6 +911,47 @@ s
 		assertTrue(ns2.getAttachedLinks(node4).size() == 1);
 		assertTrue(ns2.getAttachedLinks(node5).size() == 1);
 	}
+	
+	@Test
+	public void testCopyDifferentTypes(){
+		factory.addNodeType("specialNode", "edu.memphis.ccrg.lida.pam.PamNodeImplSubclass");
+		factory.addLinkType("specialLink", "edu.memphis.ccrg.lida.pam.PamLinkImplSubclass");
+		Node n1 = ns1.addNode("PamNodeImpl", "", 0, 0);
+		Node n2 = ns1.addDefaultNode("", 0, 0);
+		Node n3 = ns1.addNode("specialNode", "",0,0);
+		Link l1 = ns1.addDefaultLink(n1, n2, category1, 0,0);
+		Link l2 = ns1.addLink("PamLinkImpl", n2, n3, category1, 0,0);
+		Link l3 = ns1.addDefaultLink(n3, n1, category1, 0,0);
+		Link complexLink = ns1.addLink("specialLink",n1, l2, category1,0,0);
+		
+		NodeStructure copy = ns1.copy();
+		assertEquals(7, copy.getLinkableCount());
+		assertEquals(3, copy.getNodeCount());
+		assertEquals(4, copy.getLinkCount());
+		Node n = copy.getNode(n1.getId());
+		assertTrue(n instanceof PamNodeImpl);
+		n = copy.getNode(n2.getId());
+		assertTrue(n instanceof NodeImpl);
+		n = copy.getNode(n3.getId());
+		assertTrue(n instanceof PamNodeImplSubclass);
+		
+		Link l = copy.getLink(l2.getExtendedId());
+		assertTrue(l instanceof PamLink);
+		assertTrue(copy.containsLink(l1));
+		assertTrue(copy.containsLink(l2));
+		assertTrue(copy.containsLink(l3));
+		assertTrue(copy.containsLink(complexLink));
+		l = copy.getLink(complexLink.getExtendedId());
+		assertTrue(l instanceof PamLinkImplSubclass);
+	}
+	
+	@Test
+	public void testMergeDifferentTypes(){
+		fail("TODO");
+		
+		//TODO test new add links methods and add links methods for erroneous input
+	}
+	
 	@Test
 	public void testDecayNodeStructure(){
 		double activationAmount = 0.1;
