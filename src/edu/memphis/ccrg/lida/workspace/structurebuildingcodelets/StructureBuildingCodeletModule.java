@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import edu.memphis.ccrg.lida.framework.CodeletManagerModule;
 import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleName;
@@ -140,11 +141,6 @@ public class StructureBuildingCodeletModule extends FrameworkModuleImpl implemen
 					"codelet must be a structure-buidling codelet",
 					TaskManager.getCurrentTick());
 		}
-	}
-
-	@Override
-	public String toString() {
-		return ModuleName.StructureBuildingCodeletModule + "";
 	}
 
 	@Override

@@ -13,6 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.actionselection.PreafferenceListener;
+import edu.memphis.ccrg.lida.framework.CodeletManagerModule;
 import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleName;
@@ -24,7 +25,6 @@ import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.globalworkspace.Coalition;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 import edu.memphis.ccrg.lida.workspace.Workspace;
-import edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.CodeletManagerModule;
 	
 /**
  * {@link FrameworkModule} which creates and manages all {@link AttentionCodelet}.
