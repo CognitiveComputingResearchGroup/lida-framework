@@ -192,6 +192,7 @@
             <associatedmodule function="TO_READ_FROM">CurrentSituationalModel</associatedmodule>
             <associatedmodule function="TO_WRITE_TO">GlobalWorkspace</associatedmodule>
             <param name="refractoryPeriod" type="int">50</param>
+            <param name="attentionThreshold" type="double">0.0</param>            
             <param name="coalitionDecayStrategy" type="string">coalitionDecay</param>
             <param name="retrievalDepth" type="int">1</param>
             <param name="learnable.baseLevelActivation" type="double">0.0</param>
