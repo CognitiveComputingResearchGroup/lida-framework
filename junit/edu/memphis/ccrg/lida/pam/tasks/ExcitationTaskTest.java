@@ -53,7 +53,7 @@ public class ExcitationTaskTest{
 		assertEquals(pamNode.getActivation(), 0.5, epsilon);
 		assertEquals(pam.pmNode.getActivation(), 0.5, epsilon);
 		assertEquals(0, taskSpawner.getRunningTasks().size());
-		assertEquals(TaskStatus.FINISHED, excite.getTaskStatus());
+		assertEquals(TaskStatus.CANCELED, excite.getTaskStatus());
 	 
 	}
 	@Test
@@ -73,7 +73,7 @@ public class ExcitationTaskTest{
 			assertTrue(tsk instanceof AddNodeToPerceptTask);
 		}
 		 
-		assertEquals(TaskStatus.FINISHED, excite.getTaskStatus());
+		assertEquals(TaskStatus.CANCELED, excite.getTaskStatus());
 	}
 
 }

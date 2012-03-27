@@ -79,7 +79,7 @@ public class PropagationTaskTest{
 	 
 		assertEquals(linkBLA+linkActivation+sourceActivation, link.getTotalActivation(), epsilon);
 		assertEquals(linkBLA+linkActivation+sourceActivation+sinkActivation, sink.getActivation(), epsilon);
-		assertEquals(TaskStatus.FINISHED, task.getTaskStatus());
+		assertEquals(TaskStatus.CANCELED, task.getTaskStatus());
 	 
 		assertEquals(sink, pam.pmNode);
 		assertEquals(0, taskSpawner.getRunningTasks().size());
@@ -105,7 +105,7 @@ public class PropagationTaskTest{
 	 
 		assertEquals(sourceActivation + linkActivation, link.getActivation(), epsilon);
 		assertEquals(sourceActivation + linkActivation + linkBLA + sinkActivation, sink.getActivation(), epsilon);
-		assertEquals(TaskStatus.FINISHED, excite.getTaskStatus());
+		assertEquals(TaskStatus.CANCELED, excite.getTaskStatus());
 	 
 		assertEquals(sink, pam.pmNode);
 		Collection<FrameworkTask> tasks = taskSpawner.getRunningTasks();

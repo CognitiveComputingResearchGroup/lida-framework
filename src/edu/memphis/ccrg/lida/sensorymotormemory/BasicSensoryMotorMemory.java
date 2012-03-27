@@ -23,7 +23,6 @@ import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.initialization.Initializable;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
-import edu.memphis.ccrg.lida.framework.tasks.TaskStatus;
 import edu.memphis.ccrg.lida.sensorymemory.SensoryMemoryListener;
 
 /**
@@ -120,7 +119,7 @@ public class BasicSensoryMotorMemory extends FrameworkModuleImpl implements
 				logger.log(Level.WARNING, "Could not find algorithm for action {1}",
 						new Object[]{TaskManager.getCurrentTick(),action});
 			}
-			setTaskStatus(TaskStatus.FINISHED);
+			cancel();
 		}
 	}
 

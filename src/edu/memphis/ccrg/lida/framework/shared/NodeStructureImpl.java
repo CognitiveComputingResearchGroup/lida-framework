@@ -12,6 +12,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -842,6 +843,8 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	
 	@Override
 	public boolean containsNode(Node n) {
+		List<Integer> list = new ArrayList<Integer>();
+		list.contains(null);
 		return nodes.containsKey(n.getId());
 	}
 

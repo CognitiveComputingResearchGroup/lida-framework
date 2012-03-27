@@ -143,9 +143,20 @@ public abstract class FrameworkTaskImpl extends LearnableImpl implements Framewo
 		}
 	}
 
+	@Deprecated
 	@Override
 	public void stopRunning() {
 		setTaskStatus(TaskStatus.CANCELED);
+	}
+	
+	@Override
+	public void cancel(){
+		setTaskStatus(TaskStatus.CANCELED);
+	}
+	
+	@Override
+	public void stop(){
+		setTaskStatus(TaskStatus.FINISHED);
 	}
 	
 	@Override

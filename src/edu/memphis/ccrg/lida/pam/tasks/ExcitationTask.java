@@ -13,7 +13,6 @@ import java.util.logging.Logger;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTask;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
-import edu.memphis.ccrg.lida.framework.tasks.TaskStatus;
 import edu.memphis.ccrg.lida.pam.PamLinkable;
 import edu.memphis.ccrg.lida.pam.PamNode;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
@@ -85,6 +84,6 @@ public class ExcitationTask extends FrameworkTaskImpl {
 			pam.getAssistingTaskSpawner().addTask(task);
 		}
 		pam.propagateActivationToParents(node);
-		setTaskStatus(TaskStatus.FINISHED);
+		cancel();
 	}
 }

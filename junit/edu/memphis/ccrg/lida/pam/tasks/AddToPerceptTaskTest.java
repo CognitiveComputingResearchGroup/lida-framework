@@ -57,7 +57,7 @@ public class AddToPerceptTaskTest{
 		t.call();
 		
 		assertEquals(nodeA, pam.nodePercept);
-		assertEquals(TaskStatus.FINISHED, t.getTaskStatus());
+		assertEquals(TaskStatus.CANCELED, t.getTaskStatus());
 	}
 	
 	@Test
@@ -68,7 +68,7 @@ public class AddToPerceptTaskTest{
 		t.call();
 		
 		assertEquals(pl, pam.linkPercept);
-		assertEquals(TaskStatus.FINISHED, t.getTaskStatus());
+		assertEquals(TaskStatus.CANCELED, t.getTaskStatus());
 	}
 	
 	@Test

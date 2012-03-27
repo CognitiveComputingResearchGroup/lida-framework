@@ -9,7 +9,6 @@ package edu.memphis.ccrg.lida.pam.tasks;
 
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
-import edu.memphis.ccrg.lida.framework.tasks.TaskStatus;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 
 /**
@@ -38,6 +37,6 @@ public class AddNodeStructureToPerceptTask extends FrameworkTaskImpl {
 	@Override
 	protected void runThisFrameworkTask() {		
 		pam.addToPercept(ns);
-		setTaskStatus(TaskStatus.FINISHED);
+		cancel();
 	}
 }

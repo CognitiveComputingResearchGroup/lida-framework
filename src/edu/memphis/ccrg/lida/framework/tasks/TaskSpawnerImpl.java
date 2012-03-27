@@ -88,29 +88,29 @@ public class TaskSpawnerImpl extends InitializableImpl implements TaskSpawner {
 	@Override
 	public void receiveFinishedTask(FrameworkTask task) {
 		switch (task.getTaskStatus()) {
-		case FINISHED_WITH_RESULTS:
-			processResults(task);
-			removeTask(task);
-			logger.log(Level.FINEST, "FINISHED_WITH_RESULTS {1}", new Object[] {
-					TaskManager.getCurrentTick(), task });
-			break;
-		case FINISHED:
-			removeTask(task);
-			logger.log(Level.FINEST, "FINISHED {1}", new Object[] {
-					TaskManager.getCurrentTick(), task });
-			break;
-		case CANCELED:
-			removeTask(task);
-			logger.log(Level.FINEST, "CANCELLED {1}", new Object[] {
-					TaskManager.getCurrentTick(), task });
-			break;
-		case WAITING:
-		case RUNNING:
-			logger.log(Level.FINEST, "RUNNING",
-					new Object[] { TaskManager.getCurrentTick(), task });
-			task.setTaskStatus(TaskStatus.WAITING);
-			runTask(task);
-			break;
+			case FINISHED_WITH_RESULTS:
+				processResults(task);
+				removeTask(task);
+				logger.log(Level.FINEST, "FINISHED_WITH_RESULTS {1}", new Object[] {
+						TaskManager.getCurrentTick(), task });
+				break;
+			case FINISHED:
+				removeTask(task);
+				logger.log(Level.FINEST, "FINISHED {1}", new Object[] {
+						TaskManager.getCurrentTick(), task });
+				break;
+			case CANCELED:
+				removeTask(task);
+				logger.log(Level.FINEST, "CANCELLED {1}", new Object[] {
+						TaskManager.getCurrentTick(), task });
+				break;
+			case WAITING:
+			case RUNNING:
+				logger.log(Level.FINEST, "RUNNING",
+						new Object[] { TaskManager.getCurrentTick(), task });
+				task.setTaskStatus(TaskStatus.WAITING);
+				runTask(task);
+				break;
 		}
 	}
 

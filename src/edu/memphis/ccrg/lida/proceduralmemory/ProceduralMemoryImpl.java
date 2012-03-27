@@ -36,7 +36,6 @@ import edu.memphis.ccrg.lida.framework.shared.UnmodifiableNodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
-import edu.memphis.ccrg.lida.framework.tasks.TaskStatus;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.globalworkspace.Coalition;
 
@@ -295,7 +294,7 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 			@Override
 			protected void runThisFrameworkTask() {
 				activateSchemes();
-				setTaskStatus(TaskStatus.FINISHED);
+				cancel();
 			}
 		});
 	}

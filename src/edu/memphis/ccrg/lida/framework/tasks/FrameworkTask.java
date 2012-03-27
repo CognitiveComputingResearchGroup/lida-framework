@@ -41,17 +41,27 @@ public interface FrameworkTask extends Callable<FrameworkTask>, Learnable, Fully
 	public TaskStatus getTaskStatus();
 	
 	/**
-	 * Sets task status. Intended to be called by runThisFrameworkTask() 
-	 * Cannot use this method to cancel the task, instead use {@link #stopRunning()} to 
-	 * cancel the task.       
-	 * @param status the new task status 
+	 * Sets the task's {@link TaskStatus}.    
+	 * @param s the new {@link TaskStatus} 
 	 */
-	public void setTaskStatus(TaskStatus status);
+	public void setTaskStatus(TaskStatus s);
 
 	/**
 	 * Tells this FrameworkTask to shutdown.
 	 */
+	@Deprecated
 	public void stopRunning();
+	
+	/**
+	 * Sets this FrameworkTask's status to {@link TaskStatus#CANCELED}.
+	 * FrameworkTask cannot be restarted and its {@link TaskStatus} can no longer change.
+	 */
+	public void cancel();
+	
+	/**
+	 * Sets this FrameworkTask's status to {@link TaskStatus#FINISHED}. FrameworkTask may be resumed. 
+	 */
+	public void stop();
 	
 	/**
 	 * Each FrameworkTask is meant to have a unique id that is set at the time of creation.

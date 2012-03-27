@@ -15,7 +15,6 @@ import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
-import edu.memphis.ccrg.lida.framework.tasks.TaskStatus;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 
 /**
@@ -53,7 +52,7 @@ public class TriggerTask extends FrameworkTaskImpl {
 	protected void runThisFrameworkTask() {
 		logger.log(Level.FINE, name, TaskManager.getCurrentTick());
 		gw.triggerBroadcast(trigger);
-		setTaskStatus(TaskStatus.FINISHED);
+		cancel();
 	}
 
 	//TODO remove name

@@ -27,7 +27,6 @@ import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTask;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
-import edu.memphis.ccrg.lida.framework.tasks.TaskStatus;
 import edu.memphis.ccrg.lida.globalworkspace.triggers.BroadcastTrigger;
 
 /**
@@ -102,7 +101,7 @@ public class GlobalWorkspaceImpl extends FrameworkModuleImpl implements GlobalWo
             for (BroadcastTrigger t : broadcastTriggers) {
                 t.start();
             }
-            setTaskStatus(TaskStatus.FINISHED); // Runs only once
+            cancel();
         }
     }
 
@@ -209,7 +208,7 @@ public class GlobalWorkspaceImpl extends FrameworkModuleImpl implements GlobalWo
 		@Override
 		protected void runThisFrameworkTask() {
 			listener.receiveBroadcast(coalition);
-			setTaskStatus(TaskStatus.FINISHED);
+			cancel();
 		}
 	}
     

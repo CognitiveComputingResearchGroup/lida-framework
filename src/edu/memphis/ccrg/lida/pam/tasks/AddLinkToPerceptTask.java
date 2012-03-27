@@ -10,7 +10,6 @@ package edu.memphis.ccrg.lida.pam.tasks;
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
-import edu.memphis.ccrg.lida.framework.tasks.TaskStatus;
 import edu.memphis.ccrg.lida.pam.PamLink;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 
@@ -43,7 +42,7 @@ public class AddLinkToPerceptTask extends FrameworkTaskImpl {
 	protected void runThisFrameworkTask() {		
 		pam.addToPercept((Node) link.getSink());
 		pam.addToPercept(link);
-		setTaskStatus(TaskStatus.FINISHED);
+		cancel();
 	}
 	
 }

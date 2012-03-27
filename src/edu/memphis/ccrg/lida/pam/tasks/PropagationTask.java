@@ -8,7 +8,6 @@
 package edu.memphis.ccrg.lida.pam.tasks;
 
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
-import edu.memphis.ccrg.lida.framework.tasks.TaskStatus;
 import edu.memphis.ccrg.lida.pam.PamLink;
 import edu.memphis.ccrg.lida.pam.PamLinkable;
 import edu.memphis.ccrg.lida.pam.PamNode;
@@ -50,15 +49,14 @@ public class PropagationTask extends FrameworkTaskImpl {
 	/**
 	 * Excites the {@link PamLink} specified amount. Excites link's sink based
 	 * on link's new activation. If this puts sink over its percept threshold
-	 * then both Link and sink will be send as a percept.  Calls
+	 * then both Link and sink will be send as a percept. Calls
 	 * {@link PerceptualAssociativeMemory#propagateActivationToParents(PamNode)}
 	 * with sink and finishes. 
 	 */
 	@Override
 	protected void runThisFrameworkTask() {
-		link.excite(excitationAmount);
-//		sink.excite(link.getActivation() * pam.getUpscaleFactor());
-		sink.excite(link.getTotalActivation());
+		link.setActivation(excitationAmount);
+		sink.excite(excitationAmount * link.getBaseLevelActivation());
 		if(pam.isOverPerceptThreshold(sink)){
 			AddLinkToPerceptTask task = new AddLinkToPerceptTask(link, pam);
 			pam.getAssistingTaskSpawner().addTask(task);
@@ -66,6 +64,6 @@ public class PropagationTask extends FrameworkTaskImpl {
 		if(sink instanceof PamNode){
 			pam.propagateActivationToParents((PamNode) sink);
 		}
-		setTaskStatus(TaskStatus.FINISHED);
+		cancel();
 	}
 }
