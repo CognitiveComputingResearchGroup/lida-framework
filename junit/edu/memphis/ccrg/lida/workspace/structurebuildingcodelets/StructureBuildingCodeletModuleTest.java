@@ -214,21 +214,6 @@ public class StructureBuildingCodeletModuleTest {
 		assertTrue(taskSpawner.containsTask(codelet));
 		assertEquals(1, taskSpawner.getRunningTasks().size());
 	}
-
-	@Test
-	public void testToString() {
-		assertEquals(ModuleName.StructureBuildingCodeletModule.toString(), sbcModule.toString());
-	}
-	
-	@Test
-	public void testGetModuleContent() {
-	}
-	@Test
-	public void testInit() {
-	}
-	@Test
-	public void testAddListener() {
-	}
 	@Test
 	public void testDecayModule() {
 	}

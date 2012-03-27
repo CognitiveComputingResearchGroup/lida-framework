@@ -17,7 +17,6 @@ import java.util.Collection;
 import org.junit.Before;
 import org.junit.Test;
 
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockSensoryMotorMemory;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockTaskSpawner;
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;

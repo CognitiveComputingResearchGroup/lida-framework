@@ -15,7 +15,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.actionselection.Action;
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Condition;
 import edu.memphis.ccrg.lida.framework.shared.RootableNode;
 import edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
@@ -29,10 +28,10 @@ import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryImpl.ConditionType
 public class SchemeImpl extends LearnableImpl implements Scheme {
 	
 	private static final Logger logger = Logger.getLogger(SchemeImpl.class.getCanonicalName());
-	private static long idCounter = 0;//TODO Factory support for Scheme
+	private static int idCounter = 0;//TODO Factory support for Scheme
 		
 	private String label;
-	private long id;
+	private int id;
 	private boolean isInnate;
 	private int numExecutions;
 	private int numSuccessfulExecutions;
@@ -78,7 +77,7 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 	 * Intended for testing only
 	 * @param id Scheme's id
 	 */
-	SchemeImpl(long id){
+	SchemeImpl(int id){
 		this();
 		this.id = id;
 	}
@@ -91,15 +90,52 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 	void setProceduralMemory(ProceduralMemoryImpl pm){
 		this.pm = pm;
 	}
+
+	/**
+	 * @param w the contextWeight to set
+	 */
+	static void setContextWeight(double w) {
+		if(w >= 0.0){
+			SchemeImpl.contextWeight = w;
+		}else{
+			logger.log(Level.WARNING, "Context weight must be positive", TaskManager.getCurrentTick());
+		}
+	}
+
+	/**
+	 * @return the contextWeight
+	 */
+	static double getContextWeight() {
+		return contextWeight;
+	}
+
+	/**
+	 * @param w the addingListWeight to set
+	 */
+	static void setAddingListWeight(double w) {
+		if(w >= 0.0){
+			SchemeImpl.addingListWeight = w;
+		}else{
+			logger.log(Level.WARNING, "Adding list weight must be positive", TaskManager.getCurrentTick());
+		}
+	}
+
+	/**
+	 * @return the addingListWeight
+	 */
+	static double getAddingListWeight() {
+		return addingListWeight;
+	}
 	
 	//Scheme methods
+	
 	@Override
-	public void setId(long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
 	@Override
-	public long getId() {
+	public int getId() {
 		return id;
 	}
 	
@@ -133,7 +169,6 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 	public boolean isInnate() {
 		return isInnate;
 	}
-	
 
 	/**
 	 * Gets the average activation of this unit's context conditions.
@@ -172,12 +207,6 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 		}
 	}
 	
-	@Override
-	public double getActivation(){
-		double overallSalience = contextWeight * getAverageContextActivation() +
-									addingListWeight * getAverageAddingListNetDesirability();
-		return (overallSalience > 1.0)? 1.0:overallSalience;		
-	}
 	
 	//Learnable override
 	@Override
@@ -187,7 +216,12 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 		}
 	}
 	
-	//ProceduralUnit methods
+	@Override
+	public double getActivation(){
+		double overallSalience = contextWeight * getAverageContextActivation() +
+									addingListWeight * getAverageAddingListNetDesirability();
+		return (overallSalience > 1.0)? 1.0:overallSalience;		
+	}
 
 	@Override
 	public int getNumExecutions() {
@@ -208,11 +242,6 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 	 */
 	static void setReliabilityThreshold(double t) {
 		SchemeImpl.reliabilityThreshold = t;
-	}
-
-	@Override
-	public void setAction(Action a) {
-		action = a;
 	}
 
 	@Override
@@ -246,6 +275,12 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 		}
 		return wasAdded;
 	}
+	
+	//ProceduralUnit methods
+	@Override
+	public void setAction(Action a) {
+		action = a;
+	}
 
 	@Override
 	public Collection<Condition> getContextConditions() {
@@ -266,22 +301,6 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 	}
 
 	@Override
-	public int getContextSize() {
-		return context.size();
-//		return context.size() + negContext.size();
-	}
-
-	@Override
-	public double getAddingListCount() {
-		return addingList.size();
-	}
-
-	@Override
-	public double getDeletingListCount() {
-		return deletingList.size();
-	}
-
-	@Override
 	public Action getAction() {
 		return action;
 	}
@@ -292,32 +311,16 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 	}
 
 	@Override
-	public boolean containsContextCondition(Condition c) {
-		return context.containsKey(c.getConditionId());
-	}
-
-	@Override
-	public boolean containsAddingItem(Condition c) {
-		return addingList.containsKey(c.getConditionId());
-	}
-
-	@Override
-	public boolean containsDeletingItem(Condition c) {
-		return deletingList.containsKey(c.getConditionId());
-	}
-
-	@Override
 	public void setLabel(String label) {
 		this.label = label;
 	}
-
-	@Override
-	public double getResultSize() {
-		return addingList.size() + deletingList.size();
-	}
-
-	@Override
-	public Condition getContextCondition(Object id) {
+	
+	/**
+	 * Gets context condition specified by id
+	 * @param id condition id
+	 * @return a {@link Condition} or null
+	 */
+	Condition getContextCondition(Object id) {
 		Condition c = context.get(id);
 //		if (c == null){
 //			c= negContext.get(id);
@@ -340,11 +343,6 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 //	public Collection<Condition> getNegatedContextConditions() {
 //		return negContext.values();
 //	}
-
-//	@Override
-//	public boolean containsNegatedContextCondition(Condition contextCondition) {
-//		return negContext.containsKey(contextCondition.getConditionId());
-//	}
 	
 	//Object methods
 	@Override
@@ -363,41 +361,5 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 	@Override
 	public String toString(){
 		return getLabel() + "-" + getId();
-	}
-
-	/**
-	 * @param w the contextWeight to set
-	 */
-	static void setContextWeight(double w) {
-		if(w >= 0.0){
-			SchemeImpl.contextWeight = w;
-		}else{
-			logger.log(Level.WARNING, "Context weight must be positive", TaskManager.getCurrentTick());
-		}
-	}
-
-	/**
-	 * @return the contextWeight
-	 */
-	static double getContextWeight() {
-		return contextWeight;
-	}
-
-	/**
-	 * @param w the addingListWeight to set
-	 */
-	static void setAddingListWeight(double w) {
-		if(w >= 0.0){
-			SchemeImpl.addingListWeight = w;
-		}else{
-			logger.log(Level.WARNING, "Adding list weight must be positive", TaskManager.getCurrentTick());
-		}
-	}
-
-	/**
-	 * @return the addingListWeight
-	 */
-	static double getAddingListWeight() {
-		return addingListWeight;
 	}
 }

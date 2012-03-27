@@ -195,7 +195,9 @@ public class FrameworkGui extends javax.swing.JFrame implements FrameworkGuiEven
         } catch (Exception e) {
             logger.log(Level.SEVERE,
                     "Exception {1} encountered initializing panel {2}",
-                    new Object[]{0L, e.getMessage(), panel});
+                    new Object[]{0L, e, panel});
+            e.printStackTrace();//TODO print stack trace in logging panel also
+//            logger.log(Level.SEVERE,"Exception Stack Trace",e);
         }
 
         // add the panel to the specified region of the GUI
@@ -207,7 +209,9 @@ public class FrameworkGui extends javax.swing.JFrame implements FrameworkGuiEven
             } catch (Exception e) {
                 logger.log(Level.SEVERE,
                         "Exception {1} encountered when refreshing panel {2}",
-                        new Object[]{0L, e.getMessage(), panel});
+                        new Object[]{0L, e, panel});
+                e.printStackTrace();//TODO print stack trace in logging panel also
+//                logger.log(Level.SEVERE,"Exception Stack Trace",e);
             }
         }
 

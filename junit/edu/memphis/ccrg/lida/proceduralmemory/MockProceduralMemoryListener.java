@@ -10,7 +10,7 @@ package edu.memphis.ccrg.lida.proceduralmemory;
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
+import edu.memphis.ccrg.lida.actionselection.Behavior;
 
 public class MockProceduralMemoryListener implements ProceduralMemoryListener {
 

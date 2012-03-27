@@ -9,7 +9,6 @@ package edu.memphis.ccrg.lida.actionselection;
 
 import java.util.Collection;
 
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
 import edu.memphis.ccrg.lida.framework.FrameworkModule;
 
 /**

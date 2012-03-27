@@ -8,9 +8,9 @@
 package edu.memphis.ccrg.lida.proceduralmemory;
 
 import edu.memphis.ccrg.lida.actionselection.Action;
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
-import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
+import edu.memphis.ccrg.lida.actionselection.Behavior;
 import edu.memphis.ccrg.lida.framework.shared.activation.Learnable;
+import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryImpl.ConditionType;
 
 /**
  * A Scheme consists of a Context, an Action and a Result.
@@ -21,18 +21,23 @@ import edu.memphis.ccrg.lida.framework.shared.activation.Learnable;
  * @author Ryan J. McCall
  */
 public interface Scheme extends ProceduralUnit, Learnable {
-
-	/**
-	 * Sets unique identifier for {@link Scheme}. Should be used by {@link ElementFactory} only.
-	 * @param id unique identifier for this scheme
-	 */
-	public void setId(long id);
 	
 	/**
-	 * Gets scheme's id.
-	 * @return unique identifier for this scheme
+	 * Sets action
+	 * @param a {@link Action} this unit contains
 	 */
-	public long getId();
+	public void setAction(Action a);
+
+	/**
+	 * Adds the context condition.
+	 * 
+	 * @param c the condition
+	 * @param type the usage type of the condition
+	 * @return true, if successful
+	 * 
+	 * @see ConditionType
+	 */
+	public boolean addCondition(Condition c, ConditionType type);
 	
 	/**
 	 * Called when Scheme's action is executed
@@ -85,10 +90,4 @@ public interface Scheme extends ProceduralUnit, Learnable {
 	 * @return true if this scheme should not be decayed.
 	 */
 	public boolean isInnate();
-
-	/**
-	 * Sets Scheme's label
-	 * @param l a String
-	 */
-	public void setLabel(String l);
 }

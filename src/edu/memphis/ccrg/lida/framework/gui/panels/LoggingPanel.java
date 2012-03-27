@@ -56,30 +56,32 @@ public class LoggingPanel extends GuiPanelImpl {
 
 	@Override
 	public void initPanel(String[] params) {
-		//TODO may be better way to handle null params
+		// TODO may be better way to handle null params
 		GuiLogHandler handler = new GuiLogHandler();
 		logger.addHandler(handler);
 		String otherName = null;
 		if (params != null) {
-			//add handlers for parameter-specified packages
+			// add handlers for parameter-specified packages
 			for (int i = 0; i < params.length; i++) {
 				otherName = params[i].trim();
 				Logger otherLogger = Logger.getLogger(otherName);
 				otherLogger.addHandler(handler);
 			}
 		}
-		
+
 		loggerComboBox.removeAllItems();
 		loggerComboBox.addItem("GLOBAL");
-		
-		//add only loggers to the panel which match logName or one of the parameter-specified names
+
+		// add only loggers to the panel which match logName or one of the
+		// parameter-specified names
 		List<String> loggerNameToAddd = new ArrayList<String>();
 		Enumeration<String> el = LogManager.getLogManager().getLoggerNames();
 		while (el.hasMoreElements()) {
 			String logN = el.nextElement();
-			if (logN.regionMatches(0, defaultLoggerName, 0, defaultLoggerName.length())) {
+			if (logN.regionMatches(0, defaultLoggerName, 0, defaultLoggerName
+					.length())) {
 				loggerNameToAddd.add(logN);
-			} else if(params != null){
+			} else if (params != null) {
 				for (int i = 0; i < params.length; i++) {
 					otherName = params[i].trim();
 					if (otherName != null
@@ -91,7 +93,7 @@ public class LoggingPanel extends GuiPanelImpl {
 				}
 			}
 		}
-		//Sort names and add them to the combo box
+		// Sort names and add them to the combo box
 		Collections.sort(loggerNameToAddd);
 		for (String n : loggerNameToAddd) {
 			loggerComboBox.addItem(n);
@@ -311,7 +313,14 @@ public class LoggingPanel extends GuiPanelImpl {
 								.getSequenceNumber(), actualTick, logRecord
 								.getLevel(), logRecord.getLoggerName(), mf
 								.format(logRecord.getParameters()));
-
+				//TODO
+//				Throwable e = logRecord.getThrown();
+//				if (e != null) {
+//					StackTraceElement[] stackt = e.getStackTrace();
+//					for (int i = 0; i < stackt.length && i < 100; i++) {
+//						logMessages += "\n" + stackt[i].toString();
+//					}
+//				}
 				SwingUtilities.invokeLater(new UpdateLoggerPanel(logMessages));
 			}
 		}

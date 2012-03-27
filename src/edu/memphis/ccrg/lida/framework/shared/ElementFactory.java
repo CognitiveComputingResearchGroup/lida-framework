@@ -12,8 +12,8 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.BehaviorImpl;
+import edu.memphis.ccrg.lida.actionselection.Behavior;
+import edu.memphis.ccrg.lida.actionselection.BehaviorImpl;
 import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.initialization.FrameworkTaskDef;

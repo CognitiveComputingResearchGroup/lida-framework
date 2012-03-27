@@ -18,7 +18,7 @@ import javax.swing.table.AbstractTableModel;
 import edu.memphis.ccrg.lida.actionselection.Action;
 import edu.memphis.ccrg.lida.actionselection.ActionSelection;
 import edu.memphis.ccrg.lida.actionselection.ActionSelectionListener;
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
+import edu.memphis.ccrg.lida.actionselection.Behavior;
 import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
@@ -167,13 +167,15 @@ public class ActionSelectionPanel extends GuiPanelImpl implements
 	@SuppressWarnings("unchecked")
 	@Override
 	public void display(Object o) {
-		behaviors = (Collection<Behavior>) o;
-		behaviorArray = behaviors.toArray(new Behavior[0]);
-
-		((AbstractTableModel) behaviorsTable.getModel())
-				.fireTableStructureChanged();
-		((AbstractTableModel) winnersTable.getModel())
-				.fireTableStructureChanged();
+		if(o != null){
+			behaviors = (Collection<Behavior>) o;
+			behaviorArray = behaviors.toArray(new Behavior[0]);
+	
+			((AbstractTableModel) behaviorsTable.getModel())
+					.fireTableStructureChanged();
+			((AbstractTableModel) winnersTable.getModel())
+					.fireTableStructureChanged();
+		}
 	}
 
 	private class BehaviorTableModel extends AbstractTableModel {

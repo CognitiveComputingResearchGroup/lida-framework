@@ -18,8 +18,7 @@ import org.junit.Test;
 
 import edu.memphis.ccrg.lida.actionselection.Action;
 import edu.memphis.ccrg.lida.actionselection.ActionImpl;
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Condition;
+import edu.memphis.ccrg.lida.actionselection.Behavior;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockTaskSpawner;
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.Node;
@@ -128,7 +127,7 @@ public class ProceduralMemoryImplTest {
 	@Test
 	public void testGetNewScheme2(){
 		Action a = new ActionImpl("action1");		
-		Scheme s = pm.getNewScheme(a);
+		SchemeImpl s = (SchemeImpl) pm.getNewScheme(a);
 		assertNotNull(s);
 		assertSame(a, s.getAction());
 		assertTrue(pm.containsScheme(s));

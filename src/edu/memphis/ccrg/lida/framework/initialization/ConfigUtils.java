@@ -31,22 +31,24 @@ public class ConfigUtils {
 	/**
 	 * Loads specified {@link Properties} file.
 	 * 
-	 * @param filename
+	 * @param fileName
 	 *            file name
 	 * @return {@link Properties} or null if the file is invalid.
 	 */
-	public static Properties loadProperties(String filename) {
+	public static Properties loadProperties(String fileName) {
 		Properties properties = new Properties();
-		if (filename != null) {
+		if (fileName != null) {
 			try {
-				properties.load(new BufferedReader(new FileReader(filename)));
+				properties.load(new BufferedReader(new FileReader(fileName)));
 			} catch (FileNotFoundException e) {
-				logger.log(Level.SEVERE, "Cannot find the properties file with path: {0}",
-						filename);
+				logger.log(Level.SEVERE, 
+						"Exception: {0}\n occurred loading Properties File from path: {1}",
+						new Object[]{e, fileName});
 				properties = null;
 			} catch (IOException e) {
-				logger.log(Level.SEVERE, "Error loading the properties file with path: {0}",
-						filename);
+				logger.log(Level.SEVERE, 
+						"Exception: {0}\n occurred loading Properties File from path: {1}",
+						new Object[]{e, fileName});
 				properties = null;
 			}
 		} else {
@@ -58,16 +60,27 @@ public class ConfigUtils {
 
 	/**
 	 * Configures the Logger manager with specified configFile properties file.
-	 * @param configFile path of properties file
+	 * @param path path of properties file
 	 * @see LogManager
 	 */
-	public static void configLoggers(String configFile) {
+	public static void configLoggers(String path) {
+		FileInputStream fis;
 		try {
-			FileInputStream fis = new FileInputStream(configFile);
+			fis = new FileInputStream(path);
 			LogManager.getLogManager().readConfiguration(fis);
 			fis.close();
+		} catch (FileNotFoundException e) {
+			logger.log(Level.WARNING, 
+					"Exception: {0}\n occurred loading Logging Properties File from path: {1}",
+					new Object[]{e, path});
+		} catch (SecurityException e) {
+			logger.log(Level.WARNING, 
+					"Exception: {0}\n occurred loading Logging Properties File from path: {1}",
+					new Object[]{e, path});
 		} catch (IOException e) {
-			logger.log(Level.WARNING, "Logging Properties File is invalid");
+			logger.log(Level.WARNING, 
+					"Exception: {0}\n occurred loading Logging Properties File from path: {1}",
+					new Object[]{e, path});
 		}
 	}
 }

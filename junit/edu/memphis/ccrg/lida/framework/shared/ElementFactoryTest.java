@@ -25,7 +25,7 @@ import org.junit.Test;
 
 import edu.memphis.ccrg.lida.actionselection.Action;
 import edu.memphis.ccrg.lida.actionselection.ActionImpl;
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
+import edu.memphis.ccrg.lida.actionselection.Behavior;
 import edu.memphis.ccrg.lida.attentioncodelets.NeighborhoodAttentionCodelet;
 import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.ModuleName;
@@ -815,7 +815,7 @@ public class ElementFactoryTest {
 		ProceduralMemoryImpl pm = new ProceduralMemoryImpl();
 		Action a = new ActionImpl();
 		Scheme s = pm.getNewScheme(a);
-		String name = "edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.BehaviorImpl";
+		String name = "edu.memphis.ccrg.lida.actionselection.BehaviorImpl";
 		Behavior b = factory.getBehavior(s,name);
 		assertSame(s, b.getScheme());
 		Behavior b2 = factory.getBehavior(s, name);
@@ -826,7 +826,7 @@ public class ElementFactoryTest {
 	@Test
 	public void testGetBehavior1(){
 		Scheme s = null;
-		String name = "edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.BehaviorImpl";
+		String name = "edu.memphis.ccrg.lida.actionselection.BehaviorImpl";
 		Behavior b = factory.getBehavior(s,name);
 		assertNull(b);
 	}

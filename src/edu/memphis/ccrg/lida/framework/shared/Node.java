@@ -10,8 +10,8 @@
  */
 package edu.memphis.ccrg.lida.framework.shared;
 
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Condition;
 import edu.memphis.ccrg.lida.pam.PamNode;
+import edu.memphis.ccrg.lida.proceduralmemory.Condition;
 
 /**
  * Node represents a Concept in LIDA. It could be implemented in different ways 

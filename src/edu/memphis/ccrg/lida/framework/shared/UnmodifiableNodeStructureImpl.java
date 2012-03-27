@@ -76,7 +76,7 @@ public class UnmodifiableNodeStructureImpl implements NodeStructure, BroadcastCo
 
 	@Override
 	public int hashCode() {
-		//Generate a long value for nodes based on individual node id and
+		//Generate a value for nodes based on individual node id and
 		//the number of nodes total.
 		Long aggregateNodeHash = 0L;
 		for(Node n: ns.getNodes()){
@@ -84,7 +84,7 @@ public class UnmodifiableNodeStructureImpl implements NodeStructure, BroadcastCo
 		}	
 		aggregateNodeHash = aggregateNodeHash * 31 + ns.getNodeCount() * 37;
 		
-		//Generate a long value for links based on individual link id and
+		//Generate a value for links based on individual link id and
 		//the number of links total.
 		Long aggregateLinkHash = 0L;
 		for(Link l: ns.getLinks()){

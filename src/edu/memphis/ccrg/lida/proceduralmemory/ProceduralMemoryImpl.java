@@ -22,8 +22,7 @@ import java.util.logging.Logger;
 import org.apache.commons.collections15.collection.UnmodifiableCollection;
 
 import edu.memphis.ccrg.lida.actionselection.Action;
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Condition;
+import edu.memphis.ccrg.lida.actionselection.Behavior;
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.initialization.Initializable;
@@ -372,10 +371,10 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 	}
 	
 	@Override
-	public void removeScheme(Scheme scheme) {
-		schemeSet.remove(scheme);
-		removeFromMap(scheme, scheme.getContextConditions(), contextSchemeMap);
-		removeFromMap(scheme, scheme.getAddingList(), addingSchemeMap);
+	public void removeScheme(Scheme s) {
+		schemeSet.remove(s);
+		removeFromMap(s, s.getContextConditions(), contextSchemeMap);
+		removeFromMap(s, s.getAddingList(), addingSchemeMap);
 	}
 	
 	private void removeFromMap(Scheme s, Collection<Condition> conditions, Map<Object, Set<Scheme>> map){
