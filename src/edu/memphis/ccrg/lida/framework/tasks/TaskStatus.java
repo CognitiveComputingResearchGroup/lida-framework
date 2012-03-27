@@ -21,7 +21,7 @@ public enum TaskStatus {
 	
 	/**
 	 * FrameworkTask status value:
-	 * Task is finished and cannot be restarted
+	 * Task is finished, cannot be restarted, and cannot have its TaskStatus changed
 	 */
 	CANCELED,
 	

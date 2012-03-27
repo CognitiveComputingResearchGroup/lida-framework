@@ -66,18 +66,19 @@ public class PropagationTaskTest{
 		double upscaleFactor = 0.5;
 		pam.setUpscaleFactor(upscaleFactor);
 		
-		double linkActivation = 0.1;
-		double sourceActivation = 0.1;
-		double sinkActivation = 0.1;
+		double sourceActivation = 0.09;
+		double linkBLA = 0.08;
+		double linkActivation = 0.01;
+		double sinkActivation = 0.02;
 		link.setActivation(linkActivation);
+		link.setBaseLevelActivation(linkBLA);
 		sink.setActivation(sinkActivation);
-		assertEquals(0.1, link.getActivation(), epsilon); 
 		
 		PropagationTask task= new PropagationTask(1, link, sourceActivation, pam);
 		task.call();
 	 
-		assertEquals(0.2, link.getActivation(), epsilon);
-		assertEquals(0.2*upscaleFactor + 0.1, sink.getActivation(), epsilon);
+		assertEquals(linkBLA+linkActivation+sourceActivation, link.getTotalActivation(), epsilon);
+		assertEquals(linkBLA+linkActivation+sourceActivation+sinkActivation, sink.getActivation(), epsilon);
 		assertEquals(TaskStatus.FINISHED, task.getTaskStatus());
 	 
 		assertEquals(sink, pam.pmNode);
@@ -90,17 +91,20 @@ public class PropagationTaskTest{
 		double upscaleFactor = 0.5;
 		pam.setUpscaleFactor(upscaleFactor);
 		
+
+		double sourceActivation = 0.5;
 		double linkActivation = 0.2;
-		double sourceActivation = 0.6;
+		double linkBLA = 0.1;
 		double sinkActivation = 0.1;
 		link.setActivation(linkActivation);
+		link.setBaseLevelActivation(linkBLA);
 		sink.setActivation(sinkActivation);
 		
 		PropagationTask excite= new PropagationTask(1, link, sourceActivation, pam);
 		excite.call();
 	 
 		assertEquals(sourceActivation + linkActivation, link.getActivation(), epsilon);
-		assertEquals((sourceActivation + linkActivation)*upscaleFactor + sinkActivation, sink.getActivation(), epsilon);
+		assertEquals(sourceActivation + linkActivation + linkBLA + sinkActivation, sink.getActivation(), epsilon);
 		assertEquals(TaskStatus.FINISHED, excite.getTaskStatus());
 	 
 		assertEquals(sink, pam.pmNode);

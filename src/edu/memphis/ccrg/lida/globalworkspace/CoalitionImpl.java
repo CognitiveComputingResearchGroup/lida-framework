@@ -29,11 +29,11 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 public class CoalitionImpl extends ActivatibleImpl implements Coalition {
 
 	private static final Logger logger = Logger.getLogger(CoalitionImpl.class.getCanonicalName());
-	private static long idCounter = 0;
+	private static int idCounter = 0;
 	/*
 	 * unique id
 	 */
-	private long id;
+	private int id;
 	/**
 	 * the {@link BroadcastContent} of the coalition
 	 */
@@ -96,7 +96,7 @@ public class CoalitionImpl extends ActivatibleImpl implements Coalition {
     }
 
     @Override
-    public long getId() {
+    public int getId() {
         return id;
     }
     

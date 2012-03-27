@@ -43,5 +43,5 @@ public interface Coalition extends Activatible {
 	 * 
 	 * @return the unique id of the Coalition
 	 */
-	public long getId();
+	public int getId();
 }
