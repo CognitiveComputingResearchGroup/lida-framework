@@ -244,10 +244,10 @@ public class SubNodeStructureImplTest2 {
 
 		assertTrue(!subNS.containsNode(node4));
 		assertTrue(!subNS.containsNode(node3));
-		assertTrue(subNS.containsNode(node5));
+		assertTrue(!subNS.containsNode(node5));
 		assertTrue(subNS.containsNode(node6));
 
-		assertTrue(subNS.getNodeCount() == 2);
+		assertTrue(subNS.getNodeCount() == 1);
 		assertTrue(subNS.getLinkCount() == 0);
 		
 	}
