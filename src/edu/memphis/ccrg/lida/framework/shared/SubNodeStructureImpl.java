@@ -50,9 +50,12 @@ public class SubNodeStructureImpl extends NodeStructureImpl {
 	 */
 	public  NodeStructure getSubNodeStructure(Collection<Node> nodes,
 			int distance, double threshold) {
-		//TODO remove isEmpty check and put it in its own if block or simply ignore it
-		//in general 2 special cases should not be handled in the same block. 
-		if (nodes == null || nodes.isEmpty()){
+		if (nodes == null ){
+			logger.log(Level.WARNING, "Collection of specified nodes are not available.",
+					TaskManager.getCurrentTick());
+			return null;
+		}
+		if (nodes.isEmpty()){
 			logger.log(Level.WARNING, "Collection of specified nodes should not be empty.",
 					TaskManager.getCurrentTick());
 			return null;
@@ -78,25 +81,16 @@ public class SubNodeStructureImpl extends NodeStructureImpl {
 		for (Node n : nodes) {
 			//Add nodes to the sub node structure and scan from each node
 			
-			//FIXME RM: the difference b/w the 2 methods below seems to be 1 boolean statement which
-			//in one case returns immediately. So you can just check that statement before you call 1 method.
-			// I don't like having 2 large and nearly identical methods.
-			// So check if n is greater than threshold and only if it is, then call depthFirstSearch passing the threshold
-			
-			if (threshold == 0){
-				depthFirstSearchWithoutThreshold(n, distance, subNodeStructure);
-			} else {
-				depthFirstSearchWithThreshold(n, distance, subNodeStructure, threshold);
-			}
+			depthFirstSearch(n, distance, subNodeStructure, threshold);
 		}
+		
 		//	Add Links to the sub node structure
-		//TODO RM: Change subnodes to singular
-		for (Node subNodes : subNodeStructure.getNodes()) {
+		for (Node subNode : subNodeStructure.getNodes()) {
 				
 				/* 
 				 * Add links for connected Sources
 				 */
-				Map<Node, Link> sources = getConnectedSources(subNodes);
+				Map<Node, Link> sources = getConnectedSources(subNode);
 
 				/*
 				 * All the Sinks are nodes here
@@ -111,68 +105,22 @@ public class SubNodeStructureImpl extends NodeStructureImpl {
 		}
 
 		//To add leftover complex links.
-		//TODO RM: Change subnodes to singular
-		for (Node subNodes : subNodeStructure.getNodes()) {
+		for (Node subNode : subNodeStructure.getNodes()) {
 			// Add complex link for every node present in subNodeStructure
-				Map<Linkable, Link> sinks = getConnectedSinks(subNodes);
+				Map<Linkable, Link> sinks = getConnectedSinks(subNode);
 
-				Collection<Link> linksConnectedToLinkableInSNS = sinks.values();
-				//TODO RM: Get the keys instead
-				for (Link link : linksConnectedToLinkableInSNS) {
-					//TODO RM: If Linkable is a link and the sub graph contains it. 
-					if (!link.isSimpleLink())
-						subNodeStructure.addDefaultLink(link);
+				Set<Linkable> connectedSinks = sinks.keySet();
+				//Get the keys instead
+				for (Linkable l : connectedSinks) {
+					//If Linkable is a link and the sub graph contains it. 
+					if ((l instanceof Link) && (subNodeStructure.containsLinkable(l)))
+						subNodeStructure.addDefaultLink(sinks.get(l));
 				}
 		}
 
 		return subNodeStructure;
 	}
-	
-	/*
-	 * @param currentNode One specified node that be considered as neighbor nodes
-	 * or specified nodes in sub NodeStructure 
-	 * @param step The distance between specified nodes and this current Node
-	 * @param distanceLeftToGo The farthest distance between specified nodes and
-	 * its neighbor nodes
-	 * @param subNodeStructure Nodes contained in subNodeStructure. 
-	 * It involves specified nodes and all neighbor nodes whose distance
-	 * from one of specified nodes is not bigger than farthest distance 
-	 * coming from arguments. Also it involves all links between these 
-	 * above nodes.
-	 */
-	private void depthFirstSearchWithoutThreshold(Node currentNode, int distanceLeftToGo, NodeStructure subNodeStructure) {
-		if (containsNode(currentNode)){
-			subNodeStructure.addDefaultNode(currentNode);
-		}else{
-			return;
-		}
-
-		/*
-		 *  Get all connected Sinks
-		 */
-		Map<Linkable, Link> subSinks = getConnectedSinks(currentNode);
-		Set<Linkable> subLinkables = subSinks.keySet();
-		for (Linkable l : subLinkables) {
-			if (l instanceof Node) {
-				if (0 < distanceLeftToGo){
-					depthFirstSearchWithoutThreshold((Node) l, distanceLeftToGo - 1, subNodeStructure);
-				}
-			}
-		}
-
-		/*
-		 *  Get all connected Sources
-		 */
-		Map<Node, Link> subSources = getConnectedSources(currentNode);
-		Set<Node> parentNodes = subSources.keySet();
-		for (Node n : parentNodes) {
-			if (0 < distanceLeftToGo){
-				depthFirstSearchWithoutThreshold(n, distanceLeftToGo - 1, subNodeStructure);
-			}
-		}
-	}
-
-	
+		
 	/*
 	 * @param currentNode One specified node that be considered as neighbor nodes
 	 * or specified nodes in sub NodeStructure 
@@ -186,7 +134,7 @@ public class SubNodeStructureImpl extends NodeStructureImpl {
 	 * coming from arguments, and those nodes' activation is not lower than threshold.
 	 * Also it involves all links between these above nodes.
 	 */
-	private void depthFirstSearchWithThreshold(Node currentNode, int distanceLeftToGo, 
+	private void depthFirstSearch(Node currentNode, int distanceLeftToGo, 
 			NodeStructure subNodeStructure, double threshold) {
 		if ((containsNode(currentNode)) &&(currentNode.getActivation() >= threshold)){
 			subNodeStructure.addDefaultNode(currentNode);
@@ -202,7 +150,7 @@ public class SubNodeStructureImpl extends NodeStructureImpl {
 		for (Linkable l : subLinkables) {
 			if (l instanceof Node) {
 				if (0 < distanceLeftToGo){
-					depthFirstSearchWithThreshold((Node) l, distanceLeftToGo - 1, subNodeStructure, threshold);
+					depthFirstSearch((Node) l, distanceLeftToGo - 1, subNodeStructure, threshold);
 				}
 			}
 		}
@@ -214,7 +162,7 @@ public class SubNodeStructureImpl extends NodeStructureImpl {
 		Set<Node> parentNodes = subSources.keySet();
 		for (Node n : parentNodes) {
 			if (0 < distanceLeftToGo){
-				depthFirstSearchWithThreshold(n, distanceLeftToGo - 1, subNodeStructure, threshold);
+				depthFirstSearch(n, distanceLeftToGo - 1, subNodeStructure, threshold);
 			}
 		}
 	}
