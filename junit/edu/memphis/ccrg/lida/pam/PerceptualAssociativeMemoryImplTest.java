@@ -77,15 +77,15 @@ public class PerceptualAssociativeMemoryImplTest {
 		pam = new PerceptualAssociativeMemoryImpl();
 		nodeStructure = new NodeStructureImpl("PamNodeImpl", "PamLinkImpl");
 
-		node1 = pam.addDefaultNode("Node 1");
-		node2 = pam.addDefaultNode("Node 2");
-		node3 = pam.addDefaultNode("Node 3");
+		node1 = (PamNodeImpl) factory.getNode("PamNodeImpl", "Node 1");
+		node2 = (PamNodeImpl) factory.getNode("PamNodeImpl", "Node 2");
+		node3 = (PamNodeImpl) factory.getNode("PamNodeImpl", "Node 3");
 		
 		decayStrategy = new SigmoidDecayStrategy();
 		exciteStrat = new SigmoidExciteStrategy();
 		tas = (TotalActivationStrategy) factory.getStrategy("DefaultTotalActivation");		
-		link1 = pam.addDefaultLink(node1, node2, PerceptualAssociativeMemoryImpl.NONE);
-		link2 = pam.addDefaultLink(node2, node3, PerceptualAssociativeMemoryImpl.NONE);
+		link1 = (PamLinkImpl) factory.getLink("PamLinkImpl", node1, node2, PerceptualAssociativeMemoryImpl.NONE);
+		link2 = (PamLinkImpl) factory.getLink("PamLinkImpl", node2, node3, PerceptualAssociativeMemoryImpl.NONE);
 	}
 	
 	@Test
@@ -473,16 +473,8 @@ public class PerceptualAssociativeMemoryImplTest {
 	
 	@Test
 	public void testContainsNode(){
-		assertTrue(pam.containsNode(node1));
-		//FIXME
-		node1 = null;
-		try{
-			assertTrue(pam.containsNode(node1));
-		}catch(Exception e){
-			assertTrue(e instanceof NullPointerException);
-		}
-		
-		assertTrue(pam.getNodes().size() - pam.getLinkCategories().size() == 1);
+		Node n =pam.addDefaultNode("foo");
+		assertTrue(pam.containsNode(n));
 	}
 	@Test
 	public void testContainsNode0(){

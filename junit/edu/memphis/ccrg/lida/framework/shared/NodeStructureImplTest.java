@@ -947,8 +947,6 @@ s
 	
 	@Test
 	public void testMergeDifferentTypes(){
-		fail("TODO");
-		
 		//TODO test new add links methods and add links methods for erroneous input
 	}
 	

@@ -12,7 +12,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -618,10 +617,12 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 
 		// Need to remove all links connected to the linkable specified to be
 		// removed.
-		Set<Link> connectedLinks = new HashSet<Link>(linkableMap.get(linkable));
-		if (connectedLinks != null) {
-			for (Link connectedLink : connectedLinks) {// for all of the links
-				// connected to n
+		Set<Link> tempLinks = linkableMap.get(linkable);
+		if(tempLinks != null){ 
+			//must put these links in another collection to prevent concurrent modification exception in a recursive call
+			Set<Link> connectedLinks = new HashSet<Link>(tempLinks);
+			for (Link connectedLink : connectedLinks) {
+				// for all of the links connected to linkable
 				removeLinkable(connectedLink);
 			}
 		}
@@ -631,19 +632,21 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 		if (linkable instanceof Node) {
 			nodes.remove(((Node) linkable).getId());
 		} else if (linkable instanceof Link) {
-			// if removing a link then must remove the 2 references to the link
-			// 1 for the source and 1 for the sink
+			//if removing a link then must also remove the 2 references to the link
+			//get actual link object 
 			Link aux = links.get(linkable.getExtendedId());
-			links.remove(linkable.getExtendedId());
+			//get and remove source's reference to link
 			Set<Link> sourceLinks = linkableMap.get(aux.getSource());
 			if (sourceLinks != null) {
 				sourceLinks.remove(aux);
 			}
-
+			//get and remove sink's reference to link
 			Set<Link> sinkLinks = linkableMap.get(aux.getSink());
 			if (sinkLinks != null) {
 				sinkLinks.remove(aux);
 			}
+			//finally remove the link from links map
+			links.remove(linkable.getExtendedId());
 		}
 	}
 
@@ -706,7 +709,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	@Override
 	public Collection<Node> getNodes() {
 		Collection<Node> aux = nodes.values();
-		return (aux == null)? null : Collections.unmodifiableCollection(aux);
+		return (aux == null) ? null : Collections.unmodifiableCollection(aux);
 	}
 	
 	@Override
@@ -715,21 +718,23 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	}
 
 	@Override
-	public Link getLink(ExtendedId ids) {
-		return links.get(ids);
+	public Link getLink(ExtendedId id) {
+		return (id == null)? null:links.get(id);
 	}
 
 	@Override
-	public Set<Link> getLinks(LinkCategory category) {
-		Set<Link> result = new ConcurrentHashSet<Link>();
-		if (links != null) {
-			for (Link l : links.values()) {
-				if (l.getCategory() == category) {
-					result.add(l);
-				}
+	public Set<Link> getLinks(LinkCategory cat) {
+		if(cat == null){
+			return null;
+		}
+		Set<Link> results = new HashSet<Link>();
+		for (Link l : links.values()) {
+			if (cat.equals(l.getCategory())) {
+				results.add(l);
 			}
 		}
-		return Collections.unmodifiableSet(result);
+			
+		return Collections.unmodifiableSet(results);
 	}
 
 	@Override
@@ -746,8 +751,11 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	
 	@Override
 	public Linkable getLinkable(ExtendedId ids) {
+		if(ids == null){
+			return null;
+		}
 		if (ids.isNodeId()) {
-			return getNode(ids);
+			return getNode(ids.getSourceNodeId());
 		} else {
 			return getLink(ids);
 		}
@@ -774,31 +782,26 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 		if (lnk == null) {
 			return null;
 		}
-
 		Set<Link> aux = linkableMap.get(lnk);
-		if (aux == null) {
-			return null;
-		} else {
-			return Collections.unmodifiableSet(aux);
-		}
+		return (aux == null)? null: Collections.unmodifiableSet(aux);
 	}
 
 	@Override
 	public Set<Link> getAttachedLinks(Linkable lnk, LinkCategory cat) {
-		if (lnk == null) {
+		if (lnk == null || cat == null) {
 			return null;
 		}
-		Set<Link> temp = linkableMap.get(lnk);
-		if (temp == null) {
+		Set<Link> attachedLinks = linkableMap.get(lnk);
+		if (attachedLinks == null) {
 			return null;
 		}
-		Set<Link> attachedLinks = new HashSet<Link>();
-		for (Link l : temp) {
-			if (l.getCategory() == cat) {
-				attachedLinks.add(l);
+		Set<Link> results = new HashSet<Link>();
+		for (Link l : attachedLinks) {
+			if (cat.equals(l.getCategory())) {
+				results.add(l);
 			}
 		}
-		return Collections.unmodifiableSet(attachedLinks);
+		return Collections.unmodifiableSet(results);
 	}
 
 	@Override
@@ -843,9 +846,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	
 	@Override
 	public boolean containsNode(Node n) {
-		List<Integer> list = new ArrayList<Integer>();
-		list.contains(null);
-		return nodes.containsKey(n.getId());
+		return (n == null)? false : nodes.containsKey(n.getId());
 	}
 
 	@Override
@@ -855,12 +856,15 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 
 	@Override
 	public boolean containsNode(ExtendedId id) {
+		if(id == null){
+			return false;
+		}
 		return id.isNodeId() && nodes.containsKey(id.getSourceNodeId());
 	}
 
 	@Override
 	public boolean containsLink(Link l) {
-		return links.containsKey(l.getExtendedId());
+		return (l == null)? false : links.containsKey(l.getExtendedId());
 	}
 
 	@Override
@@ -930,7 +934,6 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 				return false;
 			}
 		}
-
 		return true;
 	}
 }

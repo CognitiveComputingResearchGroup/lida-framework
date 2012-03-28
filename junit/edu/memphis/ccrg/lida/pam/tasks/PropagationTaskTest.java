@@ -63,8 +63,6 @@ public class PropagationTaskTest{
 	public void testPropagateNotOverThreshold(){
 		double perceptThreshold = 1.0;
 		pam.setPerceptThreshold(perceptThreshold);
-		double upscaleFactor = 0.5;
-		pam.setUpscaleFactor(upscaleFactor);
 		
 		double sourceActivation = 0.09;
 		double linkBLA = 0.08;
@@ -77,8 +75,8 @@ public class PropagationTaskTest{
 		PropagationTask task= new PropagationTask(1, link, sourceActivation, pam);
 		task.call();
 	 
-		assertEquals(linkBLA+linkActivation+sourceActivation, link.getTotalActivation(), epsilon);
-		assertEquals(linkBLA+linkActivation+sourceActivation+sinkActivation, sink.getActivation(), epsilon);
+		assertEquals(sourceActivation, link.getActivation(), epsilon);
+		assertEquals(linkBLA*sourceActivation+sinkActivation, sink.getActivation(), epsilon);
 		assertEquals(TaskStatus.CANCELED, task.getTaskStatus());
 	 
 		assertEquals(sink, pam.pmNode);
@@ -88,14 +86,11 @@ public class PropagationTaskTest{
 	public void testPropagateOverThreshold(){
 		double perceptThreshold = 0.5;
 		pam.setPerceptThreshold(perceptThreshold);
-		double upscaleFactor = 0.5;
-		pam.setUpscaleFactor(upscaleFactor);
-		
 
 		double sourceActivation = 0.5;
 		double linkActivation = 0.2;
 		double linkBLA = 0.1;
-		double sinkActivation = 0.1;
+		double sinkActivation = 0.45;
 		link.setActivation(linkActivation);
 		link.setBaseLevelActivation(linkBLA);
 		sink.setActivation(sinkActivation);
@@ -103,8 +98,9 @@ public class PropagationTaskTest{
 		PropagationTask excite= new PropagationTask(1, link, sourceActivation, pam);
 		excite.call();
 	 
-		assertEquals(sourceActivation + linkActivation, link.getActivation(), epsilon);
-		assertEquals(sourceActivation + linkActivation + linkBLA + sinkActivation, sink.getActivation(), epsilon);
+		assertEquals(sourceActivation, link.getActivation(), epsilon);
+		//0.5*0.1 + .45 = .5
+		assertEquals(sourceActivation*linkBLA + sinkActivation, sink.getActivation(), epsilon);
 		assertEquals(TaskStatus.CANCELED, excite.getTaskStatus());
 	 
 		assertEquals(sink, pam.pmNode);
