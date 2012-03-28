@@ -30,26 +30,25 @@ public class SubNodeStructureImpl extends NodeStructureImpl {
 
 	/**
 	 * @param nodes Set of specified nodes in NodeStructure
-	 * @param distance The farthest distance between specified nodes and 
+	 * @param d The farthest distance between specified nodes and 
 	 * its neighbor nodes
 	 * @return A sub NodeStructure which involves specified and all 
 	 * satisfied neighbor nodes
 	 */
-	public  NodeStructure getSubNodeStructure(Collection<Node> nodes,
-			int distance) {
-			return getSubNodeStructure(nodes,distance,0.0);
+	public  NodeStructure getSubNodeStructure(Collection<Node> nodes,int d) {
+		return getSubNodeStructure(nodes,d,0.0);
 	}
 
 	/**
 	 * @param nodes Set of specified nodes in NodeStructure
-	 * @param distance The farthest distance between specified nodes and
+	 * @param d The farthest distance between specified nodes and
 	 * its neighbor nodes
 	 * @param threshold responds to lower bound of activation
 	 * @return A sub NodeStructure which involves specified and all 
 	 * satisfied neighbor nodes
 	 */
 	public  NodeStructure getSubNodeStructure(Collection<Node> nodes,
-			int distance, double threshold) {
+			int d, double threshold) {
 		if (nodes == null ){
 			logger.log(Level.WARNING, "Collection of specified nodes are not available.",
 					TaskManager.getCurrentTick());
@@ -60,7 +59,7 @@ public class SubNodeStructureImpl extends NodeStructureImpl {
 					TaskManager.getCurrentTick());
 			return null;
 		}
-		if (distance < 0){
+		if (d < 0){
 			logger.log(Level.WARNING, "Desired distance should not be negative.",
 					TaskManager.getCurrentTick());
 			return null;
@@ -71,53 +70,38 @@ public class SubNodeStructureImpl extends NodeStructureImpl {
 					TaskManager.getCurrentTick());
 			return null;
 		}
-		
 		//	Distance should be not bigger than number of all links.
-		if (distance > getLinkCount()){
-			distance = getLinkCount();
+		if (d > getLinkCount()){
+			d = getLinkCount();
 		}
 
 		NodeStructure subNodeStructure = new NodeStructureImpl();
 		for (Node n : nodes) {
 			//Add nodes to the sub node structure and scan from each node
-			
-			depthFirstSearch(n, distance, subNodeStructure, threshold);
+			depthFirstSearch(n, d, subNodeStructure, threshold);
 		}
-		
-		//	Add Links to the sub node structure
+		//	Add all simple links to the sub node structure
 		for (Node subNode : subNodeStructure.getNodes()) {
-				
-				/* 
-				 * Add links for connected Sources
-				 */
-				Map<Node, Link> sources = getConnectedSources(subNode);
-
-				/*
-				 * All the Sinks are nodes here
-				 */
-				Set<Node> connectedSources = sources.keySet(); 
-				
-				for (Node n : connectedSources) {
-					if (subNodeStructure.containsNode(n)) {
-						subNodeStructure.addDefaultLink(sources.get(n));
-					}
+			//Get the simple links for each Node already in the subgraph
+			Map<Node, Link> sources = getConnectedSources(subNode);
+			for (Node n : sources.keySet()) {
+				//Add the simple link only if its source is present in the subgraph
+				if (subNodeStructure.containsNode(n)) {
+					subNodeStructure.addDefaultLink(sources.get(n));
 				}
+			}
 		}
-
-		//To add leftover complex links.
+		//Add all complex links.
 		for (Node subNode : subNodeStructure.getNodes()) {
-			// Add complex link for every node present in subNodeStructure
-				Map<Linkable, Link> sinks = getConnectedSinks(subNode);
-
-				Set<Linkable> connectedSinks = sinks.keySet();
-				//Get the keys instead
-				for (Linkable l : connectedSinks) {
-					//If Linkable is a link and the sub graph contains it. 
-					if ((l instanceof Link) && (subNodeStructure.containsLinkable(l)))
-						subNodeStructure.addDefaultLink(sinks.get(l));
+			// Get the potential complex links for every node present in the subgraph
+			Map<Linkable, Link> sinks = getConnectedSinks(subNode);
+			for (Linkable l : sinks.keySet()) {
+				//If Linkable is a link and the sub graph contains it then there is a complex link to add. 
+				if ((l instanceof Link) && subNodeStructure.containsLinkable(l)){
+					subNodeStructure.addDefaultLink(sinks.get(l));
 				}
+			}
 		}
-
 		return subNodeStructure;
 	}
 		
@@ -136,28 +120,20 @@ public class SubNodeStructureImpl extends NodeStructureImpl {
 	 */
 	private void depthFirstSearch(Node currentNode, int distanceLeftToGo, 
 			NodeStructure subNodeStructure, double threshold) {
-		if ((containsNode(currentNode)) &&(currentNode.getActivation() >= threshold)){
+		if (containsNode(currentNode) && (currentNode.getActivation() >= threshold)){
 			subNodeStructure.addDefaultNode(currentNode);
 		}else{
 			return;
 		}
-
-		/*
-		 *  Get all connected Sinks
-		 */
+		//Get all connected Sinks
 		Map<Linkable, Link> subSinks = getConnectedSinks(currentNode);
 		Set<Linkable> subLinkables = subSinks.keySet();
 		for (Linkable l : subLinkables) {
-			if (l instanceof Node) {
-				if (0 < distanceLeftToGo){
-					depthFirstSearch((Node) l, distanceLeftToGo - 1, subNodeStructure, threshold);
-				}
+			if (l instanceof Node && 0 < distanceLeftToGo){
+				depthFirstSearch((Node)l, distanceLeftToGo - 1, subNodeStructure, threshold);
 			}
 		}
-
-		/*
-		 *  Get all connected Sources
-		 */
+		//Get all connected Sources
 		Map<Node, Link> subSources = getConnectedSources(currentNode);
 		Set<Node> parentNodes = subSources.keySet();
 		for (Node n : parentNodes) {
