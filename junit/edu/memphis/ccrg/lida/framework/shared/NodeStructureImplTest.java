@@ -7,11 +7,12 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.framework.shared;
 
-import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
@@ -27,16 +28,16 @@ import org.junit.Test;
 import edu.memphis.ccrg.lida.framework.initialization.AgentStarter;
 import edu.memphis.ccrg.lida.framework.initialization.ConfigUtils;
 import edu.memphis.ccrg.lida.framework.initialization.FactoriesDataXmlLoader;
-import edu.memphis.ccrg.lida.framework.shared.activation.Activatible;
 import edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy;
 import edu.memphis.ccrg.lida.pam.PamLink;
+import edu.memphis.ccrg.lida.pam.PamLinkImpl;
 import edu.memphis.ccrg.lida.pam.PamLinkImplSubclass;
 import edu.memphis.ccrg.lida.pam.PamNode;
 import edu.memphis.ccrg.lida.pam.PamNodeImpl;
 import edu.memphis.ccrg.lida.pam.PamNodeImplSubclass;
 
 /**
- * This is a JUnit class which can be used to test methods of the NodeStructureImpl class
+ * This is a JUnit class which can be used to test methods of the NodeStructureImpl class.
  * @author Ryan J. McCall
  * @author Siminder Kaur
  * 
@@ -324,7 +325,6 @@ s
 	
 	@Test
 	public void testAddLinkSelf() {
-
 		ns1.addDefaultNode(node1);	
 
 		try{
@@ -335,10 +335,9 @@ s
 		}
 		assertTrue(ns1.getLinkableCount() == 1);
 		assertTrue(ns1.getLinkCount() == 0);
-				
 	}
 	
-	/**
+	/*
 	 * This method is used to test the NodeStructureImpl.addLinks() method
 	 */
 	@Test
@@ -728,7 +727,7 @@ s
 		assertTrue(ns1.getNodeCount() == 3);
 	}
 
-	/**
+	/*
 	 * This method is used to test the NodeStructureImpl.copy() method
 	 */
 	@Test
@@ -911,6 +910,64 @@ s
 		assertTrue(ns2.getAttachedLinks(node4).size() == 1);
 		assertTrue(ns2.getAttachedLinks(node5).size() == 1);
 	}
+	@Test
+	public void testMergeDifferentTypes(){
+		Node pn1 = ns1.addNode("PamNodeImpl", "pn1", 0, 0);
+		assertTrue(pn1 instanceof PamNodeImpl);
+		ns2.addDefaultNode(node1);
+		
+		assertEquals(1,ns1.getNodeCount());
+		ns1.mergeWith(ns2);
+		assertEquals(2,ns1.getNodeCount());
+		assertTrue(ns1.getNode(node1.getId()) instanceof NodeImpl);
+	}	
+	@Test
+	public void testMergeDifferentTypes1(){
+		Node pn1 = ns1.addNode("PamNodeImpl", "pn1", 0, 0);
+		ns2.addDefaultNode(node1);
+		
+		assertEquals(1,ns2.getNodeCount());
+		ns2.mergeWith(ns1);
+		assertEquals(2,ns2.getNodeCount());
+		assertTrue(ns2.getNode(pn1.getId()) instanceof PamNodeImpl);
+	}
+	
+	@Test
+	public void testMergeDifferentTypes2(){
+		Node pn1 = ns1.addNode("PamNodeImpl", "pn1", 0, 0);
+		ns1.addDefaultNode(node1);
+		Link l1 = ns1.addDefaultLink(node1, pn1, category1, 0, 0);
+		//
+		ns2.addNode(pn1, "PamNodeImpl");
+		ns2.addDefaultNode(node1);
+		Link l2 = ns1.addLink("PamLinkImpl",node1, pn1, category1, 0, 0);
+		
+		ns1.mergeWith(ns2);
+		
+		assertEquals(2, ns1.getNodeCount());
+		assertEquals(1, ns1.getLinkCount());
+		assertTrue(ns1.containsLink(l1));
+	}
+	
+	@Test
+	public void testMergeDifferentTypes3(){
+		Node pn1 = ns1.addNode("PamNodeImpl", "pn1", 0, 0);
+		ns1.addDefaultNode(node1);
+		Link l1 = ns1.addDefaultLink(node1, pn1, category1, 0, 0);
+		//
+		ns2.addNode(pn1, "PamNodeImpl");
+		ns2.addDefaultNode(node1);
+		Link l2 = ns2.addLink("PamLinkImpl",node1, pn1, category2, 0, 0);
+		
+		ns1.mergeWith(ns2);
+		
+		assertEquals(2, ns1.getNodeCount());
+		assertEquals(2, ns1.getLinkCount());
+		assertTrue(ns1.containsLink(l1));
+		assertTrue(ns1.containsLink(l2));
+		assertTrue(ns1.getLink(l1.getExtendedId()) instanceof LinkImpl);
+		assertTrue(ns1.getLink(l2.getExtendedId()) instanceof PamLinkImpl);
+	}
 	
 	@Test
 	public void testCopyDifferentTypes(){
@@ -945,10 +1002,7 @@ s
 		assertTrue(l instanceof PamLinkImplSubclass);
 	}
 	
-	@Test
-	public void testMergeDifferentTypes(){
-		//TODO test new add links methods and add links methods for erroneous input
-	}
+	//TODO test new add links methods and add links methods for erroneous input
 	
 	@Test
 	public void testDecayNodeStructure(){

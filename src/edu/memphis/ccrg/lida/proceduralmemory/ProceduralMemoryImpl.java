@@ -73,7 +73,7 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 		 * Not yet supported.
 		 */
 		NEGATEDCONTEXT
-		};
+	};
 	/*
 	 * Schemes indexed by Nodes in their context.
 	 */

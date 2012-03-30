@@ -178,6 +178,8 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 		} else {
 			logger.log(Level.WARNING, "Cannot add Node {1} of type {2} because another Node {3} having a different type {4} and the same id is already present. Existing Node returned.", 
 						new Object[]{TaskManager.getCurrentTick(),n,type,node,node.getFactoryType()});
+//			node = null;
+			//TODO discuss
 		}
 		return node;
 	}
@@ -389,6 +391,8 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 		}else{
 			logger.log(Level.WARNING, "Cannot add new Link of type {2} because another Link {3} having a different type {4} and the same id is already present. Existing Link returned.", 
 					new Object[]{TaskManager.getCurrentTick(),type,link,link.getFactoryType()});
+//			link = null;
+			//TODO discuss
 		}
 		return link;
 	}
