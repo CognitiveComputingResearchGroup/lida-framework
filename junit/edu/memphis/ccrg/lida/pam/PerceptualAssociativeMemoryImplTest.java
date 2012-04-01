@@ -227,7 +227,7 @@ public class PerceptualAssociativeMemoryImplTest {
 		
 		int linkCount = pam.getLinks().size();
 		PamLink pl2 = pam.addLink("testPamLink", newNode1, newNode2, node3);
-		assertSame(pl,pl2);
+		assertNull(pl2);
 		assertEquals(linkCount, pam.getLinks().size());
 	}
 

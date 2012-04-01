@@ -114,13 +114,13 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	 * Copy constructor. Specifies Node and Link types used to copy Node and
 	 * Links. Specified types are the default types for the copy.
 	 * 
-	 * @param original
+	 * @param ns
 	 *            original NodeStructure
 	 * @see #mergeWith(NodeStructure)
 	 */
-	public NodeStructureImpl(NodeStructure original) {
-		this(original.getDefaultNodeType(), original.getDefaultLinkType());
-		internalMerge(original);
+	public NodeStructureImpl(NodeStructure ns) {
+		this(ns.getDefaultNodeType(), ns.getDefaultLinkType());
+		internalMerge(ns);
 	}
 	
 	@Override
@@ -178,8 +178,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 		} else {
 			logger.log(Level.WARNING, "Cannot add Node {1} of type {2} because another Node {3} having a different type {4} and the same id is already present. Existing Node returned.", 
 						new Object[]{TaskManager.getCurrentTick(),n,type,node,node.getFactoryType()});
-//			node = null;
-			//TODO discuss
+			node = null;
 		}
 		return node;
 	}
@@ -291,6 +290,45 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 		}
 		return storedLinks;
 	}
+	
+	@Override
+	public synchronized Link addLink(Link l, String type) {
+		if (!factory.containsLinkType(type)) {
+			logger.log(Level.WARNING,
+							"Cannot add link {1} of type {2} because factory does not contain that Link type. Check that type is defined in factoryData xml file.",
+							new Object[]{TaskManager.getCurrentTick(),l,type});
+			return null;
+		}
+		if (!isLinkValid(l)) {
+			return null;
+		}
+		double newActivation = l.getActivation();
+		Link link = links.get(l.getExtendedId());
+		if (link == null) {
+			Node source = l.getSource();
+			Node newSource = nodes.get(source.getId());
+			Linkable sink = l.getSink();
+			Linkable newSink = null;
+			if (sink instanceof Node) {
+				Node snode = (Node) sink;
+				newSink = nodes.get(snode.getId());
+			} else {
+				newSink = links.get(sink.getExtendedId());
+			}
+			link = generateNewLink(l,type,newSource,newSink,l.getCategory(),
+					newActivation, l.getActivatibleRemovalThreshold(), l.getGroundingPamLink());
+		} else if(type.equals(link.getFactoryType())){
+			if(newActivation > link.getActivation()){
+				link.setActivation(newActivation);
+			}
+			link.updateLinkValues(l);
+		}else {
+			logger.log(Level.WARNING, "Cannot add Link {1} of type {2} because another Link {3} having a different type {4} and the same id is already present. Existing Link returned.", 
+					new Object[]{TaskManager.getCurrentTick(),l,type,link,link.getFactoryType()});
+			link = null;
+		}
+		return link;
+	}
 
 	@Override
 	public synchronized Link addDefaultLink(Node source, Linkable sink,
@@ -391,46 +429,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 		}else{
 			logger.log(Level.WARNING, "Cannot add new Link of type {2} because another Link {3} having a different type {4} and the same id is already present. Existing Link returned.", 
 					new Object[]{TaskManager.getCurrentTick(),type,link,link.getFactoryType()});
-//			link = null;
-			//TODO discuss
-		}
-		return link;
-	}
-
-	@Override
-	public synchronized Link addLink(Link l, String type) {
-		if (!factory.containsLinkType(type)) {
-			logger.log(Level.WARNING,
-							"Cannot add link {1} of type {2} because factory does not contain that Link type. Check that type is defined in factoryData xml file.",
-							new Object[]{TaskManager.getCurrentTick(),l,type});
-			return null;
-		}
-		if (!isLinkValid(l)) {
-			return null;
-		}
-		double newActivation = l.getActivation();
-		Link link = links.get(l.getExtendedId());
-		if (link == null) {
-			Node source = l.getSource();
-			Node newSource = nodes.get(source.getId());
-			Linkable sink = l.getSink();
-			Linkable newSink = null;
-			if (sink instanceof Node) {
-				Node snode = (Node) sink;
-				newSink = nodes.get(snode.getId());
-			} else {
-				newSink = links.get(sink.getExtendedId());
-			}
-			link = generateNewLink(l,type,newSource,newSink,l.getCategory(),
-					newActivation, l.getActivatibleRemovalThreshold(), l.getGroundingPamLink());
-		} else if(type.equals(link.getFactoryType())){
-			if(newActivation > link.getActivation()){
-				link.setActivation(newActivation);
-			}
-			link.updateLinkValues(l);
-		}else {
-			logger.log(Level.WARNING, "Cannot add Link {1} of type {2} because another Link {3} having a different type {4} and the same id is already present. Existing Link returned.", 
-					new Object[]{TaskManager.getCurrentTick(),l,type,link,link.getFactoryType()});
+			link = null;
 		}
 		return link;
 	}
@@ -505,7 +504,9 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 			// set values of passed in parameters not handled by 'getNewLink'
 			newLink.setActivation(activation);
 			newLink.setActivatibleRemovalThreshold(removalThreshold);
-			newLink.setGroundingPamLink(groundingPamLink);
+			if(groundingPamLink != null){
+				newLink.setGroundingPamLink(groundingPamLink);
+			}
 	
 			links.put(newLink.getExtendedId(), newLink);
 			if (!linkableMap.containsKey(newLink)) {
@@ -809,13 +810,16 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	}
 
 	@Override
-	public Map<Node, Link> getConnectedSources(Linkable linkable) {
+	public Map<Node, Link> getConnectedSources(Linkable lnk) {
+		if(lnk == null){
+			return null;
+		}		
+		Set<Link> candidateLinks = linkableMap.get(lnk);
 		Map<Node, Link> sourceLinkMap = new HashMap<Node, Link>();
-		Set<Link> candidateLinks = linkableMap.get(linkable);
 		if (candidateLinks != null) {
 			for (Link link : candidateLinks) {
 				Node source = link.getSource();
-				if (!source.equals(linkable)) {
+				if (!source.equals(lnk)) {
 					sourceLinkMap.put(source, link);
 				}
 			}
@@ -825,8 +829,11 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	
 	@Override
 	public Map<Linkable, Link> getConnectedSinks(Node n) {
-		Map<Linkable, Link> sinkLinkMap = new HashMap<Linkable, Link>();
+		if(n == null){
+			return null;
+		}
 		Set<Link> candidateLinks = linkableMap.get(n);
+		Map<Linkable, Link> sinkLinkMap = new HashMap<Linkable, Link>();
 		if (candidateLinks != null) {
 			for (Link link : candidateLinks) {
 				Linkable sink = link.getSink();
@@ -873,12 +880,12 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 
 	@Override
 	public boolean containsLink(ExtendedId id) {
-		return links.containsKey(id);
+		return (id == null)? false : links.containsKey(id);
 	}
 
 	@Override
 	public boolean containsLinkable(Linkable l) {
-		return linkableMap.containsKey(l);
+		return (l == null)? false : linkableMap.containsKey(l);
 	}
 
 	@Override
