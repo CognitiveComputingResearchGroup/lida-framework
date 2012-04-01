@@ -13,10 +13,11 @@ import java.util.logging.Logger;
 import edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.pam.PamLink;
+import edu.memphis.ccrg.lida.pam.PamLinkImpl;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 
 /**
- * A Link that connects a Node to a Linkable (Node or Link).
+ * A {@link Link} that connects a {@link Node} to a {@link Linkable} (Node or Link).
  * 
  * @author Ryan J. McCall
  * @author Javier Snaider
@@ -71,24 +72,20 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 	public LinkImpl(Node src, Linkable snk, LinkCategory cat) {
 		if(src == null){
 			throw new IllegalArgumentException("Cannot create a link with null source.");
-		}
-		if(snk == null){
+		}else if(snk == null){
 			throw new IllegalArgumentException("Cannot create a link with null sink.");
-		}
-		if(cat == null){
+		}else if(cat == null){
 			throw new IllegalArgumentException("Cannot create a link with null category.");
-		}
-		
-		if(src.equals(snk)){
+		}else if(src.equals(snk)){
 			throw new IllegalArgumentException("Cannot create a link with the same source and sink.");
-		}
-		if(snk.getExtendedId().isComplexLink()){
+		}else if(snk.getExtendedId().isComplexLink()){
 			throw new IllegalArgumentException("Sink cannot be a complex link. Must be a node or simple link.");
+		}else{
+			this.source = src;
+			this.sink = snk;
+			this.category = cat;
+			updateExtendedId();
 		}
-		this.source = src;
-		this.sink = snk;
-		this.category = cat;
-		updateExtendedId();
 	}
 
 	/**
@@ -96,11 +93,15 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 	 * @param l source {@link LinkImpl}
 	 */
 	public LinkImpl(LinkImpl l) {
-		sink = l.getSink();
-		source = l.getSource();
-		category = l.getCategory();
-		groundingPamLink = l.getGroundingPamLink();
-		updateExtendedId();
+		if(l == null){
+			logger.log(Level.WARNING, "Cannot construct a Link from null.", TaskManager.getCurrentTick());
+		}else{
+			sink = l.getSink();
+			source = l.getSource();
+			category = l.getCategory();
+			groundingPamLink = l.getGroundingPamLink();
+			updateExtendedId();
+		}
 	}
 	
 	/*
@@ -109,7 +110,7 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 	private void updateExtendedId() {
 		if(category != null && source != null && sink != null){
 			if(logger.isLoggable(Level.FINEST)){
-				logger.log(Level.FINEST, "updated extended id", TaskManager.getCurrentTick());
+				logger.log(Level.FINEST, "ExtendedID updated", TaskManager.getCurrentTick());
 			}
 			extendedId = new ExtendedId(source.getId(), sink.getExtendedId(), category.getId());
 		}
@@ -136,46 +137,39 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 	}
 
 	@Override
-	public void setSink(Linkable sink) {
-		if(sink == null){
+	public void setSink(Linkable snk) {
+		if(snk == null){
 			logger.log(Level.WARNING, "Cannot set sink to null", TaskManager.getCurrentTick());
-			return;
-		}
-		
-		if(sink.equals(source)){
+		}else if(snk.equals(source)){
 			logger.log(Level.WARNING, "Cannot set sink to same Linkable as source", TaskManager.getCurrentTick());
-			throw new IllegalArgumentException("Cannot create a link with the same source and sink.");
+		}else if(snk.getExtendedId().isComplexLink()){
+			logger.log(Level.WARNING, "Cannot set sink to be a complex link.", TaskManager.getCurrentTick());
+		}else {
+			this.sink = snk;
+			updateExtendedId();
 		}
-		if(sink.getExtendedId().isComplexLink()){
-			throw new IllegalArgumentException("Sink cannot be a complex link. Must be a node or simple link.");
-		}
-		this.sink = sink;
-		updateExtendedId();
 	}
 
 	@Override
-	public void setSource(Node source) {
-		if(source == null){
+	public void setSource(Node src) {
+		if(src == null){
 			logger.log(Level.WARNING, "Cannot set source to null", TaskManager.getCurrentTick());
-			return;
+		}else if(src.equals(sink)){
+			logger.log(Level.WARNING, "Cannot set link's source to the same Linkable as its sink", TaskManager.getCurrentTick());
+		}else{
+			source = src;
+			updateExtendedId();
 		}
-		if(source.equals(sink)){
-			logger.log(Level.WARNING, "Cannot set source to same Linkable as sink", TaskManager.getCurrentTick());
-			throw new IllegalArgumentException("Cannot create a link with the same source and sink.");
-		}
-		
-		this.source = source;
-		updateExtendedId();
 	}
 
 	@Override
-	public void setCategory(LinkCategory category) {
-		if(category == null){
-			logger.log(Level.WARNING, "Cannot set category to null", TaskManager.getCurrentTick());
-			return;
+	public void setCategory(LinkCategory c) {
+		if(c == null){
+			logger.log(Level.WARNING, "Cannot set a Link's category to null", TaskManager.getCurrentTick());
+		}else{
+			category = c;
+			updateExtendedId();
 		}
-		this.category = category;
-		updateExtendedId();
 	}
 
 	@Override
@@ -223,18 +217,15 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 	}
 
 	/**
-	 * Updates the values of this LinkImpl based on the passed in Link.  
-	 * Link must be a LinkImpl.
-	 * Does not copy superclass attributes, e.g. ActivatibleImpl, only those of this class.
+	 * This default implementation of {@link Link} has all of its attributes updated by {@link NodeStructureImpl} when links are updated.
+	 * Therefore this class does not have to implement this method.
+	 * Any subclass with specific class members (e.g. PamLinkImpl) should however override this method.
+	 * @see PamLinkImpl#updateLinkValues(Link)
+	 * @see NodeStructureImpl#addLink(Link, String)
+	 * @see NodeStructureImpl#getNewLink(Link, String, Node, Linkable, LinkCategory)
 	 */
 	@Override
-	public void updateLinkValues(Link link) {
-//		if(link instanceof LinkImpl){
-//			LinkImpl other = (LinkImpl) link;
-//			this.extendedId = other.extendedId;
-//			this.category = other.category;
-//			this.groundingPamLink = other.groundingPamLink;
-//		}
+	public void updateLinkValues(Link l) {
 	}
 
 	@Override

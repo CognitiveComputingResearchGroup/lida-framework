@@ -13,12 +13,14 @@ import java.util.logging.Logger;
 import edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.pam.PamNode;
+import edu.memphis.ccrg.lida.pam.PamNodeImpl;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 
 /**
  * Default {@link Node} implementation.
  *
  * @author Javier Snaider
+ * @author Ryan J. McCall
  * @see ElementFactory
  */
 public class NodeImpl extends ActivatibleImpl implements Node {
@@ -36,18 +38,12 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 	 * {@link PamNode} in {@link PerceptualAssociativeMemory} which grounds this {@link Node}
 	 */
 	protected PamNode groundingPamNode;
-	
-	/**
-	 * @param n the factoryName to set
-	 */
+
 	@Override
 	public void setFactoryType(String n) {
 		factoryName = n;
 	}
 
-	/**
-	 * @return the factoryName
-	 */
 	@Override
 	public String getFactoryType() {
 		return factoryName;
@@ -58,7 +54,6 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 	 */
 	public NodeImpl(){
 		super();
-		name = label + "["+id+"]";
 	}
 
 	/**
@@ -66,11 +61,44 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 	 * @param n source {@link NodeImpl}
 	 */
 	public NodeImpl(NodeImpl n) {
-		super(n.getActivation(), n.getActivatibleRemovalThreshold(), n.getExciteStrategy(), n.getDecayStrategy());
-		this.id = n.id;
-		this.extendedId = n.extendedId;
-		this.groundingPamNode = n.groundingPamNode;
-		this.label=n.label;
+		if(n == null){
+			logger.log(Level.WARNING, "Cannot construct a Node from null.", TaskManager.getCurrentTick());
+		}else{
+			this.id = n.id;
+			this.extendedId = n.extendedId;
+			this.groundingPamNode = n.groundingPamNode;
+			this.label = n.label;
+			updateName();
+		}	
+	}
+	
+	@Override
+	public void setId(int id) {
+		this.id = id;
+		extendedId = new ExtendedId(id);
+		updateName();
+	}
+	
+	/**
+	 * Convenience method to set Node's {@link ExtendedId}.  Also sets node's id.
+	 * @param eid {@link ExtendedId}
+	 */
+	public void setExtendedId(ExtendedId eid) {
+		if(eid == null){
+			logger.log(Level.WARNING, "Supplied ExtendedId was null. ExtendedId not set.", TaskManager.getCurrentTick());
+		}else if(eid.isNodeId()){
+			this.extendedId = eid;
+			this.id = eid.getSourceNodeId();
+			updateName();
+		}else{
+			logger.log(Level.WARNING, "Cannot give a Node a Link's ExtendedId", TaskManager.getCurrentTick());
+		}
+	}
+
+	/*
+	 * update node's name
+	 */
+	private void updateName(){
 		name = label + "["+id+"]";
 	}
 	
@@ -83,41 +111,15 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 	public int getId() {
 		return id;
 	}
-	
-	@Override
-	public void setId(int id) {
-		this.id = id;
-		extendedId = new ExtendedId(id);
-		name = label + "["+id+"]";
-	}
-	
-	/**
-	 * Convenience method to set Node's {@link ExtendedId}.  Also sets node's id.
-	 * @param eid {@link ExtendedId}
-	 */
-	public void setExtendedId(ExtendedId eid) {
-		if(eid == null){
-			logger.log(Level.WARNING, "Supplied ExtendedId was null. ExtendedId not set.", TaskManager.getCurrentTick());
-			return;
-		}
-		
-		if(eid.isNodeId()){
-			this.extendedId = eid;
-			this.id = eid.getSourceNodeId();
-			name = label + "["+id+"]";
-		}else{
-			logger.log(Level.WARNING, "Cannot give a node a Link's extended id", TaskManager.getCurrentTick());
-		}
-	}
 
 	@Override
 	public String getLabel() {
 		return label;
 	}
 	@Override
-	public void setLabel(String label) {
-		this.label=label;
-		name = label + "["+id+"]";
+	public void setLabel(String l) {
+		this.label=l;
+		updateName();
 	}
 
 	@Override
@@ -151,20 +153,17 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 		return name;
 	}
 	
+
 	/**
-	 * Updates the values of this NodeImpl based on the passed in Node.  
-	 * Node must be a NodeImpl.
-	 * Does not copy superclass attributes, e.g. ActivatibleImpl, only those of this class.
+	 * This default implementation of {@link Node} has all of its attributes updated by {@link NodeStructureImpl} or
+	 * {@link ElementFactory} when nodes are updated.
+	 * Therefore this class does not have to implement this method.
+	 * Any subclass with specific class members (e.g. PamNodeImpl) should however override this method.
+	 * @see PamNodeImpl#updateNodeValues(Node)
+	 * @see NodeStructureImpl#addNode(Node, String)
 	 */
 	@Override
 	public void updateNodeValues(Node n) {
-//		if(n instanceof NodeImpl){
-//			NodeImpl other = (NodeImpl) n;
-//			id = other.id;
-//			extendedId = other.extendedId;
-//			label = other.label;
-//			groundingPamNode = other.groundingPamNode;
-//		} 
 	}
 
 	@Override

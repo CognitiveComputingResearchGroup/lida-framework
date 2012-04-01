@@ -11,6 +11,7 @@
 package edu.memphis.ccrg.lida.framework.shared;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Properties;
@@ -40,10 +41,8 @@ public class LinkImplTest{
 	
 	@BeforeClass
 	public static void setUpBeforeClass(){
-		factory = ElementFactory.getInstance();
-		FactoriesDataXmlLoader factoryLoader = new FactoriesDataXmlLoader();
 		Properties prop = ConfigUtils.loadProperties(AgentStarter.DEFAULT_PROPERTIES_PATH);
-		factoryLoader.loadFactoriesData(prop);
+		FactoriesDataXmlLoader.loadFactoriesData(prop);
 	}
 
 	/**
@@ -177,9 +176,9 @@ public class LinkImplTest{
 	}
 	@Test
 	public void testComplexLink(){
+		Link foo = new LinkImpl(node4, link1, linktype1);
 		try{
-			Link foo = new LinkImpl(node4, link1, linktype1);
-			 new LinkImpl(node3, foo, linktype1);
+			new LinkImpl(node3, foo, linktype1);
 			assertTrue(false);
 		}catch(Exception e){
 			assertTrue(e instanceof IllegalArgumentException);
@@ -188,7 +187,6 @@ public class LinkImplTest{
 	@Test
 	public void testComplexLink2(){
 		Link foo = new LinkImpl(node4, link1, linktype1);
-		
 		try{
 			new LinkImpl(node1, foo, linktype1);
 			assertTrue(false);
@@ -197,12 +195,9 @@ public class LinkImplTest{
 		}
 		
 		Link bar = new LinkImpl();
-		try{
-			bar.setSink(foo);
-			assertTrue(false);
-		}catch(Exception e){
-			assertTrue(e instanceof IllegalArgumentException);
-		}
+		assertNull(bar.getSink());
+		bar.setSink(foo);
+		assertNull(bar.getSink());
 		
 		bar.setSink(link1);
 		assertEquals(link1, bar.getSink());

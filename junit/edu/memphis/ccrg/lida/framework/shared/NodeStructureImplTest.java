@@ -40,7 +40,6 @@ import edu.memphis.ccrg.lida.pam.PamNodeImplSubclass;
  * This is a JUnit class which can be used to test methods of the NodeStructureImpl class.
  * @author Ryan J. McCall
  * @author Siminder Kaur
- * 
  */
 public class NodeStructureImplTest {
 	
@@ -363,15 +362,9 @@ public class NodeStructureImplTest {
 	@Test
 	public void testAddLinkSelf() {
 		ns1.addDefaultNode(node1);	
-
-		try{
-			ns1.addDefaultLink(node1, node1, category1, 0.0, 0.0);
-			assertFalse(true);
-		}catch(IllegalArgumentException e){
-			
-		}
-		assertTrue(ns1.getLinkableCount() == 1);
-		assertTrue(ns1.getLinkCount() == 0);
+		assertNull(ns1.addDefaultLink(node1, node1, category1, 0.0, 0.0));
+		assertEquals(1,ns1.getLinkableCount());
+		assertEquals(0,ns1.getLinkCount());
 	}
 	
 	/**
@@ -647,10 +640,176 @@ public class NodeStructureImplTest {
 		assertEquals(l, l.getGroundingPamLink());
 	}
 	
+	/**
+	 * {@link NodeStructureImpl#addLink(String, Node, Linkable, LinkCategory, double, double)}
+	 */
 	@Test
-	public void testAddLinkNull(){
-		//TODO
-//		ns1.addLink(type, src, sink, cat, a, rt)
+	public void testAddLinkNewType2(){
+		Node src = null;
+		Linkable sink = null;
+		assertNull(ns1.addLink("LinkImpl", src, sink, category1, 0,0));
+	}
+	
+	/**
+	 * Tests the following for null and bad input:
+	 * {@link NodeStructureImpl#addDefaultLink(int, ExtendedId, LinkCategory, double, double)}
+	 * {@link NodeStructureImpl#addDefaultLink(int, int, LinkCategory, double, double)}
+	 * {@link NodeStructureImpl#addDefaultLink(Node, Linkable, LinkCategory, double, double)}
+	 * {@link NodeStructureImpl#addLink(String, int, ExtendedId, LinkCategory, double, double)}
+	 * {@link NodeStructureImpl#addLink(String, Node, Linkable, LinkCategory, double, double)}
+	 */
+	@Test
+	public void testAddNewLinkMethods(){
+		double a = 0.1;
+		double rt = 0.2;
+		LinkCategory cat = category1;
+		String type = "LinkImpl";
+		Node src = node1;
+		Linkable sink = node2;
+		ExtendedId sinkId = node2.getExtendedId();
+		int sinkId2 = node2.getId();
+		int srcInt = node1.getId();
+	
+		ns1.addDefaultNode(node1);
+		ns1.addDefaultNode(node2);
+		Link l = null;
+		
+		l = ns1.addDefaultLink(srcInt, null, cat, a, rt);
+		assertNull(l);
+		l = ns1.addDefaultLink(srcInt, sinkId, null, a, rt);
+		assertNull(l);
+		//
+		l = ns1.addDefaultLink(srcInt, sinkId2, null, a, rt);
+		assertNull(l);
+		//
+		l = ns1.addDefaultLink(src, sink, null, a, rt);
+		assertNull(l);
+		l = ns1.addDefaultLink(null, sink, cat, a, rt);
+		assertNull(l);
+		l = ns1.addDefaultLink(src, null, cat, a, rt);
+		assertNull(l);
+		//
+		l = ns1.addLink(type, srcInt, sinkId, null, a, rt);
+		assertNull(l);
+		l = ns1.addLink(type, srcInt, null, cat, a, rt);
+		assertNull(l);
+		l = ns1.addLink("BADTYPE", srcInt, sinkId, cat, a, rt);
+		assertNull(l);
+		//
+		l = ns1.addLink(type, null, sink, cat, a, rt);
+		assertNull(l);
+		l = ns1.addLink(type, src, null, cat, a, rt);
+		assertNull(l);
+		l = ns1.addLink(type, src, sink, null, a, rt);
+		assertNull(l);
+		l = ns1.addLink("BADTYPE", src, sink, cat, a, rt);
+		assertNull(l);
+	}
+	
+	/**
+	 * Tests the following method requesting links whose src and sink are not present:
+	 * {@link NodeStructureImpl#addDefaultLink(int, ExtendedId, LinkCategory, double, double)}
+	 * {@link NodeStructureImpl#addDefaultLink(int, int, LinkCategory, double, double)}
+	 * {@link NodeStructureImpl#addDefaultLink(Node, Linkable, LinkCategory, double, double)}
+	 * {@link NodeStructureImpl#addLink(String, int, ExtendedId, LinkCategory, double, double)}
+	 * {@link NodeStructureImpl#addLink(String, Node, Linkable, LinkCategory, double, double)}
+	 */
+	@Test
+	public void testAddNewLinkMethods1(){
+		double a = 0.1;
+		double rt = 0.2;
+		LinkCategory cat = category1;
+		String type = "LinkImpl";
+		Node src = node1;
+		Linkable sink = node2;
+		ExtendedId sinkId = node2.getExtendedId();
+		int sinkId2 = node2.getId();
+		int srcInt = node1.getId();
+		
+		Link l = null;
+		l = ns1.addDefaultLink(srcInt, sinkId, cat, a, rt);
+		assertNull(l);
+		l = ns1.addDefaultLink(srcInt, sinkId2, cat, a, rt);
+		assertNull(l);
+		l = ns1.addDefaultLink(src, sink, cat, a, rt);
+		assertNull(l);
+		l = ns1.addLink(type, src, sink, cat, a, rt);
+		assertNull(l);
+		l = ns1.addLink(type, srcInt, sinkId, cat, a, rt);
+		assertNull(l);
+	}
+	
+	/**
+	 * Tests the following method requesting links whose sink is a complex link:
+	 * {@link NodeStructureImpl#addDefaultLink(int, ExtendedId, LinkCategory, double, double)}
+	 * {@link NodeStructureImpl#addDefaultLink(int, int, LinkCategory, double, double)}
+	 * {@link NodeStructureImpl#addDefaultLink(Node, Linkable, LinkCategory, double, double)}
+	 * {@link NodeStructureImpl#addLink(String, int, ExtendedId, LinkCategory, double, double)}
+	 * {@link NodeStructureImpl#addLink(String, Node, Linkable, LinkCategory, double, double)}
+	 */
+	@Test
+	public void testAddNewLinkMethods2(){
+		double a = 0.1;
+		double rt = 0.2;
+		LinkCategory cat = category1;
+		String type = "LinkImpl";
+		
+		ns1.addDefaultNode(node1);
+		ns1.addDefaultNode(node2);
+		ns1.addDefaultNode(node3);
+		ns1.addDefaultNode(node4);
+		Link simple = ns1.addDefaultLink(link1);
+		Link complex = ns1.addDefaultLink(node3, simple, cat, a, rt);
+		
+		Node src = node4;
+		Linkable sink = complex;
+		int srcInt = node4.getId();
+		ExtendedId sinkId = sink.getExtendedId();
+		
+		Link l = null;
+		l = ns1.addDefaultLink(srcInt, sinkId, cat, a, rt);
+		assertNull(l);
+		l = ns1.addDefaultLink(src, sink, cat, a, rt);
+		assertNull(l);
+		l = ns1.addLink(type, src, sink, cat, a, rt);
+		assertNull(l);
+		l = ns1.addLink(type, srcInt, sinkId, cat, a, rt);
+		assertNull(l);
+	}
+	
+	/**
+	 * Tests the following method requesting links whose src and sink are the same:
+	 * {@link NodeStructureImpl#addDefaultLink(int, ExtendedId, LinkCategory, double, double)}
+	 * {@link NodeStructureImpl#addDefaultLink(int, int, LinkCategory, double, double)}
+	 * {@link NodeStructureImpl#addDefaultLink(Node, Linkable, LinkCategory, double, double)}
+	 * {@link NodeStructureImpl#addLink(String, int, ExtendedId, LinkCategory, double, double)}
+	 * {@link NodeStructureImpl#addLink(String, Node, Linkable, LinkCategory, double, double)}
+	 */
+	@Test
+	public void testAddNewLinkMethods3(){
+		double a = 0.1;
+		double rt = 0.2;
+		LinkCategory cat = category1;
+		String type = "LinkImpl";
+		Node src = node1;
+		Linkable sink = node1;
+		int srcInt = src.getId();
+		ExtendedId sinkId = sink.getExtendedId();
+		int sinkId2 = node1.getId();
+		
+		ns1.addDefaultNode(node1);		
+		Link l = null;
+		
+		l = ns1.addDefaultLink(srcInt, sinkId, cat, a, rt);
+		assertNull(l);
+		l = ns1.addDefaultLink(srcInt, sinkId2, cat, a, rt);
+		assertNull(l);
+		l = ns1.addDefaultLink(src, sink, cat, a, rt);
+		assertNull(l);
+		l = ns1.addLink(type, src, sink, cat, a, rt);
+		assertNull(l);
+		l = ns1.addLink(type, srcInt, sinkId, cat, a, rt);
+		assertNull(l);
 	}
 	
 	/**
@@ -1617,5 +1776,4 @@ public class NodeStructureImplTest {
 		assertFalse(ns1.containsNode(id));
 		assertFalse(ns1.containsNode(n));
 	}
-	
 }

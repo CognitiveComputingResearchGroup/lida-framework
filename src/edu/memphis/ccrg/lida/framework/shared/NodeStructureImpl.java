@@ -484,7 +484,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 					TaskManager.getCurrentTick());
 			return false;
 		}
-		if (sinkId.isNodeId() && sinkId.equals(srcId)) {
+		if (sinkId.isNodeId() && sinkId.getSourceNodeId() == srcId) {
 			logger.log(Level.WARNING,
 					"Cannot add Link with the same source and sink.",
 					TaskManager.getCurrentTick());
