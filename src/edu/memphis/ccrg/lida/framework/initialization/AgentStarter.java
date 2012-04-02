@@ -31,7 +31,7 @@ public class AgentStarter {
 	private static final Logger logger = Logger.getLogger(AgentStarter.class.getCanonicalName());
 
 	/**
-	 * Default properties configuation
+	 * Default configuation properties file path
 	 */
 	public static final String DEFAULT_PROPERTIES_PATH = "configs/lidaConfig.properties";
 
@@ -50,14 +50,17 @@ public class AgentStarter {
 	public static void main(String args[]) {
 		// Specify the configuration file path
 		String propertiesPath = DEFAULT_PROPERTIES_PATH;
-		if (args.length != 0)
+		if (args.length != 0){
 			propertiesPath = args[0];
-
+		}
 		Properties properties = ConfigUtils.loadProperties(propertiesPath);
-		if (properties != null){
-			start(properties);
-		}else{
+		if (properties == null){
+			logger.log(Level.SEVERE, 
+						"Could not load main properties file from path: {0}, trying default properties path instead.",
+						propertiesPath);
 			start();
+		}else{
+			start(properties);
 		}
 	}
 
@@ -68,13 +71,15 @@ public class AgentStarter {
 	public static void start(Properties p) {
 		agentProperties = p;
 		if (agentProperties == null) {
+			logger.log(Level.SEVERE, 
+					"Specified Properties object is null, attempting to load default properties path instead.");
 			start();
 		} else {
 			run();
 		}
 	}
 	/**
-	 * Load the default properties
+	 * Attempts to start an {@link Agent} using the default properties.
 	 */
 	public static void start() {
 		String propertiesPath = DEFAULT_PROPERTIES_PATH;
@@ -82,24 +87,27 @@ public class AgentStarter {
 		if (agentProperties != null){
 			run();
 		}else{
-			logger.log(Level.SEVERE, "Could not load main configuration file from path: {0}. Application cannot start.", propertiesPath);
+			logger.log(Level.SEVERE, "Could not load main configuration file from default path: {0}. Application cannot start.", propertiesPath);
 		}
 	}
 
 	/**
-	 * @param propertiesPath - Properties file used for the agent
+	 * @param path - Properties file path used for the agent
 	 */
-	public static void start(String propertiesPath) {
-		agentProperties = ConfigUtils.loadProperties(propertiesPath);
+	public static void start(String path) {
+		agentProperties = ConfigUtils.loadProperties(path);
 		if (agentProperties != null) {
 			run();
 		} else {
+			logger.log(Level.SEVERE, 
+					"Could not load main properties file from path: {0}, trying default properties path instead.",
+					path);
 			start();
 		}
 	}
 
-	/**
-	 * Create and run an {@link Agent} and a {@link FrameworkGuiFactory} using the properties object
+	/*
+	 * Creates and run an {@link Agent} and a {@link FrameworkGuiFactory} using the properties object
 	 */
 	private static void run() {
 		//Load factories data
@@ -111,19 +119,20 @@ public class AgentStarter {
 			logger.log(Level.SEVERE, "Failed to create agent, application not started.");
 			return;
 		}
-		GlobalInitializer.getInstance().clearAttributes();
+		GlobalInitializer.getInstance().clearAttributes(); //clears Globally accessible initializer variables
 		logger.log(Level.CONFIG, "Agent created", 0L);
 		
+		// Configure the logging
 		String loggingFile = agentProperties.getProperty("lida.logging.configuration");
 		if(loggingFile!=null){
 			ConfigUtils.configLoggers(loggingFile);
 		}
 		
+		// If GUI is Enabled then used the FrameworkGuiFactory to start the agent
 		boolean enableGui = Boolean.parseBoolean(agentProperties.getProperty("lida.gui.enable", "true"));
-		// Use the FrameworkGuiFactory to start the agent
-		if(enableGui){
+		if(enableGui){ 
 			FrameworkGuiFactory.start(agent, agentProperties);
-		}else{	//no gui		
+		}else{		
 			agent.getTaskManager().resumeTasks();
 		}
 	}

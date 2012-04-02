@@ -41,14 +41,10 @@ public class ConfigUtils {
 			try {
 				properties.load(new BufferedReader(new FileReader(fileName)));
 			} catch (FileNotFoundException e) {
-				logger.log(Level.SEVERE, 
-						"Exception: {0}\n occurred loading Properties File from path: {1}",
-						new Object[]{e, fileName});
+				logger.log(Level.WARNING, e.toString());
 				properties = null;
 			} catch (IOException e) {
-				logger.log(Level.SEVERE, 
-						"Exception: {0}\n occurred loading Properties File from path: {1}",
-						new Object[]{e, fileName});
+				logger.log(Level.WARNING, e.toString());
 				properties = null;
 			}
 		} else {
