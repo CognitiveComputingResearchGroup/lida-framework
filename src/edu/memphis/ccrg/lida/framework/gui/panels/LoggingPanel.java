@@ -313,7 +313,7 @@ public class LoggingPanel extends GuiPanelImpl {
 								.getSequenceNumber(), actualTick, logRecord
 								.getLevel(), logRecord.getLoggerName(), mf
 								.format(logRecord.getParameters()));
-				//TODO
+				//TODO log stack traces
 //				Throwable e = logRecord.getThrown();
 //				if (e != null) {
 //					StackTraceElement[] stackt = e.getStackTrace();

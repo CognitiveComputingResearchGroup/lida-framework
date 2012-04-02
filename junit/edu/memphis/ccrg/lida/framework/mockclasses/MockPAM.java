@@ -244,25 +244,21 @@ public class MockPAM extends FrameworkModuleImpl implements PerceptualAssociativ
 
 	@Override
 	public PamLink addDefaultLink(Node src, Linkable snk, LinkCategory cat) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public PamNode addDefaultNode(String label) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public PamLink addLink(String type, Node src, Linkable snk, LinkCategory cat) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public PamNode addNode(String type, String label) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 }

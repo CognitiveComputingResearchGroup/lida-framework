@@ -72,31 +72,24 @@ public class MockProceduralMemory extends FrameworkModuleImpl implements Procedu
 
 	@Override
 	public void removeScheme(Scheme s) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
-	public void activateSchemes() {
-		// TODO Auto-generated method stub
-		
+	public void activateSchemes() {		
 	}
 
 	@Override
 	public boolean shouldInstantiate(Scheme s, NodeStructure broadcastBuffer) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public Collection<Scheme> getSchemes() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Scheme getNewScheme(Action a) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 }
