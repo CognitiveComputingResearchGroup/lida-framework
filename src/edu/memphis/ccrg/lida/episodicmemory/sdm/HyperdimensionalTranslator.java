@@ -53,9 +53,10 @@ public class HyperdimensionalTranslator extends BasicTranslator {
     }
     
     /**
-     * @param size
-     * @param pam
-     * @param setVector
+     * TODO
+     * @param size the
+     * @param pam the
+     * @param setVector the
      */
     public HyperdimensionalTranslator(int size, PerceptualAssociativeMemory pam,
             BitVector setVector) {
@@ -64,9 +65,9 @@ public class HyperdimensionalTranslator extends BasicTranslator {
     }
 
     /**
-     * 
-     * @param data
-     * @return 
+     * TODO
+     * @param data the
+     * @return the
      */
     @Override
     public NodeStructure translate(BitVector data) {
@@ -80,9 +81,9 @@ public class HyperdimensionalTranslator extends BasicTranslator {
     }
 
     /**
-     * 
-     * @param structure
-     * @return 
+     * TODO
+     * @param structure the
+     * @return the
      */
     @Override
     public BitVector translate(NodeStructure structure) {
