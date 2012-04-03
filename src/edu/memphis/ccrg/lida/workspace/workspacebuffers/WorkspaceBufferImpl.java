@@ -51,7 +51,7 @@ public class WorkspaceBufferImpl extends FrameworkModuleImpl implements Workspac
 	public WorkspaceContent getBufferContent(Map<String, Object> params) {
 		return (WorkspaceContent) buffer;
 	}
-
+	
 	@Override
 	public void decayModule(long ticks){
 		logger.log(Level.FINE, "Decaying buffer.", TaskManager.getCurrentTick());

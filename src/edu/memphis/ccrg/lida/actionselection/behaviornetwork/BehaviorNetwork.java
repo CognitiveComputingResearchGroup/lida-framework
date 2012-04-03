@@ -26,6 +26,7 @@ import edu.memphis.ccrg.lida.actionselection.ActionSelectionListener;
 import edu.memphis.ccrg.lida.actionselection.Behavior;
 import edu.memphis.ccrg.lida.actionselection.PreafferenceListener;
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
+import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.initialization.Initializable;
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
@@ -54,6 +55,7 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements
 	private static final double DEFAULT_CONFLICTOR_EXCITATION_FACTOR = 0.04;
 	private static final double DEFAULT_CONTEXT_SATISFACTION_THRESHOLD = 0.0;
 	private static final String DEFAULT_CANDIDATE_THRESHOLD_DECAY = "defaultDecay";
+	private static final String DEFAULT_BEHAVIOR_DECAY_NAME = "behaviorDecay";
 
 	/*
 	 * Current threshold for a behavior to be a candidate for selection (or to
@@ -128,6 +130,11 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements
 	 * Map of behaviors indexed by the elements appearing in their delete list.
 	 */
 	private ConcurrentMap<Condition, Set<Behavior>> behaviorsByDeletingItem = new ConcurrentHashMap<Condition, Set<Behavior>>();
+	/* 
+	 * DecayStrategy used to decay all behaviors in the network.
+	 * TODO make this part of a new "BehaviorDef" in the element factory
+	 */
+	private DecayStrategy behaviorDecayStrategy;
 
 	// /*
 	// * Map of behaviors indexed by the elements appearing in their negated
@@ -153,7 +160,9 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements
 	 * <b>actionselection.conflictorExcitationFactor</b> - double, the percent of activation behaviors receive from conflicting behaviors<br/>
 	 * <b>actionselection.contextSatisfactionThreshold</b> - double, amount of activation a context condition must have to be satisfied<br/>
 	 * <b>actionselection.initialCandidateThreshold</b> - double, the initial value for candidate threshold. candidate threshold is reset to this initial value after every action selection<br/>
-	 * <b>actionselection.candidateThresholdDecay</b> - string, factory name of a DecayStrategy used to decay the candidate threshold. 
+	 * <b>actionselection.candidateThresholdDecayName</b> - string, factory name of the DecayStrategy used to decay the candidate threshold.
+	 * <b>actionselection.behaviorDecayName</b> - string, factory name of the DecayStrategy used to decay all behaviors.
+	 *  
 	 * If default LinearDecayStrategy is used its slope determine the amount the selection threshold will be reduced in each cycle.<br/>
 	 * 
 	 * @see Initializable
@@ -180,16 +189,26 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements
 		candidateThreshold = initialCandidateThreshold;
 		ElementFactory factory = ElementFactory.getInstance();
 		String name = getParam(
-				"actionselection.candidateThresholdDecay",
+				"actionselection.candidateThresholdDecayName",
 				DEFAULT_CANDIDATE_THRESHOLD_DECAY);
 		thresholdReductionStrategy = factory.getDecayStrategy(name);
-		if (thresholdReductionStrategy == null) {
-			logger.log(Level.SEVERE,
-							"Could not get candidate threshold reducer strategy with name {1} from the factory",
-							new Object[] {TaskManager.getCurrentTick(), name });
-		}
+		
+		name = getParam(
+				"actionselection.behaviorDecayName",
+				DEFAULT_BEHAVIOR_DECAY_NAME);
+		behaviorDecayStrategy = factory.getDecayStrategy(name);
 
 		taskSpawner.addTask(new BehaviorNetworkBackgroundTask());
+	}
+	
+	@Override
+	public void addListener(ModuleListener l) {
+		if (l instanceof ActionSelectionListener) {
+			addActionSelectionListener((ActionSelectionListener) l);
+		}else{
+			logger.log(Level.WARNING, "Cannot add listener {1}", 
+					new Object[]{TaskManager.getCurrentTick(), l});
+		}
 	}
 
 	@Override
@@ -206,7 +225,7 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements
 	public void receiveBehavior(Behavior b) {
 		logger.log(Level.FINEST, "Received behavior: {1}", new Object[] {
 				TaskManager.getCurrentTick(), b });
-
+		b.setDecayStrategy(behaviorDecayStrategy);
 		behaviors.put(b.getId(), b);
 		indexBehaviorByElements(b, b.getContextConditions(),
 				behaviorsByContextCondition);

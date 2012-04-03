@@ -43,12 +43,14 @@ public class BasicPamInitializer implements Initializer {
         PerceptualAssociativeMemory pam = (PerceptualAssociativeMemory) module;
 //        ElementFactory factory = ElementFactory.getInstance();
 
-        String nodeLabels = (String) params.get("nodes");
-        if (nodeLabels != null) {
+        String nodes = (String) params.get("nodes");
+        if (nodes != null) {
             GlobalInitializer globalInitializer = GlobalInitializer.getInstance();
-            String[] labels = nodeLabels.split(",");
-            for (String label : labels) {
-                label = label.trim();
+            String[] defs = nodes.split(",");
+            for (String nodeDef : defs) {
+                nodeDef = nodeDef.trim();
+                String[] nodeParams = nodeDef.split(":");
+                String label = nodeParams[0];
                 if("".equals(label)){
                 	logger.log(Level.WARNING, 
         			"empty string found in nodes specification, node labels must be non-empty");
@@ -61,14 +63,25 @@ public class BasicPamInitializer implements Initializer {
 	                }else{
 //	                	node = pam.addDefaultNode(node);
 	                	globalInitializer.setAttribute(label, node);
+	                	 if (nodeParams.length > 1) {
+	 	                	double blActivation = 0;
+	                     	try{
+	                     		blActivation = Double.parseDouble(nodeParams[2]);
+	                     	}catch (NumberFormatException e) {
+	                     		logger.log(Level.WARNING, "Bad base-level activation for link {1}.", 
+	                     				new Object[]{TaskManager.getCurrentTick(),node});
+	 						}
+	                     	node.setBaseLevelActivation(blActivation);
+	 	                }
 	                }
+	               
                 }
             }
         }
 
-        String linkLabels = (String) params.get("links");
-        if (linkLabels != null) {
-            String[] linkDefs = linkLabels.split(",");
+        String links = (String) params.get("links");
+        if (links != null) {
+            String[] linkDefs = links.split(",");
             for (String linkDef : linkDefs) {
                 linkDef = linkDef.trim();
                 if("".equals(linkDef)){
@@ -77,20 +90,34 @@ public class BasicPamInitializer implements Initializer {
                 	continue;
                 }
                 logger.log(Level.INFO, "loading PamLink: {0}", linkDef);
-                String[] nodes = linkDef.split(":");
-                if (nodes.length != 2) {
+                String[] linkParams = linkDef.split(":");
+                if (linkParams.length < 2) {
                     logger.log(Level.WARNING, "bad link specification " + linkDef, TaskManager.getCurrentTick());
                     continue;
                 }
-                Node source = pam.getNode(nodes[0].trim());
-                Node sink = pam.getNode(nodes[1].trim());
+                Node source = pam.getNode(linkParams[0].trim());
+                Node sink = pam.getNode(linkParams[1].trim());
                 if (source != null && sink != null) {
 //                    Link link = factory.getLink("PamLinkImpl", source, sink, PerceptualAssociativeMemoryImpl.PARENT);
 //                    pam.addDefaultLink(link);
-                    pam.addDefaultLink(source, sink, PerceptualAssociativeMemoryImpl.PARENT);
+                    PamLink pl = pam.addDefaultLink(source, sink, PerceptualAssociativeMemoryImpl.PARENT);
+                    if(pl == null){
+                    	logger.log(Level.WARNING, "bad link specification " + linkDef, TaskManager.getCurrentTick());
+                    }else if(linkParams.length > 2){
+                    	double blActivation = 0;
+                    	try{
+                    		blActivation = Double.parseDouble(linkParams[2]);
+                    	}catch (NumberFormatException e) {
+                    		logger.log(Level.WARNING, "Bad base-level activation for link {1}.", 
+                    				new Object[]{TaskManager.getCurrentTick(),pl});
+						}
+                    	pl.setBaseLevelActivation(blActivation);
+                    }
                 } else {
                     logger.log(Level.WARNING, "could not find source or sink " + linkDef, TaskManager.getCurrentTick());
                 }
+                
+                
             }
         }
     }
