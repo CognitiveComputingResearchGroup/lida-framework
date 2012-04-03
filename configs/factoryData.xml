@@ -23,7 +23,12 @@
         <strategy flyweight="true" name="conditionDecay" type="decay">
             <class>edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy
             </class>
-            <param name="m" type="double">0.005</param>
+            <param name="m" type="double">0.001</param>
+        </strategy> 
+        <strategy flyweight="true" name="behaviorDecay" type="decay">
+            <class>edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy
+            </class>
+            <param name="m" type="double">0.001</param>
         </strategy>        
         <strategy flyweight="true" name="slowExcite" type="excite">
             <class>edu.memphis.ccrg.lida.framework.strategies.LinearExciteStrategy
