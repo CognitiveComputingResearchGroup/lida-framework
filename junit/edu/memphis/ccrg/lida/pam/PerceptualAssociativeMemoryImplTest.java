@@ -457,7 +457,8 @@ public class PerceptualAssociativeMemoryImplTest {
 		
 		pam.addToPercept(node1);
 		
-		assertEquals(node1, pl.n);
+		assertEquals(node1.getId(), pl.n.getId());
+		assertEquals(node1.getActivation(), pl.n.getActivation(),epsilon);
 	}
 	
 	@Test
@@ -468,7 +469,8 @@ public class PerceptualAssociativeMemoryImplTest {
 		
 		pam.addToPercept(link1);
 		
-		assertEquals(link1, pl.l);
+		assertEquals(link1.getExtendedId(), pl.l.getExtendedId());
+		assertEquals(link1.getActivation(), pl.l.getActivation(),epsilon);
 	}
 	
 	@Test

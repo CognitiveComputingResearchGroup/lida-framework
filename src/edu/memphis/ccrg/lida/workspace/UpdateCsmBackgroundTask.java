@@ -12,7 +12,6 @@ import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.ModuleName;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBuffer;
@@ -29,12 +28,14 @@ public class UpdateCsmBackgroundTask extends FrameworkTaskImpl {
 	private static final Logger logger = Logger
 			.getLogger(UpdateCsmBackgroundTask.class.getCanonicalName());
 
-	private Workspace workspace;
+	private WorkspaceBuffer perceptualBuffer;
+	private WorkspaceBuffer csm;
 
 	@Override
 	public void setAssociatedModule(FrameworkModule module, String moduleUsage) {
 		if (module instanceof Workspace) {
-			workspace = (Workspace) module;
+			perceptualBuffer = (WorkspaceBuffer) module.getSubmodule(ModuleName.PerceptualBuffer);
+			csm = (WorkspaceBuffer) module.getSubmodule(ModuleName.CurrentSituationalModel);
 		}
 	}
 
@@ -49,11 +50,6 @@ public class UpdateCsmBackgroundTask extends FrameworkTaskImpl {
 			logger.log(Level.FINEST, "Updating CSM with perceptual buffer content.",
 					TaskManager.getCurrentTick());
 		}
-		WorkspaceBuffer percepBuff = (WorkspaceBuffer) workspace
-				.getSubmodule(ModuleName.PerceptualBuffer);
-		NodeStructure ns = (NodeStructure) percepBuff.getBufferContent(null);
-		WorkspaceBuffer csm = (WorkspaceBuffer) workspace
-				.getSubmodule(ModuleName.CurrentSituationalModel);
-		((NodeStructure) csm.getBufferContent(null)).mergeWith(ns);
+		csm.addBufferContent(perceptualBuffer.getBufferContent(null));
 	}
 }

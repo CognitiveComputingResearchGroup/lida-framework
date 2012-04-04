@@ -88,7 +88,7 @@ public abstract class FrameworkTaskImpl extends LearnableImpl implements Framewo
 		try{
 			runThisFrameworkTask();
 		}catch(Exception e){
-			logger.log(Level.WARNING, "Exception {1} encountered in task {2}", new Object[] {TaskManager.getCurrentTick(),e.getMessage(),this});
+			logger.log(Level.WARNING, "Exception {1} encountered in task {2}", new Object[] {TaskManager.getCurrentTick(),e,this});
 			e.printStackTrace();
 		}
 		

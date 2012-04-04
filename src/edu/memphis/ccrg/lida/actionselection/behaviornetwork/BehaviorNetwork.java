@@ -28,6 +28,7 @@ import edu.memphis.ccrg.lida.actionselection.PreafferenceListener;
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.initialization.Initializable;
+import edu.memphis.ccrg.lida.framework.shared.ConcurrentHashSet;
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
@@ -244,7 +245,7 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements
 			synchronized (element) {
 				Set<Behavior> values = map.get(element);
 				if (values == null) {
-					values = new HashSet<Behavior>();
+					values = new ConcurrentHashSet<Behavior>();
 					map.put(element, values);
 				}
 				values.add(b);
@@ -354,6 +355,7 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements
 		for (Condition contextCond : b.getContextConditions()) {
 			if (isContextConditionSatisfied(contextCond) == false) {
 				Set<Behavior> predecessors = behaviorsByAddingItem.get(contextCond);
+				//TODO we may have to copy the elements into a new set to avoid ConcurrentModEx in the call below 
 				if (predecessors != null) {
 					auxPassActivationPredecessors(b, contextCond, predecessors);
 				}

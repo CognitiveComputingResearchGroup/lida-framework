@@ -114,9 +114,17 @@ public abstract class FrameworkModuleImpl extends InitializableImpl implements F
 	@Override
 	public void taskManagerDecayModule(long ticks) {
 		decayModule(ticks);
-		for (FrameworkModule lm : submodules.values()) {
-			lm.taskManagerDecayModule(ticks);
-		}
+//		if(moduleName.equals(ModuleName.Workspace)){
+//			//FIXME
+//			submodules.get(ModuleName.CurrentSituationalModel).decayModule(ticks);
+//			submodules.get(ModuleName.PerceptualBuffer).decayModule(ticks);
+//			submodules.get(ModuleName.BroadcastQueue).decayModule(ticks);
+//		}else{
+			for (FrameworkModule lm : submodules.values()) {
+				lm.taskManagerDecayModule(ticks);
+			}
+//		}
+		
 	}
 
 	@Override

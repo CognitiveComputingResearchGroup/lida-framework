@@ -572,8 +572,6 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	/*
 	 * This allows subclasses of NodeStructure to override merge but still gives
 	 * this class a merge to be called from the constructor.
-	 * 
-	 * @param ns
 	 */
 	private void internalMerge(NodeStructure ns) {
 		if (ns == null) {

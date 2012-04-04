@@ -428,9 +428,10 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 				(PamLink) link, activation, this);
 		taskSpawner.addTask(task);
 	}
-
+	
 	@Override
 	public void addToPercept(NodeStructure ns) {
+		ns = convertNodeStructure(ns);
 		for (PamListener pl : pamListeners) {
 			pl.receivePercept(ns);
 		}
@@ -438,16 +439,44 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 
 	@Override
 	public void addToPercept(Link l) {
+		Link converted = convertLink(l);
 		for (PamListener pl : pamListeners) {
-			pl.receivePercept(l);
+			pl.receivePercept(converted);
 		}
 	}
 
 	@Override
 	public void addToPercept(Node n) {
+		Node converted = convertNode(n);
 		for (PamListener pl : pamListeners) {
-			pl.receivePercept(n);
+			pl.receivePercept(converted);
 		}
+	}
+	//TODO a more sophisticated mapping
+	private NodeStructure convertNodeStructure(NodeStructure ns){
+		NodeStructure copy = new NodeStructureImpl();
+		for(Node n: ns.getNodes()){
+			copy.addDefaultNode(n);
+		}
+		for(Link l: ns.getLinks()){
+			if(l.isSimpleLink()){
+				copy.addDefaultLink(l);
+			}
+		}
+		for(Link l: ns.getLinks()){
+			if(!l.isSimpleLink()){
+				copy.addDefaultLink(l);
+			}
+		}
+		return copy;
+	}
+	private Node convertNode(Node n){
+		return factory.getNode(n, "NodeImpl");		
+	}
+	private Link convertLink(Link l){
+		Link res = factory.getLink("LinkImpl", l.getSource(), l.getSink(), l.getCategory());
+		res.setActivation(l.getActivation());
+		return res;
 	}
 
 	@Override
