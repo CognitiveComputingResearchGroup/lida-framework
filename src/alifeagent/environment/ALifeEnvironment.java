@@ -49,8 +49,9 @@ public class ALifeEnvironment extends EnvironmentImpl {
         }
 
         healthDecayRate = (Double)getParam("environment.healthDecayRate", DEFAULT_HEALTH_DECAY);
-        
-        world = WorldLoader.loadWorld(10, 10, operationsProperties, objectsProperties);
+        int worldWidth = getParam("environment.width",10);
+        int worldHeight = getParam("environment.height",10);
+        world = WorldLoader.loadWorld(worldWidth, worldHeight, operationsProperties, objectsProperties);
         agentObject = world.getObject((String) getParam("agentName","agent"));
         int ticksPerRun = (Integer)getParam("environment.ticksPerRun",DEFAULT_TICKS_PER_RUN);
         taskSpawner.addTask(new EnvironmentBackgroundTask(ticksPerRun));
