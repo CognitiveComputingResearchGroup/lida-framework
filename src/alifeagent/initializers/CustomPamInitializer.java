@@ -11,15 +11,15 @@
  */
 package alifeagent.initializers;
 
+import java.util.Map;
+
 import edu.memphis.ccrg.lida.framework.Agent;
 import edu.memphis.ccrg.lida.framework.initialization.FullyInitializable;
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.Node;
-import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.pam.BasicPamInitializer;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl;
-import java.util.Map;
 
 /**
  *
