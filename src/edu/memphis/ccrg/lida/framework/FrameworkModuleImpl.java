@@ -19,17 +19,19 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 
 /**
- * Abstract implementation of {@link FrameworkModule}
- * Implementations should add themselves to the agent.xml configuration file 
+ * Abstract implementation of {@link FrameworkModule} Implementations should add
+ * themselves to the agent.xml configuration file
  * 
  * @author Javier Snaider
  */
-public abstract class FrameworkModuleImpl extends InitializableImpl implements FrameworkModule {
+public abstract class FrameworkModuleImpl extends InitializableImpl implements
+		FrameworkModule {
 
-	private static final Logger logger = Logger.getLogger(FrameworkModuleImpl.class.getCanonicalName());
+	private static final Logger logger = Logger
+			.getLogger(FrameworkModuleImpl.class.getCanonicalName());
 	private ModuleName moduleName;
 	private Map<ModuleName, FrameworkModule> submodules = new ConcurrentHashMap<ModuleName, FrameworkModule>();
-	
+
 	/**
 	 * {@link TaskSpawner} used by this module
 	 */
@@ -41,61 +43,75 @@ public abstract class FrameworkModuleImpl extends InitializableImpl implements F
 	public FrameworkModuleImpl() {
 		moduleName = ModuleName.UnnamedModule;
 	}
-	
+
 	/**
-	 * Creates a FrameworkModule with specified module name.  
-	 * It is generally preferable to use the 
-	 * default constructor instead of this one 
-	 * since the ModuleName is typically specified by agent.xml and set by {@link AgentXmlFactory}
+	 * Creates a FrameworkModule with specified module name. It is generally
+	 * preferable to use the default constructor instead of this one since the
+	 * ModuleName is typically specified by agent.xml and set by
+	 * {@link AgentXmlFactory}
 	 * 
 	 * @see AgentXmlFactory
-	 * @param moduleName {@link ModuleName} of this {@link FrameworkModule}
+	 * @param name
+	 *            {@link ModuleName} of this {@link FrameworkModule}
 	 */
-	FrameworkModuleImpl(ModuleName moduleName) {
-		this.moduleName = moduleName;
+	FrameworkModuleImpl(ModuleName name) {
+		moduleName = name;
 	}
-	
+
 	@Override
-	public void setAssistingTaskSpawner(TaskSpawner ts){
+	public void setAssistingTaskSpawner(TaskSpawner ts) {
 		taskSpawner = ts;
 	}
 
 	@Override
-	public TaskSpawner getAssistingTaskSpawner(){
+	public TaskSpawner getAssistingTaskSpawner() {
 		return taskSpawner;
 	}
-	
+
 	@Override
-	public boolean containsSubmodule(ModuleName name){
+	public boolean containsSubmodule(ModuleName name) {
+		if(name == null){
+			return false;
+		}
 		return submodules.containsKey(name);
 	}
-	
+
 	@Override
-	public boolean containsSubmodule(String name){
+	public boolean containsSubmodule(String name) {
+		if(name == null){
+			return false;
+		}
 		return submodules.containsKey(ModuleName.getModuleName(name));
 	}
 
 	@Override
 	public FrameworkModule getSubmodule(ModuleName name) {
-		if(name == null){
+		if (name == null) {
 			return null;
 		}
 		return submodules.get(name);
 	}
+
 	@Override
-	public FrameworkModule getSubmodule(String name){
-		if(name == null){
+	public FrameworkModule getSubmodule(String name) {
+		if (name == null) {
 			return null;
 		}
 		return getSubmodule(ModuleName.getModuleName(name));
 	}
 
 	@Override
-	public void addSubModule(FrameworkModule lm) {
-		if(lm != null && lm.getModuleName() != null){
-			submodules.put(lm.getModuleName(), lm);
-		}else{
-			logger.log(Level.WARNING, "Either module or module's name was null", TaskManager.getCurrentTick());
+	public void addSubModule(FrameworkModule module) {
+		if (module == null){
+			logger.log(Level.WARNING,
+					"Cannot add null submodule", 
+					TaskManager.getCurrentTick());
+		}else if(module.getModuleName() == null){
+			logger.log(Level.WARNING,
+					"Cannot add a  submodule with null ModuleName", TaskManager
+							.getCurrentTick());
+		} else {
+			submodules.put(module.getModuleName(), module);
 		}
 	}
 
@@ -105,31 +121,39 @@ public abstract class FrameworkModuleImpl extends InitializableImpl implements F
 	}
 
 	/**
-	 * Framework users should not call this method. It will be called by the TaskManager.
-	 * Decays this module and all its submodules. Subclasses overriding this method must
-	 * call this method first in order to have all submodules decayed.
+	 * Framework users should not call this method. 
+	 * It will be called by the {@link TaskManager}. Decays this module and all its submodules. 
+	 * Subclasses overriding this method must call this method first in order to have all
+	 * submodules decayed.
 	 * 
-	 * @param ticks number of ticks to decay.
+	 * @param ticks
+	 *            number of ticks to decay.
 	 */
 	@Override
 	public void taskManagerDecayModule(long ticks) {
-		decayModule(ticks);
-//		if(moduleName.equals(ModuleName.Workspace)){
-//			//FIXME
-//			submodules.get(ModuleName.CurrentSituationalModel).decayModule(ticks);
-//			submodules.get(ModuleName.PerceptualBuffer).decayModule(ticks);
-//			submodules.get(ModuleName.BroadcastQueue).decayModule(ticks);
-//		}else{
-			for (FrameworkModule lm : submodules.values()) {
+		try{
+			decayModule(ticks);
+		}catch(Exception e){
+			logger.log(Level.WARNING, 
+					"Exception occurred during the execution of the 'decayModule(long ticks)' method in module: {1}. \n{2}",
+					new Object[]{TaskManager.getCurrentTick(),moduleName,e});
+			e.printStackTrace();
+		}
+		for (FrameworkModule lm : submodules.values()) {
+			try{
 				lm.taskManagerDecayModule(ticks);
+			}catch(Exception e){
+				logger.log(Level.WARNING, 
+						"Exception occurred during the execution of the 'taskManagerDecayModule(long ticks)' method in module: {1}. \n{2}",
+						new Object[]{TaskManager.getCurrentTick(),moduleName,e});
+				e.printStackTrace();
 			}
-//		}
-		
+		}
 	}
 
 	@Override
-	public void setModuleName(ModuleName moduleName) {
-		this.moduleName = moduleName;
+	public void setModuleName(ModuleName name) {
+		moduleName = name;
 	}
 
 	@Override
@@ -137,30 +161,31 @@ public abstract class FrameworkModuleImpl extends InitializableImpl implements F
 		return moduleName;
 	}
 
-	
 	@Override
-	public String toString(){
-		return moduleName.name;
+	public String toString() {
+		return (moduleName == null)? null:moduleName.name;
 	}
-	
+
 	@Override
 	public void setAssociatedModule(FrameworkModule module, String moduleUsage) {
 	}
-	
+
 	/**
 	 * Override this method to add a listener to the module
-	 * @param listener - listener of this FrameworkModule
+	 * 
+	 * @param listener
+	 *            - listener of this FrameworkModule
 	 */
 	@Override
-	public void addListener(ModuleListener listener){
+	public void addListener(ModuleListener listener) {
 	}
 
-	/** 
-	 * Intended to be called from the GUI.
-	 * Override this method to return particular module content based on params. 
+	/**
+	 * Intended to be called from the GUI. Override this method to return
+	 * particular module content based on params.
 	 */
 	@Override
-	public Object getModuleContent(Object... params){
+	public Object getModuleContent(Object... params) {
 		return null;
 	}
 

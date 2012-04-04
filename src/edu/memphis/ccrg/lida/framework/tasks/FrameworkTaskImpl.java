@@ -88,14 +88,23 @@ public abstract class FrameworkTaskImpl extends LearnableImpl implements Framewo
 		try{
 			runThisFrameworkTask();
 		}catch(Exception e){
-			logger.log(Level.WARNING, "Exception {1} encountered in task {2}", new Object[] {TaskManager.getCurrentTick(),e,this});
+			logger.log(Level.WARNING, "Exception encountered during the execution of task {1}. \n {e}", 
+					new Object[] {TaskManager.getCurrentTick(),this,e});
 			e.printStackTrace();
 		}
 		
 		if (controllingTS != null){ 
-			controllingTS.receiveFinishedTask(this);
+			try{
+				controllingTS.receiveFinishedTask(this);
+			}catch(Exception e){
+				logger.log(Level.WARNING, 
+						"Exception encountered during the execution of method 'receiveFinishedTask' in TaskSpawner: {1} \n {e}", 
+						new Object[] {TaskManager.getCurrentTick(),this,e});
+				e.printStackTrace();
+			}
 		}else {
-			logger.log(Level.WARNING, "This task {1} doesn't have an assigned TaskSpawner",new Object[] {TaskManager.getCurrentTick(), this });
+			logger.log(Level.WARNING, "Task {1} does not have an assigned TaskSpawner",
+					new Object[] {TaskManager.getCurrentTick(), this });
 		}
 			
 		return this;
@@ -111,12 +120,12 @@ public abstract class FrameworkTaskImpl extends LearnableImpl implements Framewo
 	protected abstract void runThisFrameworkTask();
 
 	@Override
-	public synchronized void setTaskStatus(TaskStatus status) {
+	public synchronized void setTaskStatus(TaskStatus s) {
 		if (this.status != TaskStatus.CANCELED){
-			this.status = status;
+			this.status = s;
 		}else {
-			logger.log(Level.WARNING, "Cannot set TaskStatus to {1}.  TaskStatus is already CANCELED so it cannot be modified again.", 
-					new Object[]{TaskManager.getCurrentTick(),status});
+			logger.log(Level.WARNING, "Cannot set TaskStatus to {1}. TaskStatus is already CANCELED so it cannot be modified again.", 
+					new Object[]{TaskManager.getCurrentTick(),s});
 		}
 	}
 
@@ -165,8 +174,8 @@ public abstract class FrameworkTaskImpl extends LearnableImpl implements Framewo
 	}
 	
 	@Override
-	public void setControllingTaskSpawner(TaskSpawner controllingTS) {
-		this.controllingTS=controllingTS;		
+	public void setControllingTaskSpawner(TaskSpawner ts) {
+		controllingTS=ts;		
 	}
 	
 	@Override

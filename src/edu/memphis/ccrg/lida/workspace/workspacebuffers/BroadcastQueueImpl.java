@@ -18,6 +18,8 @@ import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.initialization.Initializable;
 import edu.memphis.ccrg.lida.framework.shared.Linkable;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
+import edu.memphis.ccrg.lida.framework.shared.UnmodifiableNodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.Coalition;
 import edu.memphis.ccrg.lida.workspace.WorkspaceContent;
@@ -30,7 +32,8 @@ import edu.memphis.ccrg.lida.workspace.WorkspaceContent;
  * 
  * @author Ryan J. McCall
  */
-public class BroadcastQueueImpl extends FrameworkModuleImpl implements BroadcastQueue{
+public class BroadcastQueueImpl extends FrameworkModuleImpl implements
+		BroadcastQueue {
 
 	private static final Logger logger = Logger
 			.getLogger(BroadcastQueueImpl.class.getCanonicalName());
@@ -46,18 +49,20 @@ public class BroadcastQueueImpl extends FrameworkModuleImpl implements Broadcast
 	}
 
 	/**
-	 * Will set parameters with the following names:<br/><br/>
+	 * Will set parameters with the following names:<br/>
+	 * <br/>
 	 * 
-	 * <b>workspace.broadcastQueueCapacity</b> the number of recent broadcast maintained in this BroadcastQueue<br/>
+	 * <b>workspace.broadcastQueueCapacity</b> the number of recent broadcast
+	 * maintained in this BroadcastQueue<br/>
 	 * 
 	 * @see Initializable
 	 */
 	@Override
 	public void init() {
-		int desired = (Integer) getParam("workspace.broadcastQueueCapacity",
-				DEFAULT_QUEUE_CAPACITY);
-		if (desired > 0) {
-			broadcastQueueCapacity = desired;
+		int requestedCapacity = (Integer) getParam(
+				"workspace.broadcastQueueCapacity", DEFAULT_QUEUE_CAPACITY);
+		if (requestedCapacity > 0) {
+			broadcastQueueCapacity = requestedCapacity;
 		} else {
 			logger.log(Level.WARNING, "Capacity must be greater than 0.",
 					TaskManager.getCurrentTick());
@@ -65,13 +70,16 @@ public class BroadcastQueueImpl extends FrameworkModuleImpl implements Broadcast
 	}
 
 	@Override
-	public void receiveBroadcast(Coalition coalition) {
-		//assumes WorkspaceContent == BroadcastContent
-		broadcastQueue.addFirst((WorkspaceContent) coalition.getContent());
-		// Keep the buffer at a fixed size
+	public void receiveBroadcast(Coalition c) {
+		UnmodifiableNodeStructureImpl content = (UnmodifiableNodeStructureImpl) c.getContent();
+		//Since content is not modifiable, a copy must be made. Here, the copy will be decayed (modified).
+		NodeStructure contentCopy = new NodeStructureImpl();
+		contentCopy.mergeWith(content);
+		addBufferContent((WorkspaceContent) contentCopy);
 		while (broadcastQueue.size() > broadcastQueueCapacity) {
 			broadcastQueue.removeLast();// remove oldest
 		}
+
 	}
 
 	@Override
@@ -123,5 +131,4 @@ public class BroadcastQueueImpl extends FrameworkModuleImpl implements Broadcast
 	public void learn(Coalition coalition) {
 		// Not applicable
 	}
-
 }

@@ -159,7 +159,8 @@ public class AttentionCodeletModule extends FrameworkModuleImpl implements
 		AttentionCodelet coalitionCodelet = winningCoalition.getCreatingAttentionCodelet();
 		if(coalitionCodelet instanceof DefaultAttentionCodelet){
 			AttentionCodelet newCodelet = getDefaultCodelet();
-			newCodelet.setSoughtContent((NodeStructure) winningCoalition.getContent());
+			NodeStructure content = (NodeStructure) winningCoalition.getContent();
+			newCodelet.setSoughtContent(content.copy());
 			addCodelet(newCodelet);
 			logger.log(Level.FINER, "Created new codelet: {1}", 
 					new Object[]{TaskManager.getCurrentTick(),newCodelet});

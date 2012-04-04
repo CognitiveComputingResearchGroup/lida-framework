@@ -86,10 +86,10 @@ public class WorkspaceImpl extends FrameworkModuleImpl implements Workspace, Pam
 	 * Received broadcasts are sent to the BroadcastQueue
 	 */
 	@Override
-	public void receiveBroadcast(Coalition coalition) {
+	public void receiveBroadcast(Coalition c) {
 		if(containsSubmodule(ModuleName.BroadcastQueue)){
 			BroadcastListener listener = (BroadcastListener) getSubmodule(ModuleName.BroadcastQueue);
-			listener.receiveBroadcast(coalition);
+			listener.receiveBroadcast(c);
 		}else{
 			logger.log(Level.WARNING, "Received broadcast content but Workspace does not have a broadcast queue.", TaskManager.getCurrentTick());
 		}

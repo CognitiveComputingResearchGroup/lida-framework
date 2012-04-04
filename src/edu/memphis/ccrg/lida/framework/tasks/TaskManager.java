@@ -503,7 +503,14 @@ public class TaskManager implements GuiEventProvider {
 		@Override
 		public Void call() throws Exception {
 			if (module != null) {
-				module.taskManagerDecayModule(ticksToDecay);
+				try{
+					module.taskManagerDecayModule(ticksToDecay);
+				}catch(Exception e){
+					logger.log(Level.SEVERE, 
+							"Exception occurred during the execution of the 'taskManagerDecayModule(long ticks)' method in module: {1}. \n{2}",
+							new Object[]{TaskManager.getCurrentTick(),module,e});
+					e.printStackTrace();
+				}
 			}
 			return null;
 		}

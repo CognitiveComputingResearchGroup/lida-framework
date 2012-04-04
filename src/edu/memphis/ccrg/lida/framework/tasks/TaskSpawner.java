@@ -14,7 +14,7 @@ import org.apache.commons.collections15.collection.UnmodifiableCollection;
 import edu.memphis.ccrg.lida.framework.initialization.Initializable;
 
 /**
- * TaskSpawners manage {@link FrameworkTask}s. Maintains a {@link Collection} of all added tasks.
+ * TaskSpawners manage {@link FrameworkTask} objects. Maintains a {@link Collection} of all added tasks.
  * Provides method to process the result of a {@link FrameworkTask}.
  * 
  * @author Ryan J. McCall
@@ -75,7 +75,7 @@ public interface TaskSpawner extends Initializable {
 	/**
 	 * Returns whether this TaskSpawner manages this task.
 	 * @param t a FrameworkTask
-	 * @return True if this taskspawner contains a task with t's id
+	 * @return True if this {@link TaskSpawner} contains a task with task's id
 	 */
 	public boolean containsTask(FrameworkTask t);
 	

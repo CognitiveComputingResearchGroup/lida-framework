@@ -85,6 +85,10 @@ public class CoalitionImpl extends ActivatibleImpl implements Coalition {
         }
     }
 
+    /**
+     * Returns an {@link UnmodifiableNodeStructureImpl} containing the broadcast content.
+     * Note that {@link UnmodifiableNodeStructureImpl} cannot be modified.
+     */
     @Override
     public BroadcastContent getContent() {
         return broadcastContent;
@@ -112,6 +116,5 @@ public class CoalitionImpl extends ActivatibleImpl implements Coalition {
     @Override
     public int hashCode(){
     	return (int) id;
-    }
-    
+    }    
 }

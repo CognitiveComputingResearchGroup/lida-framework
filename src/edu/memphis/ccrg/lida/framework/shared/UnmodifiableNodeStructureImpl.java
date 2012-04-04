@@ -25,23 +25,31 @@ public class UnmodifiableNodeStructureImpl implements NodeStructure, BroadcastCo
 	
 	/**
 	 * Default Constructor.
-	 * @param sourceNodeStructure supplied NodeStructure
+	 * @param src supplied NodeStructure
 	 */
-	public UnmodifiableNodeStructureImpl(NodeStructure sourceNodeStructure){
-		ns = sourceNodeStructure;
+	public UnmodifiableNodeStructureImpl(NodeStructure src){
+		if(src != null){
+			ns = src;
+		}else{
+			ns = new NodeStructureImpl();
+		}
 	}
 
 	/**
 	 * Copy Constructor.
-	 * @param sourceNodeStructure supplied NodeStructure
+	 * @param src supplied NodeStructure
 	 * @param shouldCopy If true, the supplied NodeStructure will be copied.  Otherwise supplied NodeStructure
 	 * will be used directly.
 	 */
-	public UnmodifiableNodeStructureImpl(NodeStructure sourceNodeStructure, boolean shouldCopy){
-		if (shouldCopy){
-			ns = sourceNodeStructure.copy();
+	public UnmodifiableNodeStructureImpl(NodeStructure src, boolean shouldCopy){
+		if(src != null){
+			if (shouldCopy){
+				ns = src.copy();
+			}else{
+				ns = src;			
+			}
 		}else{
-			ns = sourceNodeStructure;			
+			ns = new NodeStructureImpl();
 		}
 	}
 
