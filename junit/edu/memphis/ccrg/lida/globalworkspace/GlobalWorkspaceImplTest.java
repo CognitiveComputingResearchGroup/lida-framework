@@ -104,7 +104,7 @@ public class GlobalWorkspaceImplTest {
 	@Test
 	public void testInit() {		
 		gw.init();
-		assertEquals(1, ts.getRunningTasks().size());
+		assertEquals(1, ts.getTasks().size());
 		assertEquals(ElementFactory.getInstance().getDefaultDecayStrategy(), gw.getCoalitionDecayStrategy());
 		assertEquals(0.0, gw.getCoalitionRemovalThreshold(), epsilon);
 		assertEquals(40, gw.getRefractoryPeriod());

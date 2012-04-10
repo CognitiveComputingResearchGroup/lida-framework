@@ -199,12 +199,12 @@ public class AttentionCodeletModuleTest{
 
 	@Test
 	public void testAddCodelet() {
-		assertEquals(0, taskSpawner.getRunningTasks().size());
+		assertEquals(0, taskSpawner.getTasks().size());
 		
 		attentionModule.addCodelet(codelet);
 		
 		assertTrue(taskSpawner.containsTask(codelet));
-		assertEquals(1, taskSpawner.getRunningTasks().size());
+		assertEquals(1, taskSpawner.getTasks().size());
 	}	
 	
 	@Test

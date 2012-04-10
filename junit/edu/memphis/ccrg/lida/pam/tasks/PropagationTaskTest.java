@@ -80,7 +80,7 @@ public class PropagationTaskTest{
 		assertEquals(TaskStatus.CANCELED, task.getTaskStatus());
 	 
 		assertEquals(sink, pam.pmNode);
-		assertEquals(0, taskSpawner.getRunningTasks().size());
+		assertEquals(0, taskSpawner.getTasks().size());
 	}
 	@Test
 	public void testPropagateOverThreshold(){
@@ -104,7 +104,7 @@ public class PropagationTaskTest{
 		assertEquals(TaskStatus.CANCELED, excite.getTaskStatus());
 	 
 		assertEquals(sink, pam.pmNode);
-		Collection<FrameworkTask> tasks = taskSpawner.getRunningTasks();
+		Collection<FrameworkTask> tasks = taskSpawner.getTasks();
 		assertEquals(1, tasks.size());
 		for(FrameworkTask tsk: tasks){
 			assertTrue(tsk instanceof AddLinkToPerceptTask);

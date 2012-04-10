@@ -346,7 +346,7 @@ public class PerceptualAssociativeMemoryImplTest {
 		pam.setAssistingTaskSpawner(new MockTaskSpawner());
 		pam.addDetectionAlgorithm(detector);
 		assertTrue(pam.getAssistingTaskSpawner().containsTask(detector));
-		assertEquals(1, pam.getAssistingTaskSpawner().getRunningTasks().size());
+		assertEquals(1, pam.getAssistingTaskSpawner().getTasks().size());
 	}
 	@Test
 	public void testDetectionAlgorithm1() {	
@@ -356,7 +356,7 @@ public class PerceptualAssociativeMemoryImplTest {
 		pam.addDetectionAlgorithm(detector);
 		pam.addDetectionAlgorithm(detector);
 		assertTrue(pam.getAssistingTaskSpawner().containsTask(detector));
-		assertEquals(2, pam.getAssistingTaskSpawner().getRunningTasks().size());
+		assertEquals(2, pam.getAssistingTaskSpawner().getTasks().size());
 	}
 	@Test
 	public void testAddPamListener(){
@@ -417,7 +417,7 @@ public class PerceptualAssociativeMemoryImplTest {
 		pam.propagateActivationToParents(testNod1);
 		
 		//Should be 2 tasks to pass the activation to Nodes 2, 3.
-		Collection<FrameworkTask> tasks = ts.getRunningTasks();
+		Collection<FrameworkTask> tasks = ts.getTasks();
 		assertEquals(2, tasks.size());
 		
 		double propagatedActivation = testNod1.getTotalActivation() * upscaleFactor;

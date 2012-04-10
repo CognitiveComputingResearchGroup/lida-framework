@@ -25,9 +25,9 @@ public interface TaskSpawner extends Initializable {
 	 * Set the TaskManager this TaskSpawner will use to actually run the
 	 * tasks.
 	 * 
-	 * @param taskManager the {@link TaskManager} of the system.
+	 * @param tm the {@link TaskManager} of the system.
 	 */
-	public void setTaskManager(TaskManager taskManager);
+	public void setTaskManager(TaskManager tm);
 	
 	/**
 	 * Adds and runs supplied FrameworkTask.
@@ -63,20 +63,29 @@ public interface TaskSpawner extends Initializable {
 	 * @return true if the task was canceled, false otherwise
 	 */
 	public boolean cancelTask(FrameworkTask task);
-	
-	/**
-	 * Returns a {@link UnmodifiableCollection} that contains the FrameworkTasks in this
-	 * TaskSpawner.
-	 * 
-	 * @return collection of running tasks.
-	 */
-	public Collection<FrameworkTask> getRunningTasks();
 
 	/**
 	 * Returns whether this TaskSpawner manages this task.
 	 * @param t a FrameworkTask
-	 * @return True if this {@link TaskSpawner} contains a task with task's id
+	 * @return true if this {@link TaskSpawner} contains a task with task's id
 	 */
 	public boolean containsTask(FrameworkTask t);
+	
+	/**
+	 * Returns a {@link UnmodifiableCollection} that contains the FrameworkTasks in this
+	 * TaskSpawner. Tasks' TaskStatus may or may not be running.
+	 * Use {@link #getTasks()} instead.
+	 * 
+	 * @return collection of running tasks.
+	 */
+	@Deprecated
+	public Collection<FrameworkTask> getRunningTasks();
+	
+	/**
+	 * Returns the {@link FrameworkTask} objects controlled by this TaskSpawner.
+	 * 
+	 * @return a {@link Collection} FrameworkTasks.
+	 */
+	public Collection<FrameworkTask> getTasks();
 	
 }

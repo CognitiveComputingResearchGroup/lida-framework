@@ -23,6 +23,7 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
  * themselves to the agent.xml configuration file
  * 
  * @author Javier Snaider
+ * @author Ryan J. McCall
  */
 public abstract class FrameworkModuleImpl extends InitializableImpl implements
 		FrameworkModule {
@@ -69,35 +70,26 @@ public abstract class FrameworkModuleImpl extends InitializableImpl implements
 	}
 
 	@Override
-	public boolean containsSubmodule(ModuleName name) {
-		if(name == null){
-			return false;
-		}
-		return submodules.containsKey(name);
-	}
-
-	@Override
-	public boolean containsSubmodule(String name) {
-		if(name == null){
-			return false;
-		}
-		return submodules.containsKey(ModuleName.getModuleName(name));
-	}
-
-	@Override
 	public FrameworkModule getSubmodule(ModuleName name) {
-		if (name == null) {
-			return null;
-		}
-		return submodules.get(name);
+		return (name==null)? null:submodules.get(name);
 	}
 
 	@Override
 	public FrameworkModule getSubmodule(String name) {
-		if (name == null) {
+		if(name==null){
 			return null;
 		}
-		return getSubmodule(ModuleName.getModuleName(name));
+	    return getSubmodule(ModuleName.getModuleName(name));
+	}
+
+	@Override
+	public boolean containsSubmodule(ModuleName name) {
+		return (getSubmodule(name) != null);
+	}
+
+	@Override
+	public boolean containsSubmodule(String name) {
+		return (getSubmodule(name) != null);
 	}
 
 	@Override
@@ -132,7 +124,7 @@ public abstract class FrameworkModuleImpl extends InitializableImpl implements
 	@Override
 	public void taskManagerDecayModule(long ticks) {
 		try{
-			decayModule(ticks);
+			decayModule(ticks); //First call this FrameworkModule's decayModule method.
 		}catch(Exception e){
 			logger.log(Level.WARNING, 
 					"Exception occurred during the execution of the 'decayModule(long ticks)' method in module: {1}. \n{2}",
@@ -141,7 +133,7 @@ public abstract class FrameworkModuleImpl extends InitializableImpl implements
 		}
 		for (FrameworkModule lm : submodules.values()) {
 			try{
-				lm.taskManagerDecayModule(ticks);
+				lm.taskManagerDecayModule(ticks); //Then call all submodule's taskManagerDecayModule.
 			}catch(Exception e){
 				logger.log(Level.WARNING, 
 						"Exception occurred during the execution of the 'taskManagerDecayModule(long ticks)' method in module: {1}. \n{2}",

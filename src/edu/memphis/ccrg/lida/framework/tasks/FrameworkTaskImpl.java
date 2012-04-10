@@ -27,13 +27,16 @@ public abstract class FrameworkTaskImpl extends LearnableImpl implements Framewo
 	private final static int defaultTicksPerRun = 1;
 	private static long nextTaskID;
 	
+	/*
+	 * frequency in ticks  
+	 */
 	private int ticksPerRun = defaultTicksPerRun;
 	private long taskID;
 	private long nextExcecutionTicksPerRun = defaultTicksPerRun;
 	/**
-	 * {@link TaskStatus} of this task
+	 * {@link TaskStatus} of this task. Initial value is {@link TaskStatus#RUNNING}.
 	 */
-	protected TaskStatus status = TaskStatus.WAITING;
+	protected TaskStatus status = TaskStatus.RUNNING;
 	private TaskSpawner controllingTS;
 	private long scheduledTick;
     private final String taskName;
@@ -72,8 +75,8 @@ public abstract class FrameworkTaskImpl extends LearnableImpl implements Framewo
 	}
 
 	@Override
-	public void setScheduledTick(long scheduledTick) {
-		this.scheduledTick = scheduledTick;
+	public void setScheduledTick(long t) {
+		scheduledTick = t;
 	}
 
 	/** 
@@ -83,8 +86,7 @@ public abstract class FrameworkTaskImpl extends LearnableImpl implements Framewo
 	 */
 	@Override
 	public FrameworkTask call() {
-		nextExcecutionTicksPerRun = ticksPerRun;
-		
+		nextExcecutionTicksPerRun = ticksPerRun;		
 		try{
 			runThisFrameworkTask();
 		}catch(Exception e){
@@ -92,7 +94,6 @@ public abstract class FrameworkTaskImpl extends LearnableImpl implements Framewo
 					new Object[] {TaskManager.getCurrentTick(),this,e});
 			e.printStackTrace();
 		}
-		
 		if (controllingTS != null){ 
 			try{
 				controllingTS.receiveFinishedTask(this);
@@ -106,26 +107,27 @@ public abstract class FrameworkTaskImpl extends LearnableImpl implements Framewo
 			logger.log(Level.WARNING, "Task {1} does not have an assigned TaskSpawner",
 					new Object[] {TaskManager.getCurrentTick(), this });
 		}
-			
 		return this;
 	}
-
 
 	/**
 	 * To be overridden by extending classes. Overriding method should execute a
 	 * handful of statements considered to constitute a single iteration of the
 	 * task. For example, a codelet might look in a buffer for some
-	 * representation and make a change to it in a single iteration.
+	 * content and make a change to it in a single iteration. 
+	 * The overriding method may also change the {@link TaskStatus} of a task. 
+	 * For example, if the task should only run once and stop, then the method {@link #cancel()}
+	 * may be used to stop the task from further execution (calls of this {@link #runThisFrameworkTask()} beyond the current one.
 	 */
 	protected abstract void runThisFrameworkTask();
 
 	@Override
 	public synchronized void setTaskStatus(TaskStatus s) {
-		if (this.status != TaskStatus.CANCELED){
-			this.status = s;
-		}else {
+		if (status == TaskStatus.CANCELED){
 			logger.log(Level.WARNING, "Cannot set TaskStatus to {1}. TaskStatus is already CANCELED so it cannot be modified again.", 
 					new Object[]{TaskManager.getCurrentTick(),s});
+		}else {
+			status = s;
 		}
 	}
 
@@ -164,11 +166,6 @@ public abstract class FrameworkTaskImpl extends LearnableImpl implements Framewo
 	}
 	
 	@Override
-	public void stop(){
-		setTaskStatus(TaskStatus.FINISHED);
-	}
-	
-	@Override
 	public TaskSpawner getControllingTaskSpawner() {		
 		return controllingTS;
 	}
@@ -184,8 +181,8 @@ public abstract class FrameworkTaskImpl extends LearnableImpl implements Framewo
 	}
 	
 	@Override
-	public void setNextTicksPerRun(long nextTicksPerRun) {
-		this.nextExcecutionTicksPerRun = nextTicksPerRun;	
+	public void setNextTicksPerRun(long tick) {
+		nextExcecutionTicksPerRun = tick;	
 	}
 	
 	/**
@@ -211,5 +208,4 @@ public abstract class FrameworkTaskImpl extends LearnableImpl implements Framewo
 	public String toString(){
         return taskName;
     }
-	
 }

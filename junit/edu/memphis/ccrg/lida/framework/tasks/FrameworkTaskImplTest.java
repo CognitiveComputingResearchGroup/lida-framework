@@ -39,7 +39,7 @@ public class FrameworkTaskImplTest {
     }
 	@Test
 	public void testSetTaskStatus() {
-		assertEquals(TaskStatus.WAITING, task1.getTaskStatus());
+		assertEquals(TaskStatus.RUNNING, task1.getTaskStatus());
 		
 		task1.setTaskStatus(TaskStatus.FINISHED_WITH_RESULTS);
 		assertEquals(TaskStatus.FINISHED_WITH_RESULTS, task1.getTaskStatus());

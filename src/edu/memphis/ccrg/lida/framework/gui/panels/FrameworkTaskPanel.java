@@ -138,7 +138,7 @@ public class FrameworkTaskPanel extends GuiPanelImpl {
     @Override
     public void refresh() {
         if (module != null) {
-            display(module.getAssistingTaskSpawner().getRunningTasks());
+            display(module.getAssistingTaskSpawner().getTasks());
         }
     }
 

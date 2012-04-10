@@ -35,8 +35,13 @@ public class ExecutingMockTaskSpawner extends TaskSpawnerImpl implements TaskSpa
 		return tasks.remove(task);
 	}
 
+	@Deprecated
 	@Override
 	public Collection<FrameworkTask> getRunningTasks() {
+		return getTasks();
+	}
+	@Override
+	public Collection<FrameworkTask> getTasks() {
 		return Collections.unmodifiableCollection(tasks);
 	}
 

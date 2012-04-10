@@ -30,12 +30,6 @@ public enum TaskStatus {
 	 * Task is finished 
 	 */
 	FINISHED,
-	
-	/**
-	 * FrameworkTask status value:
-	 * Task is not running and not finished.
-	 */
-	WAITING,
 
 	/**
 	 * FrameworkTask status value:

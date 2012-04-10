@@ -32,8 +32,13 @@ public class MockTaskSpawner extends TaskSpawnerImpl implements TaskSpawner {
 	}
 
 	@Override
-	public Collection<FrameworkTask> getRunningTasks() {
+	public Collection<FrameworkTask> getTasks() {
 		return Collections.unmodifiableCollection(tasks);
+	}
+	@Deprecated
+	@Override
+	public Collection<FrameworkTask> getRunningTasks() {
+		return getTasks();
 	}
 
 	@Override

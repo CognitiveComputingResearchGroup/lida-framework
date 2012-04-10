@@ -44,12 +44,12 @@ public class TaskSpawnerImplTest {
 		
 		assertEquals(taskSpawner, task1.getControllingTaskSpawner());
 		assertEquals(TaskStatus.RUNNING, task1.getTaskStatus());
-		assertTrue(taskSpawner.getRunningTasks().contains(task1));
+		assertTrue(taskSpawner.getTasks().contains(task1));
 		assertTrue(tm.tasks.contains(task1));
 		
 		assertEquals(taskSpawner, task2.getControllingTaskSpawner());
 		assertEquals(TaskStatus.RUNNING, task2.getTaskStatus());
-		assertTrue(taskSpawner.getRunningTasks().contains(task2));
+		assertTrue(taskSpawner.getTasks().contains(task2));
 		assertTrue(tm.tasks.contains(task2));
 	}
 
@@ -59,14 +59,14 @@ public class TaskSpawnerImplTest {
 		taskSpawner.addTask(task1);
 		assertEquals(taskSpawner, task1.getControllingTaskSpawner());
 		assertEquals(TaskStatus.RUNNING, task1.getTaskStatus());
-		assertTrue(taskSpawner.getRunningTasks().contains(task1));
-		assertEquals(1, taskSpawner.getRunningTasks().size());
+		assertTrue(taskSpawner.getTasks().contains(task1));
+		assertEquals(1, taskSpawner.getTasks().size());
 		assertEquals(task1, tm.task);
 		assertEquals(10, tm.ticks);
 		
 		taskSpawner.addTask(task1);
-		assertTrue(taskSpawner.getRunningTasks().contains(task1));
-		assertEquals(1, taskSpawner.getRunningTasks().size());
+		assertTrue(taskSpawner.getTasks().contains(task1));
+		assertEquals(1, taskSpawner.getTasks().size());
 	}
 	
 	@Test
@@ -78,8 +78,8 @@ public class TaskSpawnerImplTest {
 		tm.ticks=0L;
 		taskSpawner.receiveFinishedTask(task1);
 		assertEquals(TaskStatus.RUNNING, task1.getTaskStatus());
-		assertTrue(taskSpawner.getRunningTasks().contains(task1));
-		assertEquals(1, taskSpawner.getRunningTasks().size());
+		assertTrue(taskSpawner.getTasks().contains(task1));
+		assertEquals(1, taskSpawner.getTasks().size());
 		assertEquals(task1, tm.task);
 		assertEquals(10, tm.ticks);
 
@@ -106,8 +106,8 @@ public class TaskSpawnerImplTest {
 		taskSpawner.receiveFinishedTask(task1);
 		
 		assertEquals(TaskStatus.FINISHED_WITH_RESULTS, task1.getTaskStatus());
-		assertTrue(!taskSpawner.getRunningTasks().contains(task1));
-		assertEquals(0, taskSpawner.getRunningTasks().size());
+		assertTrue(!taskSpawner.getTasks().contains(task1));
+		assertEquals(0, taskSpawner.getTasks().size());
 		assertEquals(null, tm.task);
 		assertEquals(0L, tm.ticks);
 	}
@@ -133,8 +133,8 @@ public class TaskSpawnerImplTest {
 		taskSpawner.receiveFinishedTask(task1);
 		
 		assertEquals(TaskStatus.FINISHED, task1.getTaskStatus());
-		assertTrue(!taskSpawner.getRunningTasks().contains(task1));
-		assertEquals(0, taskSpawner.getRunningTasks().size());
+		assertTrue(!taskSpawner.getTasks().contains(task1));
+		assertEquals(0, taskSpawner.getTasks().size());
 		assertEquals(null, tm.task);
 		assertEquals(0L, tm.ticks);
 	}	
@@ -144,13 +144,13 @@ public class TaskSpawnerImplTest {
 		task1 = new MockFrameworkTask(10);
 		//RUNNING
 		taskSpawner.addTask(task1);
-		task1.setTaskStatus(TaskStatus.WAITING);
+		task1.setTaskStatus(TaskStatus.RUNNING);
 		tm.task=null;
 		tm.ticks=0L;
 		taskSpawner.receiveFinishedTask(task1);
 		assertEquals(TaskStatus.RUNNING, task1.getTaskStatus());
-		assertTrue(taskSpawner.getRunningTasks().contains(task1));
-		assertEquals(1, taskSpawner.getRunningTasks().size());
+		assertTrue(taskSpawner.getTasks().contains(task1));
+		assertEquals(1, taskSpawner.getTasks().size());
 		assertEquals(task1, tm.task);
 		assertEquals(10, tm.ticks);
 	}
@@ -176,33 +176,33 @@ public class TaskSpawnerImplTest {
 		taskSpawner.receiveFinishedTask(task1);
 		
 		assertEquals(TaskStatus.CANCELED, task1.getTaskStatus());
-		assertTrue(!taskSpawner.getRunningTasks().contains(task1));
-		assertEquals(0, taskSpawner.getRunningTasks().size());
+		assertTrue(!taskSpawner.getTasks().contains(task1));
+		assertEquals(0, taskSpawner.getTasks().size());
 		assertEquals(null, tm.task);
 		assertEquals(0L, tm.ticks);
 	}
 
 	@Test
-	public void testGetRunningTasks() {
+	public void testgetTasks() {
 		task1 = new MockFrameworkTask(10);
 		MockFrameworkTask task2 = new MockFrameworkTask(20);
 		List<FrameworkTask> tasks = new ArrayList<FrameworkTask>();
 		tasks.add(task1);
 		tasks.add(task2);
 
-		assertEquals(0,taskSpawner.getRunningTasks().size());
+		assertEquals(0,taskSpawner.getTasks().size());
 
 		taskSpawner.addTasks(tasks);
-		assertEquals(2,taskSpawner.getRunningTasks().size());
+		assertEquals(2,taskSpawner.getTasks().size());
 		
 		assertEquals(taskSpawner, task1.getControllingTaskSpawner());
 		assertEquals(TaskStatus.RUNNING, task1.getTaskStatus());
-		assertTrue(taskSpawner.getRunningTasks().contains(task1));
+		assertTrue(taskSpawner.getTasks().contains(task1));
 		assertTrue(tm.tasks.contains(task1));
 		
 		assertEquals(taskSpawner, task2.getControllingTaskSpawner());
 		assertEquals(TaskStatus.RUNNING, task2.getTaskStatus());
-		assertTrue(taskSpawner.getRunningTasks().contains(task2));
+		assertTrue(taskSpawner.getTasks().contains(task2));
 		assertTrue(tm.tasks.contains(task2));
 		}
 
@@ -214,10 +214,10 @@ public class TaskSpawnerImplTest {
 		tasks.add(task1);
 		tasks.add(task2);
 		taskSpawner.addTasks(tasks);
-		assertEquals(2,taskSpawner.getRunningTasks().size());
+		assertEquals(2,taskSpawner.getTasks().size());
 		taskSpawner.cancelTask(task1);
 		assertEquals(task1,tm.cancelTask);
-		assertEquals(1,taskSpawner.getRunningTasks().size());
+		assertEquals(1,taskSpawner.getTasks().size());
 		assertTrue(!taskSpawner.containsTask(task1));
 	}
 
@@ -230,8 +230,8 @@ public class TaskSpawnerImplTest {
 		assertTrue(taskSpawner.containsTask(task1));
 		
 		taskSpawner.addTask(task1);
-		assertTrue(taskSpawner.getRunningTasks().contains(task1));
-		assertEquals(1, taskSpawner.getRunningTasks().size());
+		assertTrue(taskSpawner.getTasks().contains(task1));
+		assertEquals(1, taskSpawner.getTasks().size());
 	}
 
 }
