@@ -42,7 +42,7 @@ public class FleeOperation extends MoveAgentOperation {
 		}
 		newDirection = (newDirection + randomTurn) % 4;
 		subject.setAttribute("direction", directions[newDirection]);
-		logger.log(Level.FINE, "agent flees",TaskManager.getCurrentTick());
+		logger.log(Level.INFO, "agent flees",TaskManager.getCurrentTick());
 		return super.performOperation(world, subject, objects, params);
 	}
 
