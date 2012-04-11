@@ -1,6 +1,6 @@
 package edu.memphis.ccrg.lida.actionselection.behaviornet;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -8,7 +8,6 @@ import org.junit.Test;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.BehaviorNetwork;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockTaskSpawner;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTask;
-import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 
 public class BehaviorNetworkTest {
