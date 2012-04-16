@@ -38,6 +38,7 @@ public class ALifeEnvironment extends EnvironmentImpl {
 
 	@Override
 	public void init() {
+		super.init();
 		Properties operationsProperties = new Properties();
         Properties objectsProperties = new Properties();
         try {
