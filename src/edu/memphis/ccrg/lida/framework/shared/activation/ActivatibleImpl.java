@@ -44,12 +44,13 @@ public class ActivatibleImpl extends InitializableImpl implements Activatible {
 	}
 	
 	/**
+	 * Intended for testing only.
 	 * @param activation initial activation
 	 * @param removalThreshold initial removableThreshold
 	 * @param excite {@link ExciteStrategy}
 	 * @param decay {@link DecayStrategy}
 	 */
-	public ActivatibleImpl(double activation, double removalThreshold, ExciteStrategy excite, DecayStrategy decay) {
+	ActivatibleImpl(double activation, double removalThreshold, ExciteStrategy excite, DecayStrategy decay) {
 		this.activation = activation;
 		this.removalThreshold = removalThreshold;
 		this.exciteStrategy = excite;
@@ -114,15 +115,15 @@ public class ActivatibleImpl extends InitializableImpl implements Activatible {
 	public void setActivation(double a) {
 		if(a > 1.0){
 			synchronized(this){
-				this.activation = 1.0;
+				activation = 1.0;
 			}
 		}else if(a < 0.0){
 			synchronized(this){
-				this.activation = 0.0;
+				activation = 0.0;
 			}
 		}else{
 			synchronized(this){
-				this.activation = a;
+				activation = a;
 			}
 		}
 	}
@@ -141,13 +142,13 @@ public class ActivatibleImpl extends InitializableImpl implements Activatible {
 	}
 
 	@Override
-	public void setDecayStrategy(DecayStrategy db) {
-		this.decayStrategy = db;
+	public void setDecayStrategy(DecayStrategy s) {
+		decayStrategy = s;
 	}
 
 	@Override
-	public void setExciteStrategy(ExciteStrategy eb) {
-		this.exciteStrategy = eb;
+	public void setExciteStrategy(ExciteStrategy s) {
+		exciteStrategy = s;
 	}
 	
 	@Override

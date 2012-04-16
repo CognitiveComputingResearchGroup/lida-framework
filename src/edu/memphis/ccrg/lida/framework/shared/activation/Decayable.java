@@ -2,25 +2,29 @@ package edu.memphis.ccrg.lida.framework.shared.activation;
 
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 
+/**
+ * An object that can be decayed according to a {@link DecayStrategy}.
+ * @author Ryan J. McCall
+ */
 public interface Decayable {
 	
 	/**
-	 * decay the current activation using the decay strategy. The decay depends on 
-	 * the time since the last decaying. It is indicated by the parameter ticks.
+	 * Decays this object using its {@link DecayStrategy}. The decay depends on 
+	 * the time that has passed since the last decay, which is indicated by the ticks parameter.
 	 * 
-	 * @param ticks the number of ticks to decay
+	 * @param t the number of time ticks to decay for
 	 */
-	public void decay(long ticks);	
+	public void decay(long t);	
 
     /**
-     * Sets the decay strategy
-     * @param strategy the decay strategy for the current activation.
+     * Sets the {@link DecayStrategy}.
+     * @param s the {@link DecayStrategy} used to decay this object
      */
-	public void setDecayStrategy(DecayStrategy strategy);
+	public void setDecayStrategy(DecayStrategy s);
 	
 	/**
-	 * Gets the decay strategy
-	 * @return the decay strategy.
+	 * Gets the {@link DecayStrategy}.
+	 * @return the {@link DecayStrategy} used to decay this object
 	 */
 	public DecayStrategy getDecayStrategy();
 }

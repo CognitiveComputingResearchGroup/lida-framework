@@ -1,62 +1,80 @@
 package edu.memphis.ccrg.lida.framework.shared.activation;
 
-import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
-import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-public class DesirableImpl implements Desirable {
+import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 
-	@Override
-	public void excite(double a) {
-		// TODO Auto-generated method stub
 
-	}
+/**
+ * The default implementation of {@link Desirable}.
+ * @author Ryan J. McCall
+ *
+ */
+public class DesirableImpl extends ExcitableImpl implements Desirable {
 
-	@Override
-	public void setExciteStrategy(ExciteStrategy s) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public ExciteStrategy getExciteStrategy() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void decay(long ticks) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void setDecayStrategy(DecayStrategy strategy) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public DecayStrategy getDecayStrategy() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public double getDesirability() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+	private static final Logger logger = Logger.getLogger(DesirableImpl.class.getCanonicalName());
+	private double desirability;
 
 	@Override
 	public void setDesirability(double d) {
-		// TODO Auto-generated method stub
-
+		if(d < -1.0){
+			synchronized (this) {
+				desirability = -1.0;
+			}
+		}else if(d > 1.0){
+			synchronized (this) {
+				desirability = 1.0;
+			}
+		}else{
+			synchronized (this) {
+				desirability = d;
+			}
+		}
+	}
+	
+	@Override
+	public double getDesirability() {
+		return desirability;
 	}
 
 	@Override
 	public double getTotalDesirability() {
-		// TODO Auto-generated method stub
-		return 0;
+		return getDesirability();
+	}
+
+	@Override
+	public void excite(double a) {
+		if (exciteStrategy != null) {
+			if(logger.isLoggable(Level.FINEST)){
+				logger.log(Level.FINEST, "Before excitation {1} has current desirability: {2}",
+							new Object[]{TaskManager.getCurrentTick(),this,getDesirability()});
+			}
+			synchronized(this){
+				desirability = exciteStrategy.excite(getDesirability(), a);
+			}
+			if(logger.isLoggable(Level.FINEST)){
+				logger.log(Level.FINEST, "After excitation {1} has current desirability: {2}",
+							new Object[]{TaskManager.getCurrentTick(),this,getDesirability()});
+			}
+		}
+	}
+
+	@Override
+	public void decay(long t) {
+		if (decayStrategy != null) {
+			if(logger.isLoggable(Level.FINEST)){
+				logger.log(Level.FINEST, "Before decaying {1} has current activation: {2}",
+							new Object[]{TaskManager.getCurrentTick(),this,getDesirability()});
+			}
+			synchronized(this){
+				desirability = decayStrategy.decay(getDesirability(),t);
+			}
+			if(logger.isLoggable(Level.FINEST)){
+				logger.log(Level.FINEST, "After decaying {1} has current activation: {2}",
+							new Object[]{TaskManager.getCurrentTick(),this,getDesirability()});
+			}
+		}
 	}
 
 	@Override

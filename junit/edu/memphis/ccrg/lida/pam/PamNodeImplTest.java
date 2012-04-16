@@ -23,7 +23,7 @@ import edu.memphis.ccrg.lida.framework.strategies.DefaultTotalActivationStrategy
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.LinearExciteStrategy;
-import edu.memphis.ccrg.lida.framework.strategies.TotalActivationStrategy;
+import edu.memphis.ccrg.lida.framework.strategies.TotalValueStrategy;
 
 /**
  * @author Siminder Kaur, Ryan J. McCall
@@ -152,8 +152,8 @@ public class PamNodeImplTest{
 	 */
 	@Test
 	public void testGetTotalActivation() {
-		TotalActivationStrategy ts = new DefaultTotalActivationStrategy();
-		node1.setTotalActivationStrategy(ts);
+		TotalValueStrategy ts = new DefaultTotalActivationStrategy();
+		node1.setTotalValueStrategy(ts);
 		node1.setActivation(0.11);
 		node1.setBaseLevelActivation(0.44);
 		assertEquals(0.55, node1.getTotalActivation(), epsilon);
@@ -250,15 +250,15 @@ public class PamNodeImplTest{
 
 	/**
 	 * Test method for
-	 * {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl#getTotalActivationStrategy()}
+	 * {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl#getTotalValueStrategy()}
 	 * .
 	 */
 	@Test
 	public void testGetTotalActivationStrategy() {
-		TotalActivationStrategy ts = new DefaultTotalActivationStrategy();
-		node1.setTotalActivationStrategy(ts);
+		TotalValueStrategy ts = new DefaultTotalActivationStrategy();
+		node1.setTotalValueStrategy(ts);
 		assertEquals("problem with GetTotalActivationStrategy() ", ts,
-				node1.getTotalActivationStrategy());
+				node1.getTotalValueStrategy());
 	}
 	
 

@@ -57,9 +57,11 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 	}
 
 	/**
-	 * Copy constructor
+	 * Copy constructor.
+	 * @deprecated Use {@link ElementFactory#getNode(Node)} instead.
 	 * @param n source {@link NodeImpl}
 	 */
+	@Deprecated
 	public NodeImpl(NodeImpl n) {
 		if(n == null){
 			logger.log(Level.WARNING, "Cannot construct a Node from null.", TaskManager.getCurrentTick());

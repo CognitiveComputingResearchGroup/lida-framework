@@ -76,6 +76,7 @@ public interface TaskSpawner extends Initializable {
 	 * TaskSpawner. Tasks' TaskStatus may or may not be running.
 	 * Use {@link #getTasks()} instead.
 	 * 
+	 * @deprecated The returned tasks may not have {@link TaskStatus#RUNNING}. Replaced by {@link #getTasks()}.
 	 * @return collection of running tasks.
 	 */
 	@Deprecated

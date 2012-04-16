@@ -12,12 +12,15 @@ import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.Link;
+import edu.memphis.ccrg.lida.framework.shared.LinkCategory;
 import edu.memphis.ccrg.lida.framework.shared.LinkImpl;
+import edu.memphis.ccrg.lida.framework.shared.Linkable;
+import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.activation.Learnable;
 import edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
-import edu.memphis.ccrg.lida.framework.strategies.TotalActivationStrategy;
+import edu.memphis.ccrg.lida.framework.strategies.TotalValueStrategy;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 
 /**
@@ -45,8 +48,10 @@ public class PamLinkImpl extends LinkImpl implements PamLink {
 	}
 	/**
 	 * Copy constructor
+	 * @deprecated Use {@link ElementFactory#getLink(String, Node, Linkable, LinkCategory, String, String, double, double)} instead.
 	 * @param pl source {@link PamLinkImpl}
 	 */
+	@Deprecated
 	public PamLinkImpl(PamLinkImpl pl) {
 		super(pl);
 		groundingPamLink = this;
@@ -56,7 +61,7 @@ public class PamLinkImpl extends LinkImpl implements PamLink {
 	/** 
 	 * Must call the {@link #init()} of the internal {@link Learnable}.
 	 * @see LearnableImpl#init()
-	 * @see ElementFactory#getLink(String, edu.memphis.ccrg.lida.framework.shared.Node, edu.memphis.ccrg.lida.framework.shared.Linkable, edu.memphis.ccrg.lida.framework.shared.LinkCategory, String, String, double, double)
+	 * @see ElementFactory#getLink(String, Node, Linkable, LinkCategory, String, String, double, double)
 	 */
 	@Override
 	public void init(){
@@ -205,12 +210,12 @@ public class PamLinkImpl extends LinkImpl implements PamLink {
 	}
 
 	@Override
-	public TotalActivationStrategy getTotalActivationStrategy() {
-		return learnable.getTotalActivationStrategy();
+	public TotalValueStrategy getTotalValueStrategy() {
+		return learnable.getTotalValueStrategy();
 	}
 
 	@Override
-	public void setTotalActivationStrategy(TotalActivationStrategy strategy) {
-		learnable.setTotalActivationStrategy(strategy);
+	public void setTotalValueStrategy(TotalValueStrategy strategy) {
+		learnable.setTotalValueStrategy(strategy);
 	}	
 }

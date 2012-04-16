@@ -8,17 +8,17 @@
 package edu.memphis.ccrg.lida.framework.strategies;
 
 /**
- * A strategy that calculates total activation.
+ * A strategy that calculates a total value based on a learned component and a current component.
  * @author Ryan J. McCall
  */
-public interface TotalActivationStrategy extends Strategy{
+public interface TotalValueStrategy extends Strategy{
 
 	/**
-	 * Calculates and returns total activation.
-	 * @param bla Base-level activation
-	 * @param ca current activation
-	 * @return calculated total activation
+	 * Calculates and returns a total value based on specified components.
+	 * @param b the learned component
+	 * @param c the current component
+	 * @return calculated total value
 	 */
-	public double calculateTotalActivation(double bla, double ca);
+	public double calculateTotalValue(double b, double c);
 	
 }

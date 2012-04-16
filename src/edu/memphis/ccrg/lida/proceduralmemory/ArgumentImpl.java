@@ -252,12 +252,7 @@ public class ArgumentImpl implements Argument {
 	public Object getConditionId() {
 		return null;
 	}
-
-	@Override
-	public double getNetDesirability() {
-		return 0;
-	}
-
+	
 	@Override
 	public double getWeight() {
 		return 0;
@@ -290,6 +285,12 @@ public class ArgumentImpl implements Argument {
 
 	@Override
 	public double getTotalDesirability() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public double getNetDesirability() {
 		// TODO Auto-generated method stub
 		return 0;
 	}

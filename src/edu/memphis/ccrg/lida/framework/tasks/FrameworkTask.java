@@ -41,25 +41,27 @@ public interface FrameworkTask extends Callable<FrameworkTask>, Learnable, Fully
 	public TaskStatus getTaskStatus();
 	
 	/**
-	 * Sets the task's {@link TaskStatus}.    
+	 * Sets the task's {@link TaskStatus}. If {@link TaskStatus} is {@link TaskStatus#CANCELED} {@link TaskStatus} will not be modified.  
 	 * @param s the new {@link TaskStatus} 
 	 */
 	public void setTaskStatus(TaskStatus s);
 
 	/**
 	 * Tells this FrameworkTask to shutdown.
+	 * @deprecated To be replaced by {@link #cancel()} which should be used instead. 
+	 * The method's name makes it ambiguous as to whether it sets {@link TaskStatus} to {@link TaskStatus#FINISHED} or {@link TaskStatus#CANCELED}.
 	 */
 	@Deprecated
 	public void stopRunning();
 	
 	/**
-	 * Sets this FrameworkTask's status to {@link TaskStatus#CANCELED}.<br/>
+	 * Sets this FrameworkTask's {@link TaskStatus} to {@link TaskStatus#CANCELED}.<br/>
 	 * FrameworkTask cannot be restarted and its {@link TaskStatus} can no longer change.
 	 */
 	public void cancel();
 		
 	/**
-	 * Each FrameworkTask is meant to have a unique id that is set at the time of creation.
+	 * A unique id that is set at the time of creation.
 	 * 
 	 * @return  id unique task identifier
 	 */
@@ -69,9 +71,9 @@ public interface FrameworkTask extends Callable<FrameworkTask>, Learnable, Fully
 	 * Sets ticksPerRun
 	 * @see #setNextTicksPerRun(long) change ticksPerRun for the next run only
 	 * 
-	 * @param ticks number of ticks that will occur between executions of this task
+	 * @param t number of ticks that will occur between executions of this task
 	 */
-	public void setTicksPerRun(int ticks);
+	public void setTicksPerRun(int t);
 
 	/**
 	 * Gets ticksPerRun
@@ -97,10 +99,10 @@ public interface FrameworkTask extends Callable<FrameworkTask>, Learnable, Fully
 	 * @see #setTicksPerRun(int) to set the permanent (default) number
 	 * of ticksPerRun
 	 * 
-	 * @param ticks number of ticks that must pass before for the next, and only the next, execution of this
+	 * @param t number of ticks that must pass before for the next, and only the next, execution of this
 	 * FrameworkTask.
 	 */
-	public void setNextTicksPerRun(long ticks);
+	public void setNextTicksPerRun(long t);
 	
 	/**
 	 * Gets nextTicksPerRun
@@ -114,9 +116,9 @@ public interface FrameworkTask extends Callable<FrameworkTask>, Learnable, Fully
 	 * a new task is added.
 	 * 
 	 * @see TaskManager
-	 * @param scheduledTick tick to schedule this task
+	 * @param t tick to schedule this task
 	 */
-	public void setScheduledTick(long scheduledTick);
+	public void setScheduledTick(long t);
 
 	/**
 	 * Returns the tick when this task is scheduled to run next.

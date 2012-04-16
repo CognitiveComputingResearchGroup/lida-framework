@@ -65,10 +65,12 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 	
 	/**
 	 * Constructs a new {@link Link} with specified parameters.
+	 * @deprecated Use {@link ElementFactory#getLink(Node, Linkable, LinkCategory)} instead.
 	 * @param src source {@link Node}
 	 * @param snk sink {@link Linkable}
 	 * @param cat link's {@link LinkCategory}
 	 */
+	@Deprecated
 	public LinkImpl(Node src, Linkable snk, LinkCategory cat) {
 		if(src == null){
 			throw new IllegalArgumentException("Cannot create a link with null source.");
@@ -90,8 +92,10 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 
 	/**
 	 * Copy constructor
+	 * @deprecated Use {@link ElementFactory#getLink(String, Node, Linkable, LinkCategory, String, String, double, double)} instead.
 	 * @param l source {@link LinkImpl}
 	 */
+	@Deprecated
 	public LinkImpl(LinkImpl l) {
 		if(l == null){
 			logger.log(Level.WARNING, "Cannot construct a Link from null.", TaskManager.getCurrentTick());

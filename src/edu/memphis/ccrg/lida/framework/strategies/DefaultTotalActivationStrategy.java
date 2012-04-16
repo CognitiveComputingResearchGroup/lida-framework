@@ -13,10 +13,10 @@ package edu.memphis.ccrg.lida.framework.strategies;
  * @author Ryan J. McCall
  *
  */
-public class DefaultTotalActivationStrategy extends StrategyImpl implements TotalActivationStrategy {
+public class DefaultTotalActivationStrategy extends StrategyImpl implements TotalValueStrategy {
 
 	@Override
-	public double calculateTotalActivation(double baseLevelActivation,
+	public double calculateTotalValue(double baseLevelActivation,
 			double currentActivation) {
 		double sum = baseLevelActivation + currentActivation;
 		return (sum > 1.0) ? 1.0 : sum;

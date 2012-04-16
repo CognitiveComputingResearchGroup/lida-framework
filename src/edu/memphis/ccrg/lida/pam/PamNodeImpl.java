@@ -18,7 +18,7 @@ import edu.memphis.ccrg.lida.framework.shared.activation.Learnable;
 import edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
-import edu.memphis.ccrg.lida.framework.strategies.TotalActivationStrategy;
+import edu.memphis.ccrg.lida.framework.strategies.TotalValueStrategy;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 
 /**
@@ -50,8 +50,10 @@ public class PamNodeImpl extends NodeImpl implements PamNode {
 
     /**
      * Copy constructor
+     * @deprecated Use {@link ElementFactory#getNode(Node, String)} or similar method in {@link ElementFactory} instead.
      * @param pn source {@link PamNodeImpl}
      */
+    @Deprecated
     public PamNodeImpl(PamNodeImpl pn) {
         super(pn);
         groundingPamNode = this;
@@ -204,13 +206,13 @@ public class PamNodeImpl extends NodeImpl implements PamNode {
     }
 
     @Override
-    public TotalActivationStrategy getTotalActivationStrategy() {
-        return learnable.getTotalActivationStrategy();
+    public TotalValueStrategy getTotalValueStrategy() {
+        return learnable.getTotalValueStrategy();
     }
 
     @Override
-    public void setTotalActivationStrategy(TotalActivationStrategy strategy) {
-        learnable.setTotalActivationStrategy(strategy);
+    public void setTotalValueStrategy(TotalValueStrategy strategy) {
+        learnable.setTotalValueStrategy(strategy);
     }
 
     /**

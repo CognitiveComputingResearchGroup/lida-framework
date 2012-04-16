@@ -23,7 +23,7 @@ import edu.memphis.ccrg.lida.pam.tasks.ExcitationTask;
 import edu.memphis.ccrg.lida.pam.tasks.PropagationTask;
 
 /**
- * A main LIDA module which contains feature detectors, nodes, and links.
+ * A main module which contains feature detectors, nodes, and links.
  * @author Ryan J. McCall
  */
 public interface PerceptualAssociativeMemory extends FrameworkModule{
@@ -70,7 +70,9 @@ public interface PerceptualAssociativeMemory extends FrameworkModule{
 	
 	/**
 	 * Adds a COPY of specified node to this {@link PerceptualAssociativeMemory}.
-	 * Node will be of Pam's default type. 
+	 * Node will be of Pam's default type.
+	 * 
+	 * @deprecated Use either {@link #addNode(String, String)} or {@link #addDefaultNode(String)} instead. 
 	 * @param node PamNode
 	 * @return Copied PamNode actually stored in this PAM.
 	 */
@@ -80,6 +82,9 @@ public interface PerceptualAssociativeMemory extends FrameworkModule{
 	/**
 	 * Adds a COPY of a collection of Nodes to this PAM.
 	 * Nodes will be of Pam's default type.
+	 * 
+	 * @deprecated Use either {@link #addNode(String, String)} or 
+	 * 	{@link #addDefaultNode(String)} instead.
 	 * @param nodes nodes to add
 	 * @return Copied PamNodes actually stored in this PAM
 	 */
@@ -90,6 +95,8 @@ public interface PerceptualAssociativeMemory extends FrameworkModule{
 	 * Adds a COPY of specified link to this PAM.
 	 * Link will be of Pam's default type.
 	 *
+	 * @deprecated Use either {@link #addLink(String, Node, Linkable, LinkCategory)} or
+	 * 	 {@link #addDefaultLink(Node, Linkable, LinkCategory)} instead.
 	 * @param link  PamLink to add
 	 * @return Copied PamLink actually stored in this PAM
 	 */
@@ -100,6 +107,8 @@ public interface PerceptualAssociativeMemory extends FrameworkModule{
 	 * Adds a COPY of specified collection of PamLinks to this PAM.
 	 * Links will be of Pam's default type.
 	 *
+	 * @deprecated Use either {@link #addLink(String, Node, Linkable, LinkCategory)} or
+	 * 	 {@link #addDefaultLink(Node, Linkable, LinkCategory)} instead.
 	 * @param links  PamLinks to add
 	 * @return Copied PamLinks actually stored in this PAM
 	 */

@@ -12,7 +12,7 @@ package edu.memphis.ccrg.lida.framework.shared.activation;
 
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
-import edu.memphis.ccrg.lida.framework.strategies.TotalActivationStrategy;
+import edu.memphis.ccrg.lida.framework.strategies.TotalValueStrategy;
 
 /**
  * An Activatible that additionally has a base-level activation. It is used mostly for learning.
@@ -102,15 +102,15 @@ public interface Learnable extends Activatible{
 	public double getLearnableRemovalThreshold();
 	
 	/**
-	 * Returns {@link TotalActivationStrategy}
+	 * Returns {@link TotalValueStrategy}
 	 * @return Strategy this Learnable uses to calculate total activation.
 	 */
-	public TotalActivationStrategy getTotalActivationStrategy();
+	public TotalValueStrategy getTotalValueStrategy();
 	
 	/**
-	 * Sets {@link TotalActivationStrategy}
+	 * Sets {@link TotalValueStrategy}
 	 * @param strategy Strategy this Learnable uses to calculate total activation.
 	 */
-	public void setTotalActivationStrategy(TotalActivationStrategy strategy);
+	public void setTotalValueStrategy(TotalValueStrategy strategy);
 	
 }
