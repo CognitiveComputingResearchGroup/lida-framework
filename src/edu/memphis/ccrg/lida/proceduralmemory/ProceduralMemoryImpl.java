@@ -123,7 +123,7 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 	 */
 	private double schemeSelectionThreshold = DEFAULT_SCHEME_SELECTION_THRESHOLD;
 	
-	private static final double DEFAULT_CONDITION_WEIGHT = 1.0;//for Javier
+//	private static final double DEFAULT_CONDITION_WEIGHT = 1.0;//for Javier
 	
 	private static final String DEFAULT_SCHEME_CLASS = "edu.memphis.ccrg.lida.proceduralmemory.SchemeImpl";
 	/*
@@ -136,12 +136,13 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 	 */
 	private DecayStrategy conditionDecay;
 	
+
+//	 * <b>proceduralMemory.contextWeight type=double</b> The weight of context conditions for the calculation of scheme activation. Should be positive<br/>
+//	 * <b>proceduralMemory.addingListWeight type=double</b> The weight of adding list conditions for the calculation of scheme activation. Should be positive<br/>
 	/**
 	 * This module can initialize the following parameters:<br><br/>
 	 * 
 	 * <b>proceduralMemory.schemeSelectionThreshold type=double</b> amount of activation schemes must have to be instantiated, default is 0.0<br/>
-	 * <b>proceduralMemory.contextWeight type=double</b> The weight of context conditions for the calculation of scheme activation. Should be positive<br/>
-	 * <b>proceduralMemory.addingListWeight type=double</b> The weight of adding list conditions for the calculation of scheme activation. Should be positive<br/>
 	 * <b>proceduralMemory.conditionDecayStrategy type=string</b> The DecayStrategy used by all conditions in the condition pool (and broadcast buffer).<br/> 
 	 * <b>proceduralMemory.schemeClass type=string</b> qualified name of the {@link Scheme} class used by this module <br/>
 	 * 
@@ -150,8 +151,8 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 	@Override
 	public void init() {	
 		schemeSelectionThreshold = getParam("proceduralMemory.schemeSelectionThreshold", DEFAULT_SCHEME_SELECTION_THRESHOLD);
-		SchemeImpl.setContextWeight(getParam("proceduralMemory.contextWeight",DEFAULT_CONDITION_WEIGHT));
-		SchemeImpl.setAddingListWeight(getParam("proceduralMemory.addingListWeight",DEFAULT_CONDITION_WEIGHT));
+//		SchemeImpl.setContextWeight(getParam("proceduralMemory.contextWeight",DEFAULT_CONDITION_WEIGHT));
+//		SchemeImpl.setAddingListWeight(getParam("proceduralMemory.addingListWeight",DEFAULT_CONDITION_WEIGHT));
 		String decayName = getParam("proceduralMemory.conditionDecayStrategy", factory.getDefaultDecayType());
 		conditionDecay = factory.getDecayStrategy(decayName);		
 		schemeClass = getParam("proceduralMemory.schemeClass",DEFAULT_SCHEME_CLASS);
@@ -342,7 +343,9 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 	 */
 	@Override
 	public boolean shouldInstantiate(Scheme s, NodeStructure broadcastBuffer){
-		return s.getTotalActivation() >= schemeSelectionThreshold;
+		return s.getTotalActivation() >= schemeSelectionThreshold || 
+			   ((SchemeImpl)s).getTotalDesirability() >= schemeSelectionThreshold;
+			   //TODO perhaps another parameter for desirability threhsold?
 	}
 
 	@Override

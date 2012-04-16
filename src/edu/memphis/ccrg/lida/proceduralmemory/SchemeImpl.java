@@ -16,7 +16,10 @@ import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.actionselection.Action;
 import edu.memphis.ccrg.lida.framework.shared.RootableNode;
-import edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl;
+import edu.memphis.ccrg.lida.framework.shared.activation.Desirable;
+import edu.memphis.ccrg.lida.framework.shared.activation.LearnableActivatibleImpl;
+import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
+import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryImpl.ConditionType;
 
@@ -25,7 +28,7 @@ import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryImpl.ConditionType
  * @author Ryan J. McCall
  * @author Javier Snaider
  */
-public class SchemeImpl extends LearnableImpl implements Scheme {
+public class SchemeImpl extends LearnableActivatibleImpl implements Scheme, Desirable{
 	
 	private static final Logger logger = Logger.getLogger(SchemeImpl.class.getCanonicalName());
 	private static int idCounter = 0;//TODO Factory support for Scheme
@@ -43,14 +46,14 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 //	private Map<Object,Condition> negContext = new ConcurrentHashMap<Object,Condition>();
 	private ProceduralMemoryImpl pm;
 	
-	/*
-	 * The weight of the context in the calculation of scheme salience
-	 */
-	private static double contextWeight = 1.0;
-	/*
-	 * The weight of the adding list in the calculation of scheme salience
-	 */
-	private static double addingListWeight = 1.0;
+//	/*
+//	 * The weight of the context in the calculation of scheme salience
+//	 */
+//	private static double contextWeight = 1.0;
+//	/*
+//	 * The weight of the adding list in the calculation of scheme salience
+//	 */
+//	private static double addingListWeight = 1.0;
 	/*
 	 * Threshold for Schemes to be reliable
 	 */
@@ -91,41 +94,41 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 		this.pm = pm;
 	}
 
-	/**
-	 * @param w the contextWeight to set
-	 */
-	static void setContextWeight(double w) {
-		if(w >= 0.0){
-			SchemeImpl.contextWeight = w;
-		}else{
-			logger.log(Level.WARNING, "Context weight must be positive", TaskManager.getCurrentTick());
-		}
-	}
-
-	/**
-	 * @return the contextWeight
-	 */
-	static double getContextWeight() {
-		return contextWeight;
-	}
-
-	/**
-	 * @param w the addingListWeight to set
-	 */
-	static void setAddingListWeight(double w) {
-		if(w >= 0.0){
-			SchemeImpl.addingListWeight = w;
-		}else{
-			logger.log(Level.WARNING, "Adding list weight must be positive", TaskManager.getCurrentTick());
-		}
-	}
-
-	/**
-	 * @return the addingListWeight
-	 */
-	static double getAddingListWeight() {
-		return addingListWeight;
-	}
+//	/**
+//	 * @param w the contextWeight to set
+//	 */
+//	static void setContextWeight(double w) {
+//		if(w >= 0.0){
+//			SchemeImpl.contextWeight = w;
+//		}else{
+//			logger.log(Level.WARNING, "Context weight must be positive", TaskManager.getCurrentTick());
+//		}
+//	}
+//
+//	/**
+//	 * @return the contextWeight
+//	 */
+//	static double getContextWeight() {
+//		return contextWeight;
+//	}
+//
+//	/**
+//	 * @param w the addingListWeight to set
+//	 */
+//	static void setAddingListWeight(double w) {
+//		if(w >= 0.0){
+//			SchemeImpl.addingListWeight = w;
+//		}else{
+//			logger.log(Level.WARNING, "Adding list weight must be positive", TaskManager.getCurrentTick());
+//		}
+//	}
+//
+//	/**
+//	 * @return the addingListWeight
+//	 */
+//	static double getAddingListWeight() {
+//		return addingListWeight;
+//	}
 	
 	//Scheme methods
 	
@@ -187,23 +190,23 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 	}
 		
 	/**
-	 * Gets the average net desirability of this unit's adding list
-	 * @return average net desirability of this unit's adding list
+	 * Gets the average desirability of this unit's adding list.
+	 * @return average desirability of this unit's adding list
 	 */
-	protected double getAverageAddingListNetDesirability(){
+	protected double getAverageAddingListDesirability(){
 		int numConditions = 0;
-		double aggregateNetDesirability = 0.0;
+		double aggregateDesirability = 0.0;
 		for(Condition c: addingList.values()){
 			if(c instanceof RootableNode){
 				//if required to use Condition weight, use it here
-				aggregateNetDesirability += ((RootableNode) c).getNetDesirability(); 
+				aggregateDesirability += ((RootableNode) c).getTotalDesirability(); 
 				numConditions++;
 			}
 		}
 		if(numConditions == 0){
 			return 0.0;
 		}else{
-			return aggregateNetDesirability / numConditions;
+			return aggregateDesirability / numConditions;
 		}
 	}
 	
@@ -218,9 +221,8 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 	
 	@Override
 	public double getActivation(){
-		double overallSalience = contextWeight * getAverageContextActivation() +
-									addingListWeight * getAverageAddingListNetDesirability();
-		return (overallSalience > 1.0)? 1.0:overallSalience;		
+//		double overallSalience = contextWeight * getAverageContextActivation();
+		return getAverageContextActivation();		
 	}
 
 	@Override
@@ -361,5 +363,45 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 	@Override
 	public String toString(){
 		return getLabel() + "-" + getId();
+	}
+
+	@Override
+	public double getDesirability() {
+		return getAverageAddingListDesirability();
+	}
+
+	@Override
+	public double getTotalDesirability() {
+		return getDesirability();
+	}
+
+	@Override
+	public void setDesirability(double d) {
+	}
+
+	@Override
+	public void decayDesirability(long t) {
+	}
+
+	@Override
+	public void exciteDesirability(double a) {
+	}
+
+	@Override
+	public DecayStrategy getDesirabilityDecayStrategy() {
+		return null;
+	}
+
+	@Override
+	public ExciteStrategy getDesirabilityExciteStrategy() {
+		return null;
+	}
+
+	@Override
+	public void setDesirabilityDecayStrategy(DecayStrategy d) {
+	}
+
+	@Override
+	public void setDesirabilityExciteStrategy(ExciteStrategy s) {
 	}
 }

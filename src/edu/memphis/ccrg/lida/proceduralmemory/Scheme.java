@@ -9,7 +9,7 @@ package edu.memphis.ccrg.lida.proceduralmemory;
 
 import edu.memphis.ccrg.lida.actionselection.Action;
 import edu.memphis.ccrg.lida.actionselection.Behavior;
-import edu.memphis.ccrg.lida.framework.shared.activation.Learnable;
+import edu.memphis.ccrg.lida.framework.shared.activation.LearnableActivatible;
 import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryImpl.ConditionType;
 
 /**
@@ -20,7 +20,7 @@ import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryImpl.ConditionType
  * 
  * @author Ryan J. McCall
  */
-public interface Scheme extends ProceduralUnit, Learnable {
+public interface Scheme extends ProceduralUnit, LearnableActivatible{
 	
 	/**
 	 * Sets action
@@ -67,18 +67,6 @@ public interface Scheme extends ProceduralUnit, Learnable {
 	 * @return true if reliability is over threshold
 	 */
 	public boolean isReliable();
-
-//	/**
-//	 * Sets reliabilityThreshold
-//	 * @param threshold threshold of reliability
-//	 */
-//	public void setReliabilityThreshold(double threshold);
-//
-//	/**
-//	 * Gets reliabilityThreshold
-//	 * @return threshold of reliability
-//	 */
-//	public double getReliabilityThreshold();
 
 	/**
 	 * Sets innate

@@ -136,14 +136,6 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements
 	 */
 	private DecayStrategy behaviorDecayStrategy;
 
-	// /*
-	// * Map of behaviors indexed by the elements appearing in their negated
-	// * context conditions.
-	// */
-	// private ConcurrentMap<Condition, Set<Behavior>>
-	// behaviorsByNegContextCondition = new ConcurrentHashMap<Condition,
-	// Set<Behavior>>();
-
 	/**
 	 * Default constructor
 	 */
@@ -283,6 +275,7 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements
 		Object[] keyPermutation = getRandomPermutation();
 		for (Object key : keyPermutation) {
 			Behavior b = behaviors.get(key);
+			//TODO this is crap
 			if (isAllContextConditionsSatisfied(b)) {
 				passActivationToSuccessors(b);
 			} else {
@@ -319,13 +312,6 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements
 				}
 			}
 		}
-		// // For successors with negated conditions
-		// for (Condition deleteProposition : behavior.getDeletingList()) {
-		// Set<Behavior> successors = getSuccessors(deleteProposition);
-		// if (successors != null) {
-		// spreadActivationSucc(behavior, deleteProposition, successors);
-		// }
-		// }
 	}
 
 	private Set<Behavior> getSuccessors(Condition addingCondition) {
@@ -352,36 +338,26 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements
 	 * Don't bother exciting a predecessor for a precondition that is already
 	 * satisfied.
 	 */
+	//TODO change name to desirability
 	private void passActivationToPredecessors(Behavior b) {
 		// For positive conditions
 		for (Condition contextCond : b.getContextConditions()) {
 			if (isContextConditionSatisfied(contextCond) == false) {
-				Set<Behavior> predecessors = behaviorsByAddingItem.get(contextCond);
-				//TODO we may have to copy the elements into a new set to avoid ConcurrentModEx in the call below 
+				Set<Behavior> predecessors = behaviorsByAddingItem.get(contextCond); 
 				if (predecessors != null) {
 					auxPassActivationPredecessors(b, contextCond, predecessors);
 				}
 			}
 		}
-		// // For negated conditions
-		// for (Condition contextCondition : behavior
-		// .getNegatedContextConditions()) {
-		// if (!behavior.isContextConditionSatisfied(contextCondition)) {
-		// Set<Behavior> predecessors = null;
-		// predecessors = behaviorsByDeletingItem.get(contextCondition);
-		//
-		// if (predecessors != null) {
-		// spreadActivationPred(behavior, contextCondition,
-		// predecessors);
-		// }
-		// }
-		// }
 	}
 
+	//TODO change name to desirability
 	private void auxPassActivationPredecessors(Behavior b, Condition c,
 			Set<Behavior> predecessors) {
 		for (Behavior predecessor : predecessors) {
-			//think about being your own predecessor
+			//TODO
+//			double amount = ((BehaviorImpl)b).getTotalDesirability() * predecessorExcitationFactor;
+//			((BehaviorImpl)predecessor).exciteDesirability(amount);
 			double amount = b.getActivation()/getUnsatisfiedContextCount(b)*predecessorExcitationFactor;
 			predecessor.excite(amount);
 			logger.log(Level.FINEST,
@@ -413,22 +389,6 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements
 								}
 							}
 						}
-						// // for each conflictor negated context condition
-						// if (!isMutualConflict) {
-						// for (Condition conflictorPreCondition : conflictor
-						// .getNegatedContextConditions()) {
-						// Set<Behavior> conflictorConflictors =
-						// behaviorsByAddingItem
-						// .get(conflictorPreCondition);
-						// // if there is a mutual conflict
-						// if (conflictorConflictors != null) {
-						// isMutualConflict = conflictorConflictors
-						// .contains(behavior);
-						// if (isMutualConflict)
-						// break;
-						// }
-						// }
-						// }
 					}
 					// No mutual conflict then inhibit the conflictor of behavior
 					if (!isMutualConflict) {
@@ -477,29 +437,19 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements
 		}
 		return result;
 	}
-	
-	private boolean isContextConditionSatisfied(Condition c) {
-		return c.getActivation() >= contextSatisfactionThreshold;
-	}
-//	private boolean isNegContextConditionSatisifed(Condition c){
-//		return (1.0 - negContext.get(prop.getConditionId()).getActivation()) >= contextSatisfactionThreshold;
-//		return false;
-//	}
-
 	private boolean isAllContextConditionsSatisfied(Behavior b) {
 		for(Condition c: b.getContextConditions()){
 			if(c.getActivation() < contextSatisfactionThreshold){
 				return false;
 			}
 		}
-//		for(Condition c:negContext.values()){
-//			if((1.0 - c.getActivation()) < contextSatisfactionThreshold){
-//				return false;
-//			}
-//		}
 		return true;
 	}
 	
+	private boolean isContextConditionSatisfied(Condition c) {
+		return c.getActivation() >= contextSatisfactionThreshold;
+	}
+
 	private int getUnsatisfiedContextCount(Behavior b) {
 		int count = 0;
 		for(Condition c: b.getContextConditions()){
@@ -507,11 +457,6 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements
 				count++;
 			}
 		}
-//		for(Condition c:negContext.values()){
-//			if((1-c.getActivation()) < contextSatisfactionThreshold){
-//				count++;
-//			}
-//		}
 		return count;
 	}
 
@@ -531,7 +476,7 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements
 	@Override
 	public Behavior selectBehavior(Collection<Behavior> behaviors,
 			double candidateThreshold) {
-		double maxActivation = 0.0;
+		double maxActivation = 0.0;//TODO a combined measure of activation and desirability
 		List<Behavior> winners = new ArrayList<Behavior>();
 		for (Behavior b : behaviors) {
 			double currentActivation = b.getTotalActivation();
@@ -614,10 +559,6 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements
 			behaviorsByDeletingItem.get(c).remove(b);
 		}
 		behaviors.remove(b.getId());
-		// for (Condition precondition :
-		// behavior.getNegatedContextConditions()){
-		// behaviorsByContextCondition.get(precondition).remove(behavior);
-		// }
 		logger.log(Level.FINEST, "Behavior {1} was removed from BehaviorNet.",
 				new Object[] { TaskManager.getCurrentTick(), b });
 	}
@@ -643,108 +584,4 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements
 	double getCandidateThreshold() {
 		return candidateThreshold;
 	}
-
-	// /*
-	// * comment after settling code using these
-	// */
-	// private enum ConditionSet {
-	// CONTEXT, NEGCONTEXT, ADDING_LIST, DELETING_LIST
-	// }
-	/*
-	 * For each proposition in the current environment get the behaviors indexed
-	 * by that proposition For each behavior, excite it.
-	 */
-	// private void passActivationFromBroadcast() {
-	// for (Behavior b : behaviors.values()) {
-	// // Another option is to use GoalDegree and Activation
-	// if (condition.getNetDesirability() < desirabilityThreshold) {
-	// if (behaviorsByContextCondition.containsKey(condition)) {
-	// passActivationToContextOrResult(condition,
-	// behaviorsByContextCondition, ConditionSet.CONTEXT);
-	// } else if (behaviorsByNegContextCondition
-	// .containsKey(condition)) {
-	// passActivationToContextOrResult(condition,
-	// behaviorsByNegContextCondition,
-	// ConditionSet.NEGCONTEXT);
-	// }
-	// } else {
-	// if (behaviorsByAddingItem.containsKey(condition)) {
-	// passActivationToContextOrResult(condition,
-	// behaviorsByAddingItem, ConditionSet.ADDING_LIST);
-	// } else if (behaviorsByDeletingItem.containsKey(condition)) {
-	// // Change this if protected goals are used
-	// passActivationToContextOrResult(condition,
-	// behaviorsByDeletingItem, ConditionSet.DELETING_LIST);
-	// }
-	// }
-	// }
-	// }
-	// private void passActivationToContextOrResult(Condition condition,
-	// ConcurrentMap<Condition, Set<Behavior>> map,
-	// ConditionSet conditionSetType) {
-	// double excitationAmount = 0.0;
-	// Condition c;
-	// Set<Behavior> behaviors = map.get(condition);
-	// for (Behavior behavior : behaviors) {
-	// switch (conditionSetType) {
-	// case CONTEXT:
-	// c = behavior.getContextCondition(condition.getConditionId());
-	//
-	// excitationAmount = (condition.getTotalActivation()
-	// * broadcastExcitationFactor * c.getWeight() / behavior
-	// .getContextSize());
-	//
-	// behavior.excite(excitationAmount);
-	// break;
-	// case NEGCONTEXT:
-	// c = behavior.getContextCondition(condition.getConditionId());
-	// excitationAmount = ((1.0 - condition.getTotalActivation())
-	// * broadcastExcitationFactor * c.getWeight())
-	// / behavior.getContextSize();
-	//
-	// behavior.excite(excitationAmount);
-	// break;
-	// case ADDING_LIST:
-	// // excitationAmount = condition.getNetDesirability()
-	// // * broadcastExcitationFactor;
-	// behavior.excite(excitationAmount);
-	// break;
-	// case DELETING_LIST:
-	// // Check this
-	// // behavior.excite(-excitationAmount /
-	// // behavior.getResultSize());
-	// // behavior.excite(-excitationAmount);
-	// break;
-	// }
-	// logger.log(Level.FINEST, "{1}: {2} for {3}",
-	// new
-	// Object[]{TaskManager.getCurrentTick(),behavior,excitationAmount,condition});
-	// }
-	// }
-
-	// private static final double DEFAULT_MEAN_ACTIVATION = 0.05;
-	/*
-	 * The mean activation of behaviors. It is used for the Normalization (akin
-	 * to PI from Maes' implementation)
-	 */
-	// private double meanActivation = DEFAULT_MEAN_ACTIVATION;
-	/*
-	 * normalize the behaviors' activation.
-	 */
-	// private void normalizeActivation() {
-	// Double totalNetAct = 0.0;
-	// Double nCount = mediaActivation * getBehaviors().size();
-	// for (Behavior behavior : getBehaviors()) {
-	// totalNetAct += behavior.getActivation();
-	// }
-	//
-	// for (Behavior behavior : getBehaviors()) {
-	// double activation = behavior.getActivation() * totalNetAct / nCount;
-	// // behavior.decay(1L,totalNetAct,nCount);
-	// behavior.setActivation(activation);
-	//		
-	// logger.log(Level.FINEST,
-	// "Decaying behavior: " + behavior.getActivation());
-	// }
-	// }
 }

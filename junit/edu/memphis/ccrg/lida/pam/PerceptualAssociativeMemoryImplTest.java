@@ -83,7 +83,7 @@ public class PerceptualAssociativeMemoryImplTest {
 		
 		decayStrategy = new SigmoidDecayStrategy();
 		exciteStrat = new SigmoidExciteStrategy();
-		tas = (TotalValueStrategy) factory.getStrategy("DefaultTotalActivation");		
+		tas = factory.getDefaultTotalValueStrategy();		
 		link1 = (PamLinkImpl) factory.getLink("PamLinkImpl", node1, node2, PerceptualAssociativeMemoryImpl.NONE);
 		link2 = (PamLinkImpl) factory.getLink("PamLinkImpl", node2, node3, PerceptualAssociativeMemoryImpl.NONE);
 	}

@@ -32,25 +32,28 @@ public class ActivatibleImpl extends InitializableImpl implements Activatible {
 
 	private ExciteStrategy exciteStrategy;
 	private DecayStrategy decayStrategy;
-	private double activation = DEFAULT_ACTIVATION;
-	private double removalThreshold = DEFAULT_ACTIVATIBLE_REMOVAL_THRESHOLD;
+	private double activation;
+	private double removalThreshold;
 
 	/**
 	 * Default constructor
 	 */
 	public ActivatibleImpl() {
+		activation = DEFAULT_ACTIVATION;
+		removalThreshold = DEFAULT_ACTIVATIBLE_REMOVAL_THRESHOLD;
 		decayStrategy = factory.getDefaultDecayStrategy();
 		exciteStrategy = factory.getDefaultExciteStrategy();
 	}
 	
 	/**
-	 * Intended for testing only.
+	 * @deprecated To be removed in the future. 
 	 * @param activation initial activation
 	 * @param removalThreshold initial removableThreshold
 	 * @param excite {@link ExciteStrategy}
 	 * @param decay {@link DecayStrategy}
 	 */
-	ActivatibleImpl(double activation, double removalThreshold, ExciteStrategy excite, DecayStrategy decay) {
+	@Deprecated
+	public ActivatibleImpl(double activation, double removalThreshold, ExciteStrategy excite, DecayStrategy decay) {
 		this.activation = activation;
 		this.removalThreshold = removalThreshold;
 		this.exciteStrategy = excite;

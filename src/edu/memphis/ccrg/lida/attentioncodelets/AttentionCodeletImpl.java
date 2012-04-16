@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl;
+import edu.memphis.ccrg.lida.framework.shared.activation.LearnableActivatibleImpl;
 import edu.memphis.ccrg.lida.framework.tasks.CodeletImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.Coalition;
@@ -52,7 +52,7 @@ public abstract class AttentionCodeletImpl extends CodeletImpl implements
      * <br/> 
      * 
      * If any parameter is not specified its default value will be used.
-     * @see LearnableImpl#init()
+     * @see LearnableActivatibleImpl#init()
 	 */
     @Override
     public void init() {

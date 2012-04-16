@@ -7,7 +7,7 @@ import edu.memphis.ccrg.lida.framework.strategies.TotalValueStrategy;
  * A {@link Desirable} with a learned component.
  * @author Ryan J. McCall
  */
-public interface LearnedDesirable extends Desirable {
+public interface LearnableDesirable extends Desirable {
 	
 	/**
 	 * Default base-level desirability for {@link Desirable}.
@@ -25,6 +25,12 @@ public interface LearnedDesirable extends Desirable {
 	 * @param d new base-level desirability 
 	 */
 	public void setBaseLevelDesirability(double d);
+	
+	/**
+	 * Reinforces learned desirability specified amount.
+	 * @param a desirability to reinforce with 
+	 */
+	public void reinforceBaseLevelDesirability(double a);
     
     /**
      * Sets base-level {@link ExciteStrategy}.

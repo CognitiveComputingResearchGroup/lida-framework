@@ -14,17 +14,17 @@ import cern.colt.bitvector.BitVector;
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeImpl;
-import edu.memphis.ccrg.lida.framework.shared.activation.Learnable;
-import edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl;
+import edu.memphis.ccrg.lida.framework.shared.activation.LearnableActivatible;
+import edu.memphis.ccrg.lida.framework.shared.activation.LearnableActivatibleImpl;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.TotalValueStrategy;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 
 /**
- * Default implementation of {@link PamNode}.  A {@link Learnable} {@link Node} that
- * overrides hashCode and equals.  Has a private {@link LearnableImpl} to help 
- * implement all {@link Learnable} methods.
+ * Default implementation of {@link PamNode}. A {@link LearnableActivatible} {@link Node}. 
+ * Has a private {@link LearnableActivatibleImpl} to help 
+ * implement all {@link LearnableActivatible} methods.
  * @author Ryan J. McCall
  * @author Rodrigo Silva-Lugo
  */
@@ -34,7 +34,7 @@ public class PamNodeImpl extends NodeImpl implements PamNode {
     /*
      * Private Learnable object used for all learnable methods
      */
-    private LearnableImpl learnable;
+    private LearnableActivatibleImpl learnableImpl;
     private BitVector sdmId;
     @SuppressWarnings("unused")
 	private static final int DEFAULT_BITVECTOR_LENGTH = 1000;
@@ -45,7 +45,7 @@ public class PamNodeImpl extends NodeImpl implements PamNode {
     public PamNodeImpl() {
         super();
         groundingPamNode = this;
-        learnable = new LearnableImpl();
+        learnableImpl = new LearnableActivatibleImpl();
     }
 
     /**
@@ -57,24 +57,24 @@ public class PamNodeImpl extends NodeImpl implements PamNode {
     public PamNodeImpl(PamNodeImpl pn) {
         super(pn);
         groundingPamNode = this;
-        learnable = new LearnableImpl(pn.learnable);
+        learnableImpl = new LearnableActivatibleImpl(pn.learnableImpl);
     }
 
     /** 
-     * Must call the {@link #init()} of the internal {@link Learnable}.
-     * @see LearnableImpl#init()
+     * Must call the {@link #init()} of the internal {@link LearnableActivatible}.
+     * @see LearnableActivatibleImpl#init()
      * @see ElementFactory#getNode(String, String, String, String, double, double)
      */
     @Override
     public void init() {
-        learnable.init(getParameters());
+        learnableImpl.init(getParameters());
     }
 
     @Override
     public void updateNodeValues(Node n) {
         if (n instanceof PamNodeImpl) {
             PamNodeImpl pn = (PamNodeImpl) n;
-            learnable.setBaseLevelActivation(pn.getBaseLevelActivation());   
+            learnableImpl.setBaseLevelActivation(pn.getBaseLevelActivation());   
         } else {
             logger.log(Level.FINEST, "Cannot set PamNodeImpl-specific values. Required: {1} \n Received: {2}",
                     new Object[]{TaskManager.getCurrentTick(), PamNodeImpl.class.getCanonicalName(), n});
@@ -89,130 +89,125 @@ public class PamNodeImpl extends NodeImpl implements PamNode {
         return false;
     }
 
-    @Override
-    public int hashCode() {
-        return getId();
-    }
-
     //LEARNABLE METHODS
     @Override
     public double getActivation() {
-        return learnable.getActivation();
+        return learnableImpl.getActivation();
     }
 
     @Override
     public void setActivation(double a) {
-        learnable.setActivation(a);
+        learnableImpl.setActivation(a);
     }
 
     @Override
     public double getTotalActivation() {
-        return learnable.getTotalActivation();
+        return learnableImpl.getTotalActivation();
     }
 
     @Override
     public void excite(double amount) {
-        learnable.excite(amount);
+        learnableImpl.excite(amount);
     }
 
     @Override
     public void setExciteStrategy(ExciteStrategy strategy) {
-        learnable.setExciteStrategy(strategy);
+        learnableImpl.setExciteStrategy(strategy);
     }
 
     @Override
     public ExciteStrategy getExciteStrategy() {
-        return learnable.getExciteStrategy();
+        return learnableImpl.getExciteStrategy();
     }
 
     @Override
     public void decay(long ticks) {
-        learnable.decay(ticks);
+        learnableImpl.decay(ticks);
     }
 
     @Override
     public void setDecayStrategy(DecayStrategy strategy) {
-        learnable.setDecayStrategy(strategy);
+        learnableImpl.setDecayStrategy(strategy);
     }
 
     @Override
     public DecayStrategy getDecayStrategy() {
-        return learnable.getDecayStrategy();
+        return learnableImpl.getDecayStrategy();
     }
 
     @Override
     public void setActivatibleRemovalThreshold(double threshold) {
-        learnable.setActivatibleRemovalThreshold(threshold);
+        learnableImpl.setActivatibleRemovalThreshold(threshold);
     }
 
     @Override
     public double getActivatibleRemovalThreshold() {
-        return learnable.getActivatibleRemovalThreshold();
+        return learnableImpl.getActivatibleRemovalThreshold();
     }
 
     @Override
     public boolean isRemovable() {
-        return learnable.isRemovable();
+        return learnableImpl.isRemovable();
     }
 
     @Override
     public double getBaseLevelActivation() {
-        return learnable.getBaseLevelActivation();
+        return learnableImpl.getBaseLevelActivation();
     }
 
     @Override
     public void setBaseLevelActivation(double amount) {
-        learnable.setBaseLevelActivation(amount);
+        learnableImpl.setBaseLevelActivation(amount);
     }
 
     @Override
     public void reinforceBaseLevelActivation(double amount) {
-        learnable.reinforceBaseLevelActivation(amount);
+        learnableImpl.reinforceBaseLevelActivation(amount);
     }
 
     @Override
     public void setBaseLevelExciteStrategy(ExciteStrategy strategy) {
-        learnable.setBaseLevelExciteStrategy(strategy);
+        learnableImpl.setBaseLevelExciteStrategy(strategy);
     }
 
     @Override
     public ExciteStrategy getBaseLevelExciteStrategy() {
-        return learnable.getBaseLevelExciteStrategy();
+        return learnableImpl.getBaseLevelExciteStrategy();
     }
 
     @Override
     public void decayBaseLevelActivation(long ticks) {
-        learnable.decayBaseLevelActivation(ticks);
+        learnableImpl.decayBaseLevelActivation(ticks);
     }
 
     @Override
     public void setBaseLevelDecayStrategy(DecayStrategy strategy) {
-        learnable.setBaseLevelDecayStrategy(strategy);
+        learnableImpl.setBaseLevelDecayStrategy(strategy);
     }
 
     @Override
     public DecayStrategy getBaseLevelDecayStrategy() {
-        return learnable.getBaseLevelDecayStrategy();
+        return learnableImpl.getBaseLevelDecayStrategy();
     }
 
     @Override
     public void setBaseLevelRemovalThreshold(double threshold) {
-        learnable.setBaseLevelRemovalThreshold(threshold);
+        learnableImpl.setBaseLevelRemovalThreshold(threshold);
     }
 
     @Override
     public double getLearnableRemovalThreshold() {
-        return learnable.getLearnableRemovalThreshold();
+        return learnableImpl.getLearnableRemovalThreshold();
     }
 
     @Override
     public TotalValueStrategy getTotalValueStrategy() {
-        return learnable.getTotalValueStrategy();
+        return learnableImpl.getTotalValueStrategy();
     }
 
     @Override
     public void setTotalValueStrategy(TotalValueStrategy strategy) {
-        learnable.setTotalValueStrategy(strategy);
+        learnableImpl.setTotalValueStrategy(strategy);
     }
 
     /**

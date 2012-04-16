@@ -26,11 +26,11 @@
 			<class>edu.memphis.ccrg.lida.pam.PamNodeImpl</class>
 			<defaultstrategy>defaultDecay</defaultstrategy>
 			<defaultstrategy>defaultExcite</defaultstrategy>
-			<param name="learnable.baseLevelActivation" type="double">0.1</param>
-			<param name="learnable.baseLevelRemovalThreshold" type="double">0.0</param>
-			<param name="learnable.baseLevelDecayStrategy" type="string">defaultDecay</param>
-			<param name="learnable.baseLevelExciteStrategy" type="string">defaultExcite</param>
-			<param name="learnable.totalActivationStrategy" type="string">DefaultTotalActivation</param> 
+			<param name="learnableActivatible.baseLevelActivation" type="double">0.1</param>
+			<param name="learnableActivatible.baseLevelRemovalThreshold" type="double">0.0</param>
+			<param name="learnableActivatible.baseLevelDecayStrategy" type="string">defaultDecay</param>
+			<param name="learnableActivatible.baseLevelExciteStrategy" type="string">defaultExcite</param>
+			<param name="learnableActivatible.totalActivationStrategy" type="string">DefaultTotalActivation</param> 
 		</node>
 	</nodes>
 	<links>
@@ -38,11 +38,11 @@
 			<class>edu.memphis.ccrg.lida.pam.PamLinkImpl</class>
 			<defaultstrategy>defaultDecay</defaultstrategy>
 			<defaultstrategy>defaultExcite</defaultstrategy>
-			<param name="learnable.baseLevelActivation" type="double">0.1</param>
-			<param name="learnable.baseLevelRemovalThreshold" type="double">0.0</param>
-			<param name="learnable.baseLevelDecayStrategy" type="string">defaultDecay</param>
-			<param name="learnable.baseLevelExciteStrategy" type="string">defaultExcite</param>
-			<param name="learnable.totalActivationStrategy" type="string">DefaultTotalActivation</param> 
+			<param name="learnableActivatible.baseLevelActivation" type="double">0.1</param>
+			<param name="learnableActivatible.baseLevelRemovalThreshold" type="double">0.0</param>
+			<param name="learnableActivatible.baseLevelDecayStrategy" type="string">defaultDecay</param>
+			<param name="learnableActivatible.baseLevelExciteStrategy" type="string">defaultExcite</param>
+			<param name="learnableActivatible.totalActivationStrategy" type="string">DefaultTotalActivation</param> 
 		</link>
 	</links>
 	<tasks>

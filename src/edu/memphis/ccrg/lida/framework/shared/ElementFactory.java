@@ -28,6 +28,7 @@ import edu.memphis.ccrg.lida.framework.strategies.LinearExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.NoDecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.NoExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.Strategy;
+import edu.memphis.ccrg.lida.framework.strategies.TotalValueStrategy;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTask;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.pam.PamLinkImpl;
@@ -66,7 +67,7 @@ public class ElementFactory {
 	 */
 	private String defaultExciteType = "defaultExcite";
 	
-	private String defaultTotalActivationType = "DefaultTotalActivation";
+	private String defaultTotalValueStrategyType = DefaultTotalActivationStrategy.class.getSimpleName();
 
 	/*
 	 * Used to retrieve default link class from 'linkClasses' map. e.g.
@@ -89,6 +90,7 @@ public class ElementFactory {
 	 * Specifies default node type used by the factory. e.g. "NodeImpl"
 	 */
 	private String defaultNodeType = NodeImpl.class.getSimpleName();
+	
 	
 	//TODO a Definition for behavior is needed
 	private String defaultBehaviorClassName = BehaviorImpl.class.getCanonicalName();
@@ -197,7 +199,7 @@ public class ElementFactory {
 				new HashMap<String, Object>(), exciteStrategyType, true));
 		
 		//Default TotalActivation strategy
-		strategyName=defaultTotalActivationType;
+		strategyName=defaultTotalValueStrategyType;
 		StrategyDef strategyDef = new StrategyDef(DefaultTotalActivationStrategy.class.getCanonicalName(), 
 				strategyName, new HashMap<String, Object>(), "other", true);
 		addStrategy(strategyName, strategyDef);
@@ -208,11 +210,11 @@ public class ElementFactory {
 		defaultStrategies.put("excite", defaultExciteType);
 		
 		params= new HashMap<String, Object>();
-		params.put("learnable.baseLevelActivation", 0.0);
-		params.put("learnable.baseLevelRemovalThreshold", -1.0);
-		params.put("learnable.baseLevelDecayStrategy", "noDecay");
-		params.put("learnable.baseLevelExciteStrategy", "noExcite");
-		params.put("learnable.totalActivationStrategy", strategyName);
+		params.put("learnableActivatible.baseLevelActivation", 0.0);
+		params.put("learnableActivatible.baseLevelRemovalThreshold", -1.0);
+		params.put("learnableActivatible.baseLevelDecayStrategy", "noDecay");
+		params.put("learnableActivatible.baseLevelExciteStrategy", "noExcite");
+		params.put("learnableActivatible.totalActivationStrategy", strategyName);
 		
 		//Nodes
 		//Default node type
@@ -354,6 +356,15 @@ public class ElementFactory {
 	public String getDefaultNodeType() {
 		return defaultNodeType;
 	}
+	
+	/**
+	 * Gets default total value strategy type.
+	 * @return the default total value strategy type.
+	 */
+	public String getDefaultTotalValueStrategyType(){
+		return defaultTotalValueStrategyType;
+	}
+	
 	/**
 	 * Returns whether this factory contains specified {@link Strategy} type.
 	 * @param strategyTypeName name of strategy type
@@ -964,6 +975,14 @@ public class ElementFactory {
 	 */
 	public ExciteStrategy getDefaultExciteStrategy(){
 		return getExciteStrategy(defaultExciteType);
+	}
+	
+	/**
+	 * Gets the default {@link TotalValueStrategy}.
+	 * @return the default {@link TotalValueStrategy}
+	 */
+	public TotalValueStrategy getDefaultTotalValueStrategy(){
+		return (TotalValueStrategy) getStrategy(defaultTotalValueStrategyType);
 	}
 
 	/**

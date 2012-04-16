@@ -92,7 +92,7 @@ public class PamNodeImplTest{
 	
 	/**
 	 * Test method for
-	 * {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl#decay(long)}
+	 * {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableActivatibleImpl#decay(long)}
 	 * .
 	 */
 	@Test
@@ -119,7 +119,7 @@ public class PamNodeImplTest{
 
 	/**
 	 * Test method for
-	 * {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl#isRemovable()}
+	 * {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableActivatibleImpl#isRemovable()}
 	 * .
 	 */
 	@Test
@@ -147,7 +147,7 @@ public class PamNodeImplTest{
 
 	/**
 	 * Test method for
-	 * {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl#getTotalActivation()}
+	 * {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableActivatibleImpl#getTotalActivation()}
 	 * .
 	 */
 	@Test
@@ -165,7 +165,7 @@ public class PamNodeImplTest{
 
 	/**
 	 * Test method for
-	 * {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl#decayBaseLevelActivation(long)}
+	 * {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableActivatibleImpl#decayBaseLevelActivation(long)}
 	 * .
 	 */
 	@Test
@@ -182,7 +182,7 @@ public class PamNodeImplTest{
 
 	/**
 	 * Test method for
-	 * {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl#setBaseLevelExciteStrategy(edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy)}
+	 * {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableActivatibleImpl#setBaseLevelExciteStrategy(edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy)}
 	 * .
 	 */
 	@Test
@@ -197,7 +197,7 @@ public class PamNodeImplTest{
 
 	/**
 	 * Test method for
-	 * {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl#setBaseLevelDecayStrategy(edu.memphis.ccrg.lida.framework.strategies.DecayStrategy)}
+	 * {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableActivatibleImpl#setBaseLevelDecayStrategy(edu.memphis.ccrg.lida.framework.strategies.DecayStrategy)}
 	 * .
 	 */
 	@Test
@@ -211,7 +211,7 @@ public class PamNodeImplTest{
 
 	/**
 	 * Test method for
-	 * {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl#reinforceBaseLevelActivation(double)}
+	 * {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableActivatibleImpl#reinforceBaseLevelActivation(double)}
 	 * .
 	 */
 	@Test
@@ -228,7 +228,7 @@ public class PamNodeImplTest{
 
 	/**
 	 * Test method for
-	 * {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl#setBaseLevelActivation(double)}
+	 * {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableActivatibleImpl#setBaseLevelActivation(double)}
 	 * .
 	 */
 	@Test
@@ -239,7 +239,7 @@ public class PamNodeImplTest{
 
 	/**
 	 * Test method for
-	 * {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl#setBaseLevelRemovalThreshold(double)}
+	 * {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableActivatibleImpl#setBaseLevelRemovalThreshold(double)}
 	 * .
 	 */
 	@Test
@@ -250,7 +250,7 @@ public class PamNodeImplTest{
 
 	/**
 	 * Test method for
-	 * {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl#getTotalValueStrategy()}
+	 * {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableActivatibleImpl#getTotalValueStrategy()}
 	 * .
 	 */
 	@Test

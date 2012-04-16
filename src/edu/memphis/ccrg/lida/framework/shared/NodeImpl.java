@@ -31,8 +31,8 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 	private int id;
 	private ExtendedId extendedId;
 	private String label ="Node";
-	private String name;
 	private String factoryName;
+	private String toStringName;
 	
 	/**
 	 * {@link PamNode} in {@link PerceptualAssociativeMemory} which grounds this {@link Node}
@@ -101,7 +101,7 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 	 * update node's name
 	 */
 	private void updateName(){
-		name = label + "["+id+"]";
+		toStringName = label + "["+id+"]";
 	}
 	
 	@Override
@@ -148,11 +148,11 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 	
 	@Override
 	public int hashCode() {
-		return (id);
+		return id;
 	}
 	@Override
 	public String toString(){
-		return name;
+		return toStringName;
 	}
 	
 

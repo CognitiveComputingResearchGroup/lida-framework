@@ -15,6 +15,10 @@ package edu.memphis.ccrg.lida.actionselection;
 import java.util.Collection;
 
 import edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl;
+import edu.memphis.ccrg.lida.framework.shared.activation.Desirable;
+import edu.memphis.ccrg.lida.framework.shared.activation.DesirableImpl;
+import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
+import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 import edu.memphis.ccrg.lida.proceduralmemory.Condition;
 import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
 
@@ -23,8 +27,9 @@ import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
  * @author Ryan J. McCall
  * @author Javier Snaider
  */
-public class BehaviorImpl extends ActivatibleImpl implements Behavior{
+public class BehaviorImpl extends ActivatibleImpl implements Behavior, Desirable{
 
+	private DesirableImpl desirable;
 	/*
 	 * Unique identifier
 	 */
@@ -40,6 +45,7 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior{
 	 */
 	public BehaviorImpl(){
 		super();
+		desirable = new DesirableImpl();
 	}
 
 	//Behavior methods
@@ -98,13 +104,48 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior{
 	public void setLabel(String l) {		
 	}
 
-//	@Override
-//	public boolean addContextCondition(Condition c, boolean negated) {
-//		return scheme.addContextCondition(c, negated);
-//	}
+	@Override
+	public double getDesirability() {
+		return desirable.getDesirability();
+	}
 
-//	@Override
-//	public Collection<Condition> getNegatedContextConditions() {
-//		return scheme.getNegatedContextConditions();
-//	}
+	@Override
+	public double getTotalDesirability() {
+		return desirable.getTotalDesirability();
+	}
+
+	@Override
+	public void setDesirability(double d) {
+		desirable.setDesirability(d);
+	}
+
+	@Override
+	public void decayDesirability(long t) {
+		desirable.decayDesirability(t);
+	}
+
+	@Override
+	public void exciteDesirability(double a) {
+		desirable.exciteDesirability(a);
+	}
+
+	@Override
+	public DecayStrategy getDesirabilityDecayStrategy() {
+		return desirable.getDesirabilityDecayStrategy();
+	}
+
+	@Override
+	public ExciteStrategy getDesirabilityExciteStrategy() {
+		return desirable.getDesirabilityExciteStrategy();
+	}
+
+	@Override
+	public void setDesirabilityDecayStrategy(DecayStrategy d) {
+		desirable.setDesirabilityDecayStrategy(d);
+	}
+
+	@Override
+	public void setDesirabilityExciteStrategy(ExciteStrategy s) {
+		desirable.setDesirabilityExciteStrategy(s);
+	}
 }

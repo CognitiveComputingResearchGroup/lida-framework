@@ -14,13 +14,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.FrameworkModule;
-import edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl;
+import edu.memphis.ccrg.lida.framework.shared.activation.LearnableActivatibleImpl;
 
 /**
  * This class implements the FrameworkTask Interface. This class should be used as the base class for all FrameworkTasks.
  * @author Javier Snaider
  */
-public abstract class FrameworkTaskImpl extends LearnableImpl implements FrameworkTask {
+public abstract class FrameworkTaskImpl extends LearnableActivatibleImpl implements FrameworkTask {
 
 	private static final Logger logger= Logger.getLogger(FrameworkTaskImpl.class.getCanonicalName());
 

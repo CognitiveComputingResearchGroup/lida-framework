@@ -290,8 +290,38 @@ public class ArgumentImpl implements Argument {
 	}
 
 	@Override
-	public double getNetDesirability() {
+	public void decayDesirability(long t) {
 		// TODO Auto-generated method stub
-		return 0;
+		
+	}
+
+	@Override
+	public void exciteDesirability(double a) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public DecayStrategy getDesirabilityDecayStrategy() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ExciteStrategy getDesirabilityExciteStrategy() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setDesirabilityDecayStrategy(DecayStrategy d) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setDesirabilityExciteStrategy(ExciteStrategy s) {
+		// TODO Auto-generated method stub
+		
 	}
 }

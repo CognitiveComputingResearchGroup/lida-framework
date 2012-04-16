@@ -23,7 +23,7 @@ import edu.memphis.ccrg.lida.framework.strategies.TotalValueStrategy;
  * @author Ryan J. McCall
  *
  */
-public interface Learnable extends Activatible{
+public interface LearnableActivatible extends Activatible{
 		
 	/**
 	 * Default removal threshold for Learnable
