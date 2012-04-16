@@ -320,7 +320,7 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 			//get the schemes that have n in their adding list and add them to relevantSchemes
 			if(n instanceof RootableNode){
 				RootableNode uNode = (RootableNode) n;
-				if(uNode.getNetDesirability() > 0.0){//TODO boolean method?
+				if(uNode.getTotalDesirability() > 0.0){//TODO think about more
 					schemes = addingSchemeMap.get(uNode.getConditionId());
 					if (schemes != null) {
 						relevantSchemes.addAll(schemes);
@@ -376,7 +376,7 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 		removeFromMap(s, s.getAddingList(), addingSchemeMap);
 	}
 	
-	private void removeFromMap(Scheme s, Collection<Condition> conditions, Map<Object, Set<Scheme>> map){
+	private static void removeFromMap(Scheme s, Collection<Condition> conditions, Map<Object, Set<Scheme>> map){
 		for(Condition c: conditions){
 			Set<Scheme> schemes = map.get(c.getConditionId());
 			if(schemes != null){

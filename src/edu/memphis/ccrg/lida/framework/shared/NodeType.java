@@ -7,20 +7,20 @@ package edu.memphis.ccrg.lida.framework.shared;
 public enum NodeType {
 	
 	/**
-	 * For {@link Node} that represent objects
+	 * For {@link Node}s that represent objects
 	 */
 	object,
 	/**
-	 * For {@link Node} that represent events
+	 * For {@link Node}s that represent events
 	 */
 	event,
 	/**
-	 * For {@link Node} that represent urge feelings e.g. thirst
+	 * For {@link Node}s that represent built-in need feelings e.g. thirst, hunger
 	 */
-	urgeFeeling,
+	needFeeling,
 	/**
-	 * For {@link Node} that represent general feelings, e.g. depressed
+	 * For {@link Node}s that represent interpretive (appraisal) feelings, e.g. sweet, sour
 	 */
-	generalFeeling
+	interprativeFeeling
 
 }

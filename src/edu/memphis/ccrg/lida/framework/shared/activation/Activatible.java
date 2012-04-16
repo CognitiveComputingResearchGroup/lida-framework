@@ -28,7 +28,7 @@ public interface Activatible extends Initializable {
 	/**
 	 * Default activation for {@link Activatible} 
 	 */
-	public static final double DEFAULT_ACTIVATION = 0.01;
+	public static final double DEFAULT_ACTIVATION = 0.0;
 		
 	/**
 	 * Returns the current activation of this activatible
@@ -80,6 +80,7 @@ public interface Activatible extends Initializable {
      * @param strategy the decay strategy for the current activation.
      */
 	public void setDecayStrategy(DecayStrategy strategy);
+	
 	/**
 	 * Gets the decay strategy
 	 * @return the decay strategy.

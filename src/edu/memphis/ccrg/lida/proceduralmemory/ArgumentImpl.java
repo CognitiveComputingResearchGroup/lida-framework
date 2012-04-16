@@ -287,4 +287,10 @@ public class ArgumentImpl implements Argument {
 		// TODO implement
 		
 	}
+
+	@Override
+	public double getTotalDesirability() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }

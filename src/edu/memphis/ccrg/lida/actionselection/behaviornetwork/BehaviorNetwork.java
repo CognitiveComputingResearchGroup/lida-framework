@@ -20,7 +20,6 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.actionselection.Action;
 import edu.memphis.ccrg.lida.actionselection.ActionSelection;
 import edu.memphis.ccrg.lida.actionselection.ActionSelectionListener;
 import edu.memphis.ccrg.lida.actionselection.Behavior;
@@ -224,22 +223,25 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements
 
 	@Override
 	public void receiveBehavior(Behavior b) {
-		logger.log(Level.FINEST, "Received behavior: {1}", new Object[] {
-				TaskManager.getCurrentTick(), b });
-		b.setDecayStrategy(behaviorDecayStrategy);
-		behaviors.put(b.getId(), b);
-		indexBehaviorByElements(b, b.getContextConditions(),
-				behaviorsByContextCondition);
-		indexBehaviorByElements(b, b.getAddingList(), behaviorsByAddingItem);
-		indexBehaviorByElements(b, b.getDeletingList(), behaviorsByDeletingItem);
-		// indexBehaviorByElements(b, b.getNegatedContextConditions(),
-		// behaviorsByNegContextCondition);
+		if(b == null){
+			logger.log(Level.WARNING, "Received null behavior.", 
+					TaskManager.getCurrentTick());
+		}else{
+			b.setDecayStrategy(behaviorDecayStrategy);
+			behaviors.put(b.getId(), b);
+			indexBehaviorByElements(b, b.getContextConditions(),
+					behaviorsByContextCondition);
+			indexBehaviorByElements(b, b.getAddingList(), behaviorsByAddingItem);
+			indexBehaviorByElements(b, b.getDeletingList(), behaviorsByDeletingItem);
+			// indexBehaviorByElements(b, b.getNegatedContextConditions(),
+			// behaviorsByNegContextCondition);
+		}
 	}
 
 	/*
 	 * Utility method to index the behaviors into a map by elements.
 	 */
-	private void indexBehaviorByElements(Behavior b,
+	private static void indexBehaviorByElements(Behavior b,
 			Collection<Condition> elements, Map<Condition, Set<Behavior>> map) {
 		for (Condition element : elements) {
 			synchronized (element) {
@@ -458,10 +460,9 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements
 			sendAction(winningBehavior);
 			resetCandidateThreshold();
 			winningBehavior.setActivation(0.0);
-			Action a = winningBehavior.getAction();
-			logger.log(Level.FINER, "Selected behavior: {1} with action: {2}",
+			logger.log(Level.FINER, "Behavior: {1} with action: {2} selected.",
 					new Object[] { TaskManager.getCurrentTick(),
-							winningBehavior, a });
+							winningBehavior, winningBehavior.getAction()});
 		} else {
 			reduceCandidateThreshold();
 		}
@@ -624,10 +625,7 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements
 	@Override
 	public Collection<Behavior> getBehaviors() {
 		Collection<Behavior> aux = behaviors.values();
-		if(aux == null){
-			return null;
-		}
-		return Collections.unmodifiableCollection(aux);
+		return (aux == null)? null:Collections.unmodifiableCollection(aux);
 	}
 	
 	@Override
@@ -636,6 +634,14 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements
 			return getBehaviors();
 		}
 		return null;
+	}
+
+	/**
+	 * Gets candidate threshold.
+	 * @return the current threshold a behavior must have to be a candidate for selection
+	 */
+	double getCandidateThreshold() {
+		return candidateThreshold;
 	}
 
 	// /*

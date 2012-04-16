@@ -1,4 +1,4 @@
-package edu.memphis.ccrg.lida.actionselection.behaviornet;
+package edu.memphis.ccrg.lida.actionselection.behaviornetwork;
 
 public class OrderingTest {
 

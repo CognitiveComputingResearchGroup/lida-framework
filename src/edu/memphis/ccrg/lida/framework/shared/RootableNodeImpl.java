@@ -65,4 +65,9 @@ public class RootableNodeImpl extends NodeImpl implements RootableNode {
     public int hashCode() {
         return getId();
     }
+
+	@Override
+	public double getTotalDesirability() {
+		return getDesirability();
+	}
 }
