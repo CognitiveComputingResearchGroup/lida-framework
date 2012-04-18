@@ -120,13 +120,14 @@ public class SubNodeStructureImpl extends NodeStructureImpl {
 	 */
 	private void depthFirstSearch(Node currentNode, int distanceLeftToGo, 
 			NodeStructure subNodeStructure, double threshold) {
-		if (containsNode(currentNode) && (currentNode.getActivation() >= threshold)){
-			subNodeStructure.addNode(currentNode, currentNode.getFactoryType());
+		Node actual = getNode(currentNode.getId());
+		if (actual != null && (actual.getActivation() >= threshold)){
+			subNodeStructure.addNode(actual, actual.getFactoryType());
 		}else{
 			return;
 		}
 		//Get all connected Sinks
-		Map<Linkable, Link> subSinks = getConnectedSinks(currentNode);
+		Map<Linkable, Link> subSinks = getConnectedSinks(actual);
 		Set<Linkable> subLinkables = subSinks.keySet();
 		for (Linkable l : subLinkables) {
 			if (l instanceof Node && 0 < distanceLeftToGo){
@@ -134,7 +135,7 @@ public class SubNodeStructureImpl extends NodeStructureImpl {
 			}
 		}
 		//Get all connected Sources
-		Map<Node, Link> subSources = getConnectedSources(currentNode);
+		Map<Node, Link> subSources = getConnectedSources(actual);
 		Set<Node> parentNodes = subSources.keySet();
 		for (Node n : parentNodes) {
 			if (0 < distanceLeftToGo){
