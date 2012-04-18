@@ -35,8 +35,8 @@ public class SubNodeStructureImpl extends NodeStructureImpl {
 	 * @return A sub NodeStructure which involves specified and all 
 	 * satisfied neighbor nodes
 	 */
-	public  NodeStructure getSubNodeStructure(Collection<Node> nodes,int d) {
-		return getSubNodeStructure(nodes,d,0.0);
+	public  NodeStructure getSubgraph(Collection<Node> nodes,int d) {
+		return getSubgraph(nodes,d,0.0);
 	}
 
 	/**
@@ -47,7 +47,7 @@ public class SubNodeStructureImpl extends NodeStructureImpl {
 	 * @return A sub NodeStructure which involves specified and all 
 	 * satisfied neighbor nodes
 	 */
-	public  NodeStructure getSubNodeStructure(Collection<Node> nodes,
+	public  NodeStructure getSubgraph(Collection<Node> nodes,
 			int d, double threshold) {
 		if (nodes == null ){
 			logger.log(Level.WARNING, "Collection of specified nodes are not available.",
@@ -87,7 +87,7 @@ public class SubNodeStructureImpl extends NodeStructureImpl {
 			for (Node n : sources.keySet()) {
 				//Add the simple link only if its source is present in the subgraph
 				if (subNodeStructure.containsNode(n)) {
-					subNodeStructure.addDefaultLink(sources.get(n));
+					subNodeStructure.addLink(sources.get(n), sources.get(n).getFactoryType());
 				}
 			}
 		}
@@ -98,7 +98,7 @@ public class SubNodeStructureImpl extends NodeStructureImpl {
 			for (Linkable l : sinks.keySet()) {
 				//If Linkable is a link and the sub graph contains it then there is a complex link to add. 
 				if ((l instanceof Link) && subNodeStructure.containsLinkable(l)){
-					subNodeStructure.addDefaultLink(sinks.get(l));
+					subNodeStructure.addLink(sinks.get(l), sinks.get(l).getFactoryType());
 				}
 			}
 		}
@@ -121,7 +121,7 @@ public class SubNodeStructureImpl extends NodeStructureImpl {
 	private void depthFirstSearch(Node currentNode, int distanceLeftToGo, 
 			NodeStructure subNodeStructure, double threshold) {
 		if (containsNode(currentNode) && (currentNode.getActivation() >= threshold)){
-			subNodeStructure.addDefaultNode(currentNode);
+			subNodeStructure.addNode(currentNode, currentNode.getFactoryType());
 		}else{
 			return;
 		}
