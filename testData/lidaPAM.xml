@@ -1,0 +1,370 @@
+<!--
+    Copyright (c) 2009, 2011 The University of Memphis.  All rights reserved. 
+    This program and the accompanying materials are made available 
+    under the terms of the LIDA Software Framework Non-Commercial License v1.0 
+    which accompanies this distribution, and is available at
+    http://ccrg.cs.memphis.edu/assets/papers/2010/LIDA-framework-non-commercial-v1.0.pdf
+ -->
+<edu.memphis.ccrg.lida.pam.PamNodeStructure>
+  <nodes>
+    <entry>
+      <long>6</long>
+      <pamNode>
+        <activation>1.0</activation>
+        <exciteBehavior class="edu.memphis.ccrg.lida.framework.strategies.LinearExciteStrategy"/>
+        <decayBehavior class="edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy">
+          <m>0.6</m>
+          <b>0.0</b>
+        </decayBehavior>
+        <id>6</id>
+        <label>noMetal</label>
+        <importance defined-in="node">0.0</importance>
+        <refNode class="pamNode">6</refNode>
+        <selectionThreshold>0.8</selectionThreshold>
+        <importance>0.0</importance>
+        <baseLevelActivation>0.0</baseLevelActivation>
+      </pamNode>
+    </entry>
+    <entry>
+      <long>5</long>
+      <pamNode>
+        <activation>0.0</activation>
+        <exciteBehavior class="edu.memphis.ccrg.lida.framework.strategies.LinearExciteStrategy" reference="../../../entry/pamNode/exciteBehavior"/>
+        <decayBehavior class="edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy" reference="../../../entry/pamNode/decayBehavior"/>
+        <id>5</id>
+        <label>plastic</label>
+        <importance defined-in="node">0.0</importance>
+        <refNode class="pamNode">5</refNode>
+        <selectionThreshold>0.8</selectionThreshold>
+        <importance>0.0</importance>
+        <baseLevelActivation>0.0</baseLevelActivation>
+      </pamNode>
+    </entry>
+    <entry>
+      <long>0</long>
+      <pamNode>
+        <activation>1.0</activation>
+        <exciteBehavior class="edu.memphis.ccrg.lida.framework.strategies.LinearExciteStrategy" reference="../../../entry/pamNode/exciteBehavior"/>
+        <decayBehavior class="edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy" reference="../../../entry/pamNode/decayBehavior"/>
+        <id>0</id>
+        <label>wood</label>
+        <importance defined-in="node">0.0</importance>
+        <refNode class="pamNode">0</refNode>
+        <selectionThreshold>0.8</selectionThreshold>
+        <importance>0.0</importance>
+        <baseLevelActivation>0.0</baseLevelActivation>
+      </pamNode>
+    </entry>
+    <entry>
+      <long>7</long>
+      <pamNode>
+        <activation>1.0</activation>
+        <exciteBehavior class="edu.memphis.ccrg.lida.framework.strategies.LinearExciteStrategy" reference="../../../entry/pamNode/exciteBehavior"/>
+        <decayBehavior class="edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy" reference="../../../entry/pamNode/decayBehavior"/>
+        <id>7</id>
+        <label>topLeft</label>
+        <importance defined-in="node">0.0</importance>
+        <refNode class="pamNode">7</refNode>
+        <selectionThreshold>0.8</selectionThreshold>
+        <importance>0.0</importance>
+        <baseLevelActivation>0.0</baseLevelActivation>
+      </pamNode>
+    </entry>
+    <entry>
+      <long>8</long>
+      <pamNode>
+        <activation>0.0</activation>
+        <exciteBehavior class="edu.memphis.ccrg.lida.framework.strategies.LinearExciteStrategy" reference="../../../entry/pamNode/exciteBehavior"/>
+        <decayBehavior class="edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy" reference="../../../entry/pamNode/decayBehavior"/>
+        <id>8</id>
+        <label>bottomRight</label>
+        <importance defined-in="node">0.0</importance>
+        <refNode class="pamNode">8</refNode>
+        <selectionThreshold>0.8</selectionThreshold>
+        <importance>0.0</importance>
+        <baseLevelActivation>0.0</baseLevelActivation>
+      </pamNode>
+    </entry>
+    <entry>
+      <long>2</long>
+      <pamNode>
+        <activation>1.0</activation>
+        <exciteBehavior class="edu.memphis.ccrg.lida.framework.strategies.LinearExciteStrategy" reference="../../../entry/pamNode/exciteBehavior"/>
+        <decayBehavior class="edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy" reference="../../../entry/pamNode/decayBehavior"/>
+        <id>2</id>
+        <label>metal</label>
+        <importance defined-in="node">0.0</importance>
+        <refNode class="pamNode">2</refNode>
+        <selectionThreshold>0.8</selectionThreshold>
+        <importance>0.0</importance>
+        <baseLevelActivation>0.0</baseLevelActivation>
+      </pamNode>
+    </entry>
+    <entry>
+      <long>1</long>
+      <pamNode>
+        <activation>1.0</activation>
+        <exciteBehavior class="edu.memphis.ccrg.lida.framework.strategies.LinearExciteStrategy" reference="../../../entry/pamNode/exciteBehavior"/>
+        <decayBehavior class="edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy" reference="../../../entry/pamNode/decayBehavior"/>
+        <id>1</id>
+        <label>gold</label>
+        <importance defined-in="node">0.0</importance>
+        <refNode class="pamNode">1</refNode>
+        <selectionThreshold>0.8</selectionThreshold>
+        <importance>0.0</importance>
+        <baseLevelActivation>0.0</baseLevelActivation>
+      </pamNode>
+    </entry>
+    <entry>
+      <long>3</long>
+      <pamNode>
+        <activation>1.0</activation>
+        <exciteBehavior class="edu.memphis.ccrg.lida.framework.strategies.LinearExciteStrategy" reference="../../../entry/pamNode/exciteBehavior"/>
+        <decayBehavior class="edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy" reference="../../../entry/pamNode/decayBehavior"/>
+        <id>3</id>
+        <label>solid</label>
+        <importance defined-in="node">0.0</importance>
+        <refNode class="pamNode">3</refNode>
+        <selectionThreshold>0.8</selectionThreshold>
+        <importance>0.0</importance>
+        <baseLevelActivation>0.0</baseLevelActivation>
+      </pamNode>
+    </entry>
+    <entry>
+      <long>4</long>
+      <pamNode>
+        <activation>0.0</activation>
+        <exciteBehavior class="edu.memphis.ccrg.lida.framework.strategies.LinearExciteStrategy" reference="../../../entry/pamNode/exciteBehavior"/>
+        <decayBehavior class="edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy" reference="../../../entry/pamNode/decayBehavior"/>
+        <id>4</id>
+        <label>iron</label>
+        <importance defined-in="node">0.0</importance>
+        <refNode class="pamNode">4</refNode>
+        <selectionThreshold>0.8</selectionThreshold>
+        <importance>0.0</importance>
+        <baseLevelActivation>0.0</baseLevelActivation>
+      </pamNode>
+    </entry>
+  </nodes>
+  <links>
+    <entry>
+      <string>L( 2 : 6 : CHILD )</string>
+      <link>
+        <activation>0.0</activation>
+        <exciteBehavior class="edu.memphis.ccrg.lida.framework.strategies.LinearExciteStrategy"/>
+        <decayBehavior class="edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy">
+          <m>0.6</m>
+          <b>0.0</b>
+        </decayBehavior>
+        <sink class="pamNode" reference="../../../../nodes/entry/pamNode"/>
+        <source class="pamNode" reference="../../../../nodes/entry[6]/pamNode"/>
+        <ids>L( 2 : 6 : CHILD )</ids>
+        <type>CHILD</type>
+      </link>
+    </entry>
+    <entry>
+      <string>L( 2 : 3 : CHILD )</string>
+      <link>
+        <activation>0.0</activation>
+        <exciteBehavior class="edu.memphis.ccrg.lida.framework.strategies.LinearExciteStrategy"/>
+        <decayBehavior class="edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy">
+          <m>0.6</m>
+          <b>0.0</b>
+        </decayBehavior>
+        <sink class="pamNode" reference="../../../../nodes/entry[8]/pamNode"/>
+        <source class="pamNode" reference="../../../../nodes/entry[6]/pamNode"/>
+        <ids>L( 2 : 3 : CHILD )</ids>
+        <type>CHILD</type>
+      </link>
+    </entry>
+    <entry>
+      <string>L( 7 : 0 : CHILD )</string>
+      <link>
+        <activation>0.0</activation>
+        <exciteBehavior class="edu.memphis.ccrg.lida.framework.strategies.LinearExciteStrategy"/>
+        <decayBehavior class="edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy">
+          <m>0.6</m>
+          <b>0.0</b>
+        </decayBehavior>
+        <sink class="pamNode" reference="../../../../nodes/entry[3]/pamNode"/>
+        <source class="pamNode" reference="../../../../nodes/entry[4]/pamNode"/>
+        <ids>L( 7 : 0 : CHILD )</ids>
+        <type>CHILD</type>
+      </link>
+    </entry>
+    <entry>
+      <string>L( 0 : 6 : CHILD )</string>
+      <link>
+        <activation>0.0</activation>
+        <exciteBehavior class="edu.memphis.ccrg.lida.framework.strategies.LinearExciteStrategy"/>
+        <decayBehavior class="edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy">
+          <m>0.6</m>
+          <b>0.0</b>
+        </decayBehavior>
+        <sink class="pamNode" reference="../../../../nodes/entry/pamNode"/>
+        <source class="pamNode" reference="../../../../nodes/entry[3]/pamNode"/>
+        <ids>L( 0 : 6 : CHILD )</ids>
+        <type>CHILD</type>
+      </link>
+    </entry>
+    <entry>
+      <string>L( 0 : 3 : GROUNDING )</string>
+      <link>
+        <activation>0.0</activation>
+        <exciteBehavior class="edu.memphis.ccrg.lida.framework.strategies.LinearExciteStrategy"/>
+        <decayBehavior class="edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy">
+          <m>0.6</m>
+          <b>0.0</b>
+        </decayBehavior>
+        <sink class="pamNode" reference="../../../../nodes/entry[8]/pamNode"/>
+        <source class="pamNode" reference="../../../../nodes/entry[3]/pamNode"/>
+        <ids>L( 0 : 3 : GROUNDING )</ids>
+        <type>GROUNDING</type>
+      </link>
+    </entry>
+    <entry>
+      <string>L( 1 : 2 : CHILD )</string>
+      <link>
+        <activation>0.0</activation>
+        <exciteBehavior class="edu.memphis.ccrg.lida.framework.strategies.LinearExciteStrategy"/>
+        <decayBehavior class="edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy">
+          <m>0.6</m>
+          <b>0.0</b>
+        </decayBehavior>
+        <sink class="pamNode" reference="../../../../nodes/entry[6]/pamNode"/>
+        <source class="pamNode" reference="../../../../nodes/entry[7]/pamNode"/>
+        <ids>L( 1 : 2 : CHILD )</ids>
+        <type>CHILD</type>
+      </link>
+    </entry>
+    <entry>
+      <string>L( 5 : 6 : CHILD )</string>
+      <link>
+        <activation>0.0</activation>
+        <exciteBehavior class="edu.memphis.ccrg.lida.framework.strategies.LinearExciteStrategy"/>
+        <decayBehavior class="edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy">
+          <m>0.6</m>
+          <b>0.0</b>
+        </decayBehavior>
+        <sink class="pamNode" reference="../../../../nodes/entry/pamNode"/>
+        <source class="pamNode" reference="../../../../nodes/entry[2]/pamNode"/>
+        <ids>L( 5 : 6 : CHILD )</ids>
+        <type>CHILD</type>
+      </link>
+    </entry>
+    <entry>
+      <string>L( 4 : 2 : CHILD )</string>
+      <link>
+        <activation>0.0</activation>
+        <exciteBehavior class="edu.memphis.ccrg.lida.framework.strategies.LinearExciteStrategy"/>
+        <decayBehavior class="edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy">
+          <m>0.6</m>
+          <b>0.0</b>
+        </decayBehavior>
+        <sink class="pamNode" reference="../../../../nodes/entry[6]/pamNode"/>
+        <source class="pamNode" reference="../../../../nodes/entry[9]/pamNode"/>
+        <ids>L( 4 : 2 : CHILD )</ids>
+        <type>CHILD</type>
+      </link>
+    </entry>
+  </links>
+  <linkableMap>
+    <entry>
+      <link reference="../../../links/entry[5]/link"/>
+      <set/>
+    </entry>
+    <entry>
+      <pamNode reference="../../../nodes/entry[3]/pamNode"/>
+      <set>
+        <link reference="../../../../links/entry[3]/link"/>
+        <link reference="../../../../links/entry[4]/link"/>
+        <link reference="../../../../links/entry[5]/link"/>
+      </set>
+    </entry>
+    <entry>
+      <link reference="../../../links/entry[2]/link"/>
+      <set/>
+    </entry>
+    <entry>
+      <pamNode reference="../../../nodes/entry[8]/pamNode"/>
+      <set>
+        <link reference="../../../../links/entry[5]/link"/>
+        <link reference="../../../../links/entry[2]/link"/>
+      </set>
+    </entry>
+    <entry>
+      <pamNode reference="../../../nodes/entry[6]/pamNode"/>
+      <set>
+        <link reference="../../../../links/entry[6]/link"/>
+        <link reference="../../../../links/entry/link"/>
+        <link reference="../../../../links/entry[8]/link"/>
+        <link reference="../../../../links/entry[2]/link"/>
+      </set>
+    </entry>
+    <entry>
+      <link reference="../../../links/entry[8]/link"/>
+      <set/>
+    </entry>
+    <entry>
+      <link reference="../../../links/entry[4]/link"/>
+      <set/>
+    </entry>
+    <entry>
+      <link reference="../../../links/entry[7]/link"/>
+      <set/>
+    </entry>
+    <entry>
+      <pamNode reference="../../../nodes/entry[2]/pamNode"/>
+      <set>
+        <link reference="../../../../links/entry[7]/link"/>
+      </set>
+    </entry>
+    <entry>
+      <pamNode reference="../../../nodes/entry[9]/pamNode"/>
+      <set>
+        <link reference="../../../../links/entry[8]/link"/>
+      </set>
+    </entry>
+    <entry>
+      <pamNode reference="../../../nodes/entry/pamNode"/>
+      <set>
+        <link reference="../../../../links/entry/link"/>
+        <link reference="../../../../links/entry[4]/link"/>
+        <link reference="../../../../links/entry[7]/link"/>
+      </set>
+    </entry>
+    <entry>
+      <pamNode reference="../../../nodes/entry[4]/pamNode"/>
+      <set>
+        <link reference="../../../../links/entry[3]/link"/>
+      </set>
+    </entry>
+    <entry>
+      <link reference="../../../links/entry[3]/link"/>
+      <set/>
+    </entry>
+    <entry>
+      <link reference="../../../links/entry[6]/link"/>
+      <set/>
+    </entry>
+    <entry>
+      <link reference="../../../links/entry/link"/>
+      <set/>
+    </entry>
+    <entry>
+      <pamNode reference="../../../nodes/entry[5]/pamNode"/>
+      <set/>
+    </entry>
+    <entry>
+      <pamNode reference="../../../nodes/entry[7]/pamNode"/>
+      <set>
+        <link reference="../../../../links/entry[6]/link"/>
+      </set>
+    </entry>
+  </linkableMap>
+  <defaultNodeType>PamNodeImpl</defaultNodeType>
+  <defaultLinkType>LinkImpl</defaultLinkType>
+  <upscaleFactor>0.7</upscaleFactor>
+  <downscaleFactor>0.5</downscaleFactor>
+  <selectivityThreshold>0.8</selectivityThreshold>
+</edu.memphis.ccrg.lida.pam.PamNodeStructure>
