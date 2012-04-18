@@ -111,7 +111,7 @@ public class SubNodeStructureImplTest2 {
 	}
 
 	@Test
-	public void testGetSubNodeStructure1() {
+	public void testGetSubgraph1() {
 
 		/*
 		 * test for different distance value (-1, 0 , 1, 2, 100)
@@ -119,12 +119,12 @@ public class SubNodeStructureImplTest2 {
 		nodes.add(node4);
 
 		//distance = -1
-		subNS = ns1.getSubNodeStructure(nodes, -1);
+		subNS = ns1.getSubgraph(nodes, -1);
 		
 		assertTrue(subNS == null);
 
 		//distance = 0
-		subNS= ns1.getSubNodeStructure(nodes, 0);
+		subNS= ns1.getSubgraph(nodes, 0);
 		
 		assertTrue(subNS.containsNode(node4));
 		assertTrue(subNS.getNodeCount() == 1);
@@ -134,7 +134,7 @@ public class SubNodeStructureImplTest2 {
 		nodes.add(node3);
 		nodes.add(node5);
 		
-		subNS= ns1.getSubNodeStructure(nodes, 0);
+		subNS= ns1.getSubgraph(nodes, 0);
 		
 		assertTrue(subNS.containsNode(node3));
 		assertTrue(subNS.containsNode(node5));
@@ -145,7 +145,7 @@ public class SubNodeStructureImplTest2 {
 		nodes.add(node4);
 		
 		//distance = 1
-		subNS= ns1.getSubNodeStructure(nodes, 1);
+		subNS= ns1.getSubgraph(nodes, 1);
 		
 		assertTrue(subNS.containsNode(node4));
 		assertTrue(subNS.containsNode(node3));
@@ -155,7 +155,7 @@ public class SubNodeStructureImplTest2 {
 		assertTrue(subNS.getLinkCount() == 5);
 		
 		//distance = 2
-		subNS= ns1.getSubNodeStructure(nodes, 2);
+		subNS= ns1.getSubgraph(nodes, 2);
 		
 		assertTrue(subNS.containsNode(node4));
 		assertTrue(subNS.containsNode(node3));
@@ -168,7 +168,7 @@ public class SubNodeStructureImplTest2 {
 		
 		//distance = 100 -> same result to distance == 2
         //and it's should not time consuming
-		subNS= ns1.getSubNodeStructure(nodes, 100);
+		subNS= ns1.getSubgraph(nodes, 100);
 		
 		assertTrue(subNS.containsNode(node4));
 		assertTrue(subNS.containsNode(node3));
@@ -182,14 +182,14 @@ public class SubNodeStructureImplTest2 {
 	}
 	
 	@Test
-	public void testGetSubNodeStructure2() {
+	public void testGetSubgraph2() {
 		/*
 		 * test for different number of specified node (0, 1, 2)
 		 */
 		nodes.clear();
 
 		//number of node = 0
-		subNS= ns1.getSubNodeStructure(nodes, 1);
+		subNS= ns1.getSubgraph(nodes, 1);
 		assertTrue(subNS == null);
 		
 		//number of node = 1
@@ -198,7 +198,7 @@ public class SubNodeStructureImplTest2 {
 		//number of node = 2
 		nodes.add(node1);
 		nodes.add(node5);
-		subNS= ns1.getSubNodeStructure(nodes, 1);
+		subNS= ns1.getSubgraph(nodes, 1);
 		assertTrue(subNS.containsNode(node4));
 		assertTrue(subNS.containsNode(node3));
 		assertTrue(subNS.containsNode(node5));
@@ -210,7 +210,7 @@ public class SubNodeStructureImplTest2 {
 	}
 	
 	@Test
-	public void testGetSubNodeStructure3() {
+	public void testGetSubgraph3() {
 		/*
 		 * If specified node is not in NodeStructure
 		 */
@@ -218,7 +218,7 @@ public class SubNodeStructureImplTest2 {
 		nodes.add(node4);
 		nodes.add(node6);
 		nodes.add(node7);
-		subNS= ns1.getSubNodeStructure(nodes, 1);
+		subNS= ns1.getSubgraph(nodes, 1);
 
 		assertTrue(subNS.containsNode(node4));
 		assertTrue(subNS.containsNode(node3));
@@ -234,13 +234,13 @@ public class SubNodeStructureImplTest2 {
 	}
 
 	@Test
-	public void testGetSubNodeStructure4() {
+	public void testGetSubgraph4() {
 		/*
 		 * Test for threshold 
 		 */
 		nodes.clear();
 		nodes.add(node6);
-		subNS= ns1.getSubNodeStructure(nodes, 2, 0.45);
+		subNS= ns1.getSubgraph(nodes, 2, 0.45);
 
 		assertTrue(!subNS.containsNode(node4));
 		assertTrue(!subNS.containsNode(node3));

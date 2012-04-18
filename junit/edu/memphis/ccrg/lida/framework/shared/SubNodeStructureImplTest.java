@@ -134,7 +134,7 @@ public class SubNodeStructureImplTest {
 	 * and check if the property changed in the nodes of the original node structure.
 	 */
 
-	public void testGetSubNodeStructure1() {
+	public void testGetSubgraph1() {
 		Collection<Node> nodeList = new ArrayList<Node>();
 		
 
@@ -144,7 +144,7 @@ public class SubNodeStructureImplTest {
 		nodeList.add(node2);
                 
                 //get a new SubNodeStructure with distance 2 from nodes in nodeList
-		subNS= sns1.getSubNodeStructure(nodeList, 2);
+		subNS= sns1.getSubgraph(nodeList, 2);
 		
                 //get nodes from SubNodeStructure and change label
 		Collection<Node> nod=subNS.getNodes();
@@ -179,7 +179,7 @@ public class SubNodeStructureImplTest {
 	 * Mainly used to check performance of the algorithm
 	 */
 
-	public void testGetSubNodeStructure2() {
+	public void testGetSubgraph2() {
 
                 //create a random large node structure
 
@@ -210,7 +210,7 @@ public class SubNodeStructureImplTest {
 		
                 //calculate time in extracting a SubNodeStructure
 		start = System.currentTimeMillis();
-		subNS=sns.getSubNodeStructure(nodeList, distance);
+		subNS=sns.getSubgraph(nodeList, distance);
 		finish = System.currentTimeMillis();
                 
                 
