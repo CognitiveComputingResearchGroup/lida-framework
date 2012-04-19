@@ -98,8 +98,10 @@ public class SchemeImplTest{
 	}
 	@Test
 	public void testEquals(){
-		Scheme scheme2 = new SchemeImpl(2);
-		Scheme scheme3 = new SchemeImpl(scheme2.getId());
+		Scheme scheme2 = new SchemeImpl();
+		scheme2.setId(2);
+		Scheme scheme3 = new SchemeImpl();
+		scheme3.setId(2);
 		
 		assertEquals(scheme2, scheme3);
 		assertEquals(scheme2.hashCode(), scheme3.hashCode());

@@ -68,9 +68,11 @@ public class SchemeImpl extends LearnableActivatibleImpl implements Scheme, Desi
 	
 	/**
 	 * Intended for testing only
+	 * @Deprecated to be removed
 	 * @param label {@link String}
 	 * @param a {@link Action}
 	 */
+	@Deprecated
 	SchemeImpl(String label, Action a){
 		this.label = label;
 		this.action = a;
@@ -78,8 +80,10 @@ public class SchemeImpl extends LearnableActivatibleImpl implements Scheme, Desi
 	
 	/**
 	 * Intended for testing only
+	 * @Deprecated to be removed
 	 * @param id Scheme's id
 	 */
+	@Deprecated
 	SchemeImpl(int id){
 		this();
 		this.id = id;
