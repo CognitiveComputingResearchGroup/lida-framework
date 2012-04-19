@@ -49,8 +49,8 @@ public class BasicStructureBuildingCodeletTest {
 		readableBuffer = new MockWorkspaceBufferImpl();
 		writeableBuffer = new MockWorkspaceBufferImpl();
 		
-		readableContent = new NodeStructureImpl();
-		soughtContent = new NodeStructureImpl();
+		readableContent = factory.getDefaultNodeStructure();
+		soughtContent = factory.getDefaultNodeStructure();
 		node1 = factory.getNode();
 		node2 = factory.getNode();
 		link1 = factory.getLink(node1, node2, new PamNodeImpl());

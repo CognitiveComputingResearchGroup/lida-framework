@@ -30,11 +30,11 @@ import edu.memphis.ccrg.lida.framework.gui.utils.GuiLink;
 import edu.memphis.ccrg.lida.framework.gui.utils.GuiUtils;
 import edu.memphis.ccrg.lida.framework.gui.utils.NodeIcon;
 import edu.memphis.ccrg.lida.framework.gui.utils.NodeStructureGuiAdapter;
+import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.Linkable;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.shared.activation.Activatible;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.pam.PamNode;
@@ -58,7 +58,8 @@ import edu.uci.ics.jung.visualization.control.ModalGraphMouse;
 public class NodeStructurePanel extends GuiPanelImpl {
 
     private static final Logger logger = Logger.getLogger(NodeStructurePanel.class.getCanonicalName());
-    private NodeStructureGuiAdapter guiGraph = new NodeStructureGuiAdapter(new NodeStructureImpl());
+    private static final ElementFactory factory = ElementFactory.getInstance();
+    private NodeStructureGuiAdapter guiGraph = new NodeStructureGuiAdapter(factory.getDefaultNodeStructure());
     private VisualizationViewer<Linkable, GuiLink> vizViewer;
     private FrameworkModule module;
 

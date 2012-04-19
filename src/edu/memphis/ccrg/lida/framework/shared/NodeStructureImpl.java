@@ -76,9 +76,8 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	/**
 	 * Default constructor. Uses the default node and link types of the factory
 	 */
-	public NodeStructureImpl() {
-		defaultNodeType = factory.getDefaultNodeType();
-		defaultLinkType = factory.getDefaultLinkType();
+	protected NodeStructureImpl() {
+		this(factory.getDefaultNodeType(),factory.getDefaultLinkType());
 	}
 
 	/**
@@ -91,8 +90,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	 * 
 	 * @see ElementFactory
 	 */
-	public NodeStructureImpl(String nodeType, String linkType) {
-		this();
+	protected NodeStructureImpl(String nodeType, String linkType) {
 		if (factory.containsNodeType(nodeType)) {
 			defaultNodeType = nodeType;
 		} else {

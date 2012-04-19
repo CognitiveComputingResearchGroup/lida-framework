@@ -26,7 +26,6 @@ import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 import edu.memphis.ccrg.lida.pam.PamNode;
 import edu.memphis.ccrg.lida.workspace.WorkspaceContent;
@@ -62,7 +61,7 @@ public class StructureBuildingCodeletModuleTest {
 		workspace.addSubModule(perceptualBuffer);
 		sbcModule.setAssociatedModule(workspace, "");
 		
-		ns = new NodeStructureImpl();
+		ns = factory.getDefaultNodeStructure();
 		node1 = factory.getNode();
 		node2 = factory.getNode();
 		PamNode category = (PamNode) factory.getNode("PamNodeImpl");

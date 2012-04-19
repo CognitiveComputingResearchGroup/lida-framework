@@ -56,8 +56,8 @@ public class NeighborhoodAttentionCodeletTest {
 		codelet.setAssociatedModule(csm, "");
 		codelet.setAssociatedModule(globalWorkspace, "");
 		
-		csmContent = new NodeStructureImpl();
-		soughtContent = new NodeStructureImpl();
+		csmContent = factory.getDefaultNodeStructure();
+		soughtContent = factory.getDefaultNodeStructure();
 		node1 = factory.getNode();
 		node1.setLabel("node1");
 		node2 = factory.getNode();

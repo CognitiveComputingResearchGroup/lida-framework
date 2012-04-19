@@ -49,7 +49,7 @@ public class WorkspaceImplTest {
 		workspace = new WorkspaceImpl();
 		eBuffer = new MockWorkspaceBufferImpl();
 		eBuffer.setModuleName(ModuleName.EpisodicBuffer);
-		content = new NodeStructureImpl();
+		content = factory.getDefaultNodeStructure();
 		node1 = factory.getNode();
 		node1.setId(8);
 		node2 = factory.getNode();
@@ -164,7 +164,7 @@ public class WorkspaceImplTest {
 		MockWorkspaceListener listener = new MockWorkspaceListener();
 		workspace.addWorkspaceListener(listener);
 
-		NodeStructure localAssociation = new NodeStructureImpl();
+		NodeStructure localAssociation = factory.getDefaultNodeStructure();
 		Node node3 = factory.getNode();
 		node3.setId(9);
 		localAssociation.addDefaultNode(node3);

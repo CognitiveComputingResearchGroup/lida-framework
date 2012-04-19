@@ -22,7 +22,6 @@ import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskStatus;
 import edu.memphis.ccrg.lida.pam.PamLink;
 import edu.memphis.ccrg.lida.pam.PamLinkImpl;
@@ -30,7 +29,8 @@ import edu.memphis.ccrg.lida.pam.PamNode;
 import edu.memphis.ccrg.lida.pam.PamNodeImpl;
 
 /**
- * @author Ryan J. McCall, Usef Faghihi
+ * @author Ryan J. McCall
+ * @author Usef Faghihi
  *
  */
 public class AddToPerceptTaskTest{
@@ -74,7 +74,7 @@ public class AddToPerceptTaskTest{
 	@Test
 	public void test2(){
 		//Setup
-		NodeStructure expectedNS = new NodeStructureImpl("PamNodeImpl", "PamLinkImpl");
+		NodeStructure expectedNS = factory.getNodeStructure("PamNodeImpl", "PamLinkImpl");
 		expectedNS.addDefaultNode(nodeA);
 		expectedNS.addDefaultNode(nodeB);
 		Link expectedLink = expectedNS.addDefaultLink(pl);

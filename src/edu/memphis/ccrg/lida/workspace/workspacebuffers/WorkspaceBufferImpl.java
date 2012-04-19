@@ -12,8 +12,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
+import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.shared.UnmodifiableNodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.workspace.WorkspaceContent;
@@ -28,7 +28,7 @@ public class WorkspaceBufferImpl extends FrameworkModuleImpl implements Workspac
 	
 	private static final Logger logger = Logger.getLogger(WorkspaceBufferImpl.class.getCanonicalName());
 	
-	private NodeStructure buffer = new NodeStructureImpl();	
+	private NodeStructure buffer = ElementFactory.getInstance().getDefaultNodeStructure();
 	
 	/**
 	 * Default constructor 

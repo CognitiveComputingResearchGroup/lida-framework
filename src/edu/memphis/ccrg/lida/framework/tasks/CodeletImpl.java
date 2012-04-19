@@ -7,8 +7,8 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.framework.tasks;
 
+import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 
 /**
  * Abstract implementation of {@link Codelet}.
@@ -20,7 +20,7 @@ public abstract class CodeletImpl extends FrameworkTaskImpl implements Codelet {
 	/**
 	 * Content which this codelet responds to.
 	 */
-	protected NodeStructure soughtContent = new NodeStructureImpl();
+	protected NodeStructure soughtContent = ElementFactory.getInstance().getDefaultNodeStructure();
 	
 	@Override
 	public NodeStructure getSoughtContent() {

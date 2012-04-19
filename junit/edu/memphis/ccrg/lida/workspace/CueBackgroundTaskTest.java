@@ -19,10 +19,10 @@ import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.initialization.ModuleUsage;
+import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeImpl;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBuffer;
 import edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBufferImpl;
 
@@ -34,6 +34,7 @@ import edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBufferImpl;
 
 public class CueBackgroundTaskTest {
 
+	private static final ElementFactory factory = ElementFactory.getInstance();
 	@Test
 	public final void testRunThisTask() {
 		CueBackgroundTask cbt = new CueBackgroundTask();
@@ -48,7 +49,7 @@ public class CueBackgroundTaskTest {
 		
 		//step 3-1:
 		//Create 3 nodes and add them into a node structure
-		NodeStructure ns = new NodeStructureImpl();
+		NodeStructure ns = factory.getDefaultNodeStructure();
 		
 		Node n1 = new NodeImpl();
 		n1.setId(2);

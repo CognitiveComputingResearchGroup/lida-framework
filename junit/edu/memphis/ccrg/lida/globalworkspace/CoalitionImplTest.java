@@ -43,7 +43,7 @@ public class CoalitionImplTest {
 		node2 = new NodeImpl();
 		node3 = new NodeImpl();
 		
-		content= new NodeStructureImpl();
+		content= factory.getDefaultNodeStructure();
 		codelet = new NeighborhoodAttentionCodelet();
 		
 		node1.setId(1);

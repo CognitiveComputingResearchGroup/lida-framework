@@ -1122,7 +1122,7 @@ public class ElementFactory {
 	 * @return a new NodeStructure with default {@link Node} type and default
 	 *         {@link Link} type.
 	 */
-	public NodeStructure getNodeStructure() {
+	public NodeStructure getDefaultNodeStructure() {
 		return getNodeStructure(defaultNodeType, defaultLinkType);
 	}
 

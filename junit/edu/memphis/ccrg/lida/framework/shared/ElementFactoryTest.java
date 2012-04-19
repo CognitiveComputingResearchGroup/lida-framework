@@ -7,7 +7,6 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.framework.shared;
 
-import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotSame;
@@ -770,7 +769,7 @@ public class ElementFactoryTest {
 
 	@Test
 	public void testGetNodeStructure() {
-		NodeStructure ns = factory.getNodeStructure();
+		NodeStructure ns = factory.getDefaultNodeStructure();
 		assertEquals(ns.getDefaultNodeType(), factory.getDefaultNodeType());
 		assertEquals(ns.getDefaultLinkType(), factory.getDefaultLinkType());
 	}

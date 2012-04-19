@@ -454,7 +454,7 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 	}
 	//TODO a more sophisticated mapping
 	private NodeStructure convertNodeStructure(NodeStructure ns){
-		NodeStructure copy = new NodeStructureImpl();
+		NodeStructure copy = factory.getDefaultNodeStructure();
 		for(Node n: ns.getNodes()){
 			copy.addDefaultNode(n);
 		}

@@ -30,7 +30,7 @@ public class TestBigNs {
 	public void test1(){
 		int seed = 23434535;
 		random = new Random(seed);
-		ns = new NodeStructureImpl();
+		ns = factory.getDefaultNodeStructure();
 		
 		int nodes = 10000;	
 		int linkCategories = 1000;

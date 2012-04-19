@@ -22,8 +22,8 @@ import edu.memphis.ccrg.lida.framework.tasks.FrameworkTask;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemory;
 import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryImpl;
-import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryImpl.ConditionType;
 import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
+import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryImpl.ConditionType;
 
 /**
  * Test for {@link BehaviorNetwork} class.

@@ -17,9 +17,9 @@ import edu.memphis.ccrg.lida.framework.Agent;
 import edu.memphis.ccrg.lida.framework.initialization.FullyInitializable;
 import edu.memphis.ccrg.lida.framework.initialization.GlobalInitializer;
 import edu.memphis.ccrg.lida.framework.initialization.Initializer;
+import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.shared.activation.LearnableActivatible;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl;
 import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryImpl.ConditionType;
@@ -103,7 +103,7 @@ public class BasicProceduralMemoryInitializer implements Initializer {
 		int startLinks = nsSpecification.indexOf(')')+ 1;
 		String contexLinksSpec = nsSpecification.substring(startLinks);
 		String[] contextLinks = contexLinksSpec.substring(contexLinksSpec.indexOf('(') + 1, contexLinksSpec.indexOf(')')).trim().split(",");
-		NodeStructure loadedNodeStructure = new NodeStructureImpl();
+		NodeStructure loadedNodeStructure = ElementFactory.getInstance().getDefaultNodeStructure();
 		for(String nodeName: contextNodes){
 			if("".equals(nodeName)){
 				continue;

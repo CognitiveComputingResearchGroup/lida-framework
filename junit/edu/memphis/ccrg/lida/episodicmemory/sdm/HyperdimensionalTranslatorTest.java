@@ -15,10 +15,10 @@ import org.junit.Test;
 
 import cern.colt.bitvector.BitVector;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockPAM;
+import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeImpl;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 
 /**
@@ -26,13 +26,13 @@ import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
  * @author Rodrigo Silva-Lugo
  */
 public class HyperdimensionalTranslatorTest {
-
+	
+	private static final ElementFactory factory = ElementFactory.getInstance();
     private HyperdimensionalTranslator tr;
     private static int SIZE = 100;
     private PerceptualAssociativeMemory pam;
     private NodeStructure ns;
     private BitVector vector;
-    private Object factory;
 
     /**
      * 
@@ -63,7 +63,7 @@ public class HyperdimensionalTranslatorTest {
     public void setUp() {
         pam = new MockPAM();
         tr = new HyperdimensionalTranslator(SIZE, pam);
-        ns = new NodeStructureImpl();
+        ns = factory.getDefaultNodeStructure();
         Node n = new NodeImpl();
         n.setId(10);
 	//PamNode pn = (PamNode) factory.getNode("PamNodeImpl");

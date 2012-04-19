@@ -38,7 +38,6 @@ import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.LinkCategory;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.SigmoidDecayStrategy;
@@ -75,7 +74,7 @@ public class PerceptualAssociativeMemoryImplTest {
 	@Before
 	public void setUp() throws Exception {		
 		pam = new PerceptualAssociativeMemoryImpl();
-		nodeStructure = new NodeStructureImpl("PamNodeImpl", "PamLinkImpl");
+		nodeStructure = factory.getNodeStructure("PamNodeImpl", "PamLinkImpl");
 
 		node1 = (PamNodeImpl) factory.getNode("PamNodeImpl", "Node 1");
 		node2 = (PamNodeImpl) factory.getNode("PamNodeImpl", "Node 2");
@@ -362,7 +361,7 @@ public class PerceptualAssociativeMemoryImplTest {
 	public void testAddPamListener(){
 		MockPamListener pl = new MockPamListener();
 		pam.addPamListener(pl);
-		pam.addToPercept(new NodeStructureImpl());
+		pam.addToPercept(factory.getDefaultNodeStructure());
 		
 		NodeStructure ns = pl.ns;
 		assertEquals(0,ns.getNodeCount());
