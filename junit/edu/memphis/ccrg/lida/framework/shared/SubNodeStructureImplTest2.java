@@ -21,7 +21,7 @@ import edu.memphis.ccrg.lida.pam.PamNodeImpl;
 public class SubNodeStructureImplTest2 {
 
 	private static ElementFactory factory;
-	private Node node1,node2,node3,node4,node5,node6,node7;
+	private Node node1,node2,node3,node4,node5,node6,node7, node8;
 	private Link link1,link2,link3,link4,link5,link6,link7,link8;
 	private SubNodeStructureImpl ns1;
 	private PamNode category1,category2;
@@ -71,6 +71,10 @@ public class SubNodeStructureImplTest2 {
 		node7 = factory.getNode();
 		node7.setLabel("purp3");
 		node7.setActivation(0.7);
+		
+		node8 = factory.getNode();
+		node8.setLabel("purp4");
+		node8.setActivation(0.8);
 		
 		category1 = new PamNodeImpl();
 		category1.setId(99999);
@@ -249,6 +253,36 @@ public class SubNodeStructureImplTest2 {
 
 		assertTrue(subNS.getNodeCount() == 1);
 		assertTrue(subNS.getLinkCount() == 0);
+		
+	}
+	
+	@Test
+	public void testGetSubgraph5() {
+		// Test for the nodes you passed that has same id with the nodes of graph
+		// although they have different node attributes
+		
+		nodes.clear();
+		//add a node (node8) that has same id to another node (node4)
+		node8.setId(node4.getId());
+		nodes.add(node8);
+		
+		nodes.add(node6);
+
+
+		subNS= ns1.getSubgraph(nodes, 1);
+
+		//Regular checking
+		assertTrue(subNS.containsNode(node4));
+		assertTrue(subNS.containsNode(node3));
+		assertTrue(subNS.containsNode(node5));
+		assertTrue(subNS.containsNode(node6));
+
+		assertTrue(subNS.getNodeCount() == 4);
+		assertTrue(subNS.getLinkCount() == 5);
+		
+		//Specifically, make sure that subgraph contains the actual node (node4 but not node8) that's in the NS
+		assertTrue(subNS.getNode(node4.getId()).getLabel() == node4.getLabel());
+		assertTrue(subNS.getNode(node4.getId()).getLabel() != node8.getLabel());
 		
 	}
 
