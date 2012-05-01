@@ -74,8 +74,12 @@ public class SubNodeStructureImpl extends NodeStructureImpl {
 		if (d > getLinkCount()){
 			d = getLinkCount();
 		}
-
-		NodeStructure subNodeStructure = new NodeStructureImpl();
+		
+		//Preserve default Node and Link type of the originating NodeStructure
+		String linkType = getDefaultLinkType();
+		String nodeType = getDefaultNodeType();
+		NodeStructure subNodeStructure = new NodeStructureImpl(nodeType, linkType);
+		
 		for (Node n : nodes) {
 			//Add nodes to the sub node structure and scan from each node
 			depthFirstSearch(n, d, subNodeStructure, threshold);
@@ -123,25 +127,25 @@ public class SubNodeStructureImpl extends NodeStructureImpl {
 		Node actual = getNode(currentNode.getId());
 		if (actual != null && (actual.getActivation() >= threshold)){
 			subNodeStructure.addNode(actual, actual.getFactoryType());
-		}else{
-			return;
-		}
-		//Get all connected Sinks
-		Map<Linkable, Link> subSinks = getConnectedSinks(actual);
-		Set<Linkable> subLinkables = subSinks.keySet();
-		for (Linkable l : subLinkables) {
-			if (l instanceof Node && 0 < distanceLeftToGo){
-				depthFirstSearch((Node)l, distanceLeftToGo - 1, subNodeStructure, threshold);
+			
+			//Get all connected Sinks
+			Map<Linkable, Link> subSinks = getConnectedSinks(actual);
+			Set<Linkable> subLinkables = subSinks.keySet();
+			for (Linkable l : subLinkables) {
+				if (l instanceof Node && 0 < distanceLeftToGo){
+					depthFirstSearch((Node)l, distanceLeftToGo - 1, subNodeStructure, threshold);
+				}
+			}
+			//Get all connected Sources
+			Map<Node, Link> subSources = getConnectedSources(actual);
+			Set<Node> parentNodes = subSources.keySet();
+			for (Node n : parentNodes) {
+				if (0 < distanceLeftToGo){
+					depthFirstSearch(n, distanceLeftToGo - 1, subNodeStructure, threshold);
+				}
 			}
 		}
-		//Get all connected Sources
-		Map<Node, Link> subSources = getConnectedSources(actual);
-		Set<Node> parentNodes = subSources.keySet();
-		for (Node n : parentNodes) {
-			if (0 < distanceLeftToGo){
-				depthFirstSearch(n, distanceLeftToGo - 1, subNodeStructure, threshold);
-			}
-		}
+
 	}
 
 }
