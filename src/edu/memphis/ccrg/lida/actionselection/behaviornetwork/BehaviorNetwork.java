@@ -258,7 +258,11 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements
 		}
 	}
 
-	private void passActivationFromSchemes() {
+	/**
+	 * Intended for testing only.
+	 * Passes activation from Schemes to Behaviors.
+	 */
+	void passActivationFromSchemes() {
 		for (Behavior b : behaviors.values()) {
 			double amount = b.getScheme().getActivation()
 					* broadcastExcitationFactor;
@@ -266,16 +270,17 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements
 		}
 	}
 
-	/*
+	/**
+	 * Intended for testing only.
+	 * Passes activation from successors to predecessors and vice versa also to conflictors.
 	 * This implementation is different to the original Maes' code. Here the
 	 * activation is updated directly and the new value is used to compute the
 	 * passing activation.
 	 */
-	private void passActivationAmongBehaviors() {
+	void passActivationAmongBehaviors() {
 		Object[] keyPermutation = getRandomPermutation();
 		for (Object key : keyPermutation) {
 			Behavior b = behaviors.get(key);
-			//TODO this is crap
 			if (isAllContextConditionsSatisfied(b)) {
 				passActivationToSuccessors(b);
 			} else {
@@ -338,7 +343,6 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements
 	 * Don't bother exciting a predecessor for a precondition that is already
 	 * satisfied.
 	 */
-	//TODO change name to desirability
 	private void passActivationToPredecessors(Behavior b) {
 		// For positive conditions
 		for (Condition contextCond : b.getContextConditions()) {
@@ -351,7 +355,6 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements
 		}
 	}
 
-	//TODO change name to desirability
 	private void auxPassActivationPredecessors(Behavior b, Condition c,
 			Set<Behavior> predecessors) {
 		for (Behavior predecessor : predecessors) {
@@ -408,12 +411,12 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements
 						conflictor.getLabel(), inhibitionAmount });
 	}
 
-	/*
-	 * Select one behavior to be executed. The chosen behavior action is
+	/**
+	 * Tries to select one behavior to be executed. The chosen behavior's action is
 	 * executed, its activation is set to 0.0 and the candidate threshold is
-	 * reseted. If no behavior is selected, the candidate threshold is reduced.
+	 * reset. If no behavior is selected, the candidate threshold is reduced.
 	 */
-	private void attemptActionSelection() {
+	void attemptActionSelection() {
 		Behavior winningBehavior = selectBehavior(getSatisfiedBehaviors(),
 				candidateThreshold);
 		if (winningBehavior != null) {

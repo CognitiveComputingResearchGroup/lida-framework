@@ -1,5 +1,6 @@
 package edu.memphis.ccrg.lida.framework.shared;
 
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertEquals;
@@ -133,7 +134,7 @@ public class SubNodeStructureImplTest2 {
 		subNS= ns1.getSubgraph(nodes, 0);
 		
 		assertTrue(subNS.containsNode(node4));
-		assertTrue(subNS.getNodeCount() == 1);
+		assertTrue(subNS.getNodeCount() == 1); //TODO better to use equals
 		assertTrue(subNS.getLinkCount() == 0);
 		
 		nodes.clear();
@@ -196,7 +197,7 @@ public class SubNodeStructureImplTest2 {
 
 		//number of node = 0
 		subNS= ns1.getSubgraph(nodes, 1);
-		assertTrue(subNS == null);
+		assertTrue(subNS == null); //TODO assertNull
 		
 		//number of node = 1
         //Be tested at above test cases for distance
@@ -283,8 +284,12 @@ public class SubNodeStructureImplTest2 {
 		assertTrue(subNS.getLinkCount() == 5);
 		
 		//Specifically, make sure that subgraph contains the actual node (node4 but not node8) that's in the NS
-		assertEquals(subNS.getNode(node4.getId()).toString(), node4.toString());
-		assertFalse(subNS.getNode(node4.getId()).toString().equals(node8.toString()));
+//		assertEquals(subNS.getNode(node4.getId()).toString(), node4.toString());
+//		assertFalse(subNS.getNode(node4.getId()).toString().equals(node8.toString()));
+		//TODO review
+		assertTrue(subNS.containsNode(node4));
+		assertNotSame(subNS.getNode(node4.getId()), node4);
+		assertNotSame(subNS.getNode(node4.getId()), ns1.getNode(node4.getId()));
 	}
 
 }

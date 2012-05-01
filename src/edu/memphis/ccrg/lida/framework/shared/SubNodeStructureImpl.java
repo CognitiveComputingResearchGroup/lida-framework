@@ -29,10 +29,16 @@ public class SubNodeStructureImpl extends NodeStructureImpl {
 			.getLogger(NodeStructureImpl.class.getCanonicalName());
 
 	/**
-	 * @param nodes Set of specified nodes in NodeStructure
-	 * @param d The farthest distance between specified nodes and 
-	 * its neighbor nodes
-	 * @return A sub NodeStructure which involves specified and all 
+	 * Returns a copy of a subgraph of this {@link NodeStructure}.
+	 * The subgraph will contain all specified nodes with non-zero activation if 
+	 * they are currently present in the NodeStructure.
+	 * Additionally all other nodes having distance, the number of links, less or equal to d from the specified nodes and 
+	 * that have non-zero activation are part of the subgraph.
+	 * If a Node has non-zero activation then the depth-first search will not continue further from that Node.
+	 * Finally all links that connect two {@link Linkable} elements that are both d or less from the specified nodes are included in the subgraph.
+	 * @param nodes the nodes which will be the roots from which the subgraph will be formed
+	 * @param d the greatest distance a node can be from a specified nodes to be included in the subgraph
+	 * @return A copy of a subgraph of this NodeStructure which involves specified and all 
 	 * satisfied neighbor nodes
 	 */
 	public  NodeStructure getSubgraph(Collection<Node> nodes,int d) {
@@ -40,14 +46,20 @@ public class SubNodeStructureImpl extends NodeStructureImpl {
 	}
 
 	/**
-	 * @param nodes Set of specified nodes in NodeStructure
-	 * @param d The farthest distance between specified nodes and
-	 * its neighbor nodes
-	 * @param threshold responds to lower bound of activation
-	 * @return A sub NodeStructure which involves specified and all 
+	 * Returns a copy of a subgraph of this {@link NodeStructure}.
+	 * The subgraph will contain all specified nodes with activation at or above specified threshold if 
+	 * they are currently present in the NodeStructure.
+	 * Additionally all other nodes having distance, the number of links, less or equal to d from the specified nodes and 
+	 * that have sufficient activation are part of the subgraph.
+	 * If a Node has insufficient activation then the depth-first search will not continue further from that Node.
+	 * Finally all links that connect two {@link Linkable} elements that are both d or less from the specified nodes are included in the subgraph.
+	 * @param nodes the nodes which will be the roots from which the subgraph will be formed
+	 * @param d the greatest distance a node can be from a specified nodes to be included in the subgraph
+	 * @param threshold activation requirement for a node to be part of the subgraph. 
+	 * @return A copy of a subgraph of this NodeStructure which involves specified and all 
 	 * satisfied neighbor nodes
 	 */
-	public  NodeStructure getSubgraph(Collection<Node> nodes,
+	public NodeStructure getSubgraph(Collection<Node> nodes,
 			int d, double threshold) {
 		if (nodes == null ){
 			logger.log(Level.WARNING, "Collection of specified nodes are not available.",
@@ -76,13 +88,12 @@ public class SubNodeStructureImpl extends NodeStructureImpl {
 		}
 		
 		//Preserve default Node and Link type of the originating NodeStructure
-		String linkType = getDefaultLinkType();
-		String nodeType = getDefaultNodeType();
-		NodeStructure subNodeStructure = new NodeStructureImpl(nodeType, linkType);
-		
+		NodeStructure subNodeStructure = new NodeStructureImpl(getDefaultNodeType(), getDefaultLinkType());		
 		for (Node n : nodes) {
 			//Add nodes to the sub node structure and scan from each node
-			depthFirstSearch(n, d, subNodeStructure, threshold);
+			if(n != null){
+				depthFirstSearch(n, d, subNodeStructure, threshold);
+			}
 		}
 		//	Add all simple links to the sub node structure
 		for (Node subNode : subNodeStructure.getNodes()) {
@@ -127,7 +138,6 @@ public class SubNodeStructureImpl extends NodeStructureImpl {
 		Node actual = getNode(currentNode.getId());
 		if (actual != null && (actual.getActivation() >= threshold)){
 			subNodeStructure.addNode(actual, actual.getFactoryType());
-			
 			//Get all connected Sinks
 			Map<Linkable, Link> subSinks = getConnectedSinks(actual);
 			Set<Linkable> subLinkables = subSinks.keySet();
@@ -145,7 +155,6 @@ public class SubNodeStructureImpl extends NodeStructureImpl {
 				}
 			}
 		}
-
 	}
 
 }
