@@ -283,10 +283,6 @@ public class SubNodeStructureImplTest2 {
 		assertTrue(subNS.getLinkCount() == 5);
 		
 		//Specifically, make sure that subgraph contains the actual node (node4 but not node8) that's in the NS
-		//assertTrue(subNS.getNode(node4.getId()).getLabel() == node4.getLabel());
-		//assertTrue(subNS.getNode(node4.getId()).getLabel() != node8.getLabel());
-		//assertTrue(subNS.containsNode(node8));
-		//assertTrue(subNS.getNode(node6.getId()) == node6);
 		assertEquals(subNS.getNode(node4.getId()).toString(), node4.toString());
 		assertFalse(subNS.getNode(node4.getId()).toString().equals(node8.toString()));
 	}
