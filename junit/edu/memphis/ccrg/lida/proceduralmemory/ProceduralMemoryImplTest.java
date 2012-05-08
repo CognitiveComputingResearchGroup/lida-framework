@@ -58,7 +58,6 @@ public class ProceduralMemoryImplTest {
 		params.put("proceduralMemory.addingListWeight", 1.0);
 		pm.init(params);
 
-		
 		pm.setAssistingTaskSpawner(mockTs);
 		c1 = factory.getNode("NodeImpl","c1");
 		c2 = (RootableNode) factory.getNode("RootableNodeImpl","c2");
