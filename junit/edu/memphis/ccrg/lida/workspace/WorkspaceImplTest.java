@@ -30,7 +30,9 @@ import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl;
 /**
  * This class is the JUnit test for <code>WorkspaceImpl</code> class.
  * 
- * @author Rodrigo Silva-Lugo, Daqi Dong, Ryan J. McCall
+ * @author Rodrigo Silva-Lugo
+ * @author Daqi Dong
+ * @author Ryan J. McCall
  */
 public class WorkspaceImplTest {
 

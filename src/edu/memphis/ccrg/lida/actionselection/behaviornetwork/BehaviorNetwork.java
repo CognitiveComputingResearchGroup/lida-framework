@@ -225,8 +225,6 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements
 					behaviorsByContextCondition);
 			indexBehaviorByElements(b, b.getAddingList(), behaviorsByAddingItem);
 			indexBehaviorByElements(b, b.getDeletingList(), behaviorsByDeletingItem);
-			// indexBehaviorByElements(b, b.getNegatedContextConditions(),
-			// behaviorsByNegContextCondition);
 		}
 	}
 
@@ -358,9 +356,7 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements
 	private void auxPassActivationPredecessors(Behavior b, Condition c,
 			Set<Behavior> predecessors) {
 		for (Behavior predecessor : predecessors) {
-			//TODO
-//			double amount = ((BehaviorImpl)b).getTotalDesirability() * predecessorExcitationFactor;
-//			((BehaviorImpl)predecessor).exciteDesirability(amount);
+			//think about being your own predecessor
 			double amount = b.getActivation()/getUnsatisfiedContextCount(b)*predecessorExcitationFactor;
 			predecessor.excite(amount);
 			logger.log(Level.FINEST,
@@ -479,7 +475,7 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements
 	@Override
 	public Behavior selectBehavior(Collection<Behavior> behaviors,
 			double candidateThreshold) {
-		double maxActivation = 0.0;//TODO a combined measure of activation and desirability
+		double maxActivation = 0.0;
 		List<Behavior> winners = new ArrayList<Behavior>();
 		for (Behavior b : behaviors) {
 			double currentActivation = b.getTotalActivation();

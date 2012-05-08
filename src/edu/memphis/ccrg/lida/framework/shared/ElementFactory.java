@@ -28,7 +28,6 @@ import edu.memphis.ccrg.lida.framework.strategies.LinearExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.NoDecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.NoExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.Strategy;
-import edu.memphis.ccrg.lida.framework.strategies.TotalValueStrategy;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTask;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.pam.PamLinkImpl;
@@ -90,7 +89,6 @@ public class ElementFactory {
 	 * Specifies default node type used by the factory. e.g. "NodeImpl"
 	 */
 	private String defaultNodeType = NodeImpl.class.getSimpleName();
-	
 	
 	//TODO a Definition for behavior is needed
 	private String defaultBehaviorClassName = BehaviorImpl.class.getCanonicalName();
@@ -210,11 +208,11 @@ public class ElementFactory {
 		defaultStrategies.put("excite", defaultExciteType);
 		
 		params= new HashMap<String, Object>();
-		params.put("learnableActivatible.baseLevelActivation", 0.0);
-		params.put("learnableActivatible.baseLevelRemovalThreshold", -1.0);
-		params.put("learnableActivatible.baseLevelDecayStrategy", "noDecay");
-		params.put("learnableActivatible.baseLevelExciteStrategy", "noExcite");
-		params.put("learnableActivatible.totalActivationStrategy", strategyName);
+		params.put("learnable.baseLevelActivation", 0.0);
+		params.put("learnable.baseLevelRemovalThreshold", -1.0);
+		params.put("learnable.baseLevelDecayStrategy", "noDecay");
+		params.put("learnable.baseLevelExciteStrategy", "noExcite");
+		params.put("learnable.totalActivationStrategy", strategyName);
 		
 		//Nodes
 		//Default node type
@@ -355,14 +353,6 @@ public class ElementFactory {
 	 */
 	public String getDefaultNodeType() {
 		return defaultNodeType;
-	}
-	
-	/**
-	 * Gets default total value strategy type.
-	 * @return the default total value strategy type.
-	 */
-	public String getDefaultTotalValueStrategyType(){
-		return defaultTotalValueStrategyType;
 	}
 	
 	/**
@@ -975,14 +965,6 @@ public class ElementFactory {
 	 */
 	public ExciteStrategy getDefaultExciteStrategy(){
 		return getExciteStrategy(defaultExciteType);
-	}
-	
-	/**
-	 * Gets the default {@link TotalValueStrategy}.
-	 * @return the default {@link TotalValueStrategy}
-	 */
-	public TotalValueStrategy getDefaultTotalValueStrategy(){
-		return (TotalValueStrategy) getStrategy(defaultTotalValueStrategyType);
 	}
 
 	/**

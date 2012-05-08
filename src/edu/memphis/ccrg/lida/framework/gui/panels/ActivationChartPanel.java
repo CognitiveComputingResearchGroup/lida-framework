@@ -22,12 +22,12 @@ import org.jfree.data.xy.XYSeriesCollection;
 
 import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.ModuleName;
-import edu.memphis.ccrg.lida.framework.shared.activation.LearnableActivatible;
+import edu.memphis.ccrg.lida.framework.shared.activation.Learnable;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 
 /**
- * A {@link GuiPanel} which displays a {@link LearnableActivatible} element's activation over time (in ticks).
+ * A {@link GuiPanel} which displays a {@link Learnable} element's activation over time (in ticks).
  * @author Ryan J. McCall
  */
 public class ActivationChartPanel extends GuiPanelImpl {
@@ -40,7 +40,7 @@ public class ActivationChartPanel extends GuiPanelImpl {
 	private XYSeries series3 = new XYSeries("Total Activation");
 	private int tickDisplayInterval = 100;
 	private FrameworkModule selectedModule;
-	private LearnableActivatible learnable;
+	private Learnable learnable;
 	private String elementName = "";
 
 	/** Creates new form JChartGuiPanel */
@@ -205,15 +205,15 @@ public class ActivationChartPanel extends GuiPanelImpl {
 	public void refresh() {
     	ModuleName selectedModuleName = selectedModule.getModuleName();
     	if(selectedModuleName == ModuleName.PerceptualAssociativeMemory){
-    		learnable = (LearnableActivatible) ((PerceptualAssociativeMemory) selectedModule).getNode(elementName);
+    		learnable = (Learnable) ((PerceptualAssociativeMemory) selectedModule).getNode(elementName);
     	}else{
     		learnable = null;
     	}
     	updateWithLearnable(learnable);
     }
     
-    private void updateWithLearnable(LearnableActivatible learnableImpl){
-    	if(learnableImpl != null){
+    private void updateWithLearnable(Learnable learnable){
+    	if(learnable != null){
     		//Remove oldest if display interval is reached
 	    	if(series2.getItemCount() >= tickDisplayInterval){
 	    		series1.remove(0);
@@ -222,9 +222,9 @@ public class ActivationChartPanel extends GuiPanelImpl {
 	    	}
 	    	//add a new x,y entry to each of the 3 series
 	    	long currentTick = TaskManager.getCurrentTick();
-	        series1.add(currentTick, learnableImpl.getBaseLevelActivation());
-	        series2.add(currentTick, learnableImpl.getActivation());
-	        series3.add(currentTick, learnableImpl.getTotalActivation());
+	        series1.add(currentTick, learnable.getBaseLevelActivation());
+	        series2.add(currentTick, learnable.getActivation());
+	        series3.add(currentTick, learnable.getTotalActivation());
     	}else{
     		logger.log(Level.FINEST, "null learnable", TaskManager.getCurrentTick());
     	}

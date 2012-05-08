@@ -26,7 +26,6 @@ import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 public class NodeImpl extends ActivatibleImpl implements Node {
 
 	private static final Logger logger = Logger.getLogger(NodeImpl.class.getCanonicalName());
-	private static final double DEFAULT_WEIGHT = 1.0;
 	
 	private int id;
 	private ExtendedId extendedId;
@@ -40,7 +39,7 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 	protected PamNode groundingPamNode;
 
 	@Override
-	public void setFactoryType(String n) {
+	public synchronized void setFactoryType(String n) {
 		factoryName = n;
 	}
 
@@ -75,7 +74,7 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 	}
 	
 	@Override
-	public void setId(int id) {
+	public synchronized void setId(int id) {
 		this.id = id;
 		extendedId = new ExtendedId(id);
 		updateName();
@@ -85,7 +84,7 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 	 * Convenience method to set Node's {@link ExtendedId}.  Also sets node's id.
 	 * @param eid {@link ExtendedId}
 	 */
-	public void setExtendedId(ExtendedId eid) {
+	public synchronized void setExtendedId(ExtendedId eid) {
 		if(eid == null){
 			logger.log(Level.WARNING, "Supplied ExtendedId was null. ExtendedId not set.", TaskManager.getCurrentTick());
 		}else if(eid.isNodeId()){
@@ -129,7 +128,7 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 		return groundingPamNode;
 	}
 	@Override
-	public void setGroundingPamNode(PamNode n) {
+	public synchronized void setGroundingPamNode(PamNode n) {
 		groundingPamNode = n;
 	}
 
@@ -166,15 +165,6 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 	 */
 	@Override
 	public void updateNodeValues(Node n) {
-	}
-
-	@Override
-	public double getWeight() {
-		return DEFAULT_WEIGHT;
-	}
-
-	@Override
-	public void setWeight(double w) {
 	}
 
 	@Override

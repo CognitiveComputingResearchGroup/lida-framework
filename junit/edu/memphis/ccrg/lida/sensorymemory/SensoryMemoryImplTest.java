@@ -26,7 +26,8 @@ import edu.memphis.ccrg.lida.pam.MockPamListener;
 
 /**
  * This class is the JUnit test for <code>SensoryMemoryImpl</code> class.
- * @author Rodrigo Silva-Lugo, Ryan J. McCall
+ * @author Rodrigo Silva-Lugo
+ * @author Ryan J. McCall
  */
 public class SensoryMemoryImplTest {
 	

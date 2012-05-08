@@ -141,7 +141,7 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 	}
 
 	@Override
-	public void setSink(Linkable snk) {
+	public synchronized void setSink(Linkable snk) {
 		if(snk == null){
 			logger.log(Level.WARNING, "Cannot set sink to null", TaskManager.getCurrentTick());
 		}else if(snk.equals(source)){
@@ -155,7 +155,7 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 	}
 
 	@Override
-	public void setSource(Node src) {
+	public synchronized void setSource(Node src) {
 		if(src == null){
 			logger.log(Level.WARNING, "Cannot set source to null", TaskManager.getCurrentTick());
 		}else if(src.equals(sink)){
@@ -167,7 +167,7 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 	}
 
 	@Override
-	public void setCategory(LinkCategory c) {
+	public synchronized void setCategory(LinkCategory c) {
 		if(c == null){
 			logger.log(Level.WARNING, "Cannot set a Link's category to null", TaskManager.getCurrentTick());
 		}else{
@@ -182,7 +182,7 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 	}
 
 	@Override
-	public void setGroundingPamLink(PamLink l) {
+	public synchronized void setGroundingPamLink(PamLink l) {
 		groundingPamLink = l;
 	}
 	
@@ -238,7 +238,7 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 	}
 
 	@Override
-	public void setFactoryType(String t) {
+	public synchronized void setFactoryType(String t) {
 		factoryType = t;
 	}
 }

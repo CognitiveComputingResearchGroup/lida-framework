@@ -11,7 +11,7 @@ import edu.memphis.ccrg.lida.framework.shared.activation.Desirable;
 public interface RootableNode extends Node, Desirable {
 
 	/**
-	 * Sets Node type
+	 * Sets Node type.
 	 * 
 	 * @param t
 	 *            {@link NodeType}
@@ -19,7 +19,7 @@ public interface RootableNode extends Node, Desirable {
 	public void setNodeType(NodeType t);
 
 	/**
-	 * Gets Node Type
+	 * Gets Node Type.
 	 * 
 	 * @return {@link NodeType}
 	 */

@@ -9,7 +9,7 @@ package edu.memphis.ccrg.lida.proceduralmemory;
 
 import edu.memphis.ccrg.lida.actionselection.Action;
 import edu.memphis.ccrg.lida.actionselection.Behavior;
-import edu.memphis.ccrg.lida.framework.shared.activation.LearnableActivatible;
+import edu.memphis.ccrg.lida.framework.shared.activation.Learnable;
 import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryImpl.ConditionType;
 
 /**
@@ -20,7 +20,7 @@ import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryImpl.ConditionType
  * 
  * @author Ryan J. McCall
  */
-public interface Scheme extends ProceduralUnit, LearnableActivatible{
+public interface Scheme extends ProceduralUnit, Learnable {
 	
 	/**
 	 * Sets action

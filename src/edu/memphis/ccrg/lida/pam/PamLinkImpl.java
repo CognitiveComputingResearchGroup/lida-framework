@@ -12,15 +12,15 @@ import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.Link;
+import edu.memphis.ccrg.lida.framework.shared.Linkable;
 import edu.memphis.ccrg.lida.framework.shared.LinkCategory;
 import edu.memphis.ccrg.lida.framework.shared.LinkImpl;
-import edu.memphis.ccrg.lida.framework.shared.Linkable;
 import edu.memphis.ccrg.lida.framework.shared.Node;
-import edu.memphis.ccrg.lida.framework.shared.activation.LearnableActivatible;
-import edu.memphis.ccrg.lida.framework.shared.activation.LearnableActivatibleImpl;
+import edu.memphis.ccrg.lida.framework.shared.activation.Learnable;
+import edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
-import edu.memphis.ccrg.lida.framework.strategies.TotalValueStrategy;
+import edu.memphis.ccrg.lida.framework.strategies.TotalActivationStrategy;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 
 /**
@@ -35,7 +35,7 @@ public class PamLinkImpl extends LinkImpl implements PamLink {
 	/*
 	 * Private Learnable object used for all learnable methods
 	 */
-	private LearnableActivatibleImpl learnableImpl;
+	private LearnableImpl learnable;
 	
 	/**
 	 * Default constructor
@@ -44,7 +44,7 @@ public class PamLinkImpl extends LinkImpl implements PamLink {
 	public PamLinkImpl() {
 		super();
 		groundingPamLink = this;
-		learnableImpl = new LearnableActivatibleImpl();
+		learnable = new LearnableImpl();
 	}
 	/**
 	 * Copy constructor
@@ -55,17 +55,17 @@ public class PamLinkImpl extends LinkImpl implements PamLink {
 	public PamLinkImpl(PamLinkImpl pl) {
 		super(pl);
 		groundingPamLink = this;
-		learnableImpl=new LearnableActivatibleImpl((LearnableActivatibleImpl)pl.learnableImpl);
+		learnable=new LearnableImpl((LearnableImpl)pl.learnable);
 	}
 
 	/** 
-	 * Must call the {@link #init()} of the internal {@link LearnableActivatible}.
-	 * @see LearnableActivatibleImpl#init()
-	 * @see ElementFactory#getLink(String, Node, Linkable, LinkCategory, String, String, double, double)
+	 * Must call the {@link #init()} of the internal {@link Learnable}.
+	 * @see LearnableImpl#init()
+	 * @see ElementFactory#getLink(String, edu.memphis.ccrg.lida.framework.shared.Node, edu.memphis.ccrg.lida.framework.shared.Linkable, edu.memphis.ccrg.lida.framework.shared.LinkCategory, String, String, double, double)
 	 */
 	@Override
 	public void init(){
-		learnableImpl.init(getParameters());
+		learnable.init(getParameters());
 	}
 
 	//LINK
@@ -73,7 +73,7 @@ public class PamLinkImpl extends LinkImpl implements PamLink {
 	public void updateLinkValues(Link link) {
 		if(link instanceof PamLinkImpl){
 			PamLinkImpl pl = (PamLinkImpl) link;
-			learnableImpl.setBaseLevelActivation(pl.getBaseLevelActivation());           
+			learnable.setBaseLevelActivation(pl.getBaseLevelActivation());           
 		}else if(link != null){
 			logger.log(Level.FINEST, "Cannot set PamLinkImpl-specific values. Required: {1} \n Received: {2}",
 					new Object[]{TaskManager.getCurrentTick(),PamLinkImpl.class.getCanonicalName(),link.getClass()});
@@ -89,128 +89,133 @@ public class PamLinkImpl extends LinkImpl implements PamLink {
 		}
 		return false;	
 	}
+	
+	@Override
+	public int hashCode() { 
+	    return getExtendedId().hashCode();
+	}
 
 	//LEARNABLE METHODS
 	
 	@Override
 	public double getActivation() {
-		return learnableImpl.getActivation();
+		return learnable.getActivation();
 	}
 
 	@Override
 	public void setActivation(double activation) {
-		learnableImpl.setActivation(activation);
+		learnable.setActivation(activation);
 	}
 
 	@Override
 	public double getTotalActivation() {
-		return learnableImpl.getTotalActivation();
+		return learnable.getTotalActivation();
 	}
 
 	@Override
 	public void excite(double amount) {
-		learnableImpl.excite(amount);
+		learnable.excite(amount);
 	}
 
 	@Override
-	public void setExciteStrategy(ExciteStrategy strategy) {
-		learnableImpl.setExciteStrategy(strategy);
+	public synchronized void setExciteStrategy(ExciteStrategy strategy) {
+		learnable.setExciteStrategy(strategy);
 	}
 
 	@Override
 	public ExciteStrategy getExciteStrategy() {
-		return learnableImpl.getExciteStrategy();
+		return learnable.getExciteStrategy();
 	}
 
 	@Override
 	public void decay(long ticks) {
-		learnableImpl.decay(ticks);
+		learnable.decay(ticks);
 
 	}
 
 	@Override
-	public void setDecayStrategy(DecayStrategy strategy) {
-		learnableImpl.setDecayStrategy(strategy);
+	public synchronized void setDecayStrategy(DecayStrategy strategy) {
+		learnable.setDecayStrategy(strategy);
 	}
 
 	@Override
 	public DecayStrategy getDecayStrategy() {
-		return learnableImpl.getDecayStrategy();
+		return learnable.getDecayStrategy();
 	}
 
 	@Override
 	public void setActivatibleRemovalThreshold(double threshold) {
-		learnableImpl.setActivatibleRemovalThreshold(threshold);
+		learnable.setActivatibleRemovalThreshold(threshold);
 	}
 
 	@Override
 	public double getActivatibleRemovalThreshold() {
-		return learnableImpl.getActivatibleRemovalThreshold();
+		return learnable.getActivatibleRemovalThreshold();
 	}
 
 	@Override
 	public boolean isRemovable() {
-		return learnableImpl.isRemovable();
+		return learnable.isRemovable();
 	}
 
 	@Override
 	public double getBaseLevelActivation() {
-		return learnableImpl.getBaseLevelActivation();
+		return learnable.getBaseLevelActivation();
 	}
 
 	@Override
 	public void setBaseLevelActivation(double amount) {
-		learnableImpl.setBaseLevelActivation(amount);
+		learnable.setBaseLevelActivation(amount);
 	}
 
 	@Override
 	public void reinforceBaseLevelActivation(double amount) {
-		learnableImpl.reinforceBaseLevelActivation(amount);
+		learnable.reinforceBaseLevelActivation(amount);
 	}
 
 	@Override
 	public void setBaseLevelExciteStrategy(ExciteStrategy strategy) {
-		learnableImpl.setBaseLevelExciteStrategy(strategy);
+		learnable.setBaseLevelExciteStrategy(strategy);
 	}
 
 	@Override
 	public ExciteStrategy getBaseLevelExciteStrategy() {
-		return learnableImpl.getBaseLevelExciteStrategy();
+		return learnable.getBaseLevelExciteStrategy();
 	}
 
 	@Override
 	public void decayBaseLevelActivation(long ticks) {
-		learnableImpl.decayBaseLevelActivation(ticks);
+		learnable.decayBaseLevelActivation(ticks);
 	}
 
 	@Override
 	public void setBaseLevelDecayStrategy(DecayStrategy strategy) {
-		learnableImpl.setBaseLevelDecayStrategy(strategy);
+		learnable.setBaseLevelDecayStrategy(strategy);
 	}
 
 	@Override
 	public DecayStrategy getBaseLevelDecayStrategy() {
-		return learnableImpl.getBaseLevelDecayStrategy();
+		return learnable.getBaseLevelDecayStrategy();
 	}
 
 	@Override
 	public void setBaseLevelRemovalThreshold(double threshold) {
-		learnableImpl.setBaseLevelRemovalThreshold(threshold);
+		learnable.setBaseLevelRemovalThreshold(threshold);
 
 	}
 
 	@Override
 	public double getLearnableRemovalThreshold() {
-		return learnableImpl.getLearnableRemovalThreshold();
+		return learnable.getLearnableRemovalThreshold();
 	}
 
 	@Override
-	public TotalValueStrategy getTotalValueStrategy() {
-		return learnableImpl.getTotalValueStrategy();
+	public TotalActivationStrategy getTotalActivationStrategy() {
+		return learnable.getTotalActivationStrategy();
 	}
 
 	@Override
-	public void setTotalValueStrategy(TotalValueStrategy strategy) {
-		learnableImpl.setTotalValueStrategy(strategy);
+	public void setTotalActivationStrategy(TotalActivationStrategy strategy) {
+		learnable.setTotalActivationStrategy(strategy);
 	}	
 }

@@ -45,11 +45,9 @@ public class ActivatibleImplTest {
 	@Before
 	public void setUp() throws Exception {
 		act1 = new ActivatibleImpl();
-		multArg = new ActivatibleImpl();
-		multArg.setActivation(0.11);
-		multArg.setActivatibleRemovalThreshold(0.22);
-		multArg.setExciteStrategy(factory.getExciteStrategy("specialExcite")); 
-		multArg.setDecayStrategy(factory.getDecayStrategy("specialDecay"));
+		multArg = new ActivatibleImpl(0.11, 0.22, 
+				factory.getExciteStrategy("specialExcite"), 
+				factory.getDecayStrategy("specialDecay"));
 	}
 
 	@Test

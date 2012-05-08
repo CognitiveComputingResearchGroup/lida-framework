@@ -14,7 +14,7 @@ import edu.memphis.ccrg.lida.pam.PamNode;
 import edu.memphis.ccrg.lida.proceduralmemory.Condition;
 
 /**
- * Node represents a Concept in LIDA. It could be implemented in different ways 
+ * A {@link Node} represents a Concept in LIDA. It could be implemented in different ways 
  * for different parts of the system. For example could be pamNodes in the PAM and WorkspaceNodes
  * in the workspace.
  * Nodes with the same id represents the same concept so equals have to return true even if the objects are

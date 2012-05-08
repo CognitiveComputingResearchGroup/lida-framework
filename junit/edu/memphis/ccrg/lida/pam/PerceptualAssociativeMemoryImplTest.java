@@ -43,7 +43,7 @@ import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.SigmoidDecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.SigmoidExciteStrategy;
-import edu.memphis.ccrg.lida.framework.strategies.TotalValueStrategy;
+import edu.memphis.ccrg.lida.framework.strategies.TotalActivationStrategy;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTask;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 import edu.memphis.ccrg.lida.pam.tasks.DetectionAlgorithm;
@@ -61,7 +61,7 @@ public class PerceptualAssociativeMemoryImplTest {
 	private PamNode node1,node2,node3;
 	private DecayStrategy decayStrategy ;
 	private ExciteStrategy exciteStrat;
-	private TotalValueStrategy tas;
+	private TotalActivationStrategy tas;
 	private PamLink link1,link2;
 	
 	
@@ -83,7 +83,7 @@ public class PerceptualAssociativeMemoryImplTest {
 		
 		decayStrategy = new SigmoidDecayStrategy();
 		exciteStrat = new SigmoidExciteStrategy();
-		tas = factory.getDefaultTotalValueStrategy();		
+		tas = (TotalActivationStrategy) factory.getStrategy("DefaultTotalActivation");		
 		link1 = (PamLinkImpl) factory.getLink("PamLinkImpl", node1, node2, PerceptualAssociativeMemoryImpl.NONE);
 		link2 = (PamLinkImpl) factory.getLink("PamLinkImpl", node2, node3, PerceptualAssociativeMemoryImpl.NONE);
 	}

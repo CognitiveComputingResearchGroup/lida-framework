@@ -20,7 +20,7 @@ import edu.memphis.ccrg.lida.framework.initialization.Initializer;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
-import edu.memphis.ccrg.lida.framework.shared.activation.LearnableActivatible;
+import edu.memphis.ccrg.lida.framework.shared.activation.Learnable;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl;
 import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryImpl.ConditionType;
 
@@ -66,7 +66,7 @@ public class BasicProceduralMemoryInitializer implements Initializer {
 	    			NodeStructure resultNS = loadNodeStructure(initializer, result);
 	    			
 	    			String blActivation = elements[4].trim();
-	    			double bla = LearnableActivatible.DEFAULT_BASE_LEVEL_ACTIVATION;
+	    			double bla = Learnable.DEFAULT_BASE_LEVEL_ACTIVATION;
 	    			try{
 	    				bla = Double.parseDouble(blActivation);
 	    			}catch(NumberFormatException e){

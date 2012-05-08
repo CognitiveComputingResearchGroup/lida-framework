@@ -10,8 +10,7 @@ package edu.memphis.ccrg.lida.framework.tasks;
 import java.util.concurrent.Callable;
 
 import edu.memphis.ccrg.lida.framework.initialization.FullyInitializable;
-import edu.memphis.ccrg.lida.framework.shared.activation.LearnableActivatible;
-
+import edu.memphis.ccrg.lida.framework.shared.activation.Learnable;
 
 /**
  * This is the base interface for all task process in the LIDA framework. 
@@ -32,7 +31,7 @@ import edu.memphis.ccrg.lida.framework.shared.activation.LearnableActivatible;
  * @author Javier Snaider
  *
  */ 
-public interface FrameworkTask extends Callable<FrameworkTask>, LearnableActivatible, FullyInitializable{
+public interface FrameworkTask extends Callable<FrameworkTask>, Learnable, FullyInitializable{
 	
 	/**
 	 * Returns status

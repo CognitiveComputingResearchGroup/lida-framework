@@ -12,10 +12,10 @@ package edu.memphis.ccrg.lida.framework.shared.activation;
 
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
-import edu.memphis.ccrg.lida.framework.strategies.TotalValueStrategy;
+import edu.memphis.ccrg.lida.framework.strategies.TotalActivationStrategy;
 
 /**
- * An Activatible that additionally has a base-level activation. It is used mostly for learning.
+ * An {@link Activatible} that additionally has a base-level activation. It is used mostly for learning.
  * The classes that implement this interface have a decay and reinforce base level activation.
  * If the base level activation reaches zero, the element should be deleted (decay away)
  * 
@@ -23,7 +23,7 @@ import edu.memphis.ccrg.lida.framework.strategies.TotalValueStrategy;
  * @author Ryan J. McCall
  *
  */
-public interface LearnableActivatible extends Activatible{
+public interface Learnable extends Activatible{
 		
 	/**
 	 * Default removal threshold for Learnable
@@ -102,15 +102,15 @@ public interface LearnableActivatible extends Activatible{
 	public double getLearnableRemovalThreshold();
 	
 	/**
-	 * Returns {@link TotalValueStrategy}
+	 * Returns {@link TotalActivationStrategy}
 	 * @return Strategy this Learnable uses to calculate total activation.
 	 */
-	public TotalValueStrategy getTotalValueStrategy();
+	public TotalActivationStrategy getTotalActivationStrategy();
 	
 	/**
-	 * Sets {@link TotalValueStrategy}
+	 * Sets {@link TotalActivationStrategy}
 	 * @param strategy Strategy this Learnable uses to calculate total activation.
 	 */
-	public void setTotalValueStrategy(TotalValueStrategy strategy);
+	public void setTotalActivationStrategy(TotalActivationStrategy strategy);
 	
 }

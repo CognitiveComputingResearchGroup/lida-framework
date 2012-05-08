@@ -20,7 +20,7 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBuffer;
 
 /**
- * Basic implementation of {@link AttentionCodelet}
+ * Basic implementation of {@link AttentionCodelet}.
  * @author Ryan J. McCall
  */
 public class BasicAttentionCodelet extends AttentionCodeletImpl {

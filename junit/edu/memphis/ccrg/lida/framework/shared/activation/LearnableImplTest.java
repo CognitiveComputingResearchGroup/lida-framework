@@ -25,7 +25,7 @@ import edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.LinearExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.SigmoidDecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.SigmoidExciteStrategy;
-import edu.memphis.ccrg.lida.framework.strategies.TotalValueStrategy;
+import edu.memphis.ccrg.lida.framework.strategies.TotalActivationStrategy;
 
 /**
  * This is a JUnit class which can be used to test methods of the LearnableImpl
@@ -38,8 +38,8 @@ public class LearnableImplTest {
 
 	private static final ElementFactory factory = ElementFactory.getInstance();
 
-	private LearnableActivatibleImpl learnable1;
-	private LearnableActivatibleImpl learnable2;
+	private LearnableImpl learnable1;
+	private LearnableImpl learnable2;
 	private double epsilon = 0.000000001;
 
 	/**
@@ -48,7 +48,7 @@ public class LearnableImplTest {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		learnable1 = new LearnableActivatibleImpl();
+		learnable1 = new LearnableImpl();
 	}
 
 	@Test
@@ -62,9 +62,9 @@ public class LearnableImplTest {
 		DecayStrategy ds = new LinearDecayStrategy();
 		ExciteStrategy blEs = new SigmoidExciteStrategy();
 		DecayStrategy blDs = new SigmoidDecayStrategy();
-		TotalValueStrategy ts = new DefaultTotalActivationStrategy();
+		TotalActivationStrategy ts = new DefaultTotalActivationStrategy();
 
-		learnable2 = new LearnableActivatibleImpl(activation, activatibleRemovalThreshold,
+		learnable2 = new LearnableImpl(activation, activatibleRemovalThreshold,
 				baseLevelActivation, learnableRemovalThreshold, es, ds, blEs,
 				blDs, ts);
 
@@ -80,7 +80,7 @@ public class LearnableImplTest {
 		assertEquals(learnable2.getDecayStrategy(), ds);
 		assertEquals(learnable2.getBaseLevelDecayStrategy(), blDs);
 		assertEquals(learnable2.getBaseLevelExciteStrategy(), blEs);
-		assertEquals(learnable2.getTotalValueStrategy(), ts);
+		assertEquals(learnable2.getTotalActivationStrategy(), ts);
 	}
 
 	@Test
@@ -93,11 +93,11 @@ public class LearnableImplTest {
 		learnable1.setDecayStrategy(factory.getDefaultDecayStrategy());
 		learnable1.setExciteStrategy(factory.getDefaultExciteStrategy());
 		learnable1
-				.setTotalValueStrategy(new DefaultTotalActivationStrategy());
+				.setTotalActivationStrategy(new DefaultTotalActivationStrategy());
 		learnable1.setBaseLevelDecayStrategy(new SigmoidDecayStrategy());
 		learnable1.setBaseLevelExciteStrategy(new SigmoidExciteStrategy());
 
-		LearnableActivatibleImpl copy = new LearnableActivatibleImpl(learnable1);
+		LearnableImpl copy = new LearnableImpl(learnable1);
 
 		assertEquals(learnable1.getActivatibleRemovalThreshold(),
 				copy.getActivatibleRemovalThreshold(), epsilon);
@@ -109,8 +109,8 @@ public class LearnableImplTest {
 
 		assertEquals(learnable1.getDecayStrategy(), copy.getDecayStrategy());
 		assertEquals(learnable1.getExciteStrategy(), copy.getExciteStrategy());
-		assertEquals(learnable1.getTotalValueStrategy(),
-				copy.getTotalValueStrategy());
+		assertEquals(learnable1.getTotalActivationStrategy(),
+				copy.getTotalActivationStrategy());
 		assertEquals(learnable1.getBaseLevelDecayStrategy(),
 				copy.getBaseLevelDecayStrategy());
 		assertEquals(learnable1.getBaseLevelExciteStrategy(),
@@ -119,7 +119,7 @@ public class LearnableImplTest {
 
 	/**
 	 * Test method for
-	 * {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableActivatibleImpl#decay(long)}
+	 * {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl#decay(long)}
 	 * .
 	 */
 	@Test
@@ -146,7 +146,7 @@ public class LearnableImplTest {
 
 	/**
 	 * Test method for
-	 * {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableActivatibleImpl#isRemovable()}
+	 * {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl#isRemovable()}
 	 * .
 	 */
 	@Test
@@ -174,13 +174,13 @@ public class LearnableImplTest {
 
 	/**
 	 * Test method for
-	 * {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableActivatibleImpl#getTotalActivation()}
+	 * {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl#getTotalActivation()}
 	 * .
 	 */
 	@Test
 	public void testGetTotalActivation() {
-		TotalValueStrategy ts = new DefaultTotalActivationStrategy();
-		learnable1.setTotalValueStrategy(ts);
+		TotalActivationStrategy ts = new DefaultTotalActivationStrategy();
+		learnable1.setTotalActivationStrategy(ts);
 		learnable1.setActivation(0.11);
 		learnable1.setBaseLevelActivation(0.44);
 		assertEquals(0.55, learnable1.getTotalActivation(), epsilon);
@@ -192,7 +192,7 @@ public class LearnableImplTest {
 
 	/**
 	 * Test method for
-	 * {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableActivatibleImpl#decayBaseLevelActivation(long)}
+	 * {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl#decayBaseLevelActivation(long)}
 	 * .
 	 */
 	@Test
@@ -209,7 +209,7 @@ public class LearnableImplTest {
 
 	/**
 	 * Test method for
-	 * {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableActivatibleImpl#setBaseLevelExciteStrategy(edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy)}
+	 * {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl#setBaseLevelExciteStrategy(edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy)}
 	 * .
 	 */
 	@Test
@@ -224,7 +224,7 @@ public class LearnableImplTest {
 
 	/**
 	 * Test method for
-	 * {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableActivatibleImpl#setBaseLevelDecayStrategy(edu.memphis.ccrg.lida.framework.strategies.DecayStrategy)}
+	 * {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl#setBaseLevelDecayStrategy(edu.memphis.ccrg.lida.framework.strategies.DecayStrategy)}
 	 * .
 	 */
 	@Test
@@ -238,7 +238,7 @@ public class LearnableImplTest {
 
 	/**
 	 * Test method for
-	 * {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableActivatibleImpl#reinforceBaseLevelActivation(double)}
+	 * {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl#reinforceBaseLevelActivation(double)}
 	 * .
 	 */
 	@Test
@@ -255,7 +255,7 @@ public class LearnableImplTest {
 
 	/**
 	 * Test method for
-	 * {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableActivatibleImpl#setBaseLevelActivation(double)}
+	 * {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl#setBaseLevelActivation(double)}
 	 * .
 	 */
 	@Test
@@ -266,7 +266,7 @@ public class LearnableImplTest {
 
 	/**
 	 * Test method for
-	 * {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableActivatibleImpl#setBaseLevelRemovalThreshold(double)}
+	 * {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl#setBaseLevelRemovalThreshold(double)}
 	 * .
 	 */
 	@Test
@@ -277,15 +277,15 @@ public class LearnableImplTest {
 
 	/**
 	 * Test method for
-	 * {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableActivatibleImpl#getTotalValueStrategy()}
+	 * {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl#getTotalActivationStrategy()}
 	 * .
 	 */
 	@Test
 	public void testGetTotalActivationStrategy() {
-		TotalValueStrategy ts = new DefaultTotalActivationStrategy();
-		learnable1.setTotalValueStrategy(ts);
+		TotalActivationStrategy ts = new DefaultTotalActivationStrategy();
+		learnable1.setTotalActivationStrategy(ts);
 		assertEquals("problem with GetTotalActivationStrategy() ", ts,
-				learnable1.getTotalValueStrategy());
+				learnable1.getTotalActivationStrategy());
 	}
 
 }
