@@ -7,8 +7,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Properties;
 
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -19,17 +17,21 @@ import edu.memphis.ccrg.lida.framework.initialization.FactoriesDataXmlLoader;
 import edu.memphis.ccrg.lida.pam.PamNode;
 import edu.memphis.ccrg.lida.pam.PamNodeImpl;
 
-public class SubNodeStructureImplTest {
+/**
+ * @author Daqi Dong
+ * @author Pulin Agrawal
+ * @author Ryan J. McCall
+ */
+public class SubgraphNodeStructureImplTest {
 
 	private static ElementFactory factory;
 	private Node node1,node2,node3,node4,node5,node6,node7, node8;
 	private Link link1,link2,link3,link4,link5,link6,link7,link8;
-	private SubNodeStructureImpl ns1;
+	private NodeStructure ns1;
 	private PamNode category1,category2;
 	
-	Collection<Node> nodes = new ArrayList<Node>();
-
-	NodeStructure subNS;
+	private Collection<Node> nodes = new ArrayList<Node>();
+	private NodeStructure subNS;
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -37,10 +39,6 @@ public class SubNodeStructureImplTest {
 		FactoriesDataXmlLoader factoryLoader = new FactoriesDataXmlLoader();
 		Properties prop = ConfigUtils.loadProperties(AgentStarter.DEFAULT_PROPERTIES_PATH);
 		factoryLoader.loadFactoriesData(prop);
-	}
-
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
 	}
 
 	@Before
@@ -91,7 +89,7 @@ public class SubNodeStructureImplTest {
 		link7 = factory.getLink(node6, node4, category1);
 		link8 = factory.getLink(node7, node4, category1);
 		
-		ns1 = new SubNodeStructureImpl();	
+		ns1 = new NodeStructureImpl();	
 		
 		ns1.addDefaultNode(node1);
 		ns1.addDefaultNode(node2);
@@ -109,10 +107,6 @@ public class SubNodeStructureImplTest {
 		ns1.addDefaultLink(link6);
 		ns1.addDefaultLink(link7);
 		
-	}
-
-	@After
-	public void tearDown() throws Exception {
 	}
 
 	@Test
