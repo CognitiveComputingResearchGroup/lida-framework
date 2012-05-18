@@ -37,7 +37,7 @@ public class LinkImplTest{
 	private LinkImpl link1,link2,link3;	
 	private	PamLinkImpl pamLink1;
 	private LinkCategory linktype1;	
-	private static ElementFactory factory = ElementFactory.getInstance();
+	private static final ElementFactory factory = ElementFactory.getInstance();
 	
 	@BeforeClass
 	public static void setUpBeforeClass(){
@@ -59,10 +59,10 @@ public class LinkImplTest{
 		linktype1 = PerceptualAssociativeMemoryImpl.NONE;
 		
 		pamLink1 = (PamLinkImpl) factory.getLink("PamLinkImpl", node3, node4, PerceptualAssociativeMemoryImpl.NONE);
-		
-		link1 = new LinkImpl(node1,node2,PerceptualAssociativeMemoryImpl.NONE);
-		link2 = new LinkImpl(node3,node4,PerceptualAssociativeMemoryImpl.NONE);
-		link3 = new LinkImpl(node3,link2,PerceptualAssociativeMemoryImpl.NONE);
+
+		link1 = (LinkImpl) factory.getLink(node1,node2,PerceptualAssociativeMemoryImpl.NONE);
+		link2 = (LinkImpl) factory.getLink(node3,node4,PerceptualAssociativeMemoryImpl.NONE);
+		link3 = (LinkImpl) factory.getLink(node3,link2,PerceptualAssociativeMemoryImpl.NONE);
 	}
 
 	/**
@@ -70,7 +70,6 @@ public class LinkImplTest{
 	 */
 	@Test
 	public void testEqualsObject() {
-		
 		link1.setSource(node1);
 		link1.setSink(node2);
 		link1.setCategory(linktype1);
@@ -159,7 +158,7 @@ public class LinkImplTest{
 	 */
 	@Test
 	public void testLinkImpl() {
-		LinkImpl link5= new LinkImpl(node1,node2,linktype1);
+		LinkImpl link5= (LinkImpl) factory.getLink(node1,node2,linktype1);
 		assertEquals(node1, link5.getSource());
 		assertEquals(node2, link5.getSink());
 		assertEquals(linktype1, link5.getCategory());
@@ -174,26 +173,10 @@ public class LinkImplTest{
 		assertTrue(o2.equals(o1));
 		assertTrue(o1.hashCode() == o2.hashCode());
 	}
-	@Test
-	public void testComplexLink(){
-		Link foo = new LinkImpl(node4, link1, linktype1);
-		try{
-			new LinkImpl(node3, foo, linktype1);
-			assertTrue(false);
-		}catch(Exception e){
-			assertTrue(e instanceof IllegalArgumentException);
-		}
-	}
+
 	@Test
 	public void testComplexLink2(){
-		Link foo = new LinkImpl(node4, link1, linktype1);
-		try{
-			new LinkImpl(node1, foo, linktype1);
-			assertTrue(false);
-		}catch(Exception e){
-			assertTrue(e instanceof IllegalArgumentException);
-		}
-		
+		Link foo = factory.getLink(node4, link1, linktype1);
 		Link bar = new LinkImpl();
 		assertNull(bar.getSink());
 		bar.setSink(foo);
@@ -202,5 +185,4 @@ public class LinkImplTest{
 		bar.setSink(link1);
 		assertEquals(link1, bar.getSink());
 	}
-
 }

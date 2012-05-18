@@ -22,12 +22,13 @@ import edu.memphis.ccrg.lida.framework.tasks.FrameworkTask;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemory;
 import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryImpl;
-import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryImpl.ConditionType;
 import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
+import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryImpl.ConditionType;
 
 /**
  * Test for {@link BehaviorNetwork} class.
- * @author ryanjmccall
+ * @author Ryan McCall
+ * @author Javier Snaider
  */
 public class BehaviorNetworkTest {
 
@@ -62,7 +63,7 @@ public class BehaviorNetworkTest {
 		params.put("actionselection.broadcastExcitationFactor",1.0);
 		params.put("actionselection.successorExcitationFactor",0.5);
 		params.put("actionselection.predecessorExcitationFactor",0.25);
-		params.put("actionselection.conflictorExcitationFactor",0.75);
+		params.put("actionselection.conflictorExcitationFactor",0.1);
 		params.put("actionselection.contextSatisfactionThreshold",0.5);
 		params.put("actionselection.initialCandidateThreshold",1.0);
 		params.put("actionselection.candidateThresholdDecayName","defaultDecay");
@@ -85,7 +86,209 @@ public class BehaviorNetworkTest {
 		n4 = factory.getNode();
 		n5 = factory.getNode();
 	}
+	
+	@Test
+	public void testPassFromSchemes0(){
+		params.put("actionselection.broadcastExcitationFactor",0.10);
+		bNetwork.init(params);
+		
+		n1.setActivation(1.0);
+		n2.setActivation(0.49);
+		n3.setActivation(0.0);
+		s1.addCondition(n1, ConditionType.CONTEXT);
+		s2.addCondition(n2, ConditionType.CONTEXT);
+		s3.addCondition(n3, ConditionType.CONTEXT);
+		Behavior b1 = factory.getBehavior(s1);
+		Behavior b2 = factory.getBehavior(s2);
+		Behavior b3 = factory.getBehavior(s3);
+				
+		bNetwork.receiveBehavior(b1);
+		bNetwork.receiveBehavior(b2);
+		bNetwork.receiveBehavior(b3);
+		
+		bNetwork.passActivationFromSchemes();
 
+		assertEquals(0.1, b1.getActivation(),epsilon);
+		assertEquals(0.049, b2.getActivation(),epsilon);
+		assertEquals(0.0, b3.getActivation(),epsilon);
+		
+		bNetwork.passActivationFromSchemes();
+		
+		assertEquals(0.2, b1.getActivation(),epsilon);
+		assertEquals(0.098, b2.getActivation(),epsilon);
+		assertEquals(0.0, b3.getActivation(),epsilon);
+	}
+	
+	@Test
+	public void testPassAmongBehaviors(){
+		n1.setActivation(0.0);
+		n2.setActivation(0.5);
+		n3.setActivation(0.0);
+		s1.addCondition(n1, ConditionType.CONTEXT);
+		s2.addCondition(n2, ConditionType.CONTEXT);
+		s3.addCondition(n1, ConditionType.ADDINGLIST);
+		Behavior b1 = factory.getBehavior(s1);
+		Behavior b2 = factory.getBehavior(s2);
+		Behavior b3 = factory.getBehavior(s3);
+		b3.setActivation(1.0);
+				
+		bNetwork.receiveBehavior(b1);
+		bNetwork.receiveBehavior(b2);
+		bNetwork.receiveBehavior(b3);
+		
+		bNetwork.passActivationAmongBehaviors();
+		
+		assertEquals(0.5, b1.getActivation(),epsilon);
+		assertEquals(0.0, b2.getActivation(),epsilon);
+		assertEquals(1.0, b3.getActivation(),epsilon);
+	}
+
+	@Test
+	public void testPassAmongBehaviors1(){
+		n1.setActivation(0.0);
+		n2.setActivation(0.5);
+		n3.setActivation(0.0);
+		s1.addCondition(n1, ConditionType.CONTEXT);
+		s2.addCondition(n1, ConditionType.ADDINGLIST);
+		s3.addCondition(n1, ConditionType.ADDINGLIST);
+		Behavior b1 = factory.getBehavior(s1);
+		Behavior b2 = factory.getBehavior(s2);
+		Behavior b3 = factory.getBehavior(s3);
+		b2.setActivation(0.5);
+		b3.setActivation(1.0);
+				
+		bNetwork.receiveBehavior(b1);
+		bNetwork.receiveBehavior(b2);
+		bNetwork.receiveBehavior(b3);
+		
+		bNetwork.passActivationAmongBehaviors();
+		
+		assertTrue(0.75 <= b1.getActivation());
+		assertTrue(0.5 <= b2.getActivation());
+		assertEquals(1.0, b3.getActivation(),epsilon);
+	}
+	
+	@Test
+	public void testPassAmongBehaviors2(){
+		n1.setActivation(0.0);
+		s1.addCondition(n1, ConditionType.CONTEXT);
+		s2.addCondition(n1, ConditionType.ADDINGLIST);
+		Behavior b1 = factory.getBehavior(s1);
+		Behavior b2 = factory.getBehavior(s2);
+		b1.setActivation(0.5);
+		b2.setActivation(0.0);
+				
+		bNetwork.receiveBehavior(b1);
+		bNetwork.receiveBehavior(b2);
+		
+		bNetwork.passActivationAmongBehaviors();
+		
+		assertTrue(0.5 <= b1.getActivation());
+		assertEquals(0.125, b2.getActivation(),epsilon);
+	}
+	
+	@Test
+	public void testPassToConflictor() {
+		n1.setActivation(0.5);
+		s1.addCondition(n1, ConditionType.CONTEXT);
+		s2.addCondition(n1, ConditionType.DELETINGLIST);
+		Behavior b1 = factory.getBehavior(s1);
+		Behavior b2 = factory.getBehavior(s2);
+		
+		b1.setActivation(0.5);
+		b2.setActivation(1.0);
+				
+		bNetwork.receiveBehavior(b1);
+		bNetwork.receiveBehavior(b2);
+		
+		bNetwork.passActivationAmongBehaviors();
+		
+		assertEquals(0.5, b1.getActivation(),epsilon);
+		assertEquals(0.95, b2.getActivation(),epsilon);
+	}
+	
+	@Test
+	public void testPassToConflictor1() {
+		n1.setActivation(0.5);
+		n2.setActivation(0.5);
+		s1.addCondition(n1, ConditionType.CONTEXT);
+		s1.addCondition(n2, ConditionType.DELETINGLIST);
+		
+		s2.addCondition(n2, ConditionType.CONTEXT);
+		s2.addCondition(n1, ConditionType.DELETINGLIST);
+		Behavior b1 = factory.getBehavior(s1);
+		Behavior b2 = factory.getBehavior(s2);
+		
+		b1.setActivation(0.5);
+		b2.setActivation(1.0);
+				
+		bNetwork.receiveBehavior(b1);
+		bNetwork.receiveBehavior(b2);
+		
+		bNetwork.passActivationAmongBehaviors();
+		
+		assertEquals(0.4, b1.getActivation(),epsilon);
+		assertEquals(1.0, b2.getActivation(),epsilon);
+	}
+	
+	@Test
+	public void testAttemptActionSelection(){
+		n1.setActivation(0.1);
+		n2.setActivation(0.1);
+		s1.addCondition(n1, ConditionType.CONTEXT);
+		s1.addCondition(n2, ConditionType.DELETINGLIST);
+		
+		s2.addCondition(n2, ConditionType.CONTEXT);
+		s2.addCondition(n1, ConditionType.DELETINGLIST);
+		Behavior b1 = factory.getBehavior(s1);
+		Behavior b2 = factory.getBehavior(s2);
+		
+		b1.setActivation(0.5);
+		b2.setActivation(1.0);
+		bNetwork.receiveBehavior(b1);
+		bNetwork.receiveBehavior(b2);
+		
+		bNetwork.attemptActionSelection();
+
+		assertNull(listener.action);
+		assertEquals(0.9, bNetwork.getCandidateThreshold(),epsilon);//threshold was reduced
+		
+		bNetwork.attemptActionSelection();
+		
+		//the behaviors' context conditions are not satisfied
+		assertNull(listener.action);
+		assertEquals(0.8, bNetwork.getCandidateThreshold(),epsilon);//threshold was reduced
+	}
+	
+	@Test
+	public void testAttemptActionSelection2(){
+		n1.setActivation(0.6);
+		n2.setActivation(0.6);
+		s1.addCondition(n1, ConditionType.CONTEXT);
+		s1.addCondition(n2, ConditionType.DELETINGLIST);
+		
+		s2.addCondition(n2, ConditionType.CONTEXT);
+		s2.addCondition(n1, ConditionType.DELETINGLIST);
+		Behavior b1 = factory.getBehavior(s1);
+		Behavior b2 = factory.getBehavior(s2);
+		
+		b1.setActivation(0.5);
+		b2.setActivation(1.0);
+		bNetwork.receiveBehavior(b1);
+		bNetwork.receiveBehavior(b2);
+		
+		bNetwork.attemptActionSelection();
+		
+		assertNull(listener.action);
+		assertEquals(0.9, bNetwork.getCandidateThreshold(),epsilon);//threshold was reduced
+		
+		bNetwork.attemptActionSelection();
+		
+		assertEquals(b2.getAction(), listener.action);
+		assertEquals(0.0,b2.getActivation(),epsilon);
+		assertEquals(1.0, bNetwork.getCandidateThreshold(),epsilon);
+	}
+	
 	@Test
 	public void testRunEmpty(){
 		assertEquals(1.0,bNetwork.getCandidateThreshold(),epsilon);
@@ -197,17 +400,4 @@ public class BehaviorNetworkTest {
 		assertEquals(0.9, b1.getActivation(),epsilon);
 		assertEquals(0.39, b2.getActivation(),epsilon);
 	}
-	
-	@Test
-	public void testPassToSuccessor() {
-	}
-	
-	@Test
-	public void testPassToPredecessor() {
-	}
-	
-	@Test
-	public void testPassToConflictor() {
-	}
-
 }

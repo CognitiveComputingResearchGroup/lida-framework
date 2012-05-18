@@ -58,7 +58,6 @@ public class ProceduralMemoryImplTest {
 		params.put("proceduralMemory.addingListWeight", 1.0);
 		pm.init(params);
 
-		
 		pm.setAssistingTaskSpawner(mockTs);
 		c1 = factory.getNode("NodeImpl","c1");
 		c2 = (RootableNode) factory.getNode("RootableNodeImpl","c2");
@@ -153,8 +152,8 @@ public class ProceduralMemoryImplTest {
 		params.put("proceduralMemory.schemeSelectionThreshold", 0.9);	
 		pm.init(params);
 		
-		SchemeImpl.setContextWeight(1.0);
-		SchemeImpl.setAddingListWeight(0.0);
+//		SchemeImpl.setContextWeight(1.0);
+//		SchemeImpl.setAddingListWeight(0.0);
 		
 		//Scheme has insufficiently activated conditions
 		c1.setActivation(0.89);
@@ -183,7 +182,7 @@ public class ProceduralMemoryImplTest {
 		pm.init(params);
 		
 		//Insufficient 
-		c1.setActivation(1.0);
+		c1.setActivation(0.89);
 		c2.setActivation(0.0);
 		((RootableNode) c2).setDesirability(0.89);
 		s1.addCondition(c1,ConditionType.CONTEXT);

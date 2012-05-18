@@ -519,7 +519,7 @@ public class NodeStructureImplTest {
 	@Test
 	public void testAddLinkParams3(){
 		ns1.addDefaultNode(node1);
-		Link sinkLink = new LinkImpl(node2, node3, category1);
+		Link sinkLink = factory.getLink(node2, node3, category1);
 		Link stored = ns1.addDefaultLink(node1.getId(), sinkLink.getExtendedId(), category1, 0.0, 0.0);
 		assertTrue(stored == null);
 		assertTrue(ns1.getLinkCount() == 0);

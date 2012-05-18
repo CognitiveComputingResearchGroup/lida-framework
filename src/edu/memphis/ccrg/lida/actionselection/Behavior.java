@@ -18,14 +18,14 @@ import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
 public interface Behavior extends ProceduralUnit {
 	
 	/**
-	 * Gets generating scheme.
+	 * Gets the scheme underlying the behavior.
 	 * 
 	 * @return the generating scheme
 	 */
 	public Scheme getScheme();
 	
 	/**
-	 * Sets generating scheme.
+	 * Gets the scheme underlying the behavior.
 	 * 
 	 * @param s the new generating scheme
 	 */

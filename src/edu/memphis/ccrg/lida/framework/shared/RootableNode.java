@@ -4,6 +4,7 @@ import edu.memphis.ccrg.lida.framework.shared.activation.Desirable;
 
 /**
  * A {@link Node} which unifies multiple nodes attached to it.
+ * This feature is not fully implemented in this framework version.
  * 
  * @author Javier Snaider
  * @author Ryan J. McCall

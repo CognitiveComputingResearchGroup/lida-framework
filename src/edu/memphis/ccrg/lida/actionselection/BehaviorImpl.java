@@ -97,14 +97,4 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior{
 	@Override
 	public void setLabel(String l) {		
 	}
-
-//	@Override
-//	public boolean addContextCondition(Condition c, boolean negated) {
-//		return scheme.addContextCondition(c, negated);
-//	}
-
-//	@Override
-//	public Collection<Condition> getNegatedContextConditions() {
-//		return scheme.getNegatedContextConditions();
-//	}
 }

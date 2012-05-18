@@ -256,7 +256,11 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements
 		}
 	}
 
-	private void passActivationFromSchemes() {
+	/**
+	 * Intended for testing only.
+	 * Passes activation from Schemes to Behaviors.
+	 */
+	void passActivationFromSchemes() {
 		for (Behavior b : behaviors.values()) {
 			double amount = b.getScheme().getActivation()
 					* broadcastExcitationFactor;
@@ -264,12 +268,14 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements
 		}
 	}
 
-	/*
+	/**
+	 * Intended for testing only.
+	 * Passes activation from successors to predecessors and vice versa also to conflictors.
 	 * This implementation is different to the original Maes' code. Here the
 	 * activation is updated directly and the new value is used to compute the
 	 * passing activation.
 	 */
-	private void passActivationAmongBehaviors() {
+	void passActivationAmongBehaviors() {
 		Object[] keyPermutation = getRandomPermutation();
 		for (Object key : keyPermutation) {
 			Behavior b = behaviors.get(key);
@@ -339,7 +345,7 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements
 		// For positive conditions
 		for (Condition contextCond : b.getContextConditions()) {
 			if (isContextConditionSatisfied(contextCond) == false) {
-				Set<Behavior> predecessors = behaviorsByAddingItem.get(contextCond);
+				Set<Behavior> predecessors = behaviorsByAddingItem.get(contextCond); 
 				if (predecessors != null) {
 					auxPassActivationPredecessors(b, contextCond, predecessors);
 				}
@@ -401,12 +407,12 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements
 						conflictor.getLabel(), inhibitionAmount });
 	}
 
-	/*
-	 * Select one behavior to be executed. The chosen behavior action is
+	/**
+	 * Tries to select one behavior to be executed. The chosen behavior's action is
 	 * executed, its activation is set to 0.0 and the candidate threshold is
-	 * reseted. If no behavior is selected, the candidate threshold is reduced.
+	 * reset. If no behavior is selected, the candidate threshold is reduced.
 	 */
-	private void attemptActionSelection() {
+	void attemptActionSelection() {
 		Behavior winningBehavior = selectBehavior(getSatisfiedBehaviors(),
 				candidateThreshold);
 		if (winningBehavior != null) {
@@ -430,11 +436,6 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements
 		}
 		return result;
 	}
-	
-	private boolean isContextConditionSatisfied(Condition c) {
-		return c.getActivation() >= contextSatisfactionThreshold;
-	}
-
 	private boolean isAllContextConditionsSatisfied(Behavior b) {
 		for(Condition c: b.getContextConditions()){
 			if(c.getActivation() < contextSatisfactionThreshold){
@@ -444,6 +445,10 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements
 		return true;
 	}
 	
+	private boolean isContextConditionSatisfied(Condition c) {
+		return c.getActivation() >= contextSatisfactionThreshold;
+	}
+
 	private int getUnsatisfiedContextCount(Behavior b) {
 		int count = 0;
 		for(Condition c: b.getContextConditions()){

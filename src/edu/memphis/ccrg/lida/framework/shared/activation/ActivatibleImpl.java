@@ -118,15 +118,15 @@ public class ActivatibleImpl extends InitializableImpl implements Activatible {
 	public void setActivation(double a) {
 		if(a > 1.0){
 			synchronized(this){
-				this.activation = 1.0;
+				activation = 1.0;
 			}
 		}else if(a < 0.0){
 			synchronized(this){
-				this.activation = 0.0;
+				activation = 0.0;
 			}
 		}else{
 			synchronized(this){
-				this.activation = a;
+				activation = a;
 			}
 		}
 	}
@@ -145,12 +145,12 @@ public class ActivatibleImpl extends InitializableImpl implements Activatible {
 	}
 
 	@Override
-	public synchronized void setDecayStrategy(DecayStrategy s) {
+	public void setDecayStrategy(DecayStrategy s) {
 		decayStrategy = s;
 	}
 
 	@Override
-	public synchronized void setExciteStrategy(ExciteStrategy s) {
+	public void setExciteStrategy(ExciteStrategy s) {
 		exciteStrategy = s;
 	}
 	

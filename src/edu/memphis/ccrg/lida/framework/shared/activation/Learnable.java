@@ -15,7 +15,7 @@ import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.TotalActivationStrategy;
 
 /**
- * An Activatible that additionally has a base-level activation. It is used mostly for learning.
+ * An {@link Activatible} that additionally has a base-level activation. It is used mostly for learning.
  * The classes that implement this interface have a decay and reinforce base level activation.
  * If the base level activation reaches zero, the element should be deleted (decay away)
  * 
@@ -26,7 +26,8 @@ import edu.memphis.ccrg.lida.framework.strategies.TotalActivationStrategy;
 public interface Learnable extends Activatible{
 		
 	/**
-	 * Default removal threshold for Learnable
+	 * Default removal threshold for Learnable. With this value the Learnable will never decay away
+	 * because base-level activation is never negative.
 	 */
 	public static final double DEFAULT_LEARNABLE_REMOVAL_THRESHOLD = -1.0;
 	

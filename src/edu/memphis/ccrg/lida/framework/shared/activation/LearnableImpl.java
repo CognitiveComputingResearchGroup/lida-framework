@@ -22,7 +22,7 @@ import edu.memphis.ccrg.lida.framework.strategies.TotalActivationStrategy;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 
 /**
- * Default implementation of Learnable.
+ * Default implementation of {@link Learnable}.
  * 
  * @author Javier Snaider
  * @author Ryan J. McCall
@@ -174,8 +174,8 @@ public class LearnableImpl extends ActivatibleImpl implements Learnable {
 	}
 
 	@Override
-	public void setBaseLevelExciteStrategy(ExciteStrategy baseLevelExciteStrategy) {
-		this.baseLevelExciteStrategy = baseLevelExciteStrategy;
+	public void setBaseLevelExciteStrategy(ExciteStrategy s) {
+		baseLevelExciteStrategy = s;
 	}
 
 	@Override
@@ -184,13 +184,25 @@ public class LearnableImpl extends ActivatibleImpl implements Learnable {
 	}
 
 	@Override
-	public void setBaseLevelDecayStrategy(DecayStrategy baseLevelDecayStrategy) {
-		this.baseLevelDecayStrategy = baseLevelDecayStrategy;
+	public void setBaseLevelDecayStrategy(DecayStrategy s) {
+		baseLevelDecayStrategy = s;
 	}
 
 	@Override
-	public void setBaseLevelActivation(double activation) {
-		this.baseLevelActivation=activation;		
+	public void setBaseLevelActivation(double a) {
+		if(a < 0.0){
+			synchronized (this) {
+				baseLevelActivation = 0.0;
+			}
+		}else if(a > 1.0){
+			synchronized (this) {
+				baseLevelActivation = 1.0;
+			}
+		}else{
+			synchronized (this) {
+				baseLevelActivation = a;
+			}
+		}		
 	}
 	
 	@Override
@@ -204,8 +216,8 @@ public class LearnableImpl extends ActivatibleImpl implements Learnable {
 	}
 
 	@Override
-	public void setBaseLevelRemovalThreshold(double threshold) {
-		this.learnableRemovalThreshold = threshold;
+	public void setBaseLevelRemovalThreshold(double t) {
+		learnableRemovalThreshold = t;
 	}
 	
 	@Override
@@ -214,9 +226,7 @@ public class LearnableImpl extends ActivatibleImpl implements Learnable {
 	}
 
 	@Override
-	public void setTotalActivationStrategy(
-			TotalActivationStrategy totalActivationStrategy) {
-		this.totalActivationStrategy = totalActivationStrategy;
+	public void setTotalActivationStrategy(TotalActivationStrategy s) {
+		totalActivationStrategy = s;
 	}
-	
 }

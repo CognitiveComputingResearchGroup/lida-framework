@@ -32,7 +32,7 @@ public interface NodeStructure {
 	 * @param rt initial removal threshold of new {@link Node}
 	 * @return the {@link Node} added to the NodeStructure or null 
 	 */
-	public Node addDefaultNode(String label, double a, double rt);//TODO test
+	public Node addDefaultNode(String label, double a, double rt);
 	
 	/**
 	 * Adds a copy of specified {@link Node} to this NodeStructure. The copy will be of the default
@@ -58,7 +58,7 @@ public interface NodeStructure {
 	 * @param rt initial removal threshold of new {@link Node}
 	 * @return the {@link Node} added to the NodeStructure or null 
 	 */
-	public Node addNode(String type, String label, double a, double rt);//TODO test
+	public Node addNode(String type, String label, double a, double rt);
 	
 	/**
 	 * Add a Node of a specified type to this NodeStructure.<br/>
@@ -148,7 +148,7 @@ public interface NodeStructure {
 	 * @return created Link or null if either source or sink are not already present. 
 	 */
 	public Link addLink(String type, int srcId, ExtendedId snkId,
-			LinkCategory cat, double a, double rt);	//TODO test
+			LinkCategory cat, double a, double rt);
 
 	/**
 	 * Creates and adds a new {@link Link} of specified type with specified attributes.  Source and sink must
@@ -396,5 +396,35 @@ public interface NodeStructure {
 	 * @return link type of {@link Link} objects in the NodeStructure
 	 */
 	public String getDefaultLinkType();
-
+	
+	/**
+	 * Returns a copy of a subgraph of this {@link NodeStructure}.
+	 * The subgraph will contain all specified nodes with non-zero activation if 
+	 * they are currently present in the NodeStructure.
+	 * Additionally all other nodes having distance, the number of links, less or equal to d from the specified nodes and 
+	 * that have non-zero activation are part of the subgraph.
+	 * If a Node has non-zero activation then the depth-first search will not continue further from that Node.
+	 * Finally all links that connect two {@link Linkable} elements that are both d or less from the specified nodes are included in the subgraph.
+	 * @param nodes the nodes which will be the roots from which the subgraph will be formed
+	 * @param d the greatest distance a node can be from a specified nodes to be included in the subgraph
+	 * @return A copy of a subgraph of this NodeStructure which involves specified and all 
+	 * satisfied neighbor nodes
+	 */
+	public  NodeStructure getSubgraph(Collection<Node> nodes,int d);
+	
+	/**
+	 * Returns a copy of a subgraph of this {@link NodeStructure}.
+	 * The subgraph will contain all specified nodes with activation at or above specified threshold if 
+	 * they are currently present in the NodeStructure.
+	 * Additionally all other nodes having distance, the number of links, less or equal to d from the specified nodes and 
+	 * that have sufficient activation are part of the subgraph.
+	 * If a Node has insufficient activation then the depth-first search will not continue further from that Node.
+	 * Finally all links that connect two {@link Linkable} elements that are both d or less from the specified nodes are included in the subgraph.
+	 * @param nodes the nodes which will be the roots from which the subgraph will be formed
+	 * @param d the greatest distance a node can be from a specified nodes to be included in the subgraph
+	 * @param threshold activation requirement for a node to be part of the subgraph. 
+	 * @return A copy of a subgraph of this NodeStructure which involves specified and all 
+	 * satisfied neighbor nodes
+	 */
+	public NodeStructure getSubgraph(Collection<Node> nodes, int d, double threshold);
 }
