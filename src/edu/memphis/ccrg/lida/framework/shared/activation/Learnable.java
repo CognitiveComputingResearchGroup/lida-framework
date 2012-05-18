@@ -26,7 +26,8 @@ import edu.memphis.ccrg.lida.framework.strategies.TotalActivationStrategy;
 public interface Learnable extends Activatible{
 		
 	/**
-	 * Default removal threshold for Learnable
+	 * Default removal threshold for Learnable. With this value the Learnable will never decay away
+	 * because base-level activation is never negative.
 	 */
 	public static final double DEFAULT_LEARNABLE_REMOVAL_THRESHOLD = -1.0;
 	

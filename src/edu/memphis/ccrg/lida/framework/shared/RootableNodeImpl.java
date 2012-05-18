@@ -2,9 +2,9 @@ package edu.memphis.ccrg.lida.framework.shared;
 
 
 /**
- * Default implementation of {@link RootableNode}
+ * Default implementation of {@link RootableNode}.
+ * This feature is not fully implemented in this framework version.
  * @author Ryan J. McCall
- *
  */
 public class RootableNodeImpl extends NodeImpl implements RootableNode {
 

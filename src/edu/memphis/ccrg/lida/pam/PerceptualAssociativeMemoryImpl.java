@@ -325,36 +325,8 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 		// TODO task to use preafferent signal
 	}
 
-	//FIXME parameter
-	/**
-	 */
-	protected static final double DEFAULT_REINFORCEMENT = 0.1;
-	
 	@Override
 	public void learn(Coalition coalition) {
-		NodeStructure ns = (NodeStructure) coalition.getContent();
-		Collection<Node> nodes = ns.getNodes();
-		for (Node n : nodes) {
-			PamNode nodeToLearn = (PamNode) pamNodeStructure.getNode(n.getId());
-			if(nodeToLearn == null){
-				nodeToLearn = (PamNode) pamNodeStructure.addDefaultNode(n);
-				nodeToLearn.setBaseLevelActivation(DEFAULT_REINFORCEMENT);
-			}else{
-				nodeToLearn.reinforceBaseLevelActivation(DEFAULT_REINFORCEMENT);
-			}
-		}
-		Collection<Link> links = ns.getLinks();
-		for(Link lnk: links){
-			PamLink linkToLearn = (PamLink) pamNodeStructure.getLink(lnk.getExtendedId());
-			if(linkToLearn == null){
-				linkToLearn = (PamLink) pamNodeStructure.addDefaultLink(lnk);
-				if(linkToLearn != null){
-					linkToLearn.setBaseLevelActivation(DEFAULT_REINFORCEMENT);
-				}
-			}else{
-				linkToLearn.reinforceBaseLevelActivation(DEFAULT_REINFORCEMENT);
-			}
-		}
 	}
 
 	@Override
@@ -471,10 +443,10 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 		return copy;
 	}
 	private Node convertNode(Node n){
-		return factory.getNode(n, "NodeImpl");		
+		return factory.getNode(n, factory.getDefaultNodeType());		
 	}
 	private Link convertLink(Link l){
-		Link res = factory.getLink("LinkImpl", l.getSource(), l.getSink(), l.getCategory());
+		Link res = factory.getLink(factory.getDefaultLinkType(), l.getSource(), l.getSink(), l.getCategory());
 		res.setActivation(l.getActivation());
 		return res;
 	}

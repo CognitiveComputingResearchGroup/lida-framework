@@ -40,7 +40,7 @@ public class EpisodicMemoryImpl extends FrameworkModuleImpl implements
 	 * Default number of hard locations
 	 */
 	public static final int DEF_HARD_LOCATIONS = 10000;
-	
+
 	/**
 	 * Default address length for {@link SparseDistributedMemory}
 	 */
@@ -53,8 +53,6 @@ public class EpisodicMemoryImpl extends FrameworkModuleImpl implements
 	 * Default access radius for {@link SparseDistributedMemory}
 	 */
 	public static final int DEF_ACCESS_RADIUS = 451;
-        
-    // TODO Add random bit vector to map sets here.
 
 	private SparseDistributedMemory sdm;
 	private Translator translator;
@@ -67,20 +65,22 @@ public class EpisodicMemoryImpl extends FrameworkModuleImpl implements
 	 * Constructs a new object with default values
 	 */
 	public EpisodicMemoryImpl() {
-	}	
+	}
 
 	/**
-     * Will set parameters with the following names:<br/><br/>
-     * 
-     * <b>em.numOfHardLoc</b> number of hard locations created in SDM to store data<br/>
-     * <b>em.addressLength</b> size of the hard locations' address<br/>
-     * <b>em.wordLength</b> size of the hard locations' words (storage)<br/>
-     * <b>em.activationRadius</b> size of the radius of the hypersphere used to find the "nearby" hard locations of an address</b>
-     */
+	 * Will set parameters with the following names:<br/>
+	 * <br/>
+	 * 
+	 * <b>em.numOfHardLoc</b> number of hard locations created in SDM to store
+	 * data<br/>
+	 * <b>em.addressLength</b> size of the hard locations' address<br/>
+	 * <b>em.wordLength</b> size of the hard locations' words (storage)<br/>
+	 * <b>em.activationRadius</b> size of the radius of the hypersphere used to
+	 * find the "nearby" hard locations of an address</b>
+	 */
 	@Override
 	public void init() {
-		numOfHardLoc = (Integer) getParam("em.numOfHardLoc",
-				DEF_HARD_LOCATIONS);
+		numOfHardLoc = (Integer) getParam("em.numOfHardLoc", DEF_HARD_LOCATIONS);
 		addressLength = (Integer) getParam("em.addressLength",
 				DEF_ADDRESS_LENGTH);
 		wordLength = (Integer) getParam("em.wordLength", DEF_WORD_LENGTH);
@@ -89,81 +89,78 @@ public class EpisodicMemoryImpl extends FrameworkModuleImpl implements
 		sdm = new SparseDistributedMemoryImpl(numOfHardLoc, radius, wordLength,
 				addressLength);
 	}
-	
+
 	@Override
 	public void addListener(ModuleListener listener) {
 		if (listener instanceof LocalAssociationListener) {
 			localAssocListeners.add((LocalAssociationListener) listener);
-		}else{
-			logger.log(Level.WARNING, "tried to add listener {0} but LocalAssociationListener is required", 
-					listener);
+		} else {
+			logger
+					.log(
+							Level.WARNING,
+							"tried to add listener {0} but LocalAssociationListener is required",
+							listener);
 		}
 	}
 
 	@Override
 	public void receiveBroadcast(Coalition coalition) {
-                // TODO plug HDTranslator here.            
 		NodeStructure ns = (NodeStructure) coalition.getContent();
 		BitVector address = null;
 		if (translator != null) {
 			try {
 				address = translator.translate(ns);
 			} catch (Exception e) {
-				logger.log(Level.WARNING,
-						"Translation failed {1}",
-						new Object[]{TaskManager.getCurrentTick(),e.getMessage()});
+				logger.log(Level.WARNING, "Translation failed {1}",
+						new Object[] { TaskManager.getCurrentTick(),
+								e.getMessage() });
 			}
-                        // TODO add mapping here.
-                        // TODO if NS has more than one element, use mapped store
 			sdm.store(address);
 		} else {
 			logger.log(Level.SEVERE,
-					"Translator is null, wasn't set up properly.",
-					TaskManager.getCurrentTick());
+					"Translator is null, wasn't set up properly.", TaskManager
+							.getCurrentTick());
 		}
 	}
-	
+
 	/**
-	 * Receive a cue as a {@link NodeStructure}
-	 * In this implementation, first the cue is translated to a {@link BitVector}. 
+	 * Receive a cue as a {@link NodeStructure} In this implementation, first
+	 * the cue is translated to a {@link BitVector}.
 	 * 
-	 * @param ns NodeStructure to retrieve
+	 * @param ns
+	 *            NodeStructure to retrieve
 	 * @see Translator
 	 */
 	@Override
 	public void receiveCue(NodeStructure ns) {
-		//TODO parallelize using task.
-                // TODO plug HDTranslator here.
 		BitVector address = null;
 		if (translator != null) {
 			try {
 				address = translator.translate(ns);
 			} catch (Exception e) {
-				logger.log(Level.WARNING,
-						"Translation failed {1}",
-						new Object[]{TaskManager.getCurrentTick(),e.getMessage()});
+				logger.log(Level.WARNING, "Translation failed {1}",
+						new Object[] { TaskManager.getCurrentTick(),
+								e.getMessage() });
 				return;
 			}
-
-			// TODO make sure this method is thread-safe
 			BitVector out = sdm.retrieveIterating(address);
-			if (out != null) {//no local association
+			if (out != null) {// no local association
 				NodeStructure result = null;
 				try {
 					result = translator.translate(out);
 				} catch (Exception e) {
-					logger.log(Level.WARNING,
-							"Translation failed {1}",
-							new Object[]{TaskManager.getCurrentTick(),e.getMessage()});
+					logger.log(Level.WARNING, "Translation failed {1}",
+							new Object[] { TaskManager.getCurrentTick(),
+									e.getMessage() });
 					return;
 				}
-				if(result.getNodeCount()>0){
+				if (result.getNodeCount() > 0) {
 					sendLocalAssociation(result);
 				}
 			}
 		} else {
-			logger.log(Level.SEVERE, "Translator is not defined.",
-					TaskManager.getCurrentTick());
+			logger.log(Level.SEVERE, "Translator is not defined.", TaskManager
+					.getCurrentTick());
 		}
 
 	}
@@ -172,8 +169,8 @@ public class EpisodicMemoryImpl extends FrameworkModuleImpl implements
 	 * Sends local association to all listeners
 	 */
 	private void sendLocalAssociation(NodeStructure localAssociation) {
-		logger.log(Level.FINER, "Sending Local Association",
-				TaskManager.getCurrentTick());
+		logger.log(Level.FINER, "Sending Local Association", TaskManager
+				.getCurrentTick());
 		for (LocalAssociationListener l : localAssocListeners) {
 			l.receiveLocalAssociation(localAssociation);
 		}
@@ -181,7 +178,7 @@ public class EpisodicMemoryImpl extends FrameworkModuleImpl implements
 
 	@Override
 	public void learn(Coalition coalition) {
-		//TODO implement learning
+		// TODO implement learning
 	}
 
 	/**
@@ -212,7 +209,7 @@ public class EpisodicMemoryImpl extends FrameworkModuleImpl implements
 	public SparseDistributedMemory getSdm() {
 		return sdm;
 	}
-	
+
 	@Override
 	public void decayModule(long ticks) {
 	}

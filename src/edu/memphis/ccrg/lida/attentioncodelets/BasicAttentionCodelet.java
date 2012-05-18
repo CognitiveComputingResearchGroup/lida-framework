@@ -22,7 +22,9 @@ import edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBuffer;
 /**
  * Basic implementation of {@link AttentionCodelet}.
  * @author Ryan J. McCall
+ * @deprecated This may be removed in the future. Its functionality is subsumed by {@link NeighborhoodAttentionCodelet}.
  */
+@Deprecated
 public class BasicAttentionCodelet extends AttentionCodeletImpl {
 
     private static final Logger logger = Logger.getLogger(BasicAttentionCodelet.class.getCanonicalName());
