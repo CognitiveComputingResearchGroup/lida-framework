@@ -90,7 +90,7 @@ public abstract class FrameworkTaskImpl extends LearnableActivatibleImpl impleme
 		try{
 			runThisFrameworkTask();
 		}catch(Exception e){
-			logger.log(Level.WARNING, "Exception encountered during the execution of task {1}. \n {e}", 
+			logger.log(Level.WARNING, "Exception encountered during the execution of task {1}. \n {2}", 
 					new Object[] {TaskManager.getCurrentTick(),this,e});
 			e.printStackTrace();
 		}
