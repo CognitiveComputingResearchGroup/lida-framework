@@ -99,7 +99,7 @@ public abstract class FrameworkTaskImpl extends LearnableActivatibleImpl impleme
 				controllingTS.receiveFinishedTask(this);
 			}catch(Exception e){
 				logger.log(Level.WARNING, 
-						"Exception encountered during the execution of method 'receiveFinishedTask' in TaskSpawner: {1} \n {e}", 
+						"Exception encountered during the execution of method 'receiveFinishedTask' in TaskSpawner: {1} \n {2}", 
 						new Object[] {TaskManager.getCurrentTick(),this,e});
 				e.printStackTrace();
 			}
