@@ -21,7 +21,7 @@ import edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBuffer;
  * @author Ryan J. McCall
  * 
  */
-public interface AttentionCodelet extends Codelet, RefractoryPeriod{
+public interface AttentionCodelet extends Codelet, RefractoryPeriod {
 
 
 }

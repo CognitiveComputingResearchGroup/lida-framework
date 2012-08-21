@@ -145,12 +145,12 @@ public class ActivatibleImpl extends InitializableImpl implements Activatible {
 	}
 
 	@Override
-	public synchronized void setDecayStrategy(DecayStrategy s) {
+	public void setDecayStrategy(DecayStrategy s) {
 		decayStrategy = s;
 	}
 
 	@Override
-	public synchronized void setExciteStrategy(ExciteStrategy s) {
+	public void setExciteStrategy(ExciteStrategy s) {
 		exciteStrategy = s;
 	}
 	

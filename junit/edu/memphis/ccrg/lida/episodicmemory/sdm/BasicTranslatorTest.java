@@ -14,14 +14,14 @@ import org.junit.Test;
 
 import cern.colt.bitvector.BitVector;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockPAM;
-import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeImpl;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 
 public class BasicTranslatorTest {
-	private static final ElementFactory factory = ElementFactory.getInstance();
+
 	private Translator tr;
 	private static int SIZE=100;
 	private PerceptualAssociativeMemory pam;
@@ -32,7 +32,7 @@ public class BasicTranslatorTest {
 	public void setUp() throws Exception {
 		pam= new MockPAM();
 		tr = new BasicTranslator(SIZE, pam);
-		ns = factory.getDefaultNodeStructure();
+		ns = new NodeStructureImpl();
 		Node n = new NodeImpl();
 		n.setId(10);
 		ns.addDefaultNode(n);

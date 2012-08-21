@@ -21,8 +21,8 @@ import org.junit.Test;
 import edu.memphis.ccrg.lida.attentioncodelets.AttentionCodelet;
 import edu.memphis.ccrg.lida.attentioncodelets.AttentionCodeletImpl;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockGlobalWorkspaceImpl;
-import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.globalworkspace.Coalition;
 import edu.memphis.ccrg.lida.globalworkspace.CoalitionImpl;
 import edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBuffer;
@@ -34,7 +34,6 @@ import edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBuffer;
 
 public class IndividualCoaltionActivationTriggerTest {
 	
-	private static final ElementFactory factory = ElementFactory.getInstance();
 	private Set<Coalition> coalitions;
 	private Map<String, Object> parameters;
 	private MockGlobalWorkspaceImpl gw;
@@ -47,7 +46,7 @@ public class IndividualCoaltionActivationTriggerTest {
 		coalitions = new HashSet<Coalition>();
 		parameters = new HashMap<String, Object>();
 		gw = new MockGlobalWorkspaceImpl();
-		NodeStructure ns = factory.getDefaultNodeStructure();
+		NodeStructure ns = new NodeStructureImpl();
 		AttentionCodelet codelet = new AttentionCodeletImpl() {
 			@Override
 			public NodeStructure retrieveWorkspaceContent(WorkspaceBuffer buffer) {

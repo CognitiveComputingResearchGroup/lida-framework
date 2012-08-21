@@ -17,9 +17,9 @@ import edu.memphis.ccrg.lida.episodicmemory.EpisodicMemory;
 import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.initialization.Initializable;
-import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBuffer;
@@ -73,7 +73,7 @@ public class CueBackgroundTask extends FrameworkTaskImpl {
 				.getSubmodule(ModuleName.PerceptualBuffer);
 		NodeStructure ns = (NodeStructure) perceptualBuffer.getBufferContent(null);
 
-		NodeStructure cueNodeStrucutre = ElementFactory.getInstance().getDefaultNodeStructure();
+		NodeStructure cueNodeStrucutre = new NodeStructureImpl();
 		// Current impl. of episodic memory only processes Nodes.
 		// TODO add links when episodic memory supports them
 		if(ns != null){

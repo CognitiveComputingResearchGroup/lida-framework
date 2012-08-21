@@ -20,16 +20,4 @@ public interface Condition extends Activatible {
     * @return Condition's unique id
 	*/
 	public Object getConditionId();
-	
-//	/**
-//	 * Sets weight. 
-//	 * @param w condition's weight. How important the condition is for this {@link Behavior}
-//	 */
-//	public void setWeight(double w);
-//	
-//	/**
-//	 * Gets weight
-//	 * @return this condition's weight. How important the condition is for this {@link Behavior}
-//	 */
-//	public double getWeight();
 }

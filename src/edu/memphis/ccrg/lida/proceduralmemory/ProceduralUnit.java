@@ -8,9 +8,9 @@ import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.activation.Activatible;
 
 /**
- * An abstraction of the commonality between {@link Scheme} and {@link Behavior}
- * @author Javier Snaider
+ * An abstraction of the commonality between {@link Scheme} and {@link Behavior}.
  * @author Ryan J. McCall
+ * @author Javier Snaider
  */
 public interface ProceduralUnit extends Activatible{
 	

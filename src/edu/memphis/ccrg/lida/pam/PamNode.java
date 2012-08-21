@@ -10,7 +10,6 @@ package edu.memphis.ccrg.lida.pam;
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.LinkCategory;
 import edu.memphis.ccrg.lida.framework.shared.Node;
-import edu.memphis.ccrg.lida.framework.shared.Translatable;
 
 /**
  * A PamNode is a {@link Node} which resides in {@link PerceptualAssociativeMemory} and 
@@ -20,7 +19,8 @@ import edu.memphis.ccrg.lida.framework.shared.Translatable;
  * 
  * @author Ryan J. McCall
  * @author Javier Snaider
- * @author Rodrigo Silva-Lugo
  * @see PerceptualAssociativeMemory
  */
-public interface PamNode extends Node, PamLinkable, LinkCategory, Translatable {}
+public interface PamNode extends Node, PamLinkable, LinkCategory {
+	
+}

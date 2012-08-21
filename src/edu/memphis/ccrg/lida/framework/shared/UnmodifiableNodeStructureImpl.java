@@ -412,4 +412,15 @@ public class UnmodifiableNodeStructureImpl implements NodeStructure, BroadcastCo
 	public String toString(){
 		return ns.toString();
 	}
+
+	@Override
+	public NodeStructure getSubgraph(Collection<Node> nodes, int d) {
+		return ns.getSubgraph(nodes, d);
+	}
+
+	@Override
+	public NodeStructure getSubgraph(Collection<Node> nodes, int d,
+			double threshold) {
+		return ns.getSubgraph(nodes, d, threshold);
+	}
 }

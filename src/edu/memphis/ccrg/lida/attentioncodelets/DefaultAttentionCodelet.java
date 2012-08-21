@@ -4,11 +4,11 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.Linkable;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.Coalition;
 import edu.memphis.ccrg.lida.workspace.WorkspaceContent;
@@ -23,7 +23,6 @@ public class DefaultAttentionCodelet extends AttentionCodeletImpl {
 
 	private static final Logger logger = Logger
 			.getLogger(DefaultAttentionCodelet.class.getCanonicalName());
-	private static ElementFactory factory = ElementFactory.getInstance();
 
 	private static final double DEFAULT_ATTENTION_THRESHOLD = 0.0;
 	/**
@@ -92,9 +91,9 @@ public class DefaultAttentionCodelet extends AttentionCodeletImpl {
 	@Override
 	public NodeStructure retrieveWorkspaceContent(WorkspaceBuffer buffer) {
 		NodeStructure bufferNS = buffer.getBufferContent(null);
-		NodeStructure retrievedSubGraph = factory.getNodeStructure(bufferNS.getDefaultNodeType(), bufferNS.getDefaultLinkType());
+		NodeStructure retrievedSubGraph = new NodeStructureImpl();
 		if (bufferNS != null) {
-			// FIXME call getSubNodeStructure(originNode, maxDistanceFromOrigin, requiredActivation) method in NodeStructure
+			//TODO call getSubNodeStructure(originNode, maxDistanceFromOrigin, requiredActivation) method in NodeStructure
 			for (Node n : soughtContent.getNodes()) {// typically a small number
 				if (bufferNS.containsNode(n)) {
 					retrievedSubGraph.addDefaultNode(bufferNS.getNode(n.getId()));

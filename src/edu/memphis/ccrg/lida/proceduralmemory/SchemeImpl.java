@@ -16,19 +16,16 @@ import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.actionselection.Action;
 import edu.memphis.ccrg.lida.framework.shared.RootableNode;
-import edu.memphis.ccrg.lida.framework.shared.activation.Desirable;
-import edu.memphis.ccrg.lida.framework.shared.activation.LearnableActivatibleImpl;
-import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
-import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
+import edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryImpl.ConditionType;
 
 /**
- * Default implementation of {@link Scheme}
+ * Default implementation of {@link Scheme}.
  * @author Ryan J. McCall
  * @author Javier Snaider
  */
-public class SchemeImpl extends LearnableActivatibleImpl implements Scheme, Desirable{
+public class SchemeImpl extends LearnableImpl implements Scheme {
 	
 	private static final Logger logger = Logger.getLogger(SchemeImpl.class.getCanonicalName());
 	private static int idCounter = 0;//TODO Factory support for Scheme
@@ -43,17 +40,16 @@ public class SchemeImpl extends LearnableActivatibleImpl implements Scheme, Desi
 	private Map<Object,Condition> context = new ConcurrentHashMap<Object,Condition>();
 	private Map<Object,Condition> addingList = new ConcurrentHashMap<Object,Condition>();
 	private Map<Object,Condition> deletingList = new ConcurrentHashMap<Object,Condition>();
-//	private Map<Object,Condition> negContext = new ConcurrentHashMap<Object,Condition>();
 	private ProceduralMemoryImpl pm;
 	
-//	/*
-//	 * The weight of the context in the calculation of scheme salience
-//	 */
-//	private static double contextWeight = 1.0;
-//	/*
-//	 * The weight of the adding list in the calculation of scheme salience
-//	 */
-//	private static double addingListWeight = 1.0;
+	/*
+	 * The weight of the context in the calculation of scheme salience
+	 */
+	private static double contextWeight = 1.0;
+	/*
+	 * The weight of the adding list in the calculation of scheme salience
+	 */
+	private static double addingListWeight = 1.0;
 	/*
 	 * Threshold for Schemes to be reliable
 	 */
@@ -98,41 +94,41 @@ public class SchemeImpl extends LearnableActivatibleImpl implements Scheme, Desi
 		this.pm = pm;
 	}
 
-//	/**
-//	 * @param w the contextWeight to set
-//	 */
-//	static void setContextWeight(double w) {
-//		if(w >= 0.0){
-//			SchemeImpl.contextWeight = w;
-//		}else{
-//			logger.log(Level.WARNING, "Context weight must be positive", TaskManager.getCurrentTick());
-//		}
-//	}
-//
-//	/**
-//	 * @return the contextWeight
-//	 */
-//	static double getContextWeight() {
-//		return contextWeight;
-//	}
-//
-//	/**
-//	 * @param w the addingListWeight to set
-//	 */
-//	static void setAddingListWeight(double w) {
-//		if(w >= 0.0){
-//			SchemeImpl.addingListWeight = w;
-//		}else{
-//			logger.log(Level.WARNING, "Adding list weight must be positive", TaskManager.getCurrentTick());
-//		}
-//	}
-//
-//	/**
-//	 * @return the addingListWeight
-//	 */
-//	static double getAddingListWeight() {
-//		return addingListWeight;
-//	}
+	/**
+	 * @param w the contextWeight to set
+	 */
+	static void setContextWeight(double w) {
+		if(w >= 0.0){
+			SchemeImpl.contextWeight = w;
+		}else{
+			logger.log(Level.WARNING, "Context weight must be positive", TaskManager.getCurrentTick());
+		}
+	}
+
+	/**
+	 * @return the contextWeight
+	 */
+	static double getContextWeight() {
+		return contextWeight;
+	}
+
+	/**
+	 * @param w the addingListWeight to set
+	 */
+	static void setAddingListWeight(double w) {
+		if(w >= 0.0){
+			SchemeImpl.addingListWeight = w;
+		}else{
+			logger.log(Level.WARNING, "Adding list weight must be positive", TaskManager.getCurrentTick());
+		}
+	}
+
+	/**
+	 * @return the addingListWeight
+	 */
+	static double getAddingListWeight() {
+		return addingListWeight;
+	}
 	
 	//Scheme methods
 	
@@ -194,25 +190,26 @@ public class SchemeImpl extends LearnableActivatibleImpl implements Scheme, Desi
 	}
 		
 	/**
-	 * Gets the average desirability of this unit's adding list.
-	 * @return average desirability of this unit's adding list
+	 * Gets the average net desirability of this unit's adding list
+	 * @return average net desirability of this unit's adding list
 	 */
-	protected double getAverageAddingListDesirability(){
+	protected double getAverageAddingListNetDesirability(){
 		int numConditions = 0;
-		double aggregateDesirability = 0.0;
+		double aggregateNetDesirability = 0.0;
 		for(Condition c: addingList.values()){
 			if(c instanceof RootableNode){
 				//if required to use Condition weight, use it here
-				aggregateDesirability += ((RootableNode) c).getTotalDesirability(); 
+				aggregateNetDesirability += ((RootableNode) c).getNetDesirability(); 
 				numConditions++;
 			}
 		}
 		if(numConditions == 0){
 			return 0.0;
 		}else{
-			return aggregateDesirability / numConditions;
+			return aggregateNetDesirability / numConditions;
 		}
 	}
+	
 	
 	//Learnable override
 	@Override
@@ -224,8 +221,9 @@ public class SchemeImpl extends LearnableActivatibleImpl implements Scheme, Desi
 	
 	@Override
 	public double getActivation(){
-//		double overallSalience = contextWeight * getAverageContextActivation();
-		return getAverageContextActivation();		
+		double overallSalience = contextWeight * getAverageContextActivation() +
+									addingListWeight * getAverageAddingListNetDesirability();
+		return (overallSalience > 1.0)? 1.0:overallSalience;		
 	}
 
 	@Override
@@ -326,28 +324,8 @@ public class SchemeImpl extends LearnableActivatibleImpl implements Scheme, Desi
 	 * @return a {@link Condition} or null
 	 */
 	Condition getContextCondition(Object id) {
-		Condition c = context.get(id);
-//		if (c == null){
-//			c= negContext.get(id);
-//		}
-		return c;
+		return context.get(id);
 	}
-	
-//	@Override
-//	public boolean addContextCondition(Condition condition, boolean negated) {
-//		logger.log(Level.FINEST, "Adding context condition " +
-//								 condition + " to " + label);
-//		if(!negated){
-//			return (context.put(condition.getConditionId(),condition) == null);
-//		}else{
-//			return (negContext.put(condition.getConditionId(),condition) == null);			
-//		}
-//	}
-
-//	@Override
-//	public Collection<Condition> getNegatedContextConditions() {
-//		return negContext.values();
-//	}
 	
 	//Object methods
 	@Override
@@ -366,45 +344,5 @@ public class SchemeImpl extends LearnableActivatibleImpl implements Scheme, Desi
 	@Override
 	public String toString(){
 		return getLabel() + "-" + getId();
-	}
-
-	@Override
-	public double getDesirability() {
-		return getAverageAddingListDesirability();
-	}
-
-	@Override
-	public double getTotalDesirability() {
-		return getDesirability();
-	}
-
-	@Override
-	public void setDesirability(double d) {
-	}
-
-	@Override
-	public void decayDesirability(long t) {
-	}
-
-	@Override
-	public void exciteDesirability(double a) {
-	}
-
-	@Override
-	public DecayStrategy getDesirabilityDecayStrategy() {
-		return null;
-	}
-
-	@Override
-	public ExciteStrategy getDesirabilityExciteStrategy() {
-		return null;
-	}
-
-	@Override
-	public void setDesirabilityDecayStrategy(DecayStrategy d) {
-	}
-
-	@Override
-	public void setDesirabilityExciteStrategy(ExciteStrategy s) {
 	}
 }

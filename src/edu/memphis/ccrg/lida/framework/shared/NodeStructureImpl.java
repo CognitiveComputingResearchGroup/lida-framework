@@ -34,6 +34,8 @@ import edu.memphis.ccrg.lida.workspace.WorkspaceContent;
  * 
  * @author Javier Snaider
  * @author Ryan J. McCall
+ * @author Daqi Dong
+ * @author Pulin Agrawal
  * @see ExtendedId
  */
 public class NodeStructureImpl implements NodeStructure, BroadcastContent,
@@ -75,11 +77,10 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 
 	/**
 	 * Default constructor. Uses the default node and link types of the factory
-	 * @deprecated to be replaced by {@link ElementFactory#getDefaultNodeStructure()}
 	 */
-	@Deprecated
 	public NodeStructureImpl() {
-		this(factory.getDefaultNodeType(),factory.getDefaultLinkType());
+		defaultNodeType = factory.getDefaultNodeType();
+		defaultLinkType = factory.getDefaultLinkType();
 	}
 
 	/**
@@ -90,10 +91,10 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	 * 
 	 * @param linkType kind of link used in this NodeStructure
 	 * 
-	 * @deprecated to be replaced by {@link ElementFactory#getNodeStructure(String, String)}.
+	 * @see ElementFactory
 	 */
-	@Deprecated
 	public NodeStructureImpl(String nodeType, String linkType) {
+		this();
 		if (factory.containsNodeType(nodeType)) {
 			defaultNodeType = nodeType;
 		} else {
@@ -890,6 +891,110 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	@Override
 	public boolean containsLinkable(ExtendedId id) {
 		return (containsNode(id) || containsLink(id));
+	}
+	
+	@Override
+	public  NodeStructure getSubgraph(Collection<Node> nodes,int d) {
+		return getSubgraph(nodes,d,0.0);
+	}
+
+	@Override
+	public NodeStructure getSubgraph(Collection<Node> nodes,
+			int d, double threshold) {
+		if (nodes == null ){
+			logger.log(Level.WARNING, "Collection of specified nodes are not available.",
+					TaskManager.getCurrentTick());
+			return null;
+		}
+		if (nodes.isEmpty()){
+			logger.log(Level.WARNING, "Collection of specified nodes should not be empty.",
+					TaskManager.getCurrentTick());
+			return null;
+		}
+		if (d < 0){
+			logger.log(Level.WARNING, "Desired distance should not be negative.",
+					TaskManager.getCurrentTick());
+			return null;
+		}
+		
+		if (threshold < 0){
+			logger.log(Level.WARNING, "Desired threshold should not be negative.",
+					TaskManager.getCurrentTick());
+			return null;
+		}
+		//	Distance should be not bigger than number of all links.
+		if (d > getLinkCount()){
+			d = getLinkCount();
+		}
+		
+		//Preserve default Node and Link type of the originating NodeStructure
+		NodeStructure subNodeStructure = new NodeStructureImpl(getDefaultNodeType(), getDefaultLinkType());		
+		for (Node n : nodes) {
+			//Add nodes to the sub node structure and scan from each node
+			if(n != null){
+				depthFirstSearch(n, d, subNodeStructure, threshold);
+			}
+		}
+		//	Add all simple links to the sub node structure
+		for (Node subNode : subNodeStructure.getNodes()) {
+			//Get the simple links for each Node already in the subgraph
+			Map<Node, Link> sources = getConnectedSources(subNode);
+			for (Node n : sources.keySet()) {
+				//Add the simple link only if its source is present in the subgraph
+				if (subNodeStructure.containsNode(n)) {
+					subNodeStructure.addLink(sources.get(n), sources.get(n).getFactoryType());
+				}
+			}
+		}
+		//Add all complex links.
+		for (Node subNode : subNodeStructure.getNodes()) {
+			// Get the potential complex links for every node present in the subgraph
+			Map<Linkable, Link> sinks = getConnectedSinks(subNode);
+			for (Linkable l : sinks.keySet()) {
+				//If Linkable is a link and the sub graph contains it then there is a complex link to add. 
+				if ((l instanceof Link) && subNodeStructure.containsLinkable(l)){
+					subNodeStructure.addLink(sinks.get(l), sinks.get(l).getFactoryType());
+				}
+			}
+		}
+		return subNodeStructure;
+	}
+		
+	/*
+	 * @param currentNode One specified node that be considered as neighbor nodes
+	 * or specified nodes in sub NodeStructure 
+	 * @param step The distance between specified nodes and this current Node
+	 * @param distanceLeftToGo The farthest distance between specified nodes and
+	 * its neighbor nodes
+	 * @param subNodeStructure Nodes contained in subNodeStructure. 
+	 * @param threshold Lower bound of Node's activation
+	 * It involves specified nodes and all neighbor nodes whose distance
+	 * from one of specified nodes is not bigger than farthest distance 
+	 * coming from arguments, and those nodes' activation is not lower than threshold.
+	 * Also it involves all links between these above nodes.
+	 */
+	private void depthFirstSearch(Node currentNode, int distanceLeftToGo, 
+			NodeStructure subNodeStructure, double threshold) {
+		Node actual = getNode(currentNode.getId());
+		if (actual != null && (actual.getActivation() >= threshold)){
+			subNodeStructure.addNode(actual, actual.getFactoryType());
+			//Get all connected Sinks
+			Map<Linkable, Link> subSinks = getConnectedSinks(actual);
+			Set<Linkable> subLinkables = subSinks.keySet();
+			for (Linkable l : subLinkables) {
+				if (l instanceof Node && 0 < distanceLeftToGo){
+					depthFirstSearch((Node)l, distanceLeftToGo - 1, subNodeStructure, threshold);
+				}
+			}
+			//Get all connected Sources
+			Map<Node, Link> subSources = getConnectedSources(actual);
+			Set<Node> parentNodes = subSources.keySet();
+			for (Node n : parentNodes) {
+				if (0 < distanceLeftToGo){
+					depthFirstSearch(n, distanceLeftToGo - 1, subNodeStructure, threshold);
+				}
+			}
+		}
 	}
 
 	@Override

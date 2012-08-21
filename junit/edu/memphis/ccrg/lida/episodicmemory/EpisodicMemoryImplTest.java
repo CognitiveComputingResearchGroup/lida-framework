@@ -40,7 +40,7 @@ public class EpisodicMemoryImplTest {
 
 	private EpisodicMemoryImpl em;
 	private MockTranslator translator;
-	private NodeStructure content;
+	private NodeStructureImpl content;
 	private Node node1;
 	private MockLocalAssocListener listener;
 
@@ -52,7 +52,7 @@ public class EpisodicMemoryImplTest {
 		em=new EpisodicMemoryImpl();
 		em.init();
 		translator=new MockTranslator();
-    	content = factory.getDefaultNodeStructure();
+    	content = new NodeStructureImpl();
     	node1 = factory.getNode();
     	listener=new MockLocalAssocListener();
 	}
@@ -92,7 +92,7 @@ public class EpisodicMemoryImplTest {
 	 */
 	@Test
 	public void testReceiveCue() {
-		NodeStructure ns2 =  factory.getDefaultNodeStructure();
+		NodeStructure ns2 =  new NodeStructureImpl();
 		ns2.addDefaultNode(node1);
 		translator.ns2 = ns2;
 		em.getSdm().store(translator.v);
@@ -111,7 +111,7 @@ public class EpisodicMemoryImplTest {
 	 */
 	@Test
 	public void testAddListener() {
-		NodeStructure ns2 =  factory.getDefaultNodeStructure();
+		NodeStructure ns2 =  new NodeStructureImpl();
 		ns2.addDefaultNode(node1);
     	MockLocalAssocListener listener2=new MockLocalAssocListener();
 

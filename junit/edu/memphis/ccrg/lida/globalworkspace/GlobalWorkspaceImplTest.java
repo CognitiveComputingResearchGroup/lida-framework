@@ -39,8 +39,8 @@ public class GlobalWorkspaceImplTest {
 	private static final ElementFactory factory = ElementFactory.getInstance();
 	private GlobalWorkspaceImpl gw;
 	private Coalition coalition, coalition2, coalition3;
-	private NodeStructure ns = factory.getDefaultNodeStructure();
-	private NodeStructure ns2 = factory.getDefaultNodeStructure();
+	private NodeStructureImpl ns = new NodeStructureImpl();
+	private NodeStructureImpl ns2 = new NodeStructureImpl();
 	private NodeImpl n1, n2, n3;
 	private LinkImpl l;
 	private ExecutingMockTaskSpawner ts;

@@ -13,7 +13,6 @@ import org.junit.Test;
 
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.initialization.ModuleUsage;
-import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeImpl;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
@@ -27,7 +26,7 @@ import edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBufferImpl;
  *
  */
 public class UpdateCsmBackgroundTaskTest {
-	private static final ElementFactory factory = ElementFactory.getInstance();
+
 	@Test
 	public final void testRunThisTask() {
 
@@ -35,7 +34,7 @@ public class UpdateCsmBackgroundTaskTest {
 		
     	//step 3-1:
 		//Create 3 nodes and add them into a node structure
-		NodeStructure ns = factory.getDefaultNodeStructure();
+		NodeStructure ns = new NodeStructureImpl();
 		
 		Node n1 = new NodeImpl();
 		n1.setId(2);

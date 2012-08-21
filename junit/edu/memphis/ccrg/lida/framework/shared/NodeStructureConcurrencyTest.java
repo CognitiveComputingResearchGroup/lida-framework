@@ -25,7 +25,7 @@ public class NodeStructureConcurrencyTest {
 	private Node[] nodes= new Node[10];
 	private Link link1, link2;
 	private LinkCategory category1, category2;
-	private NodeStructure ns1, ns2;
+	private NodeStructureImpl ns1, ns2;
 	private static ElementFactory factory;
 
 	@BeforeClass
@@ -63,8 +63,8 @@ public class NodeStructureConcurrencyTest {
 		link1 = factory.getLink(nodes[0], nodes[1], category1);
 		link2 = factory.getLink(nodes[1], nodes[2], category2);
 
-		ns1 = factory.getDefaultNodeStructure();
-		ns2 = factory.getDefaultNodeStructure();
+		ns1 = new NodeStructureImpl();
+		ns2 = new NodeStructureImpl();
 		
 		ns1.addDefaultNode(nodes[0]);
 		ns1.addDefaultNode(nodes[1]);
@@ -113,7 +113,7 @@ public class NodeStructureConcurrencyTest {
 							 }
 							break;
 						case 3:
-							NodeStructure ns4 = factory.getDefaultNodeStructure();
+							NodeStructure ns4 = new NodeStructureImpl();
 							Node n3= factory.getNode();
 							Node n4= nodes[((int)(Math.random()*4))];
 

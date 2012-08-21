@@ -769,7 +769,7 @@ public class ElementFactoryTest {
 
 	@Test
 	public void testGetNodeStructure() {
-		NodeStructure ns = factory.getDefaultNodeStructure();
+		NodeStructure ns = factory.getNodeStructure();
 		assertEquals(ns.getDefaultNodeType(), factory.getDefaultNodeType());
 		assertEquals(ns.getDefaultLinkType(), factory.getDefaultLinkType());
 	}

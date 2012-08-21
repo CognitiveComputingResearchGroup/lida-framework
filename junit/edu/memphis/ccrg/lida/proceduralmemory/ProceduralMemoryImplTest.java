@@ -24,6 +24,7 @@ import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeImpl;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.shared.RootableNode;
 import edu.memphis.ccrg.lida.framework.shared.RootableNodeImpl;
 import edu.memphis.ccrg.lida.globalworkspace.Coalition;
@@ -57,7 +58,6 @@ public class ProceduralMemoryImplTest {
 		params.put("proceduralMemory.addingListWeight", 1.0);
 		pm.init(params);
 
-		
 		pm.setAssistingTaskSpawner(mockTs);
 		c1 = factory.getNode("NodeImpl","c1");
 		c2 = (RootableNode) factory.getNode("RootableNodeImpl","c2");
@@ -84,7 +84,7 @@ public class ProceduralMemoryImplTest {
 	@Test
 	public void testDecayModule() {
 		pm.addCondition(c1);
-		NodeStructure ns = factory.getDefaultNodeStructure();
+		NodeStructure ns = new NodeStructureImpl();
 		c1.setActivation(1.0);
 		ns.addDefaultNode(c1);
 		Coalition coal = new CoalitionImpl(ns, null);
@@ -160,7 +160,7 @@ public class ProceduralMemoryImplTest {
 		c2.setActivation(0.89);
 		s1.addCondition(c1,ConditionType.CONTEXT);
 		s1.addCondition(c2, ConditionType.ADDINGLIST);
-		NodeStructure ns = factory.getDefaultNodeStructure();
+		NodeStructure ns = new NodeStructureImpl();
 		ns.addDefaultNode((Node) c1);
 		ns.addDefaultNode((Node) c2);
 		assertFalse(pm.shouldInstantiate(s1, ns));
@@ -170,7 +170,7 @@ public class ProceduralMemoryImplTest {
 		c2.setActivation(0.89);
 		s1.addCondition(c1,ConditionType.CONTEXT);
 		s1.addCondition(c2, ConditionType.ADDINGLIST);
-		ns = factory.getDefaultNodeStructure();
+		ns = new NodeStructureImpl();
 		ns.addDefaultNode((Node) c1);
 		ns.addDefaultNode((Node) c2);
 		assertTrue(pm.shouldInstantiate(s1, ns));
@@ -187,7 +187,7 @@ public class ProceduralMemoryImplTest {
 		((RootableNode) c2).setDesirability(0.89);
 		s1.addCondition(c1,ConditionType.CONTEXT);
 		s1.addCondition(c2, ConditionType.ADDINGLIST);
-		ns = factory.getDefaultNodeStructure();
+		ns = new NodeStructureImpl();
 		ns.addDefaultNode((Node) c1);
 		ns.addDefaultNode((Node) c2);
 		assertFalse(pm.shouldInstantiate(s1, ns));
@@ -198,7 +198,7 @@ public class ProceduralMemoryImplTest {
 		((RootableNode) c2).setDesirability(0.9);
 		s1.addCondition(c1,ConditionType.CONTEXT);
 		s1.addCondition(c2, ConditionType.ADDINGLIST);
-		ns = factory.getDefaultNodeStructure();
+		ns = new NodeStructureImpl();
 		ns.addDefaultNode((Node) c1);
 		ns.addDefaultNode((Node) c2);
 		assertTrue(pm.shouldInstantiate(s1, ns));
@@ -216,7 +216,7 @@ public class ProceduralMemoryImplTest {
 
 	@Test
 	public void testReceiveBroadcast() {
-		NodeStructure ns = factory.getDefaultNodeStructure();
+		NodeStructure ns = new NodeStructureImpl();
 		c1.setActivation(0.5);
 		ns.addDefaultNode((Node) c1);
 		Coalition coal = new CoalitionImpl(ns, null);
@@ -231,7 +231,7 @@ public class ProceduralMemoryImplTest {
 	@Test
 	public void testReceiveBroadcast1() {
 		//Condition c1 exists, not in buffer, copy of c1 comes in broadcast
-		NodeStructure ns = factory.getDefaultNodeStructure();
+		NodeStructure ns = new NodeStructureImpl();
 		Node bNode = new NodeImpl();
 		bNode.setId(c1.getId());
 		bNode.setActivation(0.2);
@@ -262,7 +262,7 @@ public class ProceduralMemoryImplTest {
 		assertEquals(0.1,pm.getConditionPool().iterator().next().getActivation(),
 					 epsilon);		
 		
-		NodeStructure ns = factory.getDefaultNodeStructure();
+		NodeStructure ns = new NodeStructureImpl();
 		Node bNode = new NodeImpl();
 		bNode.setId(c1.getId());
 		bNode.setActivation(0.2);
@@ -293,7 +293,7 @@ public class ProceduralMemoryImplTest {
 		assertEquals(0.3,pm.getConditionPool().iterator().next().getActivation(),
 					 epsilon);		
 		
-		NodeStructure ns = factory.getDefaultNodeStructure();
+		NodeStructure ns = new NodeStructureImpl();
 		Node bNode = new NodeImpl();
 		bNode.setId(c1.getId());
 		bNode.setActivation(0.2);
@@ -327,7 +327,7 @@ public class ProceduralMemoryImplTest {
 		assertEquals(0.1,stored.getActivation(),epsilon);
 		assertEquals(0.2,((RootableNode) stored).getDesirability(),epsilon);
 		
-		NodeStructure ns = factory.getDefaultNodeStructure();
+		NodeStructure ns = new NodeStructureImpl();
 		RootableNode bNode = new RootableNodeImpl();
 		bNode.setId(c2.getId());
 		bNode.setActivation(0.2);
@@ -364,7 +364,7 @@ public class ProceduralMemoryImplTest {
 		assertEquals(0.1,stored.getActivation(),epsilon);
 		assertEquals(0.2,((RootableNode) stored).getDesirability(),epsilon);
 		
-		NodeStructure ns = factory.getDefaultNodeStructure();
+		NodeStructure ns = new NodeStructureImpl();
 		RootableNode bNode = new RootableNodeImpl();
 		bNode.setId(c2.getId());
 		bNode.setActivation(0.21);
@@ -397,7 +397,7 @@ public class ProceduralMemoryImplTest {
 		pm.addListener(listener);
 		c1.setActivation(1.0);
 		s1.addCondition(c1, ConditionType.CONTEXT);
-		NodeStructure ns = factory.getDefaultNodeStructure();
+		NodeStructure ns = new NodeStructureImpl();
 		ns.addDefaultNode((Node) c1);
 		Coalition coal = new CoalitionImpl(ns, null);
 		pm.receiveBroadcast(coal);		
@@ -419,7 +419,7 @@ public class ProceduralMemoryImplTest {
 		c2.setDesirability(1.0);
 		s2.addCondition(c2, ConditionType.ADDINGLIST);
 		
-		NodeStructure ns = factory.getDefaultNodeStructure();
+		NodeStructure ns = new NodeStructureImpl();
 		ns.addDefaultNode((Node) c1);
 		ns.addNode(c2, c2.getFactoryType());
 		Coalition coal = new CoalitionImpl(ns, null);
@@ -450,7 +450,7 @@ public class ProceduralMemoryImplTest {
 		s1.addCondition(c2, ConditionType.ADDINGLIST);
 		s1.addCondition(c4, ConditionType.ADDINGLIST);
 		
-		NodeStructure ns = factory.getDefaultNodeStructure();
+		NodeStructure ns = new NodeStructureImpl();
 		ns.addDefaultNode((Node) c1);
 		ns.addDefaultNode((Node) c3);
 		ns.addNode(c2, c2.getFactoryType());
@@ -473,14 +473,14 @@ public class ProceduralMemoryImplTest {
 		//should not have a reference to the scheme anymore 
 		MockProceduralMemoryListener listener = new MockProceduralMemoryListener();
 		pm.addListener(listener);
-		NodeStructure ns = factory.getDefaultNodeStructure();
+		NodeStructure ns = new NodeStructureImpl();
 		c1.setActivation(1.0);
 		c2.setDesirability(1.0);
 		ns.addDefaultNode((Node) c1);
 		ns.addNode(c2, c2.getFactoryType());
 		Coalition coal = new CoalitionImpl(ns, null);
 		
-		pm.receiveBroadcast(coal);
+		pm.receiveBroadcast(coal);;
 		pm.activateSchemes();
 		
 		assertEquals(0,listener.behaviors.size());

@@ -23,7 +23,7 @@ import edu.memphis.ccrg.lida.framework.strategies.DefaultTotalActivationStrategy
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.LinearExciteStrategy;
-import edu.memphis.ccrg.lida.framework.strategies.TotalValueStrategy;
+import edu.memphis.ccrg.lida.framework.strategies.TotalActivationStrategy;
 
 /**
  * @author Siminder Kaur, Ryan J. McCall
@@ -92,7 +92,7 @@ public class PamNodeImplTest{
 	
 	/**
 	 * Test method for
-	 * {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableActivatibleImpl#decay(long)}
+	 * {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl#decay(long)}
 	 * .
 	 */
 	@Test
@@ -119,7 +119,7 @@ public class PamNodeImplTest{
 
 	/**
 	 * Test method for
-	 * {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableActivatibleImpl#isRemovable()}
+	 * {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl#isRemovable()}
 	 * .
 	 */
 	@Test
@@ -147,13 +147,13 @@ public class PamNodeImplTest{
 
 	/**
 	 * Test method for
-	 * {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableActivatibleImpl#getTotalActivation()}
+	 * {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl#getTotalActivation()}
 	 * .
 	 */
 	@Test
 	public void testGetTotalActivation() {
-		TotalValueStrategy ts = new DefaultTotalActivationStrategy();
-		node1.setTotalValueStrategy(ts);
+		TotalActivationStrategy ts = new DefaultTotalActivationStrategy();
+		node1.setTotalActivationStrategy(ts);
 		node1.setActivation(0.11);
 		node1.setBaseLevelActivation(0.44);
 		assertEquals(0.55, node1.getTotalActivation(), epsilon);
@@ -165,7 +165,7 @@ public class PamNodeImplTest{
 
 	/**
 	 * Test method for
-	 * {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableActivatibleImpl#decayBaseLevelActivation(long)}
+	 * {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl#decayBaseLevelActivation(long)}
 	 * .
 	 */
 	@Test
@@ -182,7 +182,7 @@ public class PamNodeImplTest{
 
 	/**
 	 * Test method for
-	 * {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableActivatibleImpl#setBaseLevelExciteStrategy(edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy)}
+	 * {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl#setBaseLevelExciteStrategy(edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy)}
 	 * .
 	 */
 	@Test
@@ -197,7 +197,7 @@ public class PamNodeImplTest{
 
 	/**
 	 * Test method for
-	 * {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableActivatibleImpl#setBaseLevelDecayStrategy(edu.memphis.ccrg.lida.framework.strategies.DecayStrategy)}
+	 * {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl#setBaseLevelDecayStrategy(edu.memphis.ccrg.lida.framework.strategies.DecayStrategy)}
 	 * .
 	 */
 	@Test
@@ -211,7 +211,7 @@ public class PamNodeImplTest{
 
 	/**
 	 * Test method for
-	 * {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableActivatibleImpl#reinforceBaseLevelActivation(double)}
+	 * {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl#reinforceBaseLevelActivation(double)}
 	 * .
 	 */
 	@Test
@@ -228,7 +228,7 @@ public class PamNodeImplTest{
 
 	/**
 	 * Test method for
-	 * {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableActivatibleImpl#setBaseLevelActivation(double)}
+	 * {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl#setBaseLevelActivation(double)}
 	 * .
 	 */
 	@Test
@@ -239,7 +239,7 @@ public class PamNodeImplTest{
 
 	/**
 	 * Test method for
-	 * {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableActivatibleImpl#setBaseLevelRemovalThreshold(double)}
+	 * {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl#setBaseLevelRemovalThreshold(double)}
 	 * .
 	 */
 	@Test
@@ -250,15 +250,15 @@ public class PamNodeImplTest{
 
 	/**
 	 * Test method for
-	 * {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableActivatibleImpl#getTotalValueStrategy()}
+	 * {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl#getTotalActivationStrategy()}
 	 * .
 	 */
 	@Test
 	public void testGetTotalActivationStrategy() {
-		TotalValueStrategy ts = new DefaultTotalActivationStrategy();
-		node1.setTotalValueStrategy(ts);
+		TotalActivationStrategy ts = new DefaultTotalActivationStrategy();
+		node1.setTotalActivationStrategy(ts);
 		assertEquals("problem with GetTotalActivationStrategy() ", ts,
-				node1.getTotalValueStrategy());
+				node1.getTotalActivationStrategy());
 	}
 	
 

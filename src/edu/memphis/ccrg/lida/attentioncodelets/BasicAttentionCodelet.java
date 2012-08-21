@@ -11,23 +11,24 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.initialization.GlobalInitializer;
-import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.Linkable;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBuffer;
 
 /**
- * Basic implementation of {@link AttentionCodelet}
+ * Basic implementation of {@link AttentionCodelet}.
  * @author Ryan J. McCall
+ * @deprecated This may be removed in the future. Its functionality is subsumed by {@link NeighborhoodAttentionCodelet}.
  */
+@Deprecated
 public class BasicAttentionCodelet extends AttentionCodeletImpl {
 
     private static final Logger logger = Logger.getLogger(BasicAttentionCodelet.class.getCanonicalName());
-    private static ElementFactory factory = ElementFactory.getInstance();
-    
+
     /**
      * If this method is overridden, this init() must be called first! i.e. super.init();
 	 * Will set parameters with the following names:<br/><br/>
@@ -90,7 +91,7 @@ public class BasicAttentionCodelet extends AttentionCodeletImpl {
     @Override
     public NodeStructure retrieveWorkspaceContent(WorkspaceBuffer buffer) {
         NodeStructure ns = ((NodeStructure) buffer.getBufferContent(null));
-        NodeStructure result = factory.getNodeStructure(ns.getDefaultNodeType(), ns.getDefaultLinkType());
+        NodeStructure result = new NodeStructureImpl();
         for (Node n : soughtContent.getNodes()) {
             if (ns.containsNode(n)) {
                 result.addDefaultNode(ns.getNode(n.getId()));

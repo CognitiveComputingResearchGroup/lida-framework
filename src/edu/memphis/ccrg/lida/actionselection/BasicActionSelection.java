@@ -16,6 +16,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.BehaviorNetwork;
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.initialization.Initializable;
@@ -30,9 +31,9 @@ import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryListener;
 
 /**
  * Rudimentary action selection that selects the behavior with the highest activation.
+ * The new {@link BehaviorNetwork} implementation is more sophisticated that this one and is preferable.
  * 
- * @author Ryan J. McCall
- * 
+ * @author Ryan J. McCall 
  */
 public class BasicActionSelection extends FrameworkModuleImpl implements
 		ActionSelection, ProceduralMemoryListener, BroadcastListener{

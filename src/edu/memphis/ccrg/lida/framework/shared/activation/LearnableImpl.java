@@ -16,48 +16,51 @@ import java.util.logging.Logger;
 import edu.memphis.ccrg.lida.framework.initialization.Initializable;
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
+import edu.memphis.ccrg.lida.framework.strategies.DefaultTotalActivationStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
-import edu.memphis.ccrg.lida.framework.strategies.TotalValueStrategy;
+import edu.memphis.ccrg.lida.framework.strategies.TotalActivationStrategy;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 
 /**
- * Default implementation of {@link LearnableActivatible}.
+ * Default implementation of {@link Learnable}.
  * 
  * @author Javier Snaider
  * @author Ryan J. McCall
+ *
  */
-public class LearnableActivatibleImpl extends ActivatibleImpl implements LearnableActivatible {
+public class LearnableImpl extends ActivatibleImpl implements Learnable {
 
-	private static final Logger logger = Logger.getLogger(LearnableActivatibleImpl.class.getCanonicalName());
+	private static final Logger logger = Logger.getLogger(LearnableImpl.class.getCanonicalName());
 	private static final ElementFactory factory = ElementFactory.getInstance();
 	
 	private double baseLevelActivation;
 	private double learnableRemovalThreshold;
 	private ExciteStrategy baseLevelExciteStrategy;
 	private DecayStrategy baseLevelDecayStrategy;
-	private TotalValueStrategy totalActivationStrategy;
+	private TotalActivationStrategy totalActivationStrategy;
+	private static final String DEFAULT_TOTAL_ACTIVATION_TYPE = DefaultTotalActivationStrategy.class.getSimpleName();
 
 	/**
 	 * Constructs a new instance with default values.
 	 */
-	public LearnableActivatibleImpl() {
+	public LearnableImpl() {
 		super();
 		baseLevelActivation = DEFAULT_BASE_LEVEL_ACTIVATION;
 		learnableRemovalThreshold = DEFAULT_LEARNABLE_REMOVAL_THRESHOLD;
 		baseLevelDecayStrategy = factory.getDefaultDecayStrategy();
 		baseLevelExciteStrategy = factory.getDefaultExciteStrategy();
-		totalActivationStrategy = factory.getDefaultTotalValueStrategy();
+		totalActivationStrategy = (TotalActivationStrategy) factory.getStrategy(DEFAULT_TOTAL_ACTIVATION_TYPE);
 	}
 	
 	/**
 	 * Copy constructor.
 	 * @deprecated This functionality is subsumed by {@link ElementFactory}.
-	 * @param l {@link LearnableActivatibleImpl}
+	 * @param l {@link LearnableImpl}
 	 */
 	@Deprecated
-	public LearnableActivatibleImpl(LearnableActivatibleImpl l) {
+	public LearnableImpl(LearnableImpl l) {
 		this(l.getActivation(), l.getActivatibleRemovalThreshold(),  l.getBaseLevelActivation(), l.getLearnableRemovalThreshold(),
-			l.getExciteStrategy(), l.getDecayStrategy(),l.getBaseLevelExciteStrategy(), l.getBaseLevelDecayStrategy(), l.getTotalValueStrategy());
+			l.getExciteStrategy(), l.getDecayStrategy(),l.getBaseLevelExciteStrategy(), l.getBaseLevelDecayStrategy(), l.getTotalActivationStrategy());
 	}
 	
 	/**
@@ -69,13 +72,13 @@ public class LearnableActivatibleImpl extends ActivatibleImpl implements Learnab
 	 * @param learnableRemovalThreshold base-level activation needed for this instance to remain active
 	 * @param exciteStrategy {@link ExciteStrategy} for exciting {@link ActivatibleImpl} activation.
 	 * @param decayStrategy {@link DecayStrategy} for decaying {@link ActivatibleImpl} activation.
-	 * @param baseLevelExciteStrategy {@link ExciteStrategy} for reinforcing {@link LearnableActivatibleImpl} base-level activation.
-	 * @param baseLevelDecayStrategy {@link DecayStrategy} for decaying {@link LearnableActivatibleImpl} base-level activation.
-	 * @param taStrategy {@link TotalValueStrategy} how this instance will calculate its total activation.
+	 * @param baseLevelExciteStrategy {@link ExciteStrategy} for reinforcing {@link LearnableImpl} base-level activation.
+	 * @param baseLevelDecayStrategy {@link DecayStrategy} for decaying {@link LearnableImpl} base-level activation.
+	 * @param taStrategy {@link TotalActivationStrategy} how this instance will calculate its total activation.
 	 */
 	@Deprecated
-	public LearnableActivatibleImpl(double activation, double activatibleRemovalThreshold, double baseLevelActivation, double learnableRemovalThreshold,
-			ExciteStrategy exciteStrategy, DecayStrategy decayStrategy, ExciteStrategy baseLevelExciteStrategy, DecayStrategy baseLevelDecayStrategy, TotalValueStrategy taStrategy) {
+	public LearnableImpl(double activation, double activatibleRemovalThreshold, double baseLevelActivation, double learnableRemovalThreshold,
+			ExciteStrategy exciteStrategy, DecayStrategy decayStrategy, ExciteStrategy baseLevelExciteStrategy, DecayStrategy baseLevelDecayStrategy, TotalActivationStrategy taStrategy) {
 		super(activation, activatibleRemovalThreshold, exciteStrategy, decayStrategy);
 		
 		this.baseLevelActivation = baseLevelActivation;
@@ -89,30 +92,29 @@ public class LearnableActivatibleImpl extends ActivatibleImpl implements Learnab
 	 * If this method is overridden, this init() must be called first! i.e. super.init();
 	 * Will set parameters with the following names:<br/><br/>
      * 
-     * <b>learnableActivatible.baseLevelActivation</b> initial base-level activation<br/>
-     * <b>learnableActivatible.baseLevelRemovalThreshold</b> initial removal threshold<br/>
-     * <b>learnableActivatible.baseLevelDecayStrategy</b> name of base-level decay strategy<br/>
-     * <b>learnableActivatible.baseLevelExciteStrategy</b> name of base-level excite strategy<br/>
-     * <b>learnableActivatible.totalActivationStrategy</b> name of total activation strategy<br/><br/>
+     * <b>learnable.baseLevelActivation</b> initial base-level activation<br/>
+     * <b>learnable.baseLevelRemovalThreshold</b> initial removal threshold<br/>
+     * <b>learnable.baseLevelDecayStrategy</b> name of base-level decay strategy<br/>
+     * <b>learnable.baseLevelExciteStrategy</b> name of base-level excite strategy<br/>
+     * <b>learnable.totalActivationStrategy</b> name of total activation strategy<br/><br/>
      * If any parameter is not specified its default value will be used.
      * 
      * @see Initializable
 	 */
 	@Override
 	public void init(){
-		baseLevelActivation = (Double) getParam("learnableActivatible.baseLevelActivation",DEFAULT_BASE_LEVEL_ACTIVATION);
-		learnableRemovalThreshold = (Double) getParam("learnableActivatible.baseLevelRemovalThreshold", DEFAULT_LEARNABLE_REMOVAL_THRESHOLD);
-		String decayName = (String) getParam("learnableActivatible.baseLevelDecayStrategy", factory.getDefaultDecayType());
+		baseLevelActivation = (Double) getParam("learnable.baseLevelActivation",DEFAULT_BASE_LEVEL_ACTIVATION);
+		learnableRemovalThreshold = (Double) getParam("learnable.baseLevelRemovalThreshold", DEFAULT_LEARNABLE_REMOVAL_THRESHOLD);
+		String decayName = (String) getParam("learnable.baseLevelDecayStrategy", factory.getDefaultDecayType());
 		baseLevelDecayStrategy = factory.getDecayStrategy(decayName);
 		
-		String exciteName = (String) getParam("learnableActivatible.baseLevelExciteStrategy", factory.getDefaultExciteType());
+		String exciteName = (String) getParam("learnable.baseLevelExciteStrategy", factory.getDefaultExciteType());
 		baseLevelExciteStrategy = factory.getExciteStrategy(exciteName);
 		
-		String name = getParam("learnableActivatible.totalActivationStrategy", 
-												factory.getDefaultTotalValueStrategyType());
-		totalActivationStrategy = (TotalValueStrategy) factory.getStrategy(name);
+		String totalActivationName = (String) getParam("learnable.totalActivationStrategy", DEFAULT_TOTAL_ACTIVATION_TYPE);
+		totalActivationStrategy = (TotalActivationStrategy) factory.getStrategy(totalActivationName);
 		if(totalActivationStrategy == null){
-			totalActivationStrategy = (TotalValueStrategy) factory.getStrategy(factory.getDefaultTotalValueStrategyType());
+			totalActivationStrategy = (TotalActivationStrategy) factory.getStrategy(DEFAULT_TOTAL_ACTIVATION_TYPE);
 		}
 	}
 
@@ -129,7 +131,7 @@ public class LearnableActivatibleImpl extends ActivatibleImpl implements Learnab
 
 	@Override
 	public double getTotalActivation() { 
-	    return totalActivationStrategy.calculateTotalValue(getBaseLevelActivation(), getActivation());
+	    return totalActivationStrategy.calculateTotalActivation(getBaseLevelActivation(), getActivation());
 	}
 
 	@Override
@@ -172,7 +174,7 @@ public class LearnableActivatibleImpl extends ActivatibleImpl implements Learnab
 	}
 
 	@Override
-	public synchronized void setBaseLevelExciteStrategy(ExciteStrategy s) {
+	public void setBaseLevelExciteStrategy(ExciteStrategy s) {
 		baseLevelExciteStrategy = s;
 	}
 
@@ -182,8 +184,8 @@ public class LearnableActivatibleImpl extends ActivatibleImpl implements Learnab
 	}
 
 	@Override
-	public synchronized void setBaseLevelDecayStrategy(DecayStrategy d) {
-		baseLevelDecayStrategy = d;
+	public void setBaseLevelDecayStrategy(DecayStrategy s) {
+		baseLevelDecayStrategy = s;
 	}
 
 	@Override
@@ -214,17 +216,17 @@ public class LearnableActivatibleImpl extends ActivatibleImpl implements Learnab
 	}
 
 	@Override
-	public synchronized void setBaseLevelRemovalThreshold(double t) {
+	public void setBaseLevelRemovalThreshold(double t) {
 		learnableRemovalThreshold = t;
 	}
 	
 	@Override
-	public TotalValueStrategy getTotalValueStrategy() {
+	public TotalActivationStrategy getTotalActivationStrategy() {
 		return totalActivationStrategy;
 	}
 
 	@Override
-	public synchronized void setTotalValueStrategy(TotalValueStrategy s) {
+	public void setTotalActivationStrategy(TotalActivationStrategy s) {
 		totalActivationStrategy = s;
 	}
 }

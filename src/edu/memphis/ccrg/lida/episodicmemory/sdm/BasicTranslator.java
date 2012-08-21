@@ -14,6 +14,7 @@ import cern.colt.bitvector.BitVector;
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 
 /**
@@ -60,7 +61,7 @@ public class BasicTranslator implements Translator {
 	 */
 	@Override
 	public NodeStructure translate(BitVector data) {
-		NodeStructure ns = ElementFactory.getInstance().getNodeStructure("PamNodeImpl", "PamLinkImpl");
+		NodeStructure ns = new NodeStructureImpl();
 		for (int i = 0; i < size; i++) {
 			if (data.getQuick(i)) {
 				Node n = pam.getNode(i);

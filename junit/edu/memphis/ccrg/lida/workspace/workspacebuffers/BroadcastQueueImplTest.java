@@ -25,13 +25,12 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.globalworkspace.Coalition;
 import edu.memphis.ccrg.lida.globalworkspace.CoalitionImpl;
-import edu.memphis.ccrg.lida.workspace.WorkspaceContent;
 
 public class BroadcastQueueImplTest {
 
 	private BroadcastQueueImpl broadcastQueue;
-	private NodeStructure content;
-	private NodeStructure content2;
+	private NodeStructureImpl content;
+	private NodeStructureImpl content2;
 	
 	private Node n1;
 	private Node n2;
@@ -43,8 +42,8 @@ public class BroadcastQueueImplTest {
 	@Before
 	public void setUp() throws Exception {
 		broadcastQueue = new BroadcastQueueImpl();
-		content = factory.getDefaultNodeStructure();
-		content2 = factory.getDefaultNodeStructure();
+		content = new NodeStructureImpl();
+		content2 = new NodeStructureImpl();
 		
 		n1 = factory.getNode();
 		n1.setActivation(0.1);
@@ -64,8 +63,8 @@ public class BroadcastQueueImplTest {
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testGetModuleContent() {
-		broadcastQueue.addBufferContent((WorkspaceContent) content);
-		broadcastQueue.addBufferContent((WorkspaceContent) content2);
+		broadcastQueue.addBufferContent(content);
+		broadcastQueue.addBufferContent(content2);
 		
 		List<NodeStructure> c = (List<NodeStructure>) broadcastQueue.getModuleContent((Object[])null);
 		assertTrue(NodeStructureImpl.compareNodeStructures(c.get(0), content));
@@ -74,8 +73,8 @@ public class BroadcastQueueImplTest {
 
 	@Test
 	public void testDecayModule() {
-		broadcastQueue.addBufferContent((WorkspaceContent) content);
-		broadcastQueue.addBufferContent((WorkspaceContent) content2);
+		broadcastQueue.addBufferContent(content);
+		broadcastQueue.addBufferContent(content2);
 		Map<String, Object> params = new HashMap<String, Object>();
 		
 		broadcastQueue.decayModule(1);
@@ -148,7 +147,7 @@ public class BroadcastQueueImplTest {
 		assertTrue(actual.containsNode(n4));
 		assertEquals(2, actual.getLinkableCount());
 		
-		c = new CoalitionImpl(factory.getDefaultNodeStructure(), null);
+		c = new CoalitionImpl(new NodeStructureImpl(), null);
 		broadcastQueue.receiveBroadcast(c);
 		
 		queue = (List<NodeStructure>) broadcastQueue.getModuleContent(0);
@@ -169,8 +168,8 @@ public class BroadcastQueueImplTest {
 		Object o =  broadcastQueue.getBufferContent(params);
 		assertNull(o);
 		
-		broadcastQueue.addBufferContent((WorkspaceContent) content);//1
-		broadcastQueue.addBufferContent((WorkspaceContent) content2);//0
+		broadcastQueue.addBufferContent(content);//1
+		broadcastQueue.addBufferContent(content2);//0
 		
 		o = broadcastQueue.getBufferContent(null);
 		assertNull(o);

@@ -2,6 +2,7 @@ package edu.memphis.ccrg.lida.framework.shared;
 
 /**
  * A marker of Node type. Different types are treated differently in {@link NodeStructure}.
+ * This feature is not fully implemented in this framework version.
  * @author Ryan J. McCall
  */
 public enum NodeType {

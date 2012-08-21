@@ -14,7 +14,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import edu.memphis.ccrg.lida.framework.ModuleName;
-import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeImpl;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
@@ -24,19 +23,18 @@ import edu.memphis.ccrg.lida.workspace.WorkspaceImpl;
 
 public class WorkspaceBufferImplTest {
 
-	private static final ElementFactory factory = ElementFactory.getInstance();
 	private WorkspaceBufferImpl buffer;
-	
 	@Before
 	public void setUp() {
 		buffer = new WorkspaceBufferImpl();
+		   
 	}
 	
 	//When buffer has 1 node
 	@Test
 	public void testGetModuleContent() {
 		//Creates node and add them into a node structure
-		NodeStructure ns = factory.getDefaultNodeStructure();
+		NodeStructure ns = new NodeStructureImpl();
 		
 		Node n1 = new NodeImpl();
 		n1.setId(2);
@@ -54,7 +52,7 @@ public class WorkspaceBufferImplTest {
 	@Test
 	public void testGetModuleContent2() {
 		//Creates node and add them into a node structure
-		NodeStructure ns = factory.getDefaultNodeStructure();
+		NodeStructure ns = new NodeStructureImpl();
 		
 		Node n1 = new NodeImpl();
 		n1.setId(2);
@@ -101,7 +99,7 @@ public class WorkspaceBufferImplTest {
 	@Test
 	public final void testDecayModule() {
 		//Creates nodes and add them into a node structure
-		NodeStructure ns = factory.getDefaultNodeStructure();
+		NodeStructure ns = new NodeStructureImpl();
 		
 		Node n1 = new NodeImpl();
 		n1.setId(2);
@@ -145,7 +143,7 @@ public class WorkspaceBufferImplTest {
         @Test
 	public final void testAddBufferContent() {
 		//Create a NodeStructure with NodeId = 2
-		NodeStructure ns = factory.getDefaultNodeStructure();
+		NodeStructure ns = new NodeStructureImpl();
 		Node n1 = new NodeImpl();
                 Node n2 = new NodeImpl();
 		n1.setId(2);

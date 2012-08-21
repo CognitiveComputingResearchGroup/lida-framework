@@ -89,9 +89,9 @@ public class NodeStructureImplTest {
 		link2 = factory.getLink(node2, node3, category2);
 		link3 = factory.getLink(node2, node4, category2);
 			
-		ns1 = (NodeStructureImpl) factory.getDefaultNodeStructure();	
-		ns2 = (NodeStructureImpl) factory.getDefaultNodeStructure();
-		ns3 = (NodeStructureImpl) factory.getDefaultNodeStructure();
+		ns1 = new NodeStructureImpl();	
+		ns2 = new NodeStructureImpl();
+		ns3 = new NodeStructureImpl();
 	}
 	
 	/**
@@ -1335,7 +1335,7 @@ public class NodeStructureImplTest {
 	public void testDecayNodeStructure(){
 		double activationAmount = 0.1;
 		double removableThresh = 0.05;
-		NodeStructure ns = factory.getDefaultNodeStructure();
+		NodeStructure ns = new NodeStructureImpl();
 
 		node1.setDecayStrategy(new LinearDecayStrategy());
 		node1.setActivatibleRemovalThreshold(removableThresh);
@@ -1372,7 +1372,7 @@ public class NodeStructureImplTest {
 	public void testDecayNodeStructure1(){
 		double activationAmount = 0.1;
 		double removableThresh = 0.05;
-		NodeStructure ns = factory.getDefaultNodeStructure();
+		NodeStructure ns = new NodeStructureImpl();
 
 		node1.setDecayStrategy(new LinearDecayStrategy());
 		node1.setActivatibleRemovalThreshold(removableThresh);

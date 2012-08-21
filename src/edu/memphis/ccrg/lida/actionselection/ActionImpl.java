@@ -10,7 +10,7 @@ package edu.memphis.ccrg.lida.actionselection;
 import edu.memphis.ccrg.lida.framework.initialization.InitializableImpl;
 
 /**
- * Default implementation of {@link Action}
+ * Default implementation of {@link Action}.
  * 
  * @author Ryan J. McCall
  * @author Javier Snaider

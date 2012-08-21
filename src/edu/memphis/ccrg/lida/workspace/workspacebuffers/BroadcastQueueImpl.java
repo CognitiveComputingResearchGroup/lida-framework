@@ -16,9 +16,9 @@ import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.initialization.Initializable;
-import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.Linkable;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.shared.UnmodifiableNodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.Coalition;
@@ -72,14 +72,13 @@ public class BroadcastQueueImpl extends FrameworkModuleImpl implements
 	@Override
 	public void receiveBroadcast(Coalition c) {
 		UnmodifiableNodeStructureImpl content = (UnmodifiableNodeStructureImpl) c.getContent();
-		//Since content is not modifiable, a copy must be made. Here, the copy will be decayed (modified).
-		NodeStructure contentCopy = ElementFactory.getInstance().getDefaultNodeStructure();
+		//Since content is not modifiable, a copy must be made. In this class the copy (of the content) will be decayed (modified).
+		NodeStructure contentCopy = new NodeStructureImpl();
 		contentCopy.mergeWith(content);
 		addBufferContent((WorkspaceContent) contentCopy);
 		while (broadcastQueue.size() > broadcastQueueCapacity) {
 			broadcastQueue.removeLast();// remove oldest
 		}
-
 	}
 
 	@Override

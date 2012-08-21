@@ -17,10 +17,10 @@ import edu.memphis.ccrg.lida.framework.Agent;
 import edu.memphis.ccrg.lida.framework.initialization.FullyInitializable;
 import edu.memphis.ccrg.lida.framework.initialization.GlobalInitializer;
 import edu.memphis.ccrg.lida.framework.initialization.Initializer;
-import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.framework.shared.activation.LearnableActivatible;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
+import edu.memphis.ccrg.lida.framework.shared.activation.Learnable;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl;
 import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryImpl.ConditionType;
 
@@ -66,7 +66,7 @@ public class BasicProceduralMemoryInitializer implements Initializer {
 	    			NodeStructure resultNS = loadNodeStructure(initializer, result);
 	    			
 	    			String blActivation = elements[4].trim();
-	    			double bla = LearnableActivatible.DEFAULT_BASE_LEVEL_ACTIVATION;
+	    			double bla = Learnable.DEFAULT_BASE_LEVEL_ACTIVATION;
 	    			try{
 	    				bla = Double.parseDouble(blActivation);
 	    			}catch(NumberFormatException e){
@@ -103,7 +103,7 @@ public class BasicProceduralMemoryInitializer implements Initializer {
 		int startLinks = nsSpecification.indexOf(')')+ 1;
 		String contexLinksSpec = nsSpecification.substring(startLinks);
 		String[] contextLinks = contexLinksSpec.substring(contexLinksSpec.indexOf('(') + 1, contexLinksSpec.indexOf(')')).trim().split(",");
-		NodeStructure loadedNodeStructure = ElementFactory.getInstance().getDefaultNodeStructure();
+		NodeStructure loadedNodeStructure = new NodeStructureImpl();
 		for(String nodeName: contextNodes){
 			if("".equals(nodeName)){
 				continue;

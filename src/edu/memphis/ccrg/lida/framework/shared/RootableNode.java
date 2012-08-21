@@ -4,6 +4,7 @@ import edu.memphis.ccrg.lida.framework.shared.activation.Desirable;
 
 /**
  * A {@link Node} which unifies multiple nodes attached to it.
+ * This feature is not fully implemented in this framework version.
  * 
  * @author Javier Snaider
  * @author Ryan J. McCall
@@ -11,7 +12,7 @@ import edu.memphis.ccrg.lida.framework.shared.activation.Desirable;
 public interface RootableNode extends Node, Desirable {
 
 	/**
-	 * Sets Node type
+	 * Sets Node type.
 	 * 
 	 * @param t
 	 *            {@link NodeType}
@@ -19,7 +20,7 @@ public interface RootableNode extends Node, Desirable {
 	public void setNodeType(NodeType t);
 
 	/**
-	 * Gets Node Type
+	 * Gets Node Type.
 	 * 
 	 * @return {@link NodeType}
 	 */

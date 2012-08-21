@@ -153,4 +153,15 @@ public class BitVectorUtils {
 		res.xor(b);
 		return res;
 	}
+        
+        /**
+         * Gets the complement of a bit vector.
+         * @param a     the input bit vector 
+         * @return      the complement of the input bit vector
+         */
+        public static BitVector getComplement(BitVector a) {
+            BitVector res = a.copy();
+            res.not();
+            return res;
+        }
 }

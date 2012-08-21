@@ -30,7 +30,9 @@ import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl;
 /**
  * This class is the JUnit test for <code>WorkspaceImpl</code> class.
  * 
- * @author Rodrigo Silva-Lugo, Daqi Dong, Ryan J. McCall
+ * @author Rodrigo Silva-Lugo
+ * @author Daqi Dong
+ * @author Ryan J. McCall
  */
 public class WorkspaceImplTest {
 
@@ -49,7 +51,7 @@ public class WorkspaceImplTest {
 		workspace = new WorkspaceImpl();
 		eBuffer = new MockWorkspaceBufferImpl();
 		eBuffer.setModuleName(ModuleName.EpisodicBuffer);
-		content = factory.getDefaultNodeStructure();
+		content = new NodeStructureImpl();
 		node1 = factory.getNode();
 		node1.setId(8);
 		node2 = factory.getNode();
@@ -164,7 +166,7 @@ public class WorkspaceImplTest {
 		MockWorkspaceListener listener = new MockWorkspaceListener();
 		workspace.addWorkspaceListener(listener);
 
-		NodeStructure localAssociation = factory.getDefaultNodeStructure();
+		NodeStructure localAssociation = new NodeStructureImpl();
 		Node node3 = factory.getNode();
 		node3.setId(9);
 		localAssociation.addDefaultNode(node3);

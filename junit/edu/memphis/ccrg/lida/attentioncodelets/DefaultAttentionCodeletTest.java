@@ -15,6 +15,7 @@ import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl;
 import edu.memphis.ccrg.lida.workspace.WorkspaceContent;
 
@@ -40,8 +41,8 @@ public class DefaultAttentionCodeletTest {
 		codelet.setAssociatedModule(csm, "");
 		codelet.setAssociatedModule(globalWorkspace, "");
 		
-		csmContent = factory.getDefaultNodeStructure();
-		soughtContent = factory.getDefaultNodeStructure();
+		csmContent = new NodeStructureImpl();
+		soughtContent = new NodeStructureImpl();
 		node1 = factory.getNode();
 		node1.setActivation(0.0);
 		node2 = factory.getNode();

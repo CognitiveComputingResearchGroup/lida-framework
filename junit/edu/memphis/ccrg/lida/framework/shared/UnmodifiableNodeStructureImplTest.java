@@ -25,8 +25,8 @@ public class UnmodifiableNodeStructureImplTest {
 
 	private ElementFactory factory;
 	private Node aNode, bNode, cNode;
-	private NodeStructure aa;
-	private NodeStructure xx;
+	private NodeStructure aa = new NodeStructureImpl();
+	private NodeStructure xx = new NodeStructureImpl();
 	private PamNode category;
 	private UnmodifiableNodeStructureImpl uns;
 	private UnmodifiableNodeStructureImpl filledUNS;
@@ -50,12 +50,9 @@ public class UnmodifiableNodeStructureImplTest {
 		cNode.setLabel("C");
 		category = (PamNode) factory.getNode("PamNodeImpl");
 		
-		aa = factory.getDefaultNodeStructure();
-		xx = factory.getDefaultNodeStructure();
+		uns = new UnmodifiableNodeStructureImpl(new NodeStructureImpl(), true);
 		
-		uns = new UnmodifiableNodeStructureImpl(factory.getDefaultNodeStructure(), true);
-		
-		NodeStructure source = factory.getDefaultNodeStructure();
+		NodeStructure source = new NodeStructureImpl();
 		
 		n1 = factory.getNode();
 		n1.setLabel("1");
@@ -208,7 +205,7 @@ public class UnmodifiableNodeStructureImplTest {
 
 	@Test
 	public void testUnmodifiableNodeStructureImplNodeStructureConstructor() {
-		NodeStructure sourceNodeStructure = factory.getDefaultNodeStructure();
+		NodeStructure sourceNodeStructure = new NodeStructureImpl();
 		sourceNodeStructure.addDefaultNode(aNode);
 		
 		UnmodifiableNodeStructureImpl a = new UnmodifiableNodeStructureImpl(sourceNodeStructure);
@@ -223,7 +220,7 @@ public class UnmodifiableNodeStructureImplTest {
 
 	@Test
 	public void testUnmodifiableNodeStructureImplNodeStructureConstructor1() {
-		NodeStructure sourceNodeStructure = factory.getDefaultNodeStructure();
+		NodeStructure sourceNodeStructure = new NodeStructureImpl();
 		sourceNodeStructure.addDefaultNode(aNode);
 		
 		UnmodifiableNodeStructureImpl a = new UnmodifiableNodeStructureImpl(sourceNodeStructure, false);
@@ -236,7 +233,7 @@ public class UnmodifiableNodeStructureImplTest {
 		assertEquals(2, a.getNodeCount());
 		
 		//true case
-		sourceNodeStructure = factory.getDefaultNodeStructure();
+		sourceNodeStructure = new NodeStructureImpl();
 		sourceNodeStructure.addDefaultNode(aNode);
 		a = new UnmodifiableNodeStructureImpl(sourceNodeStructure, true);
 		
@@ -255,7 +252,7 @@ public class UnmodifiableNodeStructureImplTest {
 
 	@Test
 	public void testCopy() {
-		NodeStructure sourceNodeStructure = factory.getDefaultNodeStructure();
+		NodeStructure sourceNodeStructure = new NodeStructureImpl();
 		sourceNodeStructure.addDefaultNode(aNode);
 		UnmodifiableNodeStructureImpl a = new UnmodifiableNodeStructureImpl(sourceNodeStructure, false);
 		assertEquals(1, a.getNodeCount());
