@@ -90,7 +90,7 @@ public abstract class FrameworkTaskImpl extends LearnableImpl implements Framewo
 		try{
 			runThisFrameworkTask();
 		}catch(Exception e){
-			logger.log(Level.WARNING, "Exception encountered during the execution of task {1}. \n {e}", 
+			logger.log(Level.WARNING, "Exception encountered during the execution of task {1}. \n {2}", 
 					new Object[] {TaskManager.getCurrentTick(),this,e});
 			e.printStackTrace();
 		}
@@ -99,7 +99,7 @@ public abstract class FrameworkTaskImpl extends LearnableImpl implements Framewo
 				controllingTS.receiveFinishedTask(this);
 			}catch(Exception e){
 				logger.log(Level.WARNING, 
-						"Exception encountered during the execution of method 'receiveFinishedTask' in TaskSpawner: {1} \n {e}", 
+						"Exception encountered during the execution of method 'receiveFinishedTask' in TaskSpawner: {1} \n {2}", 
 						new Object[] {TaskManager.getCurrentTick(),this,e});
 				e.printStackTrace();
 			}
