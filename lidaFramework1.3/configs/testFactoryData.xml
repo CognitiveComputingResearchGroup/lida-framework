@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Copyright (c) 2009, 2011 The University of Memphis.  All rights reserved. 
+    This program and the accompanying materials are made available 
+    under the terms of the LIDA Software Framework Non-Commercial License v1.0 
+    which accompanies this distribution, and is available at
+    http://ccrg.cs.memphis.edu/assets/papers/2010/LIDA-framework-non-commercial-v1.0.pdf
+ -->
+<LidaFactories xmlns="http://ccrg.cs.memphis.edu/LidaFactories"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://ccrg.cs.memphis.edu/LidaFactories LidaFactories.xsd ">
+	<strategies>
+		<strategy flyweight="true" name="defaultExcite" type="excite">
+			<class>edu.memphis.ccrg.lida.framework.strategies.LinearExciteStrategy
+			</class>
+			<param name="m" type="double">1.0</param>
+		</strategy>
+		<strategy flyweight="true" name="defaultDecay" type="decay">
+			<class>edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy
+			</class>
+			<param name="m" type="double">0.1</param>
+		</strategy>
+		<strategy flyweight="true" name="slowExcite" type="excite">
+			<class>edu.memphis.ccrg.lida.framework.strategies.LinearExciteStrategy
+			</class>
+			<param name="m" type="double">0.000000001</param>
+		</strategy>
+		<strategy flyweight="true" name="slowDecay" type="decay">
+			<class>edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy
+			</class>
+			<param name="m" type="double">0.000000001</param>
+		</strategy>
+		<strategy flyweight="true" name="pamDefaultExcite" type="excite">
+			<class>edu.memphis.ccrg.lida.framework.strategies.LinearExciteStrategy
+			</class>
+			<param name="m" type="double">1.0</param>
+		</strategy>
+		<strategy flyweight="true" name="pamDefaultDecay" type="decay">
+			<class>edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy
+			</class>
+			<param name="m" type="double">0.05</param>
+		</strategy>
+		<strategy flyweight="true" name="noExcite" type="excite">
+			<class>edu.memphis.ccrg.lida.framework.strategies.NoExciteStrategy
+			</class>
+		</strategy>
+		<strategy flyweight="true" name="noDecay" type="decay">
+			<class>edu.memphis.ccrg.lida.framework.strategies.NoDecayStrategy
+			</class>
+		</strategy>
+		<strategy flyweight="true" name="BasicSchemeActivationStrategy"
+			type="other">
+			<class>edu.memphis.ccrg.lida.proceduralmemory.BasicSchemeActivationStrategy
+			</class>
+			<param name="schemeSelectionThreshold" type="double">0.5</param>
+		</strategy>
+	</strategies>
+	<nodes>
+		<node name="NodeImpl">
+			<class>edu.memphis.ccrg.lida.framework.shared.NodeImpl</class>
+			<defaultstrategy>defaultDecay</defaultstrategy>
+			<defaultstrategy>defaultExcite</defaultstrategy>
+		</node>
+		<node name="PamNodeImpl">
+			<class>edu.memphis.ccrg.lida.pam.PamNodeImpl</class>
+			<defaultstrategy>pamDefaultDecay</defaultstrategy>
+			<defaultstrategy>defaultExcite</defaultstrategy>
+			<param name="learnable.baseLevelActivation" type="double">0.1</param>
+			<param name="learnable.baseLevelRemovalThreshold" type="double">0.0</param>
+			<param name="learnable.baseLevelDecayStrategy" type="string">slowDecay</param>
+			<param name="learnable.baseLevelExciteStrategy" type="string">slowExcite</param>
+			<param name="learnable.totalActivationStrategy" tyep="string">DefaultTotalActivation</param> 
+		</node>
+		<node name="NoDecayPamNode">
+			<class>edu.memphis.ccrg.lida.pam.PamNodeImpl</class>
+			<defaultstrategy>defaultDecay</defaultstrategy>
+			<defaultstrategy>defaultExcite</defaultstrategy>
+			<param name="learnable.baseLevelActivation" type="double">0.0</param>
+			<param name="learnable.baseLevelRemovalThreshold" type="double">-1.0</param>
+			<param name="learnable.baseLevelDecayStrategy" type="string">noDecay</param>
+			<param name="learnable.baseLevelExciteStrategy" type="string">noExcite</param>
+		</node>
+	</nodes>
+	<links>
+		<link name="LinkImpl">
+			<class>edu.memphis.ccrg.lida.framework.shared.LinkImpl</class>
+			<defaultstrategy>defaultDecay</defaultstrategy>
+			<defaultstrategy>defaultExcite</defaultstrategy>
+		</link>
+		<link name="PamLinkImpl">
+			<class>edu.memphis.ccrg.lida.pam.PamLinkImpl</class>
+			<defaultstrategy>pamDefaultDecay</defaultstrategy>
+			<defaultstrategy>defaultExcite</defaultstrategy>
+			<param name="learnable.baseLevelActivation" type="double">0.1</param>
+			<param name="learnable.baseLevelRemovalThreshold" type="double">0.0</param>
+			<param name="learnable.baseLevelDecayStrategy" type="string">slowDecay</param>
+			<param name="learnable.baseLevelExciteStrategy" type="string">slowExcite</param>
+			<param name="learnable.totalActivationStrategy" tyep="string">DefaultTotalActivation</param> 
+		</link>
+		<link name="NoDecayPamLink">
+			<class>edu.memphis.ccrg.lida.pam.PamLinkImpl</class>
+			<defaultstrategy>defaultDecay</defaultstrategy>
+			<defaultstrategy>defaultExcite</defaultstrategy>
+			<param name="learnable.baseLevelActivation" type="double">0.0</param>
+			<param name="learnable.baseLevelRemovalThreshold" type="double">-1.0</param>
+			<param name="learnable.baseLevelDecayStrategy" type="string">noDecay</param>
+			<param name="learnable.baseLevelExciteStrategy" type="string">noExcite</param>
+			
+		</link>
+	</links>
+	<tasks>
+		<task name="topleft">
+			<class>edu.memphis.ccrg.lida.example.genericlida.featuredetectors.TopLeftDetector
+			</class>
+			<param name="" type="int">param</param>
+		</task>
+		<task name="basic">
+			<class>edu.memphis.ccrg.lida.example.genericlida.featuredetectors.BasicDetector
+			</class>
+			<param name="rnd" type="double">0.03</param>
+		</task>
+		<task name="NeighborhoodAttentionCodelet">
+			<class>edu.memphis.ccrg.lida.attentioncodelets.NeighborhoodAttentionCodelet
+			</class>
+		</task>
+	</tasks>
+</LidaFactories>
