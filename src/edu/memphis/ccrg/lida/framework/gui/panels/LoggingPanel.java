@@ -46,8 +46,8 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
  */
 public class LoggingPanel extends GuiPanelImpl {
 
-	private String defaultLoggerName = "edu.memphis.ccrg.lida";
-	private Logger logger = Logger.getLogger(defaultLoggerName);
+	private String frameworkPackageName = "edu.memphis.ccrg.lida";
+	private Logger logger = Logger.getLogger(frameworkPackageName);
 
 	/** Creates new form LogPanel */
 	public LoggingPanel() {
@@ -68,34 +68,32 @@ public class LoggingPanel extends GuiPanelImpl {
 				otherLogger.addHandler(handler);
 			}
 		}
-
 		loggerComboBox.removeAllItems();
 		loggerComboBox.addItem("GLOBAL");
 
-		// add only loggers to the panel which match logName or one of the
-		// parameter-specified names
-		List<String> loggerNameToAddd = new ArrayList<String>();
+		// Add only loggers to the panel which match frameworkPackageName or 
+		// one of the parameter-specified names
+		List<String> loggerNamesToAdd = new ArrayList<String>();
 		Enumeration<String> el = LogManager.getLogManager().getLoggerNames();
 		while (el.hasMoreElements()) {
-			String logN = el.nextElement();
-			if (logN.regionMatches(0, defaultLoggerName, 0, defaultLoggerName
-					.length())) {
-				loggerNameToAddd.add(logN);
+			String loggerName = el.nextElement();
+			if (loggerName.regionMatches(0,frameworkPackageName,0,frameworkPackageName.length())) {
+				loggerNamesToAdd.add(loggerName);
 			} else if (params != null) {
 				for (int i = 0; i < params.length; i++) {
 					otherName = params[i].trim();
 					if (otherName != null
-							&& (logN.regionMatches(0, otherName, 0, otherName
+							&& (loggerName.regionMatches(0, otherName, 0, otherName
 									.length()))) {
-						loggerNameToAddd.add(logN);
+						loggerNamesToAdd.add(loggerName);
 						break;
 					}
 				}
 			}
 		}
 		// Sort names and add them to the combo box
-		Collections.sort(loggerNameToAddd);
-		for (String n : loggerNameToAddd) {
+		Collections.sort(loggerNamesToAdd);
+		for (String n : loggerNamesToAdd) {
 			loggerComboBox.addItem(n);
 		}
 		refresh();
