@@ -19,6 +19,7 @@ import edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl;
 /**
  * This class implements the FrameworkTask Interface. This class should be used as the base class for all FrameworkTasks.
  * @author Javier Snaider
+ * @author Ryan J. McCall
  */
 public abstract class FrameworkTaskImpl extends LearnableImpl implements FrameworkTask {
 
@@ -105,7 +106,7 @@ public abstract class FrameworkTaskImpl extends LearnableImpl implements Framewo
 			}
 		}else {
 			logger.log(Level.WARNING, "Task {1} does not have an assigned TaskSpawner",
-					new Object[] {TaskManager.getCurrentTick(), this });
+					new Object[] {TaskManager.getCurrentTick(), this});
 		}
 		return this;
 	}
