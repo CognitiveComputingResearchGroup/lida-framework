@@ -19,6 +19,7 @@ import edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl;
 /**
  * This class implements the FrameworkTask Interface. This class should be used as the base class for all FrameworkTasks.
  * @author Javier Snaider
+ * @author Ryan J. McCall
  */
 public abstract class FrameworkTaskImpl extends LearnableImpl implements FrameworkTask {
 
