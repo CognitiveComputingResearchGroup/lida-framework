@@ -27,7 +27,8 @@ import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl;
  */
 public class CustomPamInitializer extends BasicPamInitializer {
 
-    @Override
+    @SuppressWarnings("deprecation")
+	@Override
     public void initModule(FullyInitializable module, Agent agent, Map<String, ?> params) {
         super.initModule(module, agent, params);
         PerceptualAssociativeMemory pam = (PerceptualAssociativeMemory) module;

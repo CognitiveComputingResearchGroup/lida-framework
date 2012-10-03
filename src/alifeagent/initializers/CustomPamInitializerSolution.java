@@ -27,7 +27,8 @@ import java.util.Map;
  */
 public class CustomPamInitializerSolution extends BasicPamInitializer{
     
-    @Override
+    @SuppressWarnings("deprecation")
+	@Override
     public void initModule(FullyInitializable module, Agent agent, Map<String, ?> params) {
         super.initModule(module, agent, params);
         PerceptualAssociativeMemory pam = (PerceptualAssociativeMemory) module;

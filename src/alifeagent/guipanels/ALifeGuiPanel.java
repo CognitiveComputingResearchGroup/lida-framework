@@ -31,7 +31,8 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author UofM
+ * @author Javier Snaider
+ * @author Ryan J. McCall
  */
 public class ALifeGuiPanel extends GuiPanelImpl {
 
