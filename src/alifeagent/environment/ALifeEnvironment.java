@@ -42,8 +42,8 @@ public class ALifeEnvironment extends EnvironmentImpl {
 		Properties operationsProperties = new Properties();
         Properties objectsProperties = new Properties();
         try {
-            operationsProperties.load(new FileReader((String) getParam("operationsConfig","configs/operations.properties")));
-            objectsProperties.load(new FileReader((String) getParam("objectsConfig","configs/objects.properties")));
+            operationsProperties.load(new FileReader((String) getParam("environment.operationsConfig","configs/operations.properties")));
+            objectsProperties.load(new FileReader((String) getParam("environment.objectsConfig","configs/objects.properties")));
 
         } catch (IOException ex) {
         	logger.log(Level.SEVERE, "Error reading ALifeWorld properties files", ex);
@@ -53,7 +53,7 @@ public class ALifeEnvironment extends EnvironmentImpl {
         int worldWidth = getParam("environment.width",10);
         int worldHeight = getParam("environment.height",10);
         world = WorldLoader.loadWorld(worldWidth, worldHeight, operationsProperties, objectsProperties);
-        agentObject = world.getObject((String) getParam("agentName","agent"));
+        agentObject = world.getObject((String) getParam("environment.agentName","agent"));
         int ticksPerRun = (Integer)getParam("environment.ticksPerRun",DEFAULT_TICKS_PER_RUN);
         taskSpawner.addTask(new EnvironmentBackgroundTask(ticksPerRun));
         
