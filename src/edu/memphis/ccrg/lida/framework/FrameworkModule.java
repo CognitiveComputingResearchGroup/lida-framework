@@ -10,6 +10,7 @@ package edu.memphis.ccrg.lida.framework;
 import java.util.Map;
 
 import edu.memphis.ccrg.lida.framework.initialization.FullyInitializable;
+import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 
 /**
@@ -89,12 +90,17 @@ public interface FrameworkModule extends FullyInitializable{
 	 * Decays this module and all its submodules. 
 	 * 
 	 * @param ticks number of ticks to decay.
+	 * @see TaskManager
 	 */
 	public void taskManagerDecayModule(long ticks);
 	
 	/**
-	 * Decay only this Module.   
+	 * Decay the elements of this {@link FrameworkModule} only (not its submodules). 
+	 * Framework users should not call this method. It will be called by the {@link TaskManager}.
+	 * However, specific {@link FrameworkModule} implementations may want to implement this method.
+	 *   
 	 * @param ticks number of ticks to decay.
+	 * @see TaskManager
 	 */
 	public void decayModule(long ticks);
 
