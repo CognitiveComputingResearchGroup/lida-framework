@@ -638,7 +638,7 @@ public class AgentXmlFactory implements AgentFactory {
 		for(TaskData td : toRun){
 			FrameworkTask task = factory.getFrameworkTask(td.tasktype, td.params, moduleMap);
 			if (task!=null){
-				if(td.ticksPerRun > 0){
+				if(td.ticksPerRun > 0){//TODO remove?
 					task.setTicksPerRun(td.ticksPerRun);
 				}
 				td.taskSpawner.addTask(task);
