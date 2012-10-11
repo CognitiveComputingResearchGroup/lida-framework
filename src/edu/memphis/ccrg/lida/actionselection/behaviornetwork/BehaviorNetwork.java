@@ -262,7 +262,7 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements
 	 */
 	void passActivationFromSchemes() {
 		for (Behavior b : behaviors.values()) {
-			double amount = b.getScheme().getActivation()
+			double amount = b.getScheme().getTotalActivation()
 					* broadcastExcitationFactor;
 			b.excite(amount);
 		}

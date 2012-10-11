@@ -1162,6 +1162,7 @@ public class ElementFactory {
 			b = (Behavior) Class.forName(className).newInstance();
 			b.setId(behaviorIdCount++);
 			b.setScheme(s);
+			b.setActivation(s.getTotalActivation());
 		} catch (InstantiationException e) {
 			logger.log(Level.WARNING, "InstantiationException encountered creating object of class {1}.", 
 					new Object[]{TaskManager.getCurrentTick(),className});
