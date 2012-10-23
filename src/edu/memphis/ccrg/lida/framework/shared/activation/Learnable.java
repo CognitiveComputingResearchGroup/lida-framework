@@ -34,7 +34,7 @@ public interface Learnable extends Activatible{
 	/**
 	 * Default base-level activation for Learnable
 	 */
-	public static final double DEFAULT_BASE_LEVEL_ACTIVATION = 0.0;
+	public static final double DEFAULT_BASE_LEVEL_ACTIVATION = 0.5;
 
 	/**
 	 * Returns base level activation. 
