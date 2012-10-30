@@ -10,7 +10,7 @@ package edu.memphis.ccrg.lida.actionselection;
 import edu.memphis.ccrg.lida.framework.initialization.Initializable;
 
 /**
- * Encapsulation of an action to be executed.
+ * Encapsulation of an action to be executed. 
  * 
  * @author Ryan J. McCall
  * @author Javier Snaider
