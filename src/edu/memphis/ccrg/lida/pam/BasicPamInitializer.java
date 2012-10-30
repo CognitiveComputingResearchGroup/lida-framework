@@ -18,7 +18,7 @@ import edu.memphis.ccrg.lida.framework.initialization.Initializer;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 
-/**
+/** 
  * An {@link Initializer} for {@link PerceptualAssociativeMemory} which receives a parameter named
  * 'nodes' containing a list of node labels.  Nodes are created in {@link PerceptualAssociativeMemory} and 
  * nodes are added to the {@link GlobalInitializer}.
