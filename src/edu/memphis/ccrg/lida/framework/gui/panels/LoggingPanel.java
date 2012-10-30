@@ -71,20 +71,21 @@ public class LoggingPanel extends GuiPanelImpl {
 		loggerComboBox.removeAllItems();
 		loggerComboBox.addItem("GLOBAL");
 
-		// Add only loggers to the panel which match frameworkPackageName or 
+		// Add only loggers to the panel which match frameworkPackageName or
 		// one of the parameter-specified names
 		List<String> loggerNamesToAdd = new ArrayList<String>();
 		Enumeration<String> el = LogManager.getLogManager().getLoggerNames();
 		while (el.hasMoreElements()) {
 			String loggerName = el.nextElement();
-			if (loggerName.regionMatches(0,frameworkPackageName,0,frameworkPackageName.length())) {
+			if (loggerName.regionMatches(0, frameworkPackageName, 0,
+					frameworkPackageName.length())) {
 				loggerNamesToAdd.add(loggerName);
 			} else if (params != null) {
 				for (int i = 0; i < params.length; i++) {
 					otherName = params[i].trim();
 					if (otherName != null
-							&& (loggerName.regionMatches(0, otherName, 0, otherName
-									.length()))) {
+							&& (loggerName.regionMatches(0, otherName, 0,
+									otherName.length()))) {
 						loggerNamesToAdd.add(loggerName);
 						break;
 					}
@@ -311,14 +312,14 @@ public class LoggingPanel extends GuiPanelImpl {
 								.getSequenceNumber(), actualTick, logRecord
 								.getLevel(), logRecord.getLoggerName(), mf
 								.format(logRecord.getParameters()));
-				//TODO log stack traces
-//				Throwable e = logRecord.getThrown();
-//				if (e != null) {
-//					StackTraceElement[] stackt = e.getStackTrace();
-//					for (int i = 0; i < stackt.length && i < 100; i++) {
-//						logMessages += "\n" + stackt[i].toString();
-//					}
-//				}
+				// TODO log stack traces
+				// Throwable e = logRecord.getThrown();
+				// if (e != null) {
+				// StackTraceElement[] stackt = e.getStackTrace();
+				// for (int i = 0; i < stackt.length && i < 100; i++) {
+				// logMessages += "\n" + stackt[i].toString();
+				// }
+				// }
 				SwingUtilities.invokeLater(new UpdateLoggerPanel(logMessages));
 			}
 		}

@@ -22,21 +22,24 @@ public class FrameworkGuiEvent {
 	 * Module sending the event
 	 */
 	private ModuleName module;
-	
+
 	/**
 	 * Message describing the nature of the event's content
 	 */
 	private String message;
-	
+
 	/**
 	 * Content being sent
 	 */
 	private Object content;
 
 	/**
-	 * @param name ModuleName of module where event is coming from 
-	 * @param message optional message, differentiate from various events
-	 * @param content sent content
+	 * @param name
+	 *            ModuleName of module where event is coming from
+	 * @param message
+	 *            optional message, differentiate from various events
+	 * @param content
+	 *            sent content
 	 */
 	public FrameworkGuiEvent(ModuleName name, String message, Object content) {
 		this.module = name;
@@ -46,11 +49,14 @@ public class FrameworkGuiEvent {
 
 	/**
 	 * sets module
-	 * @param m module sending the event
+	 * 
+	 * @param m
+	 *            module sending the event
 	 */
-	public void setModule(ModuleName m){
+	public void setModule(ModuleName m) {
 		module = m;
 	}
+
 	/**
 	 * @return the moduleId
 	 */
@@ -60,11 +66,14 @@ public class FrameworkGuiEvent {
 
 	/**
 	 * sets events message
-	 * @param m event's message
+	 * 
+	 * @param m
+	 *            event's message
 	 */
-	public void setMessage(String m){
+	public void setMessage(String m) {
 		message = m;
 	}
+
 	/**
 	 * @return the message
 	 */
@@ -73,11 +82,13 @@ public class FrameworkGuiEvent {
 	}
 
 	/**
-	 * @param o content
+	 * @param o
+	 *            content
 	 */
-	public void setContent(Object o){
+	public void setContent(Object o) {
 		content = o;
 	}
+
 	/**
 	 * @return the data
 	 */

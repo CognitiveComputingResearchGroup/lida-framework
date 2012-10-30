@@ -28,41 +28,50 @@ import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl;
 
 /**
  * This is a JUnit class which can be used to test methods of the LinkImpl class
+ * 
  * @author Siminder Kaur
- *
+ * 
  */
-public class LinkImplTest{
-	
-	private Node node1,node2,node3,node4;
-	private LinkImpl link1,link2,link3;	
-	private	PamLinkImpl pamLink1;
-	private LinkCategory linktype1;	
+public class LinkImplTest {
+
+	private Node node1, node2, node3, node4;
+	private LinkImpl link1, link2, link3;
+	private PamLinkImpl pamLink1;
+	private LinkCategory linktype1;
 	private static final ElementFactory factory = ElementFactory.getInstance();
-	
+
 	@BeforeClass
-	public static void setUpBeforeClass(){
-		Properties prop = ConfigUtils.loadProperties(AgentStarter.DEFAULT_PROPERTIES_PATH);
+	public static void setUpBeforeClass() {
+		Properties prop = ConfigUtils
+				.loadProperties(AgentStarter.DEFAULT_PROPERTIES_PATH);
 		FactoriesDataXmlLoader.loadFactoriesData(prop);
 	}
 
 	/**
-	 * This method is called before running each test case to initialize the objects
-	 * @throws Exception e
+	 * This method is called before running each test case to initialize the
+	 * objects
+	 * 
+	 * @throws Exception
+	 *             e
 	 */
 	@Before
 	public void setUp() throws Exception {
 		node1 = factory.getNode();
 		node2 = factory.getNode();
 		node3 = factory.getNode();
-		node4 = factory.getNode();	
-		
-		linktype1 = PerceptualAssociativeMemoryImpl.NONE;
-		
-		pamLink1 = (PamLinkImpl) factory.getLink("PamLinkImpl", node3, node4, PerceptualAssociativeMemoryImpl.NONE);
+		node4 = factory.getNode();
 
-		link1 = (LinkImpl) factory.getLink(node1,node2,PerceptualAssociativeMemoryImpl.NONE);
-		link2 = (LinkImpl) factory.getLink(node3,node4,PerceptualAssociativeMemoryImpl.NONE);
-		link3 = (LinkImpl) factory.getLink(node3,link2,PerceptualAssociativeMemoryImpl.NONE);
+		linktype1 = PerceptualAssociativeMemoryImpl.NONE;
+
+		pamLink1 = (PamLinkImpl) factory.getLink("PamLinkImpl", node3, node4,
+				PerceptualAssociativeMemoryImpl.NONE);
+
+		link1 = (LinkImpl) factory.getLink(node1, node2,
+				PerceptualAssociativeMemoryImpl.NONE);
+		link2 = (LinkImpl) factory.getLink(node3, node4,
+				PerceptualAssociativeMemoryImpl.NONE);
+		link3 = (LinkImpl) factory.getLink(node3, link2,
+				PerceptualAssociativeMemoryImpl.NONE);
 	}
 
 	/**
@@ -73,11 +82,11 @@ public class LinkImplTest{
 		link1.setSource(node1);
 		link1.setSink(node2);
 		link1.setCategory(linktype1);
-		
+
 		link3.setSource(node1);
 		link3.setSink(node2);
 		link3.setCategory(linktype1);
-		
+
 		assertHashCodeEquals(link1, link3);
 	}
 
@@ -141,7 +150,8 @@ public class LinkImplTest{
 	@Test
 	public void testGetReferencedLink() {
 		link1.setGroundingPamLink(pamLink1);
-		assertEquals("Problem with getReferencedLink", pamLink1, link1.getGroundingPamLink());
+		assertEquals("Problem with getReferencedLink", pamLink1, link1
+				.getGroundingPamLink());
 	}
 
 	/**
@@ -150,38 +160,41 @@ public class LinkImplTest{
 	@Test
 	public void testSetReferencedLink() {
 		link1.setGroundingPamLink(pamLink1);
-		assertEquals("Problem with setReferencedLink", pamLink1, link1.getGroundingPamLink());
+		assertEquals("Problem with setReferencedLink", pamLink1, link1
+				.getGroundingPamLink());
 	}
-	
+
 	/**
-	 * This method is used to test the LinkImpl.LinkImpl(Linkable source, Linkable sink, LinkType type, String ids) method
+	 * This method is used to test the LinkImpl.LinkImpl(Linkable source,
+	 * Linkable sink, LinkType type, String ids) method
 	 */
 	@Test
 	public void testLinkImpl() {
-		LinkImpl link5= (LinkImpl) factory.getLink(node1,node2,linktype1);
+		LinkImpl link5 = (LinkImpl) factory.getLink(node1, node2, linktype1);
 		assertEquals(node1, link5.getSource());
 		assertEquals(node2, link5.getSink());
 		assertEquals(linktype1, link5.getCategory());
-		assertTrue( !link5.getExtendedId().isNodeId());
-		ExtendedId eid = new ExtendedId(node1.getId(), node2.getExtendedId(), linktype1.getId());
+		assertTrue(!link5.getExtendedId().isNodeId());
+		ExtendedId eid = new ExtendedId(node1.getId(), node2.getExtendedId(),
+				linktype1.getId());
 		assertHashCodeEquals(eid, link5.getExtendedId());
-	
+
 	}
-	
-	private void assertHashCodeEquals(Object o1, Object o2){
+
+	private void assertHashCodeEquals(Object o1, Object o2) {
 		assertTrue(o1.equals(o2));
 		assertTrue(o2.equals(o1));
 		assertTrue(o1.hashCode() == o2.hashCode());
 	}
 
 	@Test
-	public void testComplexLink2(){
+	public void testComplexLink2() {
 		Link foo = factory.getLink(node4, link1, linktype1);
 		Link bar = new LinkImpl();
 		assertNull(bar.getSink());
 		bar.setSink(foo);
 		assertNull(bar.getSink());
-		
+
 		bar.setSink(link1);
 		assertEquals(link1, bar.getSink());
 	}

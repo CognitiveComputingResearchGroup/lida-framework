@@ -29,74 +29,90 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
  * @author Ryan J. McCall
  */
 public class PamLinkImpl extends LinkImpl implements PamLink {
-	
-	private static final Logger logger = Logger.getLogger(PamLinkImpl.class.getCanonicalName());
-	
+
+	private static final Logger logger = Logger.getLogger(PamLinkImpl.class
+			.getCanonicalName());
+
 	/*
 	 * Private Learnable object used for all learnable methods
 	 */
 	private LearnableImpl learnable;
-	
+
 	/**
-	 * Default constructor
-	 * Only {@link ElementFactory} should be creating this Object.
+	 * Default constructor Only {@link ElementFactory} should be creating this
+	 * Object.
 	 */
 	public PamLinkImpl() {
 		super();
 		groundingPamLink = this;
 		learnable = new LearnableImpl();
 	}
+
 	/**
 	 * Copy constructor
-	 * @deprecated Use {@link ElementFactory#getLink(String, Node, Linkable, LinkCategory, String, String, double, double)} instead.
-	 * @param pl source {@link PamLinkImpl}
+	 * 
+	 * @deprecated Use
+	 *             {@link ElementFactory#getLink(String, Node, Linkable, LinkCategory, String, String, double, double)}
+	 *             instead.
+	 * @param pl
+	 *            source {@link PamLinkImpl}
 	 */
 	@Deprecated
 	public PamLinkImpl(PamLinkImpl pl) {
 		super(pl);
 		groundingPamLink = this;
-		learnable=new LearnableImpl((LearnableImpl)pl.learnable);
+		learnable = new LearnableImpl((LearnableImpl) pl.learnable);
 	}
 
-	/** 
+	/**
 	 * Must call the {@link #init()} of the internal {@link Learnable}.
+	 * 
 	 * @see LearnableImpl#init()
-	 * @see ElementFactory#getLink(String, edu.memphis.ccrg.lida.framework.shared.Node, edu.memphis.ccrg.lida.framework.shared.Linkable, edu.memphis.ccrg.lida.framework.shared.LinkCategory, String, String, double, double)
+	 * @see ElementFactory#getLink(String,
+	 *      edu.memphis.ccrg.lida.framework.shared.Node,
+	 *      edu.memphis.ccrg.lida.framework.shared.Linkable,
+	 *      edu.memphis.ccrg.lida.framework.shared.LinkCategory, String, String,
+	 *      double, double)
 	 */
 	@Override
-	public void init(){
+	public void init() {
 		learnable.init(getParameters());
 	}
 
-	//LINK
+	// LINK
 	@Override
 	public void updateLinkValues(Link link) {
-		if(link instanceof PamLinkImpl){
+		if (link instanceof PamLinkImpl) {
 			PamLinkImpl pl = (PamLinkImpl) link;
-			learnable.setBaseLevelActivation(pl.getBaseLevelActivation());           
-		}else if(link != null){
-			logger.log(Level.FINEST, "Cannot set PamLinkImpl-specific values. Required: {1} \n Received: {2}",
-					new Object[]{TaskManager.getCurrentTick(),PamLinkImpl.class.getCanonicalName(),link.getClass()});
+			learnable.setBaseLevelActivation(pl.getBaseLevelActivation());
+		} else if (link != null) {
+			logger
+					.log(
+							Level.FINEST,
+							"Cannot set PamLinkImpl-specific values. Required: {1} \n Received: {2}",
+							new Object[] { TaskManager.getCurrentTick(),
+									PamLinkImpl.class.getCanonicalName(),
+									link.getClass() });
 		}
 	}
 
-	//OBJECT
+	// OBJECT
 	@Override
 	public boolean equals(Object obj) {
-		if(obj instanceof PamLinkImpl){
+		if (obj instanceof PamLinkImpl) {
 			PamLinkImpl l = (PamLinkImpl) obj;
 			return getExtendedId().equals(l.getExtendedId());
 		}
-		return false;	
-	}
-	
-	@Override
-	public int hashCode() { 
-	    return getExtendedId().hashCode();
+		return false;
 	}
 
-	//LEARNABLE METHODS
-	
+	@Override
+	public int hashCode() {
+		return getExtendedId().hashCode();
+	}
+
+	// LEARNABLE METHODS
+
 	@Override
 	public double getActivation() {
 		return learnable.getActivation();
@@ -217,5 +233,5 @@ public class PamLinkImpl extends LinkImpl implements PamLink {
 	@Override
 	public void setTotalActivationStrategy(TotalActivationStrategy strategy) {
 		learnable.setTotalActivationStrategy(strategy);
-	}	
+	}
 }

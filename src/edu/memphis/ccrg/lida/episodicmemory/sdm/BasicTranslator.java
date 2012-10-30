@@ -31,18 +31,20 @@ public class BasicTranslator implements Translator {
 	private PerceptualAssociativeMemory pam;
 
 	/**
-	 * Default constructor. The {@link PerceptualAssociativeMemory} and vectors' size must be set before to use this {@link Translator}.
+	 * Default constructor. The {@link PerceptualAssociativeMemory} and vectors'
+	 * size must be set before to use this {@link Translator}.
 	 */
-	public BasicTranslator(){		
+	public BasicTranslator() {
 	}
-	
+
 	/**
 	 * Constructs a new translator with specified attributes.
 	 * 
 	 * @param size
 	 *            the number of positions of the bit vector
 	 * @param pam
-	 *            the {@link PerceptualAssociativeMemory} associated with this translator
+	 *            the {@link PerceptualAssociativeMemory} associated with this
+	 *            translator
 	 */
 	public BasicTranslator(int size, PerceptualAssociativeMemory pam) {
 		this.size = size;
@@ -50,13 +52,14 @@ public class BasicTranslator implements Translator {
 	}
 
 	/**
-	 * Translates a {@link BitVector} into a {@link NodeStructure}. Since the method {@link BitVector#getQuick(int)} 
-	 * is used, no preconditions are checked.
+	 * Translates a {@link BitVector} into a {@link NodeStructure}. Since the
+	 * method {@link BitVector#getQuick(int)} is used, no preconditions are
+	 * checked.
 	 * 
 	 * @param data
 	 *            the {@link BitVector} to be translated
-	 * @return a {@link NodeStructure} representing the positions in the bit vector,
-	 *         each node has a unique ID
+	 * @return a {@link NodeStructure} representing the positions in the bit
+	 *         vector, each node has a unique ID
 	 * @see BitVector
 	 */
 	@Override
@@ -65,7 +68,7 @@ public class BasicTranslator implements Translator {
 		for (int i = 0; i < size; i++) {
 			if (data.getQuick(i)) {
 				Node n = pam.getNode(i);
-				if(n == null){
+				if (n == null) {
 					continue;
 				}
 				ns.addDefaultNode(factory.getNode(n));
@@ -75,18 +78,20 @@ public class BasicTranslator implements Translator {
 	}
 
 	/**
-	 * Translates a {@link NodeStructure} into a {@link BitVector}. Currently only nodes
-	 * are translated, but links, and maybe activations must be also
+	 * Translates a {@link NodeStructure} into a {@link BitVector}. Currently
+	 * only nodes are translated, but links, and maybe activations must be also
 	 * handled.
 	 * 
-	 * @param ns the {@link NodeStructure} to be translated
-	 * @return a {@link BitVector} representing the {@link Node} objects in the {@link NodeStructure}
+	 * @param ns
+	 *            the {@link NodeStructure} to be translated
+	 * @return a {@link BitVector} representing the {@link Node} objects in the
+	 *         {@link NodeStructure}
 	 */
 	@Override
 	public BitVector translate(NodeStructure ns) {
 		BitVector v = new BitVector(size);
 		Collection<Node> nodes = ns.getNodes();
-		if(nodes != null){
+		if (nodes != null) {
 			for (Node n : nodes) {
 				v.put(n.getId(), true);
 			}
@@ -96,7 +101,8 @@ public class BasicTranslator implements Translator {
 
 	/**
 	 * Gets size
-	 * @return the vector's size 
+	 * 
+	 * @return the vector's size
 	 */
 	public int getSize() {
 		return size;
@@ -104,7 +110,9 @@ public class BasicTranslator implements Translator {
 
 	/**
 	 * Sets size
-	 * @param s the vector's size in the {@link SparseDistributedMemory}
+	 * 
+	 * @param s
+	 *            the vector's size in the {@link SparseDistributedMemory}
 	 */
 	public void setSize(int s) {
 		size = s;
@@ -112,6 +120,7 @@ public class BasicTranslator implements Translator {
 
 	/**
 	 * Gets Pam
+	 * 
 	 * @return the {@link PerceptualAssociativeMemory}
 	 */
 	public PerceptualAssociativeMemory getPam() {
@@ -120,10 +129,12 @@ public class BasicTranslator implements Translator {
 
 	/**
 	 * Sets Pam
-	 * @param pam the {@link PerceptualAssociativeMemory} to set
+	 * 
+	 * @param pam
+	 *            the {@link PerceptualAssociativeMemory} to set
 	 */
 	public void setPam(PerceptualAssociativeMemory pam) {
 		this.pam = pam;
 	}
-	
+
 }

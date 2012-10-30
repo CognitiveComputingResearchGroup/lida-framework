@@ -16,8 +16,9 @@ import edu.memphis.ccrg.lida.framework.tasks.FrameworkTask;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawnerImpl;
 
-public class ExecutingMockTaskSpawner extends TaskSpawnerImpl implements TaskSpawner {
-	public List<FrameworkTask> tasks = new ArrayList<FrameworkTask>(); 
+public class ExecutingMockTaskSpawner extends TaskSpawnerImpl implements
+		TaskSpawner {
+	public List<FrameworkTask> tasks = new ArrayList<FrameworkTask>();
 
 	@Override
 	public void addTask(FrameworkTask task) {
@@ -40,6 +41,7 @@ public class ExecutingMockTaskSpawner extends TaskSpawnerImpl implements TaskSpa
 	public Collection<FrameworkTask> getRunningTasks() {
 		return getTasks();
 	}
+
 	@Override
 	public Collection<FrameworkTask> getTasks() {
 		return Collections.unmodifiableCollection(tasks);
@@ -52,14 +54,15 @@ public class ExecutingMockTaskSpawner extends TaskSpawnerImpl implements TaskSpa
 
 	@Override
 	public void addTasks(Collection<? extends FrameworkTask> initialTasks) {
-		for(FrameworkTask t: initialTasks){
+		for (FrameworkTask t : initialTasks) {
 			addTask(t);
 		}
 	}
+
 	@Override
 	public void init() {
 		// not implemented
-		
+
 	}
 
 	@Override

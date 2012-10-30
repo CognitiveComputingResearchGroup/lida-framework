@@ -18,23 +18,25 @@ import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 
 /**
  * Default {@link Node} implementation.
- *
+ * 
  * @author Javier Snaider
  * @author Ryan J. McCall
  * @see ElementFactory
  */
 public class NodeImpl extends ActivatibleImpl implements Node {
 
-	private static final Logger logger = Logger.getLogger(NodeImpl.class.getCanonicalName());
-	
+	private static final Logger logger = Logger.getLogger(NodeImpl.class
+			.getCanonicalName());
+
 	private int id;
 	private ExtendedId extendedId;
-	private String label ="Node";
+	private String label = "Node";
 	private String factoryName;
 	private String toStringName;
-	
+
 	/**
-	 * {@link PamNode} in {@link PerceptualAssociativeMemory} which grounds this {@link Node}
+	 * {@link PamNode} in {@link PerceptualAssociativeMemory} which grounds this
+	 * {@link Node}
 	 */
 	protected PamNode groundingPamNode;
 
@@ -51,63 +53,71 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 	/**
 	 * Default constructor
 	 */
-	public NodeImpl(){
+	public NodeImpl() {
 		super();
 	}
 
 	/**
 	 * Copy constructor.
+	 * 
 	 * @deprecated Use {@link ElementFactory#getNode(Node)} instead.
-	 * @param n source {@link NodeImpl}
+	 * @param n
+	 *            source {@link NodeImpl}
 	 */
 	@Deprecated
 	public NodeImpl(NodeImpl n) {
-		if(n == null){
-			logger.log(Level.WARNING, "Cannot construct a Node from null.", TaskManager.getCurrentTick());
-		}else{
+		if (n == null) {
+			logger.log(Level.WARNING, "Cannot construct a Node from null.",
+					TaskManager.getCurrentTick());
+		} else {
 			this.id = n.id;
 			this.extendedId = n.extendedId;
 			this.groundingPamNode = n.groundingPamNode;
 			this.label = n.label;
 			updateName();
-		}	
+		}
 	}
-	
+
 	@Override
 	public synchronized void setId(int id) {
 		this.id = id;
 		extendedId = new ExtendedId(id);
 		updateName();
 	}
-	
+
 	/**
-	 * Convenience method to set Node's {@link ExtendedId}.  Also sets node's id.
-	 * @param eid {@link ExtendedId}
+	 * Convenience method to set Node's {@link ExtendedId}. Also sets node's id.
+	 * 
+	 * @param eid
+	 *            {@link ExtendedId}
 	 */
 	public synchronized void setExtendedId(ExtendedId eid) {
-		if(eid == null){
-			logger.log(Level.WARNING, "Supplied ExtendedId was null. ExtendedId not set.", TaskManager.getCurrentTick());
-		}else if(eid.isNodeId()){
+		if (eid == null) {
+			logger.log(Level.WARNING,
+					"Supplied ExtendedId was null. ExtendedId not set.",
+					TaskManager.getCurrentTick());
+		} else if (eid.isNodeId()) {
 			this.extendedId = eid;
 			this.id = eid.getSourceNodeId();
 			updateName();
-		}else{
-			logger.log(Level.WARNING, "Cannot give a Node a Link's ExtendedId", TaskManager.getCurrentTick());
+		} else {
+			logger.log(Level.WARNING, "Cannot give a Node a Link's ExtendedId",
+					TaskManager.getCurrentTick());
 		}
 	}
 
 	/*
 	 * update node's name
 	 */
-	private void updateName(){
-		toStringName = label + "["+id+"]";
+	private void updateName() {
+		toStringName = label + "[" + id + "]";
 	}
-	
+
 	@Override
 	public ExtendedId getExtendedId() {
 		return extendedId;
 	}
-	
+
 	@Override
 	public int getId() {
 		return id;
@@ -117,9 +127,10 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 	public String getLabel() {
 		return label;
 	}
+
 	@Override
 	public void setLabel(String l) {
-		this.label=l;
+		this.label = l;
 		updateName();
 	}
 
@@ -127,6 +138,7 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 	public PamNode getGroundingPamNode() {
 		return groundingPamNode;
 	}
+
 	@Override
 	public synchronized void setGroundingPamNode(PamNode n) {
 		groundingPamNode = n;
@@ -135,7 +147,9 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 	/**
 	 * This method compares this object with any kind of Node. returns true if
 	 * the id of both are the same.
-	 * @param o Object
+	 * 
+	 * @param o
+	 *            Object
 	 */
 	@Override
 	public boolean equals(Object o) {
@@ -144,22 +158,24 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 		}
 		return false;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return id;
 	}
+
 	@Override
-	public String toString(){
+	public String toString() {
 		return toStringName;
 	}
-	
 
 	/**
-	 * This default implementation of {@link Node} has all of its attributes updated by {@link NodeStructureImpl} or
-	 * {@link ElementFactory} when nodes are updated.
-	 * Therefore this class does not have to implement this method.
-	 * Any subclass with specific class members (e.g. PamNodeImpl) should however override this method.
+	 * This default implementation of {@link Node} has all of its attributes
+	 * updated by {@link NodeStructureImpl} or {@link ElementFactory} when nodes
+	 * are updated. Therefore this class does not have to implement this method.
+	 * Any subclass with specific class members (e.g. PamNodeImpl) should
+	 * however override this method.
+	 * 
 	 * @see PamNodeImpl#updateNodeValues(Node)
 	 * @see NodeStructureImpl#addNode(Node, String)
 	 */

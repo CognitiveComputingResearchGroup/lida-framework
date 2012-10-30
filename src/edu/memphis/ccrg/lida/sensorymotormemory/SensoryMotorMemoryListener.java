@@ -11,12 +11,14 @@ import edu.memphis.ccrg.lida.framework.ModuleListener;
 
 /**
  * Listener of {@link SensoryMotorMemory}
+ * 
  * @author Ryan J. McCall
  */
-public interface SensoryMotorMemoryListener extends ModuleListener{
-	
+public interface SensoryMotorMemoryListener extends ModuleListener {
+
 	/**
-	 * @param command Current command being executed.
+	 * @param command
+	 *            Current command being executed.
 	 */
 	public void receiveActuatorCommand(Object command);
 

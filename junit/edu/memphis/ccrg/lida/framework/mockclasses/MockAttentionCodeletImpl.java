@@ -16,13 +16,11 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBuffer;
 
 public class MockAttentionCodeletImpl extends AttentionCodeletImpl {
-	
-	
 
-	public MockAttentionCodeletImpl(){
-		super();		
+	public MockAttentionCodeletImpl() {
+		super();
 	}
-	
+
 	/**
 	 * Returns true if specified WorkspaceBuffer contains this codelet's sought
 	 * content.
@@ -46,7 +44,7 @@ public class MockAttentionCodeletImpl extends AttentionCodeletImpl {
 
 		return true;
 	}
-	
+
 	/**
 	 * Returns sought content and related content from specified
 	 * WorkspaceBuffer.
@@ -56,7 +54,7 @@ public class MockAttentionCodeletImpl extends AttentionCodeletImpl {
 	 * @return the workspace content
 	 */
 	@Override
-	public NodeStructure retrieveWorkspaceContent(WorkspaceBuffer buffer) {		
+	public NodeStructure retrieveWorkspaceContent(WorkspaceBuffer buffer) {
 		return ((NodeStructure) buffer.getModuleContent()).copy();
 	}
 

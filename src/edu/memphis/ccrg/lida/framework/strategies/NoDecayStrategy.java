@@ -11,6 +11,7 @@ import java.util.Map;
 
 /**
  * A {@link DecayStrategy} that never modifies the activation passed to it.
+ * 
  * @author Ryan J. McCall
  * @author Javier Snaider
  */
@@ -22,25 +23,31 @@ public class NoDecayStrategy extends StrategyImpl implements DecayStrategy {
 	public NoDecayStrategy() {
 	}
 
-	
-    /**
-     * Decays the current activation according to some internal decay function.
-     * @param currentActivation activation of the entity before decay.
-     * @param ticks The number of ticks to decay.
-     * @param params optional parameters: N/A
-     * @return new activation 
-     */
+	/**
+	 * Decays the current activation according to some internal decay function.
+	 * 
+	 * @param currentActivation
+	 *            activation of the entity before decay.
+	 * @param ticks
+	 *            The number of ticks to decay.
+	 * @param params
+	 *            optional parameters: N/A
+	 * @return new activation
+	 */
 	@Override
 	public double decay(double currentActivation, long ticks, Object... params) {
 		return currentActivation;
 	}
 
-	
 	/**
 	 * Decays the current activation according to some internal decay function.
-	 * @param currentActivation activation of the entity before decay.
-	 * @param ticks how much time has passed since last decay
-	 * @param params parameters: N/A
+	 * 
+	 * @param currentActivation
+	 *            activation of the entity before decay.
+	 * @param ticks
+	 *            how much time has passed since last decay
+	 * @param params
+	 *            parameters: N/A
 	 * @return new activation amount
 	 */
 	@Override

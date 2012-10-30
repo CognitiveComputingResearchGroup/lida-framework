@@ -23,10 +23,14 @@ public class AddNodeStructureToPerceptTask extends FrameworkTaskImpl {
 
 	/**
 	 * Default constructor
-	 * @param ns {@link NodeStructure}
-	 * @param pam {@link PerceptualAssociativeMemory}
+	 * 
+	 * @param ns
+	 *            {@link NodeStructure}
+	 * @param pam
+	 *            {@link PerceptualAssociativeMemory}
 	 */
-	public AddNodeStructureToPerceptTask(NodeStructure ns, PerceptualAssociativeMemory pam) {
+	public AddNodeStructureToPerceptTask(NodeStructure ns,
+			PerceptualAssociativeMemory pam) {
 		this.ns = ns;
 		this.pam = pam;
 	}
@@ -35,7 +39,7 @@ public class AddNodeStructureToPerceptTask extends FrameworkTaskImpl {
 	 * Adds {@link NodeStructure} to the percept then finishes.
 	 */
 	@Override
-	protected void runThisFrameworkTask() {		
+	protected void runThisFrameworkTask() {
 		pam.addToPercept(ns);
 		cancel();
 	}

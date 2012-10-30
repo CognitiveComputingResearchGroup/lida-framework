@@ -10,18 +10,18 @@ package edu.memphis.ccrg.lida.framework.gui.commands;
 import edu.memphis.ccrg.lida.framework.Agent;
 
 /**
- * This command is used for enabling or disabling the tick mode.
- * A Boolean "enable" parameter must be specified. 
+ * This command is used for enabling or disabling the tick mode. A Boolean
+ * "enable" parameter must be specified.
  * 
  * @author Javier Snaider
- *
+ * 
  */
 public class EnableTicksModeCommand extends CommandImpl {
 
 	@Override
 	public void execute(Agent agent) {
-		Boolean b= (Boolean)getParameter("enable");
-		if(b!= null){
+		Boolean b = (Boolean) getParameter("enable");
+		if (b != null) {
 			agent.getTaskManager().setInIntervalMode(b);
 		}
 	}

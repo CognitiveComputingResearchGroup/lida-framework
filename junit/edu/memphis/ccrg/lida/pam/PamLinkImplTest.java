@@ -36,32 +36,36 @@ import edu.memphis.ccrg.lida.framework.strategies.TotalActivationStrategy;
 /**
  * @author Ryan J. McCall
  */
-public class PamLinkImplTest{
-	
+public class PamLinkImplTest {
+
 	private Node node1;
 	private Node node2;
 	private LinkCategory linkCategory;
-	private PamLinkImpl link1,link2, link3;
+	private PamLinkImpl link1, link2, link3;
 	private double epsilon = 0.000000001;
-	
+
 	private static ElementFactory factory = ElementFactory.getInstance();
-	
+
 	@BeforeClass
-	public static void setUpBeforeClass(){
+	public static void setUpBeforeClass() {
 		factory = ElementFactory.getInstance();
 		FactoriesDataXmlLoader factoryLoader = new FactoriesDataXmlLoader();
-		Properties prop = ConfigUtils.loadProperties(AgentStarter.DEFAULT_PROPERTIES_PATH);
+		Properties prop = ConfigUtils
+				.loadProperties(AgentStarter.DEFAULT_PROPERTIES_PATH);
 		factoryLoader.loadFactoriesData(prop);
 	}
- 
+
 	@Before
-	public void setUp() throws Exception {		
+	public void setUp() throws Exception {
 		node1 = factory.getNode();
 		node2 = factory.getNode();
-		linkCategory= PerceptualAssociativeMemoryImpl.NONE;	
-		link1 = (PamLinkImpl) factory.getLink("PamLinkImpl", node1, node2, linkCategory);
-		link2 = (PamLinkImpl) factory.getLink("PamLinkImpl", node1, node2, linkCategory);
-		link3 = (PamLinkImpl) factory.getLink("PamLinkImpl", node2, node1, linkCategory);	
+		linkCategory = PerceptualAssociativeMemoryImpl.NONE;
+		link1 = (PamLinkImpl) factory.getLink("PamLinkImpl", node1, node2,
+				linkCategory);
+		link2 = (PamLinkImpl) factory.getLink("PamLinkImpl", node1, node2,
+				linkCategory);
+		link3 = (PamLinkImpl) factory.getLink("PamLinkImpl", node2, node1,
+				linkCategory);
 	}
 
 	/**
@@ -74,15 +78,15 @@ public class PamLinkImplTest{
 		assertFalse(link1.equals(link3));
 		assertFalse(link3.equals(link2));
 	}
-	
+
 	/**
 	 * {@link edu.memphis.ccrg.lida.pam.PamLinkImpl#equals(Object)}
 	 */
 	@Test
-	public void testHashCode(){		
+	public void testHashCode() {
 		assertEquals(link1.hashCode(), link2.hashCode());
 	}
-	
+
 	/**
 	 * Test method for
 	 * {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl#decay(long)}
@@ -183,8 +187,8 @@ public class PamLinkImplTest{
 		ExciteStrategy es = new LinearExciteStrategy();
 		link1.setBaseLevelExciteStrategy(es);
 
-		assertEquals("Problem with SetBaseLevelExciteStrategy", es,
-				link1.getBaseLevelExciteStrategy());
+		assertEquals("Problem with SetBaseLevelExciteStrategy", es, link1
+				.getBaseLevelExciteStrategy());
 
 	}
 
@@ -198,8 +202,8 @@ public class PamLinkImplTest{
 		DecayStrategy ds = new LinearDecayStrategy();
 		link1.setBaseLevelDecayStrategy(ds);
 
-		assertEquals("Problem with SetBaseLevelDecayStrategy", ds,
-				link1.getBaseLevelDecayStrategy());
+		assertEquals("Problem with SetBaseLevelDecayStrategy", ds, link1
+				.getBaseLevelDecayStrategy());
 	}
 
 	/**
@@ -250,8 +254,8 @@ public class PamLinkImplTest{
 	public void testGetTotalActivationStrategy() {
 		TotalActivationStrategy ts = new DefaultTotalActivationStrategy();
 		link1.setTotalActivationStrategy(ts);
-		assertEquals("problem with GetTotalActivationStrategy() ", ts,
-				link1.getTotalActivationStrategy());
+		assertEquals("problem with GetTotalActivationStrategy() ", ts, link1
+				.getTotalActivationStrategy());
 	}
 
 }

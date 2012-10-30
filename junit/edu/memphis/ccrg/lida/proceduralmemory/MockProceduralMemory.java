@@ -16,28 +16,29 @@ import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 
-public class MockProceduralMemory extends FrameworkModuleImpl implements ProceduralMemory {
+public class MockProceduralMemory extends FrameworkModuleImpl implements
+		ProceduralMemory {
 
 	@Override
 	public boolean containsScheme(Scheme s) {
 		// not implemented
 		return false;
 	}
-	
+
 	@Override
 	public int getSchemeCount() {
 		// not implemented
 		return 0;
 	}
-	
-	public Collection<Scheme> getTestInstantiated(){
+
+	public Collection<Scheme> getTestInstantiated() {
 		return instantiated;
 	}
-	
-	public void clearInstantiated(){
+
+	public void clearInstantiated() {
 		instantiated.clear();
 	}
-	
+
 	private Collection<Scheme> instantiated = new ArrayList<Scheme>();
 
 	@Override
@@ -45,7 +46,7 @@ public class MockProceduralMemory extends FrameworkModuleImpl implements Procedu
 		instantiated.add(s);
 		return null;
 	}
-	
+
 	@Override
 	public void addListener(ModuleListener listener) {
 		// not implemented
@@ -75,7 +76,7 @@ public class MockProceduralMemory extends FrameworkModuleImpl implements Procedu
 	}
 
 	@Override
-	public void activateSchemes() {		
+	public void activateSchemes() {
 	}
 
 	@Override

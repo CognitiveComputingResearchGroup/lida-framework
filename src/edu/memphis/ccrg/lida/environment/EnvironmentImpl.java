@@ -12,27 +12,30 @@ import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.initialization.AgentXmlFactory;
 
 /**
- * Abstract implementation of {@link Environment}
- * Environments should not be a listener of anything besides GUIs.  
- * Rather, SensoryMemory and SensoryMotorMemory should
- * add environments as associated modules in the XML configuration file. 
+ * Abstract implementation of {@link Environment} Environments should not be a
+ * listener of anything besides GUIs. Rather, SensoryMemory and
+ * SensoryMotorMemory should add environments as associated modules in the XML
+ * configuration file.
+ * 
  * @author Ryan J. McCall
  */
-public abstract class EnvironmentImpl extends FrameworkModuleImpl implements Environment{
-	
+public abstract class EnvironmentImpl extends FrameworkModuleImpl implements
+		Environment {
+
 	/**
-	 * Default constructor will be invoked by {@link AgentXmlFactory} 
-	 * to create this {@link FrameworkModule}
+	 * Default constructor will be invoked by {@link AgentXmlFactory} to create
+	 * this {@link FrameworkModule}
 	 */
-	public EnvironmentImpl(){
+	public EnvironmentImpl() {
 	}
-	
+
 	/**
 	 * override to implement Environment's decay.
+	 * 
 	 * @see FrameworkModule#decayModule(long)
 	 */
 	@Override
 	public void decayModule(long ticks) {
 	}
-	
+
 }

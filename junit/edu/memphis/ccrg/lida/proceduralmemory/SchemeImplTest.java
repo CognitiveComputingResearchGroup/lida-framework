@@ -19,16 +19,16 @@ import edu.memphis.ccrg.lida.actionselection.ActionImpl;
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 
-public class SchemeImplTest{
+public class SchemeImplTest {
 
 	private SchemeImpl scheme;
 	private Action action;
 	private Node node1, node2, node3;
-	
+
 	private static ElementFactory factory = ElementFactory.getInstance();
-	
+
 	@Before
-	public void setUp() throws Exception {		
+	public void setUp() throws Exception {
 		action = new ActionImpl();
 
 		scheme = new SchemeImpl();
@@ -38,74 +38,77 @@ public class SchemeImplTest{
 		node2 = factory.getNode();
 		node3 = factory.getNode();
 	}
-	
+
 	@Test
-	public void test1(){
+	public void test1() {
 		assertEquals("1", scheme.getLabel());
 		assertEquals(action, scheme.getAction());
-		
+
 		scheme = new SchemeImpl();
-		
+
 		scheme.setAction(action);
 		assertEquals(action, scheme.getAction());
 	}
+
 	@Test
-	public void test2(){
-//		Action foo = new ActionImpl();
-//		scheme.setAction(foo);
-//		assertEquals(foo, scheme.getAction());
-//		
-//		scheme.addToAddingList(node1);
-//		assertTrue(scheme.containsAddingItem(node1));
-//		
-//		scheme.addContextCondition(node2);
-//		assertTrue(scheme.containsContextCondition(node2));
-//		
-//		scheme.addToDeletingList(node3);
-//		assertTrue(scheme.containsDeletingItem(node3));
-//		
-//		assertFalse(scheme.isInnate());
-//		scheme.setInnate(true);
-//		assertTrue(scheme.isInnate());
+	public void test2() {
+		// Action foo = new ActionImpl();
+		// scheme.setAction(foo);
+		// assertEquals(foo, scheme.getAction());
+		//		
+		// scheme.addToAddingList(node1);
+		// assertTrue(scheme.containsAddingItem(node1));
+		//		
+		// scheme.addContextCondition(node2);
+		// assertTrue(scheme.containsContextCondition(node2));
+		//		
+		// scheme.addToDeletingList(node3);
+		// assertTrue(scheme.containsDeletingItem(node3));
+		//		
+		// assertFalse(scheme.isInnate());
+		// scheme.setInnate(true);
+		// assertTrue(scheme.isInnate());
 	}
+
 	@Test
-	public void test3(){		
+	public void test3() {
 		assertTrue(0 == scheme.getNumExecutions());
 		assertTrue(0.0 == scheme.getReliability());
 		assertTrue(scheme.isReliable());
-		
+
 		scheme.actionSuccessful();
-		
+
 		assertTrue(0 == scheme.getNumExecutions());
 		assertTrue(0.0 == scheme.getReliability());
 		assertTrue(scheme.isReliable());
-		
+
 		scheme.actionExecuted();
 		scheme.actionExecuted();
 		scheme.actionExecuted();
 		scheme.actionExecuted();
-		
+
 		assertTrue(4 == scheme.getNumExecutions());
 		assertTrue(0.25 == scheme.getReliability());
 		SchemeImpl.setReliabilityThreshold(0.3);
 		assertFalse(scheme.isReliable());
-		
+
 		scheme.actionSuccessful();
 		scheme.actionSuccessful();
 		scheme.actionSuccessful();
-		
+
 		assertTrue(scheme.isReliable());
 	}
+
 	@Test
-	public void testEquals(){
+	public void testEquals() {
 		Scheme scheme2 = new SchemeImpl();
 		scheme2.setId(2);
 		Scheme scheme3 = new SchemeImpl();
 		scheme3.setId(2);
-		
+
 		assertEquals(scheme2, scheme3);
 		assertEquals(scheme2.hashCode(), scheme3.hashCode());
-		
+
 		assertFalse(scheme.equals(scheme2));
 	}
 

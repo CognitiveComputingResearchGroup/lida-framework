@@ -14,23 +14,28 @@ import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTask;
 
 /**
- * An initializer configures a {@link FullyInitializable}.  
+ * An initializer configures a {@link FullyInitializable}.
  * 
- * @author Ryan J. McCall 
+ * @author Ryan J. McCall
  */
 public interface Initializer {
-	
+
 	/**
-	 * Receives a particular {@link FullyInitializable} to configure. 
-	 * The {@link Agent} object and a map of parameters can be used in the specific initialization code.
-	 * Named 'initModule' historically, however an initializer need not initialize a {@link FrameworkModule}, 
-	 * for example a {@link FrameworkTask} is also valid.
+	 * Receives a particular {@link FullyInitializable} to configure. The
+	 * {@link Agent} object and a map of parameters can be used in the specific
+	 * initialization code. Named 'initModule' historically, however an
+	 * initializer need not initialize a {@link FrameworkModule}, for example a
+	 * {@link FrameworkTask} is also valid.
 	 * 
-	 * @param obj the {@link FullyInitializable} object being initialized
-	 * @param a the {@link Agent} object
-	 * @param params parameters to configure the {@link FullyInitializable}
-	 *
+	 * @param obj
+	 *            the {@link FullyInitializable} object being initialized
+	 * @param a
+	 *            the {@link Agent} object
+	 * @param params
+	 *            parameters to configure the {@link FullyInitializable}
+	 * 
 	 */
-	public void initModule(FullyInitializable obj, Agent a, Map<String, ?> params); 
+	public void initModule(FullyInitializable obj, Agent a,
+			Map<String, ?> params);
 
 }

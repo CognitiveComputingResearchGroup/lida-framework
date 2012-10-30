@@ -20,24 +20,31 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
  * 
  * @see AgentXmlFactory
  * @author Javier Snaider
- *
+ * 
  */
 public class StrategyDef {
 
-	private static final Logger logger = Logger.getLogger(StrategyDef.class.getCanonicalName());
+	private static final Logger logger = Logger.getLogger(StrategyDef.class
+			.getCanonicalName());
 	private String name;
 	private String className;
 	private String type;
 	private Map<String, Object> params;
-	private boolean flyWeight=true;
+	private boolean flyWeight = true;
 	private Strategy instance = null;
 
 	/**
-	 * @param className Qualified name
-	 * @param name Strategy name
-	 * @param params optional parameters
-	 * @param type kind of strategy, e.g. decay, excite
-	 * @param flyWeight Will there be multiple copies of this strategy or just one shared?
+	 * @param className
+	 *            Qualified name
+	 * @param name
+	 *            Strategy name
+	 * @param params
+	 *            optional parameters
+	 * @param type
+	 *            kind of strategy, e.g. decay, excite
+	 * @param flyWeight
+	 *            Will there be multiple copies of this strategy or just one
+	 *            shared?
 	 */
 	public StrategyDef(String className, String name,
 			Map<String, Object> params, String type, boolean flyWeight) {
@@ -45,7 +52,7 @@ public class StrategyDef {
 		this.name = name;
 		this.params = params;
 		this.type = type;
-		this.flyWeight=flyWeight;
+		this.flyWeight = flyWeight;
 	}
 
 	/**
@@ -54,9 +61,10 @@ public class StrategyDef {
 	public StrategyDef() {
 		params = new HashMap<String, Object>();
 	}
-	
+
 	/**
-	 * if this strategy is flyweight returns the only one instance, a new instance otherwise.
+	 * if this strategy is flyweight returns the only one instance, a new
+	 * instance otherwise.
 	 * 
 	 * @return the instance
 	 */
@@ -82,14 +90,20 @@ public class StrategyDef {
 			st.init(params);
 
 		} catch (InstantiationException e) {
-			logger.log(Level.WARNING, "Exception {1} creating Strategy.",
-					new Object[]{TaskManager.getCurrentTick(), e.getMessage()});
+			logger
+					.log(Level.WARNING, "Exception {1} creating Strategy.",
+							new Object[] { TaskManager.getCurrentTick(),
+									e.getMessage() });
 		} catch (IllegalAccessException e) {
-			logger.log(Level.WARNING, "Exception {1} creating Strategy.",
-					new Object[]{TaskManager.getCurrentTick(), e.getMessage()});
+			logger
+					.log(Level.WARNING, "Exception {1} creating Strategy.",
+							new Object[] { TaskManager.getCurrentTick(),
+									e.getMessage() });
 		} catch (ClassNotFoundException e) {
-			logger.log(Level.WARNING, "Exception {1} creating Strategy.",
-					new Object[]{TaskManager.getCurrentTick(), e.getMessage()});
+			logger
+					.log(Level.WARNING, "Exception {1} creating Strategy.",
+							new Object[] { TaskManager.getCurrentTick(),
+									e.getMessage() });
 		}
 		return st;
 	}

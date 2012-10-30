@@ -35,11 +35,11 @@ public class ActionSelectionPanel extends GuiPanelImpl implements
 	private static final Logger logger = Logger
 			.getLogger(ActionSelectionPanel.class.getCanonicalName());
 	private static final int DEFAULT_SELECTED_ACTIONS_SIZE = 10;
-	
+
 	private FrameworkModule module;
 	private Collection<Behavior> behaviors;
 	private Behavior[] behaviorArray = new Behavior[0];
-	
+
 	private LinkedList<ActionDetail> selectedActions = new LinkedList<ActionDetail>();
 	private int selectedActionsSize;
 
@@ -94,32 +94,33 @@ public class ActionSelectionPanel extends GuiPanelImpl implements
 
 		javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
 		this.setLayout(layout);
-		layout.setHorizontalGroup(layout
-				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGap(0, 400, Short.MAX_VALUE)
-				.addGroup(
-						layout.createSequentialGroup()
-								.addComponent(jToolBar1,
-										javax.swing.GroupLayout.DEFAULT_SIZE,
-										390, Short.MAX_VALUE).addContainerGap())
-				.addComponent(jSplitPane,
-						javax.swing.GroupLayout.Alignment.TRAILING,
-						javax.swing.GroupLayout.DEFAULT_SIZE, 400,
-						Short.MAX_VALUE));
-		layout.setVerticalGroup(layout
-				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGap(0, 306, Short.MAX_VALUE)
-				.addGroup(
-						layout.createSequentialGroup()
-								.addComponent(jToolBar1,
-										javax.swing.GroupLayout.PREFERRED_SIZE,
-										25,
-										javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addPreferredGap(
-										javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-								.addComponent(jSplitPane,
-										javax.swing.GroupLayout.DEFAULT_SIZE,
-										275, Short.MAX_VALUE)));
+		layout.setHorizontalGroup(layout.createParallelGroup(
+				javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 400,
+				Short.MAX_VALUE).addGroup(
+				layout.createSequentialGroup().addComponent(jToolBar1,
+						javax.swing.GroupLayout.DEFAULT_SIZE, 390,
+						Short.MAX_VALUE).addContainerGap()).addComponent(
+				jSplitPane, javax.swing.GroupLayout.Alignment.TRAILING,
+				javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE));
+		layout
+				.setVerticalGroup(layout
+						.createParallelGroup(
+								javax.swing.GroupLayout.Alignment.LEADING)
+						.addGap(0, 306, Short.MAX_VALUE)
+						.addGroup(
+								layout
+										.createSequentialGroup()
+										.addComponent(
+												jToolBar1,
+												javax.swing.GroupLayout.PREFERRED_SIZE,
+												25,
+												javax.swing.GroupLayout.PREFERRED_SIZE)
+										.addPreferredGap(
+												javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+										.addComponent(
+												jSplitPane,
+												javax.swing.GroupLayout.DEFAULT_SIZE,
+												275, Short.MAX_VALUE)));
 	}// </editor-fold>
 
 	private void refreshButtonActionPerformed(java.awt.event.ActionEvent evt) {
@@ -134,29 +135,32 @@ public class ActionSelectionPanel extends GuiPanelImpl implements
 	private javax.swing.JButton refreshButton;
 	private javax.swing.JScrollPane winnersPane;
 	private javax.swing.JTable winnersTable;
+
 	// End of variables declaration
 
 	@Override
 	public void initPanel(String[] param) {
 		module = agent.getSubmodule(ModuleName.ActionSelection);
 		if (module == null) {
-			logger.log(Level.WARNING,
-					"Error initializing panel, Module does not exist in agent.");
+			logger
+					.log(Level.WARNING,
+							"Error initializing panel, Module does not exist in agent.");
 		} else {
 			module.addListener(this);
 		}
-		
+
 		selectedActionsSize = DEFAULT_SELECTED_ACTIONS_SIZE;
-        
-        if(param.length > 0){
-            try{
-            	selectedActionsSize = Integer.parseInt(param[0]);
-            }catch(NumberFormatException e){
-            	logger.log(Level.WARNING, "parse error, using default selectActionsSize");
-            }
-        }else{
-        	logger.log(Level.INFO, "using default selectActionsSize");
-        }
+
+		if (param.length > 0) {
+			try {
+				selectedActionsSize = Integer.parseInt(param[0]);
+			} catch (NumberFormatException e) {
+				logger.log(Level.WARNING,
+						"parse error, using default selectActionsSize");
+			}
+		} else {
+			logger.log(Level.INFO, "using default selectActionsSize");
+		}
 	}
 
 	@Override
@@ -167,10 +171,10 @@ public class ActionSelectionPanel extends GuiPanelImpl implements
 	@SuppressWarnings("unchecked")
 	@Override
 	public void display(Object o) {
-		if(o != null){
+		if (o != null) {
 			behaviors = (Collection<Behavior>) o;
 			behaviorArray = behaviors.toArray(new Behavior[0]);
-	
+
 			((AbstractTableModel) behaviorsTable.getModel())
 					.fireTableStructureChanged();
 			((AbstractTableModel) winnersTable.getModel())
@@ -232,8 +236,10 @@ public class ActionSelectionPanel extends GuiPanelImpl implements
 
 	private class SelectedBehaviorsTableModel extends AbstractTableModel {
 
-		private String[] columnNames = {"Tick at Selection", "Selection Count", "Action"};
-//		private DecimalFormat df = new DecimalFormat("0.0000");
+		private String[] columnNames = { "Tick at Selection",
+				"Selection Count", "Action" };
+
+		// private DecimalFormat df = new DecimalFormat("0.0000");
 
 		@Override
 		public int getColumnCount() {
@@ -287,8 +293,8 @@ public class ActionSelectionPanel extends GuiPanelImpl implements
 		public long getTickAtSelection() {
 			return tick;
 		}
-		
-		public int getSelectedActionCount(){
+
+		public int getSelectedActionCount() {
 			return selectedActionCount;
 		}
 
@@ -296,13 +302,14 @@ public class ActionSelectionPanel extends GuiPanelImpl implements
 			return action;
 		}
 	}
-	
+
 	private int currentSelectionCount;
 
 	@Override
 	public void receiveAction(Action action) {
-		ActionDetail detail = new ActionDetail(TaskManager.getCurrentTick(), currentSelectionCount++, action);
-		synchronized(this){
+		ActionDetail detail = new ActionDetail(TaskManager.getCurrentTick(),
+				currentSelectionCount++, action);
+		synchronized (this) {
 			selectedActions.addFirst(detail);
 			if (selectedActions.size() > selectedActionsSize) {
 				selectedActions.pollLast();

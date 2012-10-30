@@ -19,100 +19,106 @@ import edu.memphis.ccrg.lida.pam.PamNodeImpl;
 
 /**
  * This is a JUnit class which can be used to test methods of the NodeImpl class
+ * 
  * @author Siminder Kaur
  */
-public class NodeImplTest{
+public class NodeImplTest {
 
 	private NodeImpl node1, node2;
 	private PamNodeImpl pamNode1, pamNode2;
-	
+
 	private ElementFactory factory = ElementFactory.getInstance();
-	
+
 	/**
-	 * This method is called before running each test case to initialize the objects
-	 * @throws Exception e
+	 * This method is called before running each test case to initialize the
+	 * objects
+	 * 
+	 * @throws Exception
+	 *             e
 	 * 
 	 */
 	@Before
 	public void setUp() throws Exception {
 		node1 = (NodeImpl) factory.getNode();
 		node2 = new NodeImpl();
-		pamNode1 = (PamNodeImpl) factory.getNode("PamNodeImpl");	
+		pamNode1 = (PamNodeImpl) factory.getNode("PamNodeImpl");
 		pamNode2 = (PamNodeImpl) factory.getNode("PamNodeImpl");
-					
-		node1.setLabel("red");		
-		node1.setGroundingPamNode(pamNode1);		
+
+		node1.setLabel("red");
+		node1.setGroundingPamNode(pamNode1);
 	}
-	
+
 	/**
 	 * This method is used to test the NodeImpl.getId() method
 	 */
 	@Test
-	public void testGetId() {		
+	public void testGetId() {
 		node1.setId(1);
 		assertEquals("Problem with getId", 1, node1.getId());
-	}	
-	
+	}
+
 	/**
 	 * This method is used to test the NodeImpl.setId() method
 	 */
 	@Test
 	public void testSetId() {
-		node2.setId(22);					
+		node2.setId(22);
 		assertEquals("Problem with setId", 22, node2.getId());
 	}
-	
+
 	@Test
-	public void testSetExtendedId(){
+	public void testSetExtendedId() {
 		ExtendedId id = new ExtendedId(345);
 		node1.setExtendedId(id);
-		
+
 		assertEquals(345, node1.getId());
 		assertEquals(id, node1.getExtendedId());
-		
+
 		ExtendedId id2 = new ExtendedId(2, id, 3);
 		node1.setExtendedId(id2);
-		
+
 		assertEquals(345, node1.getId());
 		assertEquals(id, node1.getExtendedId());
-		
+
 		node1.setExtendedId(null);
 	}
-	
+
 	/**
 	 * This method is used to test the NodeImpl.getLabel() method
 	 */
 	@Test
-	public void testGetLabel() {	
+	public void testGetLabel() {
 		assertEquals("Problem with getLabel", "red", node1.getLabel());
 	}
-	
+
 	/**
 	 * This method is used to test the NodeImpl.setLabel() method
 	 */
 	@Test
 	public void testSetLabel() {
-		node2.setLabel("purple");					
+		node2.setLabel("purple");
 		assertEquals("Problem with setLabel", "purple", node2.getLabel());
-	}	
-	
+	}
+
 	/**
 	 * This method is used to test the NodeImpl.getReferencedNode() method
 	 */
 	@Test
-	public void testGetReferencedNode() {		
-		assertEquals("Problem with getReferencedNode", pamNode1, node1.getGroundingPamNode());
+	public void testGetReferencedNode() {
+		assertEquals("Problem with getReferencedNode", pamNode1, node1
+				.getGroundingPamNode());
 	}
-	
+
 	/**
 	 * This method is used to test the NodeImpl.setReferencedNode() method
 	 */
 	@Test
 	public void testSetReferencedNode() {
-		node2.setGroundingPamNode(pamNode2);					
-		assertEquals("Problem with setReferencedNode", pamNode2, node2.getGroundingPamNode());
-	}	
-	
+		node2.setGroundingPamNode(pamNode2);
+		assertEquals("Problem with setReferencedNode", pamNode2, node2
+				.getGroundingPamNode());
+	}
+
 	/**
 	 * This method is used to test the NodeImpl.equals() method
 	 */
@@ -120,35 +126,36 @@ public class NodeImplTest{
 	public void testEquals() {
 		node1.setId(1);
 		node2.setId(1);
-		assertEquals("Problem with equals", node1,node2);
-	}	
-	
+		assertEquals("Problem with equals", node1, node2);
+	}
+
 	/**
 	 * This method is used to test the NodeImpl.hashCode() method
 	 */
 	@Test
 	public void testHashCode() {
 		node1.setId(1);
-		node2.setId(1);	
-		assertEquals("Problem with setNodeClass",node1.hashCode(), node2.hashCode());
+		node2.setId(1);
+		assertEquals("Problem with setNodeClass", node1.hashCode(), node2
+				.hashCode());
 	}
-	//TODO move to UnifyingNode test
-//	@Test
-//	public void testDesirability(){
-//		node1.setDesirability(5.0);
-//		assertTrue(1.0== node1.getDesirability());
-//		
-//		node1.setDesirability(-14534545);
-//		assertTrue(0.0== node1.getDesirability());
-//		
-//		node1.setDesirability(0.4);
-//		assertTrue(0.4== node1.getDesirability());
-//		
-//		node1.setDesirability(0.0);
-//		assertTrue(0.0== node1.getDesirability());
-//		
-//		node1.setDesirability(1.0);
-//		assertTrue(1.0== node1.getDesirability());
-//	}
-	
+	// TODO move to UnifyingNode test
+	// @Test
+	// public void testDesirability(){
+	// node1.setDesirability(5.0);
+	// assertTrue(1.0== node1.getDesirability());
+	//		
+	// node1.setDesirability(-14534545);
+	// assertTrue(0.0== node1.getDesirability());
+	//		
+	// node1.setDesirability(0.4);
+	// assertTrue(0.4== node1.getDesirability());
+	//		
+	// node1.setDesirability(0.0);
+	// assertTrue(0.0== node1.getDesirability());
+	//		
+	// node1.setDesirability(1.0);
+	// assertTrue(1.0== node1.getDesirability());
+	// }
+
 }

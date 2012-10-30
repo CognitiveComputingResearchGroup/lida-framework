@@ -37,7 +37,7 @@ public class FrameworkTaskDef {
 	 */
 	public FrameworkTaskDef() {
 		defaultStrategies = new HashMap<String, String>();
-		associatedModules = new HashMap<ModuleName,String>();
+		associatedModules = new HashMap<ModuleName, String>();
 		params = new HashMap<String, Object>();
 	}
 
@@ -48,7 +48,7 @@ public class FrameworkTaskDef {
 	 *            the default ticks per run of this task
 	 * @param defaultStrategies
 	 *            map of strategies
-	 * @param name    
+	 * @param name
 	 *            label for task
 	 * @param params
 	 *            optional parameters

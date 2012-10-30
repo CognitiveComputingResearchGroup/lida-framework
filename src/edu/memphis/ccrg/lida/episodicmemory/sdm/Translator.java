@@ -12,24 +12,31 @@ import cern.colt.bitvector.BitVector;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 
 /**
- * A translator between {@link BitVector} used in {@link SparseDistributedMemory}, 
- * and {@link NodeStructure} used in many other LIDA modules.
+ * A translator between {@link BitVector} used in
+ * {@link SparseDistributedMemory}, and {@link NodeStructure} used in many other
+ * LIDA modules.
+ * 
  * @author Javier Snaider
  */
 public interface Translator {
 
 	/**
 	 * Translates a {@link BitVector} into a {@link NodeStructure}.
-	 * @param v a {@link BitVector} containing the boolean vector to be translated
+	 * 
+	 * @param v
+	 *            a {@link BitVector} containing the boolean vector to be
+	 *            translated
 	 * @return the {@link NodeStructure} associated with the address
- 	 */
+	 */
 	public NodeStructure translate(BitVector v);
 
 	/**
-	 * Translates a {@link NodeStructure}  into a {@link BitVector}.
-	 * @param ns the {@link NodeStructure} to be translated
-	 * @return a {@link BitVector} with the boolean address associated with
-     * the {@link NodeStructure}
+	 * Translates a {@link NodeStructure} into a {@link BitVector}.
+	 * 
+	 * @param ns
+	 *            the {@link NodeStructure} to be translated
+	 * @return a {@link BitVector} with the boolean address associated with the
+	 *         {@link NodeStructure}
 	 */
 	public BitVector translate(NodeStructure ns);
 

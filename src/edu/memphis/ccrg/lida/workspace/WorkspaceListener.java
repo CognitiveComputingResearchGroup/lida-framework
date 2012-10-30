@@ -11,17 +11,22 @@ import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 
 /**
- * A workspace listener receives content from the workspace.
- * The prime example is PAM. 
+ * A workspace listener receives content from the workspace. The prime example
+ * is PAM.
+ * 
  * @author Ryan J. McCall
  */
-public interface WorkspaceListener extends ModuleListener{
-	
+public interface WorkspaceListener extends ModuleListener {
+
 	/**
-	 * Receive NodeStructure content from ModuleType originatingBuffer 
-	 * @param originatingBuffer source of content
-	 * @param content sent content
+	 * Receive NodeStructure content from ModuleType originatingBuffer
+	 * 
+	 * @param originatingBuffer
+	 *            source of content
+	 * @param content
+	 *            sent content
 	 */
-	public void receiveWorkspaceContent(ModuleName originatingBuffer, WorkspaceContent content);
+	public void receiveWorkspaceContent(ModuleName originatingBuffer,
+			WorkspaceContent content);
 
 }

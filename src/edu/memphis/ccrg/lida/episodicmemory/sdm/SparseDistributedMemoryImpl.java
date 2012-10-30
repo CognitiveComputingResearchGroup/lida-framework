@@ -26,39 +26,41 @@ public class SparseDistributedMemoryImpl implements SparseDistributedMemory {
 
 	private static final Logger logger = Logger
 			.getLogger(SparseDistributedMemoryImpl.class.getCanonicalName());
-	
+
 	/*
-	 * Maximum iterations allowed in determining whether a retrieval converges 
+	 * Maximum iterations allowed in determining whether a retrieval converges
 	 */
 	private static final int MAX_ITERATIONS = 20;
-	
+
 	/*
 	 * The hard locations that store data in this sdm
 	 */
 	private HardLocation[] hardLocations;
-	
+
 	/*
-	 * Number of hard locations in this sdm 
+	 * Number of hard locations in this sdm
 	 */
 	private int memorySize;
-	
+
 	/*
 	 * Size of vectors stored in the hard locations
 	 */
 	private int wordLength;
-	
+
 	/*
-	 * Size of the address vectors 
+	 * Size of the address vectors
 	 */
 	private int addressLength;
-	
+
 	/*
-	 * Size of the radius of the hypersphere used to find the "nearby" hard locations of an address 
+	 * Size of the radius of the hypersphere used to find the "nearby" hard
+	 * locations of an address
 	 */
 	private int activationRadius;
 
 	/**
-	 * Constructs a new {@link SparseDistributedMemory} with equal address and word sizes 
+	 * Constructs a new {@link SparseDistributedMemory} with equal address and
+	 * word sizes
 	 * 
 	 * @param memorySize
 	 *            number of hard locations
@@ -72,17 +74,18 @@ public class SparseDistributedMemoryImpl implements SparseDistributedMemory {
 		this.memorySize = memorySize;
 		hardLocations = new HardLocation[memorySize];
 		for (int i = 0; i < memorySize; i++) {
-			hardLocations[i] = new HardLocationImpl(
-					BitVectorUtils.getRandomVector(wordLength));
+			hardLocations[i] = new HardLocationImpl(BitVectorUtils
+					.getRandomVector(wordLength));
 		}
-		
+
 		this.activationRadius = radius;
 		this.wordLength = wordLength;
 		this.addressLength = wordLength;
 	}
 
 	/**
-	 * Constructs a new {@link SparseDistributedMemory} with specified parameters
+	 * Constructs a new {@link SparseDistributedMemory} with specified
+	 * parameters
 	 * 
 	 * @param memorySize
 	 *            the number of hard location
@@ -98,10 +101,10 @@ public class SparseDistributedMemoryImpl implements SparseDistributedMemory {
 		this.memorySize = memorySize;
 		hardLocations = new HardLocation[memorySize];
 		for (int i = 0; i < memorySize; i++) {
-			hardLocations[i] = new HardLocationImpl(
-					BitVectorUtils.getRandomVector(addrLength), wordLength);
+			hardLocations[i] = new HardLocationImpl(BitVectorUtils
+					.getRandomVector(addrLength), wordLength);
 		}
-		
+
 		this.activationRadius = radius;
 		this.wordLength = wordLength;
 		this.addressLength = addrLength;
@@ -147,8 +150,8 @@ public class SparseDistributedMemoryImpl implements SparseDistributedMemory {
 		BitVector res = new BitVector(wordLength);
 		for (int i = 0; i < wordLength; i++) {
 			boolean aux;
-			if (locationsSum[i]==0) {
-				//not clear if sum is positive or negative, so assign randomly
+			if (locationsSum[i] == 0) {
+				// not clear if sum is positive or negative, so assign randomly
 				aux = (Math.random() > 0.5);
 			} else {
 				aux = (locationsSum[i] > 0);
@@ -183,8 +186,8 @@ public class SparseDistributedMemoryImpl implements SparseDistributedMemory {
 			BitVector aux = res.partFromTo(0, addr.size() - 1);
 			// TODO hamming distance tolerance instead of strict equality
 			if (aux.equals(addr)) {
-				logger.log(Level.FINER, "number of iterations: {1}", 
-						new Object[]{TaskManager.getCurrentTick(), i});
+				logger.log(Level.FINER, "number of iterations: {1}",
+						new Object[] { TaskManager.getCurrentTick(), i });
 				return res;
 			}
 			addr = aux;

@@ -23,7 +23,7 @@ import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 
 /**
  * Initializes {@link EpisodicMemoryImpl} by creating and adding a
- * {@link BasicTranslator} translator to it. 
+ * {@link BasicTranslator} translator to it.
  * 
  * @author Javier Snaider
  * 
@@ -34,22 +34,28 @@ public class BasicEpisodicMemoryInitializer implements Initializer {
 			.getLogger(BasicEpisodicMemoryInitializer.class.getCanonicalName());
 
 	/**
-	 * The variables stored in params are those specified in agent.xml for the module being initialized.
+	 * The variables stored in params are those specified in agent.xml for the
+	 * module being initialized.
+	 * 
 	 * @see AgentXmlFactory
-	 * @see edu.memphis.ccrg.lida.framework.initialization.Initializer#initModule(edu.memphis.ccrg.lida.framework.initialization.FullyInitializable, edu.memphis.ccrg.lida.framework.Agent, java.util.Map)
+	 * @see edu.memphis.ccrg.lida.framework.initialization.Initializer#initModule(edu.memphis.ccrg.lida.framework.initialization.FullyInitializable,
+	 *      edu.memphis.ccrg.lida.framework.Agent, java.util.Map)
 	 */
 	@Override
-	public void initModule(FullyInitializable module,Agent agent,Map<String, ?> params) {
+	public void initModule(FullyInitializable module, Agent agent,
+			Map<String, ?> params) {
 		EpisodicMemoryImpl em = (EpisodicMemoryImpl) module;
 		PerceptualAssociativeMemory pam = (PerceptualAssociativeMemory) agent
 				.getSubmodule(ModuleName.PerceptualAssociativeMemory);
 		if (pam != null) {
 			int wordLength = (Integer) em.getParam("tem.wordLength",
 					EpisodicMemoryImpl.DEF_WORD_LENGTH);
-            Translator translator = new BasicTranslator(wordLength, pam);
+			Translator translator = new BasicTranslator(wordLength, pam);
 			em.setTranslator(translator);
 		} else {
-			logger.log(Level.SEVERE,
+			logger
+					.log(
+							Level.SEVERE,
 							"No Perceptual Associtive Memory in Agent. Translator is not created.",
 							TaskManager.getCurrentTick());
 		}

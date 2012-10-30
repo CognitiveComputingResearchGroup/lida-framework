@@ -22,26 +22,37 @@ public interface ActionSelection extends FrameworkModule {
 	/**
 	 * Adds specified {@link ActionSelectionListener}.
 	 * 
-	 * @param l a module that receives selected actions from {@link ActionSelection}
+	 * @param l
+	 *            a module that receives selected actions from
+	 *            {@link ActionSelection}
 	 */
 	public void addActionSelectionListener(ActionSelectionListener l);
 
 	/**
 	 * Adds specified {@link PreafferenceListener}
-	 * @param l a module that receives preafference from {@link ActionSelection}
+	 * 
+	 * @param l
+	 *            a module that receives preafference from
+	 *            {@link ActionSelection}
 	 */
 	public void addPreafferenceListener(PreafferenceListener l);
-	
+
 	/**
 	 * Selects a behavior (containing an action) for execution.
-	 * @param behaviors {@link Collection} of behaviors currently available in the module
-	 * @param candidateThreshold threshold for a behavior to be a candidate
+	 * 
+	 * @param behaviors
+	 *            {@link Collection} of behaviors currently available in the
+	 *            module
+	 * @param candidateThreshold
+	 *            threshold for a behavior to be a candidate
 	 * @return winning Behavior or null if none was chosen
 	 */
-	public Behavior selectBehavior(Collection<Behavior> behaviors, double candidateThreshold);
-	
+	public Behavior selectBehavior(Collection<Behavior> behaviors,
+			double candidateThreshold);
+
 	/**
 	 * Returns a view of the behaviors currently in {@link ActionSelection}
+	 * 
 	 * @return a {@link Collection} of {@link Behavior} objects
 	 */
 	public Collection<Behavior> getBehaviors();

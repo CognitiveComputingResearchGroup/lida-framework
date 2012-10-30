@@ -16,34 +16,43 @@ import edu.memphis.ccrg.lida.framework.Agent;
 import edu.memphis.ccrg.lida.framework.gui.commands.Command;
 
 /**
- * Controller for the {@link FrameworkGui}.  An interface between the Gui and {@link Agent} implementing 
- * the MVC pattern.
+ * Controller for the {@link FrameworkGui}. An interface between the Gui and
+ * {@link Agent} implementing the MVC pattern.
  * 
  * @author Javier Snaider
  */
 public interface FrameworkGuiController {
 
 	/**
-	 * Executes a command specified by the name. This name corresponds to a property in 
-	 * guiCommands.properties file.
+	 * Executes a command specified by the name. This name corresponds to a
+	 * property in guiCommands.properties file.
 	 * 
-	 * @param commandName the name of the command, names must be defined in guiCommands.properties 
-	 * @param parameters a Map of optional parameters for the command.
+	 * @param commandName
+	 *            the name of the command, names must be defined in
+	 *            guiCommands.properties
+	 * @param parameters
+	 *            a Map of optional parameters for the command.
 	 * @return the result of the command.
 	 */
-	public Object executeCommand (String commandName, Map<String, Object> parameters);
-	
+	public Object executeCommand(String commandName,
+			Map<String, Object> parameters);
+
 	/**
 	 * Executes a command sent by the GUI
-	 * @param command the command to execute. 
-	 * @return  The result of the command.
+	 * 
+	 * @param command
+	 *            the command to execute.
+	 * @return The result of the command.
 	 */
-	public Object executeCommand (Command command);
-	
+	public Object executeCommand(Command command);
+
 	/**
-	 * Sets the {@link Agent} this controller controls. This {@link Agent} object represents the model.
-	 * @param agent {@link Agent}
+	 * Sets the {@link Agent} this controller controls. This {@link Agent}
+	 * object represents the model.
+	 * 
+	 * @param agent
+	 *            {@link Agent}
 	 */
 	public void registerAgent(Agent agent);
-	
+
 }

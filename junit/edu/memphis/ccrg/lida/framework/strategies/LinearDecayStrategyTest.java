@@ -48,8 +48,7 @@ public class LinearDecayStrategyTest {
 
 	@Test
 	public void testDecay4() {
-		double newact = decayStrategy
-				.decay(1.0, 3, (Map<String, Object>) null);
+		double newact = decayStrategy.decay(1.0, 3, (Map<String, Object>) null);
 		assertEquals(0.7, newact, epsilon);
 
 	}
@@ -72,14 +71,14 @@ public class LinearDecayStrategyTest {
 		assertEquals(0.7, newact, epsilon);
 
 	}
-	
+
 	@Test
 	public void testexcite8() {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("m", 0.2);
-		
+
 		double newact = decayStrategy.decay(1.0, 3, map);
-		assertEquals(0.4, newact, epsilon );
+		assertEquals(0.4, newact, epsilon);
 
 	}
 
@@ -87,7 +86,7 @@ public class LinearDecayStrategyTest {
 	public void testDecay7() {
 		Object[] params = new Object[2];
 		params[0] = 0.4;
-		
+
 		double newact = decayStrategy.decay(1.0, 2, params);
 		assertEquals(0.2, newact, epsilon);
 	}

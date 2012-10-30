@@ -1,12 +1,14 @@
 package edu.memphis.ccrg.lida.framework.shared;
 
 /**
- * A marker of Node type. Different types are treated differently in {@link NodeStructure}.
- * This feature is not fully implemented in this framework version.
+ * A marker of Node type. Different types are treated differently in
+ * {@link NodeStructure}. This feature is not fully implemented in this
+ * framework version.
+ * 
  * @author Ryan J. McCall
  */
 public enum NodeType {
-	
+
 	/**
 	 * Catch-all type
 	 */
@@ -24,7 +26,8 @@ public enum NodeType {
 	 */
 	needFeeling,
 	/**
-	 * {@link Node}s that represent interpretive (appraisal) feelings, e.g. sweet, sour
+	 * {@link Node}s that represent interpretive (appraisal) feelings, e.g.
+	 * sweet, sour
 	 */
 	interprativeFeeling
 

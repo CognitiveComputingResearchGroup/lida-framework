@@ -23,14 +23,14 @@ import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 public class BasicTranslatorTest {
 
 	private Translator tr;
-	private static int SIZE=100;
+	private static int SIZE = 100;
 	private PerceptualAssociativeMemory pam;
 	private NodeStructure ns;
 	private BitVector vector;
 
 	@Before
 	public void setUp() throws Exception {
-		pam= new MockPAM();
+		pam = new MockPAM();
 		tr = new BasicTranslator(SIZE, pam);
 		ns = new NodeStructureImpl();
 		Node n = new NodeImpl();
@@ -42,7 +42,7 @@ public class BasicTranslatorTest {
 		vector = new BitVector(SIZE);
 		vector.set(10);
 		vector.set(20);
-		
+
 	}
 
 	@Test
@@ -54,7 +54,7 @@ public class BasicTranslatorTest {
 	@Test
 	public void testTranslateNodeStructure() {
 		NodeStructure nss = tr.translate(vector);
-		assert(nss.getNodes().equals(ns.getNodes()));
+		assert (nss.getNodes().equals(ns.getNodes()));
 	}
 
 }

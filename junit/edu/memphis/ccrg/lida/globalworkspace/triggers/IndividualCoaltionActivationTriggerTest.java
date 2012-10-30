@@ -28,12 +28,14 @@ import edu.memphis.ccrg.lida.globalworkspace.CoalitionImpl;
 import edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBuffer;
 
 /**
- * This is a JUnit class which can be used to test methods of the IndividualCoaltionActivationTrigger class
+ * This is a JUnit class which can be used to test methods of the
+ * IndividualCoaltionActivationTrigger class
+ * 
  * @author Siminder Kaur
  */
 
 public class IndividualCoaltionActivationTriggerTest {
-	
+
 	private Set<Coalition> coalitions;
 	private Map<String, Object> parameters;
 	private MockGlobalWorkspaceImpl gw;
@@ -52,10 +54,12 @@ public class IndividualCoaltionActivationTriggerTest {
 			public NodeStructure retrieveWorkspaceContent(WorkspaceBuffer buffer) {
 				return soughtContent;
 			}
+
 			@Override
 			public boolean bufferContainsSoughtContent(WorkspaceBuffer buffer) {
 				return false;
 			}
+
 			@Override
 			public String toString() {
 				return null;
@@ -77,9 +81,9 @@ public class IndividualCoaltionActivationTriggerTest {
 	public void testCheckForTriggerConditionSetOfCoalition() {
 		parameters.put("threshold", 0.4);
 		trigger.init(parameters, gw);
-		
+
 		trigger.checkForTriggerCondition(coalitions);
-		
+
 		assertNull(gw.trigger);
 	}
 
@@ -87,10 +91,10 @@ public class IndividualCoaltionActivationTriggerTest {
 	public void testCheckForTriggerConditionSetOfCoalition1() {
 		parameters.put("threshold", 0.1);
 		trigger.init(parameters, gw);
-		
+
 		trigger.checkForTriggerCondition(coalitions);
-		
+
 		assertEquals(trigger, gw.trigger);
 	}
-	
+
 }

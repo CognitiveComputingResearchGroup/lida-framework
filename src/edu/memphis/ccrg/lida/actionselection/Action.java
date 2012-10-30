@@ -10,7 +10,7 @@ package edu.memphis.ccrg.lida.actionselection;
 import edu.memphis.ccrg.lida.framework.initialization.Initializable;
 
 /**
- * Encapsulation of an action to be executed. 
+ * Encapsulation of an action to be executed.
  * 
  * @author Ryan J. McCall
  * @author Javier Snaider
@@ -21,14 +21,15 @@ public interface Action extends Initializable {
 	public enum Topology {
 		BASIC, PARALLEL, SEQUENCIAL
 	}
-	
+
 	/**
 	 * @return the action label.
 	 */
 	public String getLabel();
-	
+
 	/**
-	 * @param label the action label to set.
+	 * @param label
+	 *            the action label to set.
 	 */
 	public void setLabel(String label);
 
@@ -36,5 +37,5 @@ public interface Action extends Initializable {
 	 * @return the {@link Action} id
 	 */
 	public int getId();
-	
+
 }

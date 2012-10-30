@@ -30,8 +30,10 @@ public class ActionImpl extends InitializableImpl implements Action {
 	}
 
 	/**
-	 * Convenience constructor that set the Action's label 
-	 * @param label the label to set
+	 * Convenience constructor that set the Action's label
+	 * 
+	 * @param label
+	 *            the label to set
 	 */
 	public ActionImpl(String label) {
 		this();
@@ -52,9 +54,9 @@ public class ActionImpl extends InitializableImpl implements Action {
 	public int getId() {
 		return id;
 	}
-	
+
 	@Override
-	public String toString(){
+	public String toString() {
 		return label;
 	}
 }

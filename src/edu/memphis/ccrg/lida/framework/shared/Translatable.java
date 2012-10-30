@@ -11,18 +11,19 @@ package edu.memphis.ccrg.lida.framework.shared;
 import cern.colt.bitvector.BitVector;
 
 /**
- *
+ * 
  * @author Rodrigo Silva-Lugo
  */
 public interface Translatable {
-    
-    /**
-     * @param vector BitVector
-     */
-    public void setSdmId(BitVector vector);
-    
-    /**
-     * @return BitVector
-     */
-    public BitVector getSdmId();
+
+	/**
+	 * @param vector
+	 *            BitVector
+	 */
+	public void setSdmId(BitVector vector);
+
+	/**
+	 * @return BitVector
+	 */
+	public BitVector getSdmId();
 }

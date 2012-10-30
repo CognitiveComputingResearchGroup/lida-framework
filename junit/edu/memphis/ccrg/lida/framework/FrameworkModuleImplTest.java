@@ -18,28 +18,30 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawnerImpl;
 
 public class FrameworkModuleImplTest {
-	
+
 	private TestModule module;
 	private TestModule submodule;
-	private double epsilon=10e-9;
-	
-	private class TestModule extends FrameworkModuleImpl{
-		
+	private double epsilon = 10e-9;
+
+	private class TestModule extends FrameworkModuleImpl {
+
 		public boolean initCalled;
+
 		@Override
 		public void init() {
 			initCalled = true;
 		}
-		
+
 		@Override
 		public Object getModuleContent(Object... params) {
 			return 10;
 		}
 
 		public boolean decayed;
+
 		@Override
 		public void decayModule(long ticks) {
-			decayed = true;			
+			decayed = true;
 		}
 	}
 
@@ -51,23 +53,23 @@ public class FrameworkModuleImplTest {
 		submodule.setModuleName(ModuleName.EpisodicBuffer);
 		module.addSubModule(submodule);
 	}
-	
+
 	@Test
-	public void testContainsSubmodule1(){
+	public void testContainsSubmodule1() {
 		assertTrue(module.containsSubmodule(ModuleName.EpisodicBuffer));
 		assertTrue(module.containsSubmodule("EpisodicBuffer"));
 		assertFalse(module.containsSubmodule(ModuleName.ActionSelection));
 		assertFalse(module.containsSubmodule("ActionSelection"));
-		
+
 		TestModule newSub = new TestModule();
 		ModuleName newSubName = ModuleName.addModuleName("AI");
 		newSub.setModuleName(newSubName);
 		module.addSubModule(newSub);
-		
+
 		assertTrue(module.containsSubmodule(newSubName));
 		assertTrue(module.containsSubmodule("AI"));
 	}
-	
+
 	@Test
 	public void testGetModuleContent() {
 		assertEquals(10, module.getModuleContent(0));
@@ -84,12 +86,12 @@ public class FrameworkModuleImplTest {
 	public void testGetSubmodule1() {
 		FrameworkModule sub = module.getSubmodule(ModuleName.EpisodicBuffer);
 		assertEquals(submodule, sub);
-		
-		sub =  module.getSubmodule(ModuleName.DeclarativeMemory);
+
+		sub = module.getSubmodule(ModuleName.DeclarativeMemory);
 		assertEquals(null, sub);
-		
+
 		ModuleName foo = null;
-		sub =  module.getSubmodule(foo);
+		sub = module.getSubmodule(foo);
 		assertEquals(null, sub);
 	}
 
@@ -97,16 +99,16 @@ public class FrameworkModuleImplTest {
 	public void testGetSubmodule2() {
 		FrameworkModule sub = module.getSubmodule("EpisodicBuffer");
 		assertEquals(submodule, sub);
-		
-		sub =  module.getSubmodule("DeclarativeMemory");
+
+		sub = module.getSubmodule("DeclarativeMemory");
 		assertEquals(null, sub);
-		
+
 		String foo = null;
-		sub =  module.getSubmodule(foo);
+		sub = module.getSubmodule(foo);
 		assertEquals(null, sub);
-		
+
 		foo = "asdlfkjsdlfkj";
-		sub =  module.getSubmodule(foo);
+		sub = module.getSubmodule(foo);
 		assertEquals(null, sub);
 	}
 
@@ -122,5 +124,5 @@ public class FrameworkModuleImplTest {
 		assertEquals(ModuleName.Agent, module.getModuleName());
 		assertEquals(ModuleName.EpisodicBuffer, submodule.getModuleName());
 	}
-	
+
 }

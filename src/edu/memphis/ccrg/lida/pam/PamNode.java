@@ -12,15 +12,15 @@ import edu.memphis.ccrg.lida.framework.shared.LinkCategory;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 
 /**
- * A PamNode is a {@link Node} which resides in {@link PerceptualAssociativeMemory} and 
- * represents a feature or a concept.  
- * PamNodes are involved in activation passing where Nodes are not. 
- * They can represent the {@link LinkCategory} of a {@link Link}.
+ * A PamNode is a {@link Node} which resides in
+ * {@link PerceptualAssociativeMemory} and represents a feature or a concept.
+ * PamNodes are involved in activation passing where Nodes are not. They can
+ * represent the {@link LinkCategory} of a {@link Link}.
  * 
  * @author Ryan J. McCall
  * @author Javier Snaider
  * @see PerceptualAssociativeMemory
  */
 public interface PamNode extends Node, PamLinkable, LinkCategory {
-	
+
 }

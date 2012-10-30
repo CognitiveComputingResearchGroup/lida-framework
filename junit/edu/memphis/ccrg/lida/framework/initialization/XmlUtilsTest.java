@@ -218,6 +218,7 @@ public class XmlUtilsTest {
 		assertEquals("PamNodeImpl", params.get("pam.newNodeType"));
 		assertEquals(null, params.get("pam.newLinkType"));
 	}
+
 	@Test
 	public void testGetTypedParams2() {
 		String xml = "<parent>"
@@ -236,76 +237,67 @@ public class XmlUtilsTest {
 		assertEquals(null, params.get("pam.Selectivity"));
 		assertEquals("1.9", params.get("pam.newNodeType"));
 		assertEquals(null, params.get("pam.newLinkType"));
-		
+
 	}
 
 	@Test
 	public void testGetChild() {
-		String xml = "	<parent>" 
-			+ "<child1> hi </child1> \n"
-			+ "<child1> 1 </child1> \n" 
-			+ "<child2>2</child2> \n"
-			+ "<child3>" 
-				+ "<subchild>sub</subchild>" 
-			+ "</child3>"
-			+ "</parent>";
+		String xml = "	<parent>" + "<child1> hi </child1> \n"
+				+ "<child1> 1 </child1> \n" + "<child2>2</child2> \n"
+				+ "<child3>" + "<subchild>sub</subchild>" + "</child3>"
+				+ "</parent>";
 		Element element = XmlUtils.parseXmlString(xml).getDocumentElement();
-		
+
 		Element child = XmlUtils.getChild(element, "child1");
 		assertNotNull(child);
 		assertEquals("child1", child.getNodeName());
 		assertEquals("hi", XmlUtils.getValue(child));
-		
+
 		child = XmlUtils.getChild(element, "parent");
 		assertNull(child);
-		
+
 		child = XmlUtils.getChild(element, "child2");
 		assertNotNull(child);
 		assertEquals("child2", child.getNodeName());
 		assertEquals("2", XmlUtils.getValue(child));
-		
+
 		child = XmlUtils.getChild(element, "child3");
 		assertNotNull(child);
 		assertEquals("child3", child.getNodeName());
 		assertEquals(null, XmlUtils.getValue(child));
-		
+
 		child = XmlUtils.getChild(element, "subchild");
 		assertNull(child);
 	}
-	
+
 	@Test
 	public void testGetChildren() {
-		String xml = "	<parent>" 
-			+ "<child1> hi </child1> \n"
-			+ "<child1> 1 </child1> \n" 
-			+ "<child2>2</child2> \n"
-			+ "<child3>" 
-				+ "<subchild>sub</subchild>" 
-			+ "</child3>"
-			+ "<child1> hi </child1> \n"
-			+ "</parent>";
+		String xml = "	<parent>" + "<child1> hi </child1> \n"
+				+ "<child1> 1 </child1> \n" + "<child2>2</child2> \n"
+				+ "<child3>" + "<subchild>sub</subchild>" + "</child3>"
+				+ "<child1> hi </child1> \n" + "</parent>";
 		Element element = XmlUtils.parseXmlString(xml).getDocumentElement();
-		
+
 		List<Element> children = XmlUtils.getChildren(element, "parent");
 		assertNotNull(children);
 		assertEquals(0, children.size());
-		
+
 		children = XmlUtils.getChildren(element, "subchild");
 		assertNotNull(children);
 		assertEquals(0, children.size());
-		
+
 		children = XmlUtils.getChildren(element, "child3");
 		assertNotNull(children);
 		assertEquals(1, children.size());
 		assertEquals("child3", children.get(0).getNodeName());
 		assertEquals(null, XmlUtils.getValue(children.get(0)));
-		
+
 		children = XmlUtils.getChildren(element, "child2");
 		assertNotNull(children);
 		assertEquals(1, children.size());
 		assertEquals("child2", children.get(0).getNodeName());
 		assertEquals("2", XmlUtils.getValue(children.get(0)));
-		
+
 		children = XmlUtils.getChildren(element, "child1");
 		assertNotNull(children);
 		assertEquals(3, children.size());
@@ -319,80 +311,68 @@ public class XmlUtilsTest {
 
 	@Test
 	public void testGetChildrenValues() {
-		String xml = "	<parent>" 
-			+ "<child1> hi </child1> \n"
-			+ "<child1> 1 </child1> \n" 
-			+ "<child2>2</child2> \n"
-			+ "<child3>" 
-				+ "<subchild>sub</subchild>" 
-			+ "</child3>"
-			+ "<child1> hi </child1> \n"
-			+ "</parent>";
+		String xml = "	<parent>" + "<child1> hi </child1> \n"
+				+ "<child1> 1 </child1> \n" + "<child2>2</child2> \n"
+				+ "<child3>" + "<subchild>sub</subchild>" + "</child3>"
+				+ "<child1> hi </child1> \n" + "</parent>";
 		Element element = XmlUtils.parseXmlString(xml).getDocumentElement();
-		
+
 		List<String> values = XmlUtils.getChildrenValues(element, "subchild");
 		assertNotNull(values);
 		assertEquals(0, values.size());
-		
+
 		values = XmlUtils.getChildrenValues(element, "child3");
 		assertEquals(1, values.size());
 		assertEquals(null, values.get(0));
-		
+
 		values = XmlUtils.getChildrenValues(element, "child2");
 		assertEquals(1, values.size());
 		assertEquals("2", values.get(0));
-		
+
 		values = XmlUtils.getChildrenValues(element, "child1");
 		assertEquals(3, values.size());
 		assertEquals("hi", values.get(0));
 		assertEquals("1", values.get(1));
 		assertEquals("hi", values.get(2));
-		
+
 		values = XmlUtils.getChildrenValues(element, "parent");
 		assertEquals(0, values.size());
 	}
 
 	@Test
 	public void testGetChildrenInGroup() {
-		String xml = "	<parent>" 
-			+ "<group1> \n" 
-				+ "<child1> hi </child1> \n"
-				+ "<child1> 1 </child1> \n" 
-				+ "<child2>2</child2> \n"
-			+ "</group1>"
-			+ "<group2> \n" 
-				+ "<child3>" 
-					+ "<subchild>sub</subchild>" 
-				+ "</child3>"
-				+ "<child1> hi </child1> \n"
-			+ "</group2>"
-			+ "</parent>";
+		String xml = "	<parent>" + "<group1> \n" + "<child1> hi </child1> \n"
+				+ "<child1> 1 </child1> \n" + "<child2>2</child2> \n"
+				+ "</group1>" + "<group2> \n" + "<child3>"
+				+ "<subchild>sub</subchild>" + "</child3>"
+				+ "<child1> hi </child1> \n" + "</group2>" + "</parent>";
 		Element element = XmlUtils.parseXmlString(xml).getDocumentElement();
-		
-		List<Element> children = XmlUtils.getChildrenInGroup(element, "foo", "bar");
+
+		List<Element> children = XmlUtils.getChildrenInGroup(element, "foo",
+				"bar");
 		assertNotNull(children);
 		assertEquals(0, children.size());
-		
+
 		children = XmlUtils.getChildrenInGroup(element, "group1", "bar");
 		assertNotNull(children);
 		assertEquals(0, children.size());
-		
+
 		children = XmlUtils.getChildrenInGroup(element, "group1", "child1");
 		assertNotNull(children);
 		assertEquals(2, children.size());
-		
+
 		children = XmlUtils.getChildrenInGroup(element, "group1", "child2");
 		assertEquals(1, children.size());
-		
+
 		children = XmlUtils.getChildrenInGroup(element, "group2", "child1");
 		assertEquals(1, children.size());
-		
+
 		children = XmlUtils.getChildrenInGroup(element, "group2", "child3");
 		assertEquals(1, children.size());
-		
+
 		children = XmlUtils.getChildrenInGroup(element, "child3", "subchild");
 		assertEquals(0, children.size());
-		
+
 		children = XmlUtils.getChildrenInGroup(element, "parent", "group1");
 		assertEquals(0, children.size());
 	}

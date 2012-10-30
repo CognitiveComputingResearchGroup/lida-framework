@@ -15,10 +15,12 @@ import cern.colt.bitvector.BitVector;
  * @author Javier Snaider
  */
 public class BitVectorUtils {
-	
+
 	/**
 	 * Returns a random {@link BitVector} of specified size
-	 * @param s the size of the new vector
+	 * 
+	 * @param s
+	 *            the size of the new vector
 	 * @return a new random vector of size s.
 	 */
 	public static BitVector getRandomVector(int s) {
@@ -46,9 +48,13 @@ public class BitVectorUtils {
 
 	/**
 	 * Returns a noisy {@link BitVector}
-	 * @param original original {@link BitVector}
-	 * @param noise number of noisy bits to introduce
-	 * @return a new vector which differs from the original by at most 'noise' bits
+	 * 
+	 * @param original
+	 *            original {@link BitVector}
+	 * @param noise
+	 *            number of noisy bits to introduce
+	 * @return a new vector which differs from the original by at most 'noise'
+	 *         bits
 	 */
 	public static BitVector getNoisyVector(BitVector original, int noise) {
 		BitVector v = original.copy();
@@ -61,10 +67,14 @@ public class BitVectorUtils {
 	}
 
 	/**
-	 * Adds a {@link BitVector} to an accumulation array. The bits of the {@link BitVector} are first converted to either 0 to -1.  
-	 * The BitVector is not modified.
-	 * @param accum the accumulation array.
-	 * @param v the vector to be added
+	 * Adds a {@link BitVector} to an accumulation array. The bits of the
+	 * {@link BitVector} are first converted to either 0 to -1. The BitVector is
+	 * not modified.
+	 * 
+	 * @param accum
+	 *            the accumulation array.
+	 * @param v
+	 *            the vector to be added
 	 * @return the new accumulation array
 	 */
 	public static int[] getVectorSum(int[] accum, BitVector v) {
@@ -74,7 +84,6 @@ public class BitVectorUtils {
 		return accum;
 	}
 
- 
 	/**
 	 * Sums specified vectors.
 	 * 
@@ -125,7 +134,8 @@ public class BitVectorUtils {
 	/**
 	 * Gets a normalized vector.
 	 * 
-	 * @param buff a int[] vector
+	 * @param buff
+	 *            a int[] vector
 	 * @return new normalized {@link BitVector}
 	 */
 	public static BitVector getNormalizedVector(int[] buff) {
@@ -153,15 +163,17 @@ public class BitVectorUtils {
 		res.xor(b);
 		return res;
 	}
-        
-        /**
-         * Gets the complement of a bit vector.
-         * @param a     the input bit vector 
-         * @return      the complement of the input bit vector
-         */
-        public static BitVector getComplement(BitVector a) {
-            BitVector res = a.copy();
-            res.not();
-            return res;
-        }
+
+	/**
+	 * Gets the complement of a bit vector.
+	 * 
+	 * @param a
+	 *            the input bit vector
+	 * @return the complement of the input bit vector
+	 */
+	public static BitVector getComplement(BitVector a) {
+		BitVector res = a.copy();
+		res.not();
+		return res;
+	}
 }

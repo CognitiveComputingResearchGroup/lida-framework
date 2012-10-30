@@ -71,8 +71,10 @@ public class BroadcastQueueImpl extends FrameworkModuleImpl implements
 
 	@Override
 	public void receiveBroadcast(Coalition c) {
-		UnmodifiableNodeStructureImpl content = (UnmodifiableNodeStructureImpl) c.getContent();
-		//Since content is not modifiable, a copy must be made. In this class the copy (of the content) will be decayed (modified).
+		UnmodifiableNodeStructureImpl content = (UnmodifiableNodeStructureImpl) c
+				.getContent();
+		// Since content is not modifiable, a copy must be made. In this class
+		// the copy (of the content) will be decayed (modified).
 		NodeStructure contentCopy = new NodeStructureImpl();
 		contentCopy.mergeWith(content);
 		addBufferContent((WorkspaceContent) contentCopy);

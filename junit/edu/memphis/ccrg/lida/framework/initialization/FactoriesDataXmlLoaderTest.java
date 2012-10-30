@@ -43,7 +43,6 @@ public class FactoriesDataXmlLoaderTest {
 		strategies.put("strategy4", def);
 	}
 
-	
 	@Test
 	public void testGetStrategies() {
 		String xml = "<LidaFactories><strategies><strategy flyweight=\"true\" name=\"defaultExcite\" type=\"excite\">"
@@ -144,7 +143,8 @@ public class FactoriesDataXmlLoaderTest {
 		assertEquals("strategy2", def.getDefaultStrategies().get("decay"));
 		assertFalse(def.getDefaultStrategies().containsKey("strategy3"));
 		assertEquals(4, def.getParams().size());
-		assertEquals("slowDecay", def.getParams().get("learnable.baseLevelDecayStrategy"));
+		assertEquals("slowDecay", def.getParams().get(
+				"learnable.baseLevelDecayStrategy"));
 
 		def = linkables.get("NodeImpl");
 		assertNotNull(def);
@@ -181,7 +181,8 @@ public class FactoriesDataXmlLoaderTest {
 		assertEquals("strategy2", def.getDefaultStrategies().get("decay"));
 		assertFalse(def.getDefaultStrategies().containsKey("strategy3"));
 		assertEquals(4, def.getParams().size());
-		assertEquals("slowDecay", def.getParams().get("learnable.baseLevelDecayStrategy"));
+		assertEquals("slowDecay", def.getParams().get(
+				"learnable.baseLevelDecayStrategy"));
 	}
 
 	@Test
@@ -196,19 +197,18 @@ public class FactoriesDataXmlLoaderTest {
 				+ "<associatedmodule function=\"hola\">Workspace</associatedmodule>"
 				+ "<param name=\"param\" type=\"int\">10</param>"
 				+ "</task>"
-				+"<task name=\"bottomright\">"
+				+ "<task name=\"bottomright\">"
 				+ "<class>edu.memphis.ccrg.lida.example.genericlida.featuredetectors.Another</class>"
 				+ "<ticksperrun>9</ticksperrun>"
 				+ "<defaultstrategy>strategy1</defaultstrategy>"
 				+ "<param name=\"param1\" type=\"string\">hi</param>"
-				+ "</task>"
-				+ "</tasks></LidaFactories>";
+				+ "</task>" + "</tasks></LidaFactories>";
 
 		Element e = parseDomElement(xml);
 
-		Map<String, FrameworkTaskDef>codelets = loader.getTasks(e, strategies);
-		assertEquals(2,codelets.size());
-		
+		Map<String, FrameworkTaskDef> codelets = loader.getTasks(e, strategies);
+		assertEquals(2, codelets.size());
+
 		FrameworkTaskDef def = codelets.get("topleft");
 		assertNotNull(def);
 		assertEquals(
@@ -224,8 +224,8 @@ public class FactoriesDataXmlLoaderTest {
 		Map<ModuleName, String> assocMod = def.getAssociatedModules();
 		assertEquals("hi", assocMod.get(ModuleName.Environment));
 		assertEquals("hola", assocMod.get(ModuleName.Workspace));
-		
-		def = codelets.get("bottomright");		
+
+		def = codelets.get("bottomright");
 		assertNotNull(def);
 		assertEquals(
 				"edu.memphis.ccrg.lida.example.genericlida.featuredetectors.Another",
@@ -246,8 +246,7 @@ public class FactoriesDataXmlLoaderTest {
 				+ "<defaultstrategy>strategy1</defaultstrategy>"
 				+ "<defaultstrategy>strategy2</defaultstrategy>"
 				+ "<defaultstrategy>strategy3</defaultstrategy>"
-				+ "<param name=\"param\" type=\"int\">10</param>"
-				+ "</task>";
+				+ "<param name=\"param\" type=\"int\">10</param>" + "</task>";
 
 		Element e = parseDomElement(xml);
 

@@ -990,37 +990,38 @@ public class AgentXmlFactoryTest {
 		assertNotNull(tm);
 		assertEquals(50, tm.getTickDuration());
 	}
+
 	@Test
 	public void testInitializeTasks() {
 		ElementFactory elFact = ElementFactory.getInstance();
-		FrameworkTaskDef taskDef = new FrameworkTaskDef("edu.memphis.ccrg.lida.framework.tasks.MockFrameworkTask", 
-				1, new HashMap<String, String>(), "mockTask", new HashMap<String, Object>(), 
+		FrameworkTaskDef taskDef = new FrameworkTaskDef(
+				"edu.memphis.ccrg.lida.framework.tasks.MockFrameworkTask", 1,
+				new HashMap<String, String>(), "mockTask",
+				new HashMap<String, Object>(),
 				new HashMap<ModuleName, String>());
 		elFact.addFrameworkTaskType(taskDef);
-		List<TaskData>toRun = new ArrayList<TaskData>();
+		List<TaskData> toRun = new ArrayList<TaskData>();
 		Map<ModuleName, FrameworkModule> modulesMap = new HashMap<ModuleName, FrameworkModule>();
-		
+
 		MockTaskSpawner ts1 = new MockTaskSpawner();
 		TaskData td = new TaskData("task1", "mockTask", 5, null);
 		td.taskSpawner = ts1;
 		toRun.add(td);
-		
+
 		MockTaskSpawner ts2 = new MockTaskSpawner();
 		td = new TaskData("task2", "mockTask", 6, null);
 		td.taskSpawner = ts2;
 		toRun.add(td);
-		
+
 		factory.initializeTasks(null, toRun);
 
 		assertEquals(1, ts1.tasks.size());
 		assertEquals(5, ts1.tasks.get(0).getTicksPerRun());
-		
+
 		assertEquals(1, ts2.tasks.size());
 		assertEquals(6, ts2.tasks.get(0).getTicksPerRun());
 	}
 
-	
-	
 	private class MockSMListener extends MockFrameworkModule implements
 			SensoryMotorMemoryListener, LocalAssociationListener {
 

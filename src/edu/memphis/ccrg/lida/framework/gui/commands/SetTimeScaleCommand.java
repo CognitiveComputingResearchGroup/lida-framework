@@ -12,10 +12,10 @@ import edu.memphis.ccrg.lida.framework.Agent;
 /**
  * Sets the tickDuration of the system.
  * 
- * A Integer "tickDuration" parameter must be specified. 
+ * A Integer "tickDuration" parameter must be specified.
  * 
  * @author Javier Snaider
- *
+ * 
  */
 public class SetTimeScaleCommand extends CommandImpl {
 

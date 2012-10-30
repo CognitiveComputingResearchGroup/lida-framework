@@ -13,13 +13,16 @@ import edu.memphis.ccrg.lida.framework.ModuleListener;
  * A listeners of the {@link ActionSelection} Module
  * 
  * @author Ryan J. McCall
- *
+ * 
  */
-public interface ActionSelectionListener extends ModuleListener{
-	
+public interface ActionSelectionListener extends ModuleListener {
+
 	/**
-	 * Listener must receive actions.  Will be called for each action selected by the behavior network.
-	 * @param action - Id of the action stored in sensory motor memory
+	 * Listener must receive actions. Will be called for each action selected by
+	 * the behavior network.
+	 * 
+	 * @param action
+	 *            - Id of the action stored in sensory motor memory
 	 */
 	public void receiveAction(Action action);
 

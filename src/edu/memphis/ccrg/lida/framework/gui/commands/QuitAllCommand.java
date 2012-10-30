@@ -14,7 +14,7 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
  * Stops all thread execution and quits the system.
  * 
  * @author Javier Snaider
- *
+ * 
  */
 public class QuitAllCommand extends CommandImpl {
 
@@ -24,7 +24,7 @@ public class QuitAllCommand extends CommandImpl {
 		tm.pauseTasks();
 		try {
 			Thread.sleep(100);
-		}catch(InterruptedException e){
+		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 		tm.stopRunning();

@@ -23,56 +23,57 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskStatus;
 import edu.memphis.ccrg.lida.pam.PamNode;
 import edu.memphis.ccrg.lida.pam.PamNodeImpl;
 
-public class ExcitationTaskTest{
-	
+public class ExcitationTaskTest {
+
 	private PamNode pamNode;
 
 	private MockPAM pam;
-	
+
 	private MockTaskSpawner taskSpawner;
-	
+
 	@Before
 	public void setUp() throws Exception {
 		pamNode = new PamNodeImpl();
 		pamNode.setActivation(0.0);
 		pam = new MockPAM();
-		taskSpawner= new MockTaskSpawner();
+		taskSpawner = new MockTaskSpawner();
 		pam.setAssistingTaskSpawner(taskSpawner);
 	}
-	
+
 	private final double epsilon = 1e-10;
-	
+
 	@Test
-	public void testExciteNotOverThreshold(){
+	public void testExciteNotOverThreshold() {
 		pam.setPerceptThreshold(1.0);
 		pamNode.setExciteStrategy(new LinearExciteStrategy());
-		ExcitationTask excite= new ExcitationTask(1, pamNode, 0.5, pam);
-		
+		ExcitationTask excite = new ExcitationTask(1, pamNode, 0.5, pam);
+
 		excite.call();
-		
+
 		assertEquals(pamNode.getActivation(), 0.5, epsilon);
 		assertEquals(pam.pmNode.getActivation(), 0.5, epsilon);
 		assertEquals(0, taskSpawner.getTasks().size());
 		assertEquals(TaskStatus.CANCELED, excite.getTaskStatus());
-	 
+
 	}
+
 	@Test
-	public void testExciteOverThreshold(){
+	public void testExciteOverThreshold() {
 		pam.setPerceptThreshold(0.4);
 		pamNode.setExciteStrategy(new LinearExciteStrategy());
-		ExcitationTask excite= new ExcitationTask(1, pamNode, 0.5, pam);
-		
+		ExcitationTask excite = new ExcitationTask(1, pamNode, 0.5, pam);
+
 		excite.call();
-		
+
 		assertEquals(pamNode.getActivation(), 0.5, epsilon);
 		assertEquals(pam.pmNode.getActivation(), 0.5, epsilon);
-		
-		Collection<FrameworkTask> tasks= taskSpawner.getTasks(); 
+
+		Collection<FrameworkTask> tasks = taskSpawner.getTasks();
 		assertEquals(1, tasks.size());
-		for(FrameworkTask tsk: tasks){
+		for (FrameworkTask tsk : tasks) {
 			assertTrue(tsk instanceof AddNodeToPerceptTask);
 		}
-		 
+
 		assertEquals(TaskStatus.CANCELED, excite.getTaskStatus());
 	}
 

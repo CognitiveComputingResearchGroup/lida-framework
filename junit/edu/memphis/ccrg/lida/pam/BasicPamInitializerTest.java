@@ -24,141 +24,142 @@ import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 
 public class BasicPamInitializerTest {
-	
+
 	private Agent agent;
 	private PerceptualAssociativeMemory pam;
 	private BasicPamInitializer initializer;
 	private Map<String, Object> params;
 	private GlobalInitializer globalInitializer;
-	
+
 	@Before
 	public void setUp() {
 		agent = new AgentImpl(null);
 		pam = new PerceptualAssociativeMemoryImpl();
 		pam.setModuleName(ModuleName.PerceptualAssociativeMemory);
-		
+
 		initializer = new BasicPamInitializer();
 		params = new HashMap<String, Object>();
 		globalInitializer = GlobalInitializer.getInstance();
 		globalInitializer.clearAttributes();
 	}
-	//<param name="nodes">red,blue,square,circle</param>
+
+	// <param name="nodes">red,blue,square,circle</param>
 	@Test
-	public void test1(){
+	public void test1() {
 		initializer.initModule(pam, agent, params);
-		
+
 		assertEquals(0, pam.getNodes().size() - pam.getLinkCategories().size());
 	}
-	
+
 	@Test
-	public void test2(){
+	public void test2() {
 		params.put("nodes", "");
 		initializer.initModule(pam, agent, params);
-		
+
 		assertEquals(0, pam.getNodes().size() - pam.getLinkCategories().size());
 	}
-	
+
 	@Test
-	public void test3(){
+	public void test3() {
 		params.put("nodes", ",,,,,,,");
 		initializer.initModule(pam, agent, params);
-		
+
 		assertEquals(0, pam.getNodes().size() - pam.getLinkCategories().size());
 	}
-	
+
 	@Test
-	public void test4(){
+	public void test4() {
 		params.put("nodes", "red,");
 		initializer.initModule(pam, agent, params);
-		
-		assertEquals(1, pam.getNodes().size() - pam.getLinkCategories().size());
-		assertEquals(pam.getNode("red"), globalInitializer.getAttribute("red"));
-	}
-	
-	@Test
-	public void test5(){
-		params.put("nodes", ",red");
-		initializer.initModule(pam, agent, params);
-		
+
 		assertEquals(1, pam.getNodes().size() - pam.getLinkCategories().size());
 		assertEquals(pam.getNode("red"), globalInitializer.getAttribute("red"));
 	}
 
 	@Test
-	public void test6(){
+	public void test5() {
 		params.put("nodes", ",red");
 		initializer.initModule(pam, agent, params);
-		
+
 		assertEquals(1, pam.getNodes().size() - pam.getLinkCategories().size());
 		assertEquals(pam.getNode("red"), globalInitializer.getAttribute("red"));
 	}
-	
-//	<param name="links"> goodHealth:health,fairHealth:health
-	
+
 	@Test
-	public void test7(){
+	public void test6() {
+		params.put("nodes", ",red");
+		initializer.initModule(pam, agent, params);
+
+		assertEquals(1, pam.getNodes().size() - pam.getLinkCategories().size());
+		assertEquals(pam.getNode("red"), globalInitializer.getAttribute("red"));
+	}
+
+	// <param name="links"> goodHealth:health,fairHealth:health
+
+	@Test
+	public void test7() {
 		params.put("nodes", " red , blue ");
 		params.put("links", "red:blue");
 		initializer.initModule(pam, agent, params);
-		
+
 		assertEquals(2, pam.getNodes().size() - pam.getLinkCategories().size());
 		Node red = pam.getNode("red");
 		assertNotNull(red);
 		assertEquals(red, globalInitializer.getAttribute("red"));
-		
+
 		Node blue = pam.getNode("blue");
 		assertNotNull(blue);
 		assertEquals(blue, globalInitializer.getAttribute("blue"));
-		
+
 		assertEquals(1, pam.getLinks().size());
-		
-		for(Link l: pam.getLinks()){
+
+		for (Link l : pam.getLinks()) {
 			assertEquals(red, l.getSource());
 			assertEquals(blue, l.getSink());
 		}
 	}
-	
+
 	@Test
-	public void test8(){
+	public void test8() {
 		params.put("nodes", " red , blue ");
 		params.put("links", "");
 		initializer.initModule(pam, agent, params);
-		
+
 		assertEquals(2, pam.getNodes().size() - pam.getLinkCategories().size());
 		Node red = pam.getNode("red");
 		assertNotNull(red);
 		assertEquals(red, globalInitializer.getAttribute("red"));
-		
+
 		Node blue = pam.getNode("blue");
 		assertNotNull(blue);
 		assertEquals(blue, globalInitializer.getAttribute("blue"));
-		
+
 		assertEquals(0, pam.getLinks().size());
 	}
-	
+
 	@Test
-	public void test9(){
+	public void test9() {
 		params.put("links", "red:blue");
 		initializer.initModule(pam, agent, params);
-		
+
 		assertEquals(0, pam.getNodes().size() - pam.getLinkCategories().size());
-		
+
 		assertEquals(0, pam.getLinks().size());
 	}
-	
+
 	@Test
-	public void test10(){
+	public void test10() {
 		params.put("nodes", "  , blue ");
 		params.put("links", ":blue");
 		initializer.initModule(pam, agent, params);
-		
+
 		assertEquals(1, pam.getNodes().size() - pam.getLinkCategories().size());
-		
+
 		Node blue = pam.getNode("blue");
 		assertNotNull(blue);
 		assertEquals(blue, globalInitializer.getAttribute("blue"));
-		
+
 		assertEquals(0, pam.getLinks().size());
 	}
-	
+
 }

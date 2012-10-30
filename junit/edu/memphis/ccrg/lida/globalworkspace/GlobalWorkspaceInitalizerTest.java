@@ -25,7 +25,9 @@ import edu.memphis.ccrg.lida.globalworkspace.triggers.NoBroadcastOccurringTrigge
 import edu.memphis.ccrg.lida.globalworkspace.triggers.NoCoalitionArrivingTrigger;
 
 /**
- * This is a JUnit class which can be used to test methods of the GlobalWorkspaceInitalizer class
+ * This is a JUnit class which can be used to test methods of the
+ * GlobalWorkspaceInitalizer class
+ * 
  * @author Siminder Kaur
  */
 public class GlobalWorkspaceInitalizerTest {
@@ -49,22 +51,24 @@ public class GlobalWorkspaceInitalizerTest {
 		params.put("globalWorkspace.individualActivationThreshold", 0.3333);
 
 		initializer.initModule(globalWksp, lida, params);
-		
+
 		BroadcastTrigger trigger = globalWksp.triggers.get(0);
 		assertTrue(trigger instanceof NoBroadcastOccurringTrigger);
 		assertEquals(1111, ((NoBroadcastOccurringTrigger) trigger).getDelay());
-		
+
 		trigger = globalWksp.triggers.get(1);
 		assertTrue(trigger instanceof AggregateCoalitionActivationTrigger);
-		assertEquals(0.9999, ((AggregateCoalitionActivationTrigger) trigger).getThreshold(), 0.00001);
-		
+		assertEquals(0.9999, ((AggregateCoalitionActivationTrigger) trigger)
+				.getThreshold(), 0.00001);
+
 		trigger = globalWksp.triggers.get(2);
 		assertTrue(trigger instanceof NoCoalitionArrivingTrigger);
 		assertEquals(555, ((NoCoalitionArrivingTrigger) trigger).getDelay());
-		
+
 		trigger = globalWksp.triggers.get(3);
 		assertTrue(trigger instanceof IndividualCoaltionActivationTrigger);
-		assertEquals(0.3333, ((IndividualCoaltionActivationTrigger) trigger).getThreshold(), 0.00001);
+		assertEquals(0.3333, ((IndividualCoaltionActivationTrigger) trigger)
+				.getThreshold(), 0.00001);
 	}
 
 }

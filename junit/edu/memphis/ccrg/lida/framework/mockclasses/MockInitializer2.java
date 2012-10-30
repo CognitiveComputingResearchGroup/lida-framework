@@ -18,7 +18,7 @@ public class MockInitializer2 implements Initializer {
 	public static FullyInitializable module;
 	public static Agent agent;
 	public static Map<String, ?> params;
-	
+
 	@Override
 	public void initModule(FullyInitializable module, Agent agent,
 			Map<String, ?> params) {

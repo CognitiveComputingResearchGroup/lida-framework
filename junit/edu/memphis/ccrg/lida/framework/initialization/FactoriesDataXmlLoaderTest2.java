@@ -7,7 +7,6 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.framework.initialization;
 
-
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -41,75 +40,74 @@ public class FactoriesDataXmlLoaderTest2 {
 	public void setUp() throws Exception {
 		loader = new FactoriesDataXmlLoader();
 	}
-	
+
 	@Test
 	public void testParseDocument() {
-		String xml = "<LidaFactories>" +
-			"<strategies>" +
-			"	<strategy flyweight=\"true\" name=\"excite1\" type=\"excite\">"
-			+ "<class>edu.memphis.ccrg.lida.framework.strategies.LinearExciteStrategy</class>"
-			+ "<param name=\"m\" type=\"double\">1.0</param>"
-			+ "</strategy>"
-			
-			+ "<strategy flyweight=\"false\" name=\"decay1\" type=\"decay\">"
-			+ "<class>edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy</class>"
-			+ "<param name=\"d\" type=\"string\">hello</param>"
-			+ "</strategy>" 
-			+ "</strategies>" 
-			
-			+ "<nodes>"
-			+ "<node name=\"node1\">"
-			+ "<class>edu.memphis.ccrg.lida.pam.PamNodeImpl</class>"
-			+ "<defaultstrategy>strategy1</defaultstrategy>"
-			+ "<defaultstrategy>strategy2</defaultstrategy>"
-			+ "<defaultstrategy>strategy3</defaultstrategy>"
-			+ "<param name=\"learnable.baseLevelDecayStrategy\" type=\"string\">slowDecay</param>"
-			+ "<param name=\"baseLevelExciteStrategy\" type=\"string\">slowExcite</param>"
-			+ "<param name=\"baseLevelRemovalThreshold\" type=\"double\">0.0</param>"
-			+ "<param name=\"baseLevelActivation\" type=\"double\">0.1</param> "
-			+ "</node>" 
-			+ "<node name=\"node2\">"
-			+ "<class>edu.memphis.ccrg.lida.pam.PamNodeImpl2</class>"
-			+ "<defaultstrategy>strategy4</defaultstrategy>"
-			+ "<defaultstrategy>strategy2</defaultstrategy>"
-			+ "<param name=\"param1\" type=\"string\">slowDecay</param>"
-			+ "</node>" 
-			+ "</nodes>"
-			
-			+"<links>"
-			+ "<link name=\"link1\">"
-			+ "<class>edu.memphis.ccrg.lida.pam.PamLinkImpl</class>"
-			+ "<defaultstrategy>strategy1</defaultstrategy>"
-			+ "<defaultstrategy>strategy2</defaultstrategy>"
-			+ "<defaultstrategy>strategy3</defaultstrategy>"
-			+ "<param name=\"learnable.baseLevelDecayStrategy\" type=\"string\">slowDecay</param>"
-			+ "<param name=\"baseLevelExciteStrategy\" type=\"string\">slowExcite</param>"
-			+ "<param name=\"baseLevelRemovalThreshold\" type=\"double\">0.0</param>"
-			+ "<param name=\"baseLevelActivation\" type=\"double\">0.1</param> "
-			+ "</link>" 
-			+ "</links>"
-			
-			+ "<tasks><task name=\"topleft\">"
-			+ "<class>edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.BasicStructureBuildingCodelet</class>"
-			+"<ticksperrun>1</ticksperrun>"
-			+ "<defaultstrategy>strategy1</defaultstrategy>"
-			+ "<defaultstrategy>strategy2</defaultstrategy>"
-			+ "<defaultstrategy>strategy3</defaultstrategy>"
-			+ "<param name=\"param\" type=\"int\">10</param>"
-			+ "</task>"
-			+"<task name=\"bottomright\">"
-			+ "<class>edu.memphis.ccrg.lida.example.genericlida.featuredetectors.Another</class>"
-			+"<ticksperrun>1</ticksperrun>"
-			+ "<defaultstrategy>strategy1</defaultstrategy>"
-			+ "<param name=\"param1\" type=\"string\">hi</param>"
-			+ "</task>"
-			+ "</tasks>"
-			
-			+ "</LidaFactories>";
+		String xml = "<LidaFactories>"
+				+ "<strategies>"
+				+ "	<strategy flyweight=\"true\" name=\"excite1\" type=\"excite\">"
+				+ "<class>edu.memphis.ccrg.lida.framework.strategies.LinearExciteStrategy</class>"
+				+ "<param name=\"m\" type=\"double\">1.0</param>"
+				+ "</strategy>"
+
+				+ "<strategy flyweight=\"false\" name=\"decay1\" type=\"decay\">"
+				+ "<class>edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy</class>"
+				+ "<param name=\"d\" type=\"string\">hello</param>"
+				+ "</strategy>"
+				+ "</strategies>"
+
+				+ "<nodes>"
+				+ "<node name=\"node1\">"
+				+ "<class>edu.memphis.ccrg.lida.pam.PamNodeImpl</class>"
+				+ "<defaultstrategy>strategy1</defaultstrategy>"
+				+ "<defaultstrategy>strategy2</defaultstrategy>"
+				+ "<defaultstrategy>strategy3</defaultstrategy>"
+				+ "<param name=\"learnable.baseLevelDecayStrategy\" type=\"string\">slowDecay</param>"
+				+ "<param name=\"baseLevelExciteStrategy\" type=\"string\">slowExcite</param>"
+				+ "<param name=\"baseLevelRemovalThreshold\" type=\"double\">0.0</param>"
+				+ "<param name=\"baseLevelActivation\" type=\"double\">0.1</param> "
+				+ "</node>"
+				+ "<node name=\"node2\">"
+				+ "<class>edu.memphis.ccrg.lida.pam.PamNodeImpl2</class>"
+				+ "<defaultstrategy>strategy4</defaultstrategy>"
+				+ "<defaultstrategy>strategy2</defaultstrategy>"
+				+ "<param name=\"param1\" type=\"string\">slowDecay</param>"
+				+ "</node>"
+				+ "</nodes>"
+
+				+ "<links>"
+				+ "<link name=\"link1\">"
+				+ "<class>edu.memphis.ccrg.lida.pam.PamLinkImpl</class>"
+				+ "<defaultstrategy>strategy1</defaultstrategy>"
+				+ "<defaultstrategy>strategy2</defaultstrategy>"
+				+ "<defaultstrategy>strategy3</defaultstrategy>"
+				+ "<param name=\"learnable.baseLevelDecayStrategy\" type=\"string\">slowDecay</param>"
+				+ "<param name=\"baseLevelExciteStrategy\" type=\"string\">slowExcite</param>"
+				+ "<param name=\"baseLevelRemovalThreshold\" type=\"double\">0.0</param>"
+				+ "<param name=\"baseLevelActivation\" type=\"double\">0.1</param> "
+				+ "</link>"
+				+ "</links>"
+
+				+ "<tasks><task name=\"topleft\">"
+				+ "<class>edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.BasicStructureBuildingCodelet</class>"
+				+ "<ticksperrun>1</ticksperrun>"
+				+ "<defaultstrategy>strategy1</defaultstrategy>"
+				+ "<defaultstrategy>strategy2</defaultstrategy>"
+				+ "<defaultstrategy>strategy3</defaultstrategy>"
+				+ "<param name=\"param\" type=\"int\">10</param>"
+				+ "</task>"
+				+ "<task name=\"bottomright\">"
+				+ "<class>edu.memphis.ccrg.lida.example.genericlida.featuredetectors.Another</class>"
+				+ "<ticksperrun>1</ticksperrun>"
+				+ "<defaultstrategy>strategy1</defaultstrategy>"
+				+ "<param name=\"param1\" type=\"string\">hi</param>"
+				+ "</task>" + "</tasks>"
+
+				+ "</LidaFactories>";
 		Document d = parseDocument(xml);
-		
+
 		loader.parseDocument(d);
-		
+
 		assertTrue(factory.containsStrategy("excite1"));
 		assertTrue(factory.containsStrategy("decay1"));
 		assertTrue(factory.containsNodeType("node1"));
@@ -117,12 +115,12 @@ public class FactoriesDataXmlLoaderTest2 {
 		assertTrue(factory.containsLinkType("link1"));
 		assertTrue(factory.containsTaskType("topleft"));
 		assertTrue(factory.containsTaskType("bottomright"));
-		
+
 		Strategy s = factory.getStrategy("excite1");
 		assertTrue(s instanceof LinearExciteStrategy);
 		s = factory.getStrategy("decay1");
 		assertTrue(s instanceof LinearDecayStrategy);
-		
+
 		Linkable l = factory.getNode("node1");
 		assertTrue(l instanceof PamNodeImpl);
 		l = factory.getNode("node2");
@@ -133,14 +131,14 @@ public class FactoriesDataXmlLoaderTest2 {
 		n1.setId(3043);
 		l = factory.getLink("link1", n, n1, new PamNodeImpl());
 		assertTrue(l instanceof PamLinkImpl);
-		
-		Codelet c = (Codelet)factory.getFrameworkTask("topleft", null);
+
+		Codelet c = (Codelet) factory.getFrameworkTask("topleft", null);
 		assertTrue(c instanceof BasicStructureBuildingCodelet);
-		
-		c = (Codelet)factory.getFrameworkTask("bottomright", null);
+
+		c = (Codelet) factory.getFrameworkTask("bottomright", null);
 		assertNull(c);
 	}
-	
+
 	/**
 	 * @param xml
 	 * @return

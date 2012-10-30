@@ -14,37 +14,41 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 
 /**
  * Basic {@link Agent} Implementation.
+ * 
  * @author Javier Snaider
- *
+ * 
  */
 public class AgentImpl extends FrameworkModuleImpl implements Agent {
-	
-	private static final Logger logger = Logger.getLogger(AgentImpl.class.getCanonicalName());
-	
+
+	private static final Logger logger = Logger.getLogger(AgentImpl.class
+			.getCanonicalName());
+
 	private TaskManager taskManager;
 
 	/**
-	 * @param tm {@link TaskManager}
+	 * @param tm
+	 *            {@link TaskManager}
 	 */
 	public AgentImpl(TaskManager tm) {
 		super(ModuleName.Agent);
-		taskManager=tm;
+		taskManager = tm;
 	}
-	
+
 	@Override
-	public void init(){
+	public void init() {
 		taskManager.setDecayingModules(getSubmodules().values());
-		logger.log(Level.INFO,"FrameworkModules have been started\n", 0L);		
+		logger.log(Level.INFO, "FrameworkModules have been started\n", 0L);
 	}
 
 	@Override
 	public TaskManager getTaskManager() {
 		return taskManager;
 	}
-	
-	/** 
-	 * Should do nothing, submodules' decayModule method is called 
-     * in FrameworkModuleImpl#taskManagerDecayModule.
+
+	/**
+	 * Should do nothing, submodules' decayModule method is called in
+	 * FrameworkModuleImpl#taskManagerDecayModule.
+	 * 
 	 * @see edu.memphis.ccrg.lida.framework.FrameworkModule#decayModule(long)
 	 */
 	@Override

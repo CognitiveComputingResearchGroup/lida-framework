@@ -12,35 +12,46 @@ import java.util.Map;
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 
 /**
- * A strategy pattern for exciting Activatibles or Learnables 
- *  
+ * A strategy pattern for exciting Activatibles or Learnables
+ * 
  * Implementations should add themselves to {@link ElementFactory} via the
  * factoriesData.xml configuration file.
  * 
- *  
+ * 
  * @author Javier Snaider
  * @author Ryan J. McCall
- *
+ * 
  */
-public interface ExciteStrategy extends Strategy{
+public interface ExciteStrategy extends Strategy {
 
 	/**
-     * Excites the current activation according to some internal excite function.
-     * @param currentActivation activation of the entity before excite.
-     * @param excitation amount of activation to adds
-     * @param params parameters
-     * @return new activation amount
-     */
-	public double excite(double currentActivation, double excitation, Object... params);
-	
-	/**
-	 * Excites the current activation according to some internal excite function.
-	 * @param currentActivation activation of the entity before excite.
-	 * @param excitation amount of activation to adds
-	 * @param params parameters
+	 * Excites the current activation according to some internal excite
+	 * function.
+	 * 
+	 * @param currentActivation
+	 *            activation of the entity before excite.
+	 * @param excitation
+	 *            amount of activation to adds
+	 * @param params
+	 *            parameters
 	 * @return new activation amount
 	 */
-	public double excite(double currentActivation, double excitation, Map<String, ? extends Object>params);
+	public double excite(double currentActivation, double excitation,
+			Object... params);
+
+	/**
+	 * Excites the current activation according to some internal excite
+	 * function.
+	 * 
+	 * @param currentActivation
+	 *            activation of the entity before excite.
+	 * @param excitation
+	 *            amount of activation to adds
+	 * @param params
+	 *            parameters
+	 * @return new activation amount
+	 */
+	public double excite(double currentActivation, double excitation,
+			Map<String, ? extends Object> params);
 
 }
-

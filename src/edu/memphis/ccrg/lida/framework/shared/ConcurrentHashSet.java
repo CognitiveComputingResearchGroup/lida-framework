@@ -34,16 +34,19 @@ public class ConcurrentHashSet<E> extends AbstractSet<E> implements Set<E>,
 	private static final Object PRESENT = new Object();
 
 	/**
-	 * Constructs a new, empty set; 
-	 * the backing {@link ConcurrentHashMap} has default initial capacity, load factor, and concurrencyLevel.
+	 * Constructs a new, empty set; the backing {@link ConcurrentHashMap} has
+	 * default initial capacity, load factor, and concurrencyLevel.
 	 */
 	public ConcurrentHashSet() {
 		new HashSet<E>();
 		this.map = new ConcurrentHashMap<E, Object>();
 	}
+
 	/**
 	 * Constructs a new set containing the elements in the specified collection.
-	 * @param c collection of elements
+	 * 
+	 * @param c
+	 *            collection of elements
 	 */
 	public ConcurrentHashSet(Collection<? extends E> c) {
 		this.map = new ConcurrentHashMap<E, Object>(Math.max(
@@ -52,21 +55,31 @@ public class ConcurrentHashSet<E> extends AbstractSet<E> implements Set<E>,
 	}
 
 	/**
-	 * @param initialCapacity the initial capacity. The implementation performs internal sizing to accommodate this many elements.
-	 * @param loadFactor the load factor threshold, used to control resizing. Resizing may be performed when the average number of elements per bin exceeds this threshold.
+	 * @param initialCapacity
+	 *            the initial capacity. The implementation performs internal
+	 *            sizing to accommodate this many elements.
+	 * @param loadFactor
+	 *            the load factor threshold, used to control resizing. Resizing
+	 *            may be performed when the average number of elements per bin
+	 *            exceeds this threshold.
 	 * 
-	 *  @throws IllegalArgumentException - if the initial capacity is negative or the load factor or concurrencyLevel are nonpositive.
+	 * @throws IllegalArgumentException
+	 *             - if the initial capacity is negative or the load factor or
+	 *             concurrencyLevel are nonpositive.
 	 */
 	public ConcurrentHashSet(int initialCapacity, float loadFactor) {
 		this.map = new ConcurrentHashMap<E, Object>(initialCapacity, loadFactor);
 	}
 
 	/**
-	 * Constructs a new, empty set; 
-	 * the backing {@link ConcurrentHashMap} has
-	 * specified initial capacity, default load factor, and  default concurrencyLevel.
-	 * @param initialCapacity initial capacity
-	 * @throws IllegalArgumentException - if the initial capacity of elements is negative.
+	 * Constructs a new, empty set; the backing {@link ConcurrentHashMap} has
+	 * specified initial capacity, default load factor, and default
+	 * concurrencyLevel.
+	 * 
+	 * @param initialCapacity
+	 *            initial capacity
+	 * @throws IllegalArgumentException
+	 *             - if the initial capacity of elements is negative.
 	 */
 	public ConcurrentHashSet(int initialCapacity) {
 		this.map = new ConcurrentHashMap<E, Object>(initialCapacity);
@@ -77,7 +90,7 @@ public class ConcurrentHashSet<E> extends AbstractSet<E> implements Set<E>,
 		boolean modified = false;
 		Iterator<? extends E> e = c.iterator();
 		while (e.hasNext()) {
-			if (add(e.next())){
+			if (add(e.next())) {
 				modified = true;
 			}
 		}

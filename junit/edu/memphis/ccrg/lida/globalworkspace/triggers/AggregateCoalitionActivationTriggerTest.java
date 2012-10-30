@@ -28,7 +28,9 @@ import edu.memphis.ccrg.lida.globalworkspace.CoalitionImpl;
 import edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBuffer;
 
 /**
- * This is a JUnit class which can be used to test methods of the AggregateCoalitionActivationTrigger class
+ * This is a JUnit class which can be used to test methods of the
+ * AggregateCoalitionActivationTrigger class
+ * 
  * @author Siminder Kaur
  */
 
@@ -52,10 +54,12 @@ public class AggregateCoalitionActivationTriggerTest {
 			public NodeStructure retrieveWorkspaceContent(WorkspaceBuffer buffer) {
 				return soughtContent;
 			}
+
 			@Override
 			public boolean bufferContainsSoughtContent(WorkspaceBuffer buffer) {
 				return false;
 			}
+
 			@Override
 			public String toString() {
 				return null;
@@ -77,9 +81,9 @@ public class AggregateCoalitionActivationTriggerTest {
 	public void testCheckForTriggerConditionSetOfCoalition() {
 		parameters.put("threshold", 0.7);
 		trigger.init(parameters, gw);
-		
+
 		trigger.checkForTriggerCondition(coalitions);
-		
+
 		assertNull(gw.trigger);
 	}
 
@@ -87,20 +91,20 @@ public class AggregateCoalitionActivationTriggerTest {
 	public void testCheckForTriggerConditionSetOfCoalition1() {
 		parameters.put("threshold", 0.5);
 		trigger.init(parameters, gw);
-		
+
 		trigger.checkForTriggerCondition(coalitions);
-		
+
 		assertEquals(trigger, gw.trigger);
 	}
-	
+
 	@Test
 	public void testCheckForTriggerConditionSetOfCoalition2() {
 		parameters.put("threshold", -0.5);
 		trigger.init(parameters, gw);
-		
+
 		trigger.checkForTriggerCondition(coalitions);
-		
+
 		assertEquals(trigger, gw.trigger);
 	}
-	
+
 }

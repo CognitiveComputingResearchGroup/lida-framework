@@ -14,13 +14,13 @@ import edu.memphis.ccrg.lida.pam.PamNode;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 
 /**
- * A task which propagates an amount of activation
- * along a {@link PamLink} to its sink.  
- *
+ * A task which propagates an amount of activation along a {@link PamLink} to
+ * its sink.
+ * 
  * @author Ryan J. McCall
  */
 public class PropagationTask extends FrameworkTaskImpl {
-		
+
 	private PamLinkable sink;
 	private PamLink link;
 	private double excitationAmount;
@@ -28,7 +28,9 @@ public class PropagationTask extends FrameworkTaskImpl {
 
 	/**
 	 * Default constructor.
-	 * @param ticksPerRun task's ticks per run
+	 * 
+	 * @param ticksPerRun
+	 *            task's ticks per run
 	 * 
 	 * @param link
 	 *            the link from the source to the parent
@@ -38,12 +40,12 @@ public class PropagationTask extends FrameworkTaskImpl {
 	 *            the pam
 	 */
 	public PropagationTask(int ticksPerRun, PamLink link, double amount,
-						   PerceptualAssociativeMemory pam) {
+			PerceptualAssociativeMemory pam) {
 		super(ticksPerRun);
 		this.link = link;
 		this.sink = (PamLinkable) link.getSink();
 		this.excitationAmount = amount;
-		this.pam = pam;	
+		this.pam = pam;
 	}
 
 	/**
@@ -51,17 +53,17 @@ public class PropagationTask extends FrameworkTaskImpl {
 	 * on link's new activation. If this puts sink over its percept threshold
 	 * then both Link and sink will be send as a percept. Calls
 	 * {@link PerceptualAssociativeMemory#propagateActivationToParents(PamNode)}
-	 * with sink and finishes. 
+	 * with sink and finishes.
 	 */
 	@Override
 	protected void runThisFrameworkTask() {
 		link.setActivation(excitationAmount);
 		sink.excite(excitationAmount * link.getBaseLevelActivation());
-		if(pam.isOverPerceptThreshold(sink)){
+		if (pam.isOverPerceptThreshold(sink)) {
 			AddLinkToPerceptTask task = new AddLinkToPerceptTask(link, pam);
 			pam.getAssistingTaskSpawner().addTask(task);
 		}
-		if(sink instanceof PamNode){
+		if (sink instanceof PamNode) {
 			pam.propagateActivationToParents((PamNode) sink);
 		}
 		cancel();

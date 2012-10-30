@@ -34,8 +34,10 @@ public class UpdateCsmBackgroundTask extends FrameworkTaskImpl {
 	@Override
 	public void setAssociatedModule(FrameworkModule module, String moduleUsage) {
 		if (module instanceof Workspace) {
-			perceptualBuffer = (WorkspaceBuffer) module.getSubmodule(ModuleName.PerceptualBuffer);
-			csm = (WorkspaceBuffer) module.getSubmodule(ModuleName.CurrentSituationalModel);
+			perceptualBuffer = (WorkspaceBuffer) module
+					.getSubmodule(ModuleName.PerceptualBuffer);
+			csm = (WorkspaceBuffer) module
+					.getSubmodule(ModuleName.CurrentSituationalModel);
 		}
 	}
 
@@ -47,8 +49,9 @@ public class UpdateCsmBackgroundTask extends FrameworkTaskImpl {
 	@Override
 	protected void runThisFrameworkTask() {
 		if (logger.isLoggable(Level.FINEST)) {
-			logger.log(Level.FINEST, "Updating CSM with perceptual buffer content.",
-					TaskManager.getCurrentTick());
+			logger.log(Level.FINEST,
+					"Updating CSM with perceptual buffer content.", TaskManager
+							.getCurrentTick());
 		}
 		csm.addBufferContent(perceptualBuffer.getBufferContent(null));
 	}

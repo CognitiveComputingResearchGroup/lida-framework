@@ -15,65 +15,74 @@ import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.workspace.WorkspaceContent;
 
 /**
- * An immutable NodeStructureImpl.  Throws {@link UnsupportedOperationException} if any methods
- * which modify {@link NodeStructureImpl} are called.  
+ * An immutable NodeStructureImpl. Throws {@link UnsupportedOperationException}
+ * if any methods which modify {@link NodeStructureImpl} are called.
+ * 
  * @author Ryan J. McCall
  */
-public class UnmodifiableNodeStructureImpl implements NodeStructure, BroadcastContent, WorkspaceContent{
-	
+public class UnmodifiableNodeStructureImpl implements NodeStructure,
+		BroadcastContent, WorkspaceContent {
+
 	private NodeStructure ns;
-	
+
 	/**
 	 * Default Constructor.
-	 * @param src supplied NodeStructure
+	 * 
+	 * @param src
+	 *            supplied NodeStructure
 	 */
-	public UnmodifiableNodeStructureImpl(NodeStructure src){
-		if(src != null){
+	public UnmodifiableNodeStructureImpl(NodeStructure src) {
+		if (src != null) {
 			ns = src;
-		}else{
+		} else {
 			ns = new NodeStructureImpl();
 		}
 	}
 
 	/**
 	 * Copy Constructor.
-	 * @param src supplied NodeStructure
-	 * @param shouldCopy If true, the supplied NodeStructure will be copied.  Otherwise supplied NodeStructure
-	 * will be used directly.
+	 * 
+	 * @param src
+	 *            supplied NodeStructure
+	 * @param shouldCopy
+	 *            If true, the supplied NodeStructure will be copied. Otherwise
+	 *            supplied NodeStructure will be used directly.
 	 */
-	public UnmodifiableNodeStructureImpl(NodeStructure src, boolean shouldCopy){
-		if(src != null){
-			if (shouldCopy){
+	public UnmodifiableNodeStructureImpl(NodeStructure src, boolean shouldCopy) {
+		if (src != null) {
+			if (shouldCopy) {
 				ns = src.copy();
-			}else{
-				ns = src;			
+			} else {
+				ns = src;
 			}
-		}else{
+		} else {
 			ns = new NodeStructureImpl();
 		}
 	}
 
 	/**
 	 * Returns true if both NodeStructures have the same nodes and links.
-	 * @param o Object
+	 * 
+	 * @param o
+	 *            Object
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
 	public boolean equals(Object o) {
-		if(o instanceof NodeStructure){
+		if (o instanceof NodeStructure) {
 			NodeStructure otherNs = (NodeStructure) o;
-			if(getNodeCount() != otherNs.getNodeCount() || 
-					getLinkCount() != otherNs.getLinkCount()){
+			if (getNodeCount() != otherNs.getNodeCount()
+					|| getLinkCount() != otherNs.getLinkCount()) {
 				return false;
 			}
-			
+
 			for (Node n2 : otherNs.getNodes()) {
-				if(!containsNode(n2.getId())){
+				if (!containsNode(n2.getId())) {
 					return false;
 				}
 			}
 			for (Link l2 : otherNs.getLinks()) {
-				if(!containsLink(l2.getExtendedId())){
+				if (!containsLink(l2.getExtendedId())) {
 					return false;
 				}
 			}
@@ -84,203 +93,245 @@ public class UnmodifiableNodeStructureImpl implements NodeStructure, BroadcastCo
 
 	@Override
 	public int hashCode() {
-		//Generate a value for nodes based on individual node id and
-		//the number of nodes total.
+		// Generate a value for nodes based on individual node id and
+		// the number of nodes total.
 		Long aggregateNodeHash = 0L;
-		for(Node n: ns.getNodes()){
-			aggregateNodeHash += n.hashCode();			
-		}	
+		for (Node n : ns.getNodes()) {
+			aggregateNodeHash += n.hashCode();
+		}
 		aggregateNodeHash = aggregateNodeHash * 31 + ns.getNodeCount() * 37;
-		
-		//Generate a value for links based on individual link id and
-		//the number of links total.
+
+		// Generate a value for links based on individual link id and
+		// the number of links total.
 		Long aggregateLinkHash = 0L;
-		for(Link l: ns.getLinks()){
+		for (Link l : ns.getLinks()) {
 			aggregateLinkHash += l.hashCode();
 		}
 		aggregateLinkHash = aggregateLinkHash * 41 + ns.getLinkCount() * 43;
-			
+
 		int hash = 47 + aggregateNodeHash.hashCode();
 		return hash * 53 + aggregateLinkHash.hashCode();
 	}
 
 	@Override
-	public NodeStructure copy(){
+	public NodeStructure copy() {
 		return new UnmodifiableNodeStructureImpl(ns, true);
 	}
-	
+
 	/**
-	 * @throws UnsupportedOperationException Cannot modify this object once created.
+	 * @throws UnsupportedOperationException
+	 *             Cannot modify this object once created.
 	 */
 	@Override
 	public Link addDefaultLink(Link l) {
-		throw new UnsupportedOperationException("UnmodifiableNodeStructure cannot be modified");
+		throw new UnsupportedOperationException(
+				"UnmodifiableNodeStructure cannot be modified");
 	}
-	
+
 	/**
-	 * @throws UnsupportedOperationException Cannot modify this object once created.
+	 * @throws UnsupportedOperationException
+	 *             Cannot modify this object once created.
 	 */
 	@Override
 	public Link addDefaultLink(int idSource, ExtendedId idSink,
-			LinkCategory type, double activation, double removalThreshold){
-		throw new UnsupportedOperationException("UnmodifiableNodeStructure cannot be modified");
+			LinkCategory type, double activation, double removalThreshold) {
+		throw new UnsupportedOperationException(
+				"UnmodifiableNodeStructure cannot be modified");
 	}
 
 	/**
-	 * @throws UnsupportedOperationException Cannot modify this object once created.
+	 * @throws UnsupportedOperationException
+	 *             Cannot modify this object once created.
 	 */
 	@Override
-	public Link addDefaultLink(int idSource, int idSink,
-			LinkCategory type, double activation, double removalThreshold){
-		throw new UnsupportedOperationException("UnmodifiableNodeStructure cannot be modified");
+	public Link addDefaultLink(int idSource, int idSink, LinkCategory type,
+			double activation, double removalThreshold) {
+		throw new UnsupportedOperationException(
+				"UnmodifiableNodeStructure cannot be modified");
 	}
 
 	/**
-	 * @throws UnsupportedOperationException Cannot modify this object once created.
+	 * @throws UnsupportedOperationException
+	 *             Cannot modify this object once created.
 	 */
 	@Override
 	public Collection<Link> addDefaultLinks(Collection<Link> links) {
-		throw new UnsupportedOperationException("UnmodifiableNodeStructure cannot be modified");
+		throw new UnsupportedOperationException(
+				"UnmodifiableNodeStructure cannot be modified");
 	}
 
 	/**
-	 * @throws UnsupportedOperationException Cannot modify this object once created.
+	 * @throws UnsupportedOperationException
+	 *             Cannot modify this object once created.
 	 */
 	@Override
 	public Node addDefaultNode(Node n) {
-		throw new UnsupportedOperationException("UnmodifiableNodeStructure cannot be modified");
+		throw new UnsupportedOperationException(
+				"UnmodifiableNodeStructure cannot be modified");
 	}
 
 	/**
-	 * @throws UnsupportedOperationException Cannot modify this object once created.
+	 * @throws UnsupportedOperationException
+	 *             Cannot modify this object once created.
 	 */
 	@Override
 	public Link addLink(Link l, String linkType) {
-		throw new UnsupportedOperationException("UnmodifiableNodeStructure cannot be modified");
+		throw new UnsupportedOperationException(
+				"UnmodifiableNodeStructure cannot be modified");
 	}
 
 	/**
-	 * @throws UnsupportedOperationException Cannot modify this object once created.
+	 * @throws UnsupportedOperationException
+	 *             Cannot modify this object once created.
 	 */
 	@Override
 	public Node addNode(Node n, String factoryType) {
-		throw new UnsupportedOperationException("UnmodifiableNodeStructure cannot be modified");
+		throw new UnsupportedOperationException(
+				"UnmodifiableNodeStructure cannot be modified");
 	}
 
 	/**
-	 * @throws UnsupportedOperationException Cannot modify this object once created.
+	 * @throws UnsupportedOperationException
+	 *             Cannot modify this object once created.
 	 */
 	@Override
 	public Collection<Node> addDefaultNodes(Collection<Node> nodes) {
-		throw new UnsupportedOperationException("UnmodifiableNodeStructure cannot be modified");
+		throw new UnsupportedOperationException(
+				"UnmodifiableNodeStructure cannot be modified");
 	}
 
 	/**
-	 * @throws UnsupportedOperationException Cannot modify this object once created.
+	 * @throws UnsupportedOperationException
+	 *             Cannot modify this object once created.
 	 */
 	@Override
 	public void removeLink(Link l) {
-		throw new UnsupportedOperationException("UnmodifiableNodeStructure cannot be modified");
+		throw new UnsupportedOperationException(
+				"UnmodifiableNodeStructure cannot be modified");
 	}
 
 	/**
-	 * @throws UnsupportedOperationException Cannot modify this object once created.
+	 * @throws UnsupportedOperationException
+	 *             Cannot modify this object once created.
 	 */
 	@Override
 	public void removeLinkable(Linkable l) {
-		throw new UnsupportedOperationException("UnmodifiableNodeStructure cannot be modified");
+		throw new UnsupportedOperationException(
+				"UnmodifiableNodeStructure cannot be modified");
 	}
 
 	/**
-	 * @throws UnsupportedOperationException Cannot modify this object once created.
+	 * @throws UnsupportedOperationException
+	 *             Cannot modify this object once created.
 	 */
 	@Override
 	public void removeNode(Node n) {
-		throw new UnsupportedOperationException("UnmodifiableNodeStructure cannot be modified");
+		throw new UnsupportedOperationException(
+				"UnmodifiableNodeStructure cannot be modified");
 	}
 
 	/**
-	 * @throws UnsupportedOperationException Cannot modify this object once created.
+	 * @throws UnsupportedOperationException
+	 *             Cannot modify this object once created.
 	 */
 	@Override
-	public void removeLinkable(ExtendedId id){
-		throw new UnsupportedOperationException("UnmodifiableNodeStructure cannot be modified");
-		
-	}
-	
-	/**
-	 * @throws UnsupportedOperationException Cannot modify this object once created.
-	 */
-	@Override
-	public void clearLinks(){
-		throw new UnsupportedOperationException("UnmodifiableNodeStructure cannot be modified");
+	public void removeLinkable(ExtendedId id) {
+		throw new UnsupportedOperationException(
+				"UnmodifiableNodeStructure cannot be modified");
+
 	}
 
 	/**
-	 * @throws UnsupportedOperationException Cannot modify this object once created.
+	 * @throws UnsupportedOperationException
+	 *             Cannot modify this object once created.
 	 */
 	@Override
-	public void clearNodeStructure(){
-		throw new UnsupportedOperationException("UnmodifiableNodeStructure cannot be modified");
+	public void clearLinks() {
+		throw new UnsupportedOperationException(
+				"UnmodifiableNodeStructure cannot be modified");
 	}
 
 	/**
-	 * @throws UnsupportedOperationException Cannot modify this object once created.
+	 * @throws UnsupportedOperationException
+	 *             Cannot modify this object once created.
+	 */
+	@Override
+	public void clearNodeStructure() {
+		throw new UnsupportedOperationException(
+				"UnmodifiableNodeStructure cannot be modified");
+	}
+
+	/**
+	 * @throws UnsupportedOperationException
+	 *             Cannot modify this object once created.
 	 */
 	@Override
 	public void mergeWith(NodeStructure ns) {
-		throw new UnsupportedOperationException("UnmodifiableNodeStructure cannot be modified");
+		throw new UnsupportedOperationException(
+				"UnmodifiableNodeStructure cannot be modified");
 	}
 
 	/**
-	 * @throws UnsupportedOperationException Cannot modify this object once created.
+	 * @throws UnsupportedOperationException
+	 *             Cannot modify this object once created.
 	 */
 	@Override
 	public Link addDefaultLink(Node source, Linkable sink,
 			LinkCategory category, double activation, double removalThreshold) {
-		throw new UnsupportedOperationException("UnmodifiableNodeStructure cannot be modified");
+		throw new UnsupportedOperationException(
+				"UnmodifiableNodeStructure cannot be modified");
 	}
 
 	/**
-	 * @throws UnsupportedOperationException Cannot modify this object once created.
+	 * @throws UnsupportedOperationException
+	 *             Cannot modify this object once created.
 	 */
 	@Override
 	public Node addDefaultNode(String label, double a, double rt) {
-		throw new UnsupportedOperationException("UnmodifiableNodeStructure cannot be modified");
+		throw new UnsupportedOperationException(
+				"UnmodifiableNodeStructure cannot be modified");
 	}
 
 	/**
-	 * @throws UnsupportedOperationException Cannot modify this object once created.
+	 * @throws UnsupportedOperationException
+	 *             Cannot modify this object once created.
 	 */
 	@Override
 	public Link addLink(String type, int srcId, ExtendedId snkId,
 			LinkCategory cat, double a, double rt) {
-		throw new UnsupportedOperationException("UnmodifiableNodeStructure cannot be modified");
+		throw new UnsupportedOperationException(
+				"UnmodifiableNodeStructure cannot be modified");
 	}
 
 	/**
-	 * @throws UnsupportedOperationException Cannot modify this object once created.
+	 * @throws UnsupportedOperationException
+	 *             Cannot modify this object once created.
 	 */
 	@Override
 	public Node addNode(String type, String label, double a, double rt) {
-		throw new UnsupportedOperationException("UnmodifiableNodeStructure cannot be modified");
+		throw new UnsupportedOperationException(
+				"UnmodifiableNodeStructure cannot be modified");
 	}
-	
+
 	/**
-	 * @throws UnsupportedOperationException Cannot modify this object once created.
+	 * @throws UnsupportedOperationException
+	 *             Cannot modify this object once created.
 	 */
 	@Override
 	public Link addLink(String type, Node src, Linkable sink, LinkCategory cat,
 			double a, double rt) {
-		throw new UnsupportedOperationException("UnmodifiableNodeStructure cannot be modified");
+		throw new UnsupportedOperationException(
+				"UnmodifiableNodeStructure cannot be modified");
 	}
 
 	/**
-	 * @throws UnsupportedOperationException Cannot modify this object once created.
+	 * @throws UnsupportedOperationException
+	 *             Cannot modify this object once created.
 	 */
 	@Override
 	public void decayNodeStructure(long ticks) {
-		throw new UnsupportedOperationException("UnmodifiableNodeStructure cannot be modified");
+		throw new UnsupportedOperationException(
+				"UnmodifiableNodeStructure cannot be modified");
 	}
 
 	@Override
@@ -407,9 +458,9 @@ public class UnmodifiableNodeStructureImpl implements NodeStructure, BroadcastCo
 	public Collection<Node> getNodes() {
 		return ns.getNodes();
 	}
-	
+
 	@Override
-	public String toString(){
+	public String toString() {
 		return ns.toString();
 	}
 

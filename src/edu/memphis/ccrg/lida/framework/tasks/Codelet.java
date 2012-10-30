@@ -13,9 +13,9 @@ package edu.memphis.ccrg.lida.framework.tasks;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBuffer;
 
-
 /**
  * A task that represents a demon-like processor.
+ * 
  * @author Javier Snaider
  * @author Ryan J. McCall
  */
@@ -25,9 +25,10 @@ public interface Codelet extends FrameworkTask {
 	 * @return the sought content
 	 */
 	public NodeStructure getSoughtContent();
-	
+
 	/**
-	 * @param content the content the codelet looks for.
+	 * @param content
+	 *            the content the codelet looks for.
 	 */
 	public void setSoughtContent(NodeStructure content);
 
@@ -40,7 +41,7 @@ public interface Codelet extends FrameworkTask {
 	 * @return true, if successful
 	 */
 	public boolean bufferContainsSoughtContent(WorkspaceBuffer buffer);
-	
+
 	/**
 	 * Returns sought content and related content from specified
 	 * WorkspaceBuffer.

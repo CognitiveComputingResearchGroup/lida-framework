@@ -14,17 +14,21 @@ import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 
 /**
  * A task which adds a {@link PamNode} to the percept.
+ * 
  * @author Ryan J. McCall
  */
 public class AddNodeToPerceptTask extends FrameworkTaskImpl {
-	
+
 	private Node node;
 	private PerceptualAssociativeMemory pam;
 
 	/**
 	 * Default constructor
-	 * @param n the {@link Node} to add
-	 * @param pam {@link PerceptualAssociativeMemory}
+	 * 
+	 * @param n
+	 *            the {@link Node} to add
+	 * @param pam
+	 *            {@link PerceptualAssociativeMemory}
 	 */
 	public AddNodeToPerceptTask(Node n, PerceptualAssociativeMemory pam) {
 		node = n;
@@ -35,7 +39,7 @@ public class AddNodeToPerceptTask extends FrameworkTaskImpl {
 	 * Adds {@link Node} to the percept then finishes.
 	 */
 	@Override
-	protected void runThisFrameworkTask() {		
+	protected void runThisFrameworkTask() {
 		pam.addToPercept(node);
 		cancel();
 	}

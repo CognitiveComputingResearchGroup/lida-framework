@@ -17,32 +17,36 @@ import edu.memphis.ccrg.lida.workspace.WorkspaceContent;
 import edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBuffer;
 
 /**
- * Default implementation of {@link StructureBuildingCodelet}.  Checks for sought content
- * in all accessible {@link WorkspaceBuffer}s and adds all buffer content to the Current Situational Model. 
+ * Default implementation of {@link StructureBuildingCodelet}. Checks for sought
+ * content in all accessible {@link WorkspaceBuffer}s and adds all buffer
+ * content to the Current Situational Model.
+ * 
  * @author Ryan J. McCall
- *
+ * 
  */
 public class BasicStructureBuildingCodelet extends StructureBuildingCodeletImpl {
-	
-	private static Logger logger = Logger.getLogger(BasicStructureBuildingCodelet.class.getCanonicalName());
-	
+
+	private static Logger logger = Logger
+			.getLogger(BasicStructureBuildingCodelet.class.getCanonicalName());
+
 	/**
 	 * Default constructor
 	 */
-	public BasicStructureBuildingCodelet(){
+	public BasicStructureBuildingCodelet() {
 	}
-	
+
 	@Override
-	protected void runThisFrameworkTask(){	
-		logger.log(Level.FINEST, "SB codelet {1} being run.", 
-				new Object[]{TaskManager.getCurrentTick(),this});
-		for(WorkspaceBuffer readableBuffer: readableBuffers.values()){
-			if(bufferContainsSoughtContent(readableBuffer)){
-				writableBuffer.addBufferContent((WorkspaceContent) retrieveWorkspaceContent(readableBuffer));
+	protected void runThisFrameworkTask() {
+		logger.log(Level.FINEST, "SB codelet {1} being run.", new Object[] {
+				TaskManager.getCurrentTick(), this });
+		for (WorkspaceBuffer readableBuffer : readableBuffers.values()) {
+			if (bufferContainsSoughtContent(readableBuffer)) {
+				writableBuffer
+						.addBufferContent((WorkspaceContent) retrieveWorkspaceContent(readableBuffer));
 			}
 		}
 		logger.log(Level.FINEST, "SB codelet {1} finishes one run.",
-				new Object[]{TaskManager.getCurrentTick(),this});
+				new Object[] { TaskManager.getCurrentTick(), this });
 	}
 
 	@Override
@@ -53,13 +57,13 @@ public class BasicStructureBuildingCodelet extends StructureBuildingCodeletImpl 
 	@Override
 	public boolean bufferContainsSoughtContent(WorkspaceBuffer buffer) {
 		NodeStructure ns = (NodeStructure) buffer.getBufferContent(null);
-		for(Linkable ln: soughtContent.getLinkables()){
-			if(!ns.containsLinkable(ln)){
+		for (Linkable ln : soughtContent.getLinkables()) {
+			if (!ns.containsLinkable(ln)) {
 				return false;
 			}
 		}
 		logger.log(Level.FINEST, "SBcodelet {1} found sought content",
-				new Object[]{TaskManager.getCurrentTick(),this});
+				new Object[] { TaskManager.getCurrentTick(), this });
 		return true;
 	}
 

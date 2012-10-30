@@ -56,7 +56,9 @@ public class ConfigUtils {
 
 	/**
 	 * Configures the Logger manager with specified configFile properties file.
-	 * @param path path of properties file
+	 * 
+	 * @param path
+	 *            path of properties file
 	 * @see LogManager
 	 */
 	public static void configLoggers(String path) {
@@ -66,17 +68,23 @@ public class ConfigUtils {
 			LogManager.getLogManager().readConfiguration(fis);
 			fis.close();
 		} catch (FileNotFoundException e) {
-			logger.log(Level.WARNING, 
-					"Exception: {0}\n occurred loading Logging Properties File from path: {1}",
-					new Object[]{e, path});
+			logger
+					.log(
+							Level.WARNING,
+							"Exception: {0}\n occurred loading Logging Properties File from path: {1}",
+							new Object[] { e, path });
 		} catch (SecurityException e) {
-			logger.log(Level.WARNING, 
-					"Exception: {0}\n occurred loading Logging Properties File from path: {1}",
-					new Object[]{e, path});
+			logger
+					.log(
+							Level.WARNING,
+							"Exception: {0}\n occurred loading Logging Properties File from path: {1}",
+							new Object[] { e, path });
 		} catch (IOException e) {
-			logger.log(Level.WARNING, 
-					"Exception: {0}\n occurred loading Logging Properties File from path: {1}",
-					new Object[]{e, path});
+			logger
+					.log(
+							Level.WARNING,
+							"Exception: {0}\n occurred loading Logging Properties File from path: {1}",
+							new Object[] { e, path });
 		}
 	}
 }

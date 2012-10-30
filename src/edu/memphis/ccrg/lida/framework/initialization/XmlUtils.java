@@ -74,8 +74,8 @@ public class XmlUtils {
 			// schema = factory.newSchema(schemaLocation);
 			schema = factory.newSchema(new StreamSource(is));
 		} catch (SAXException ex) {
-			logger.log(Level.WARNING, "The Schema file is not valid. {0}",
-					ex.getMessage());
+			logger.log(Level.WARNING, "The Schema file is not valid. {0}", ex
+					.getMessage());
 			ex.printStackTrace();
 			return false;
 		}
@@ -150,14 +150,18 @@ public class XmlUtils {
 		}
 		return i;
 	}
-	
+
 	/**
-	 * Returns whether specified {@link Element} contains a child node with specified tagName
-	 * @param ele {@link Element}
-	 * @param tagName tag name
-	 * @return true if 
+	 * Returns whether specified {@link Element} contains a child node with
+	 * specified tagName
+	 * 
+	 * @param ele
+	 *            {@link Element}
+	 * @param tagName
+	 *            tag name
+	 * @return true if
 	 */
-	public static boolean containsTag(Element ele, String tagName){
+	public static boolean containsTag(Element ele, String tagName) {
 		return getChildren(ele, tagName).size() != 0;
 	}
 
@@ -198,12 +202,13 @@ public class XmlUtils {
 
 	/**
 	 * Reads typed parameters from xml element and returns them in a Map where
-	 * the key is the parameter's String name and the value is the value of the parameter.
-	 * Finds all tags named "param".  Those tags should have two attributes, name and type. 
-	 * Valid parameters types are "int", "double", "boolean", and "string".
-	 * If the value is not compatible with the specified type then value will be null, except
-	 * in the case of a Boolean with an incompatible value, in which case the value will be False.
-	 * If a parameter's value is not specified or empty then the value will be null. 
+	 * the key is the parameter's String name and the value is the value of the
+	 * parameter. Finds all tags named "param". Those tags should have two
+	 * attributes, name and type. Valid parameters types are "int", "double",
+	 * "boolean", and "string". If the value is not compatible with the
+	 * specified type then value will be null, except in the case of a Boolean
+	 * with an incompatible value, in which case the value will be False. If a
+	 * parameter's value is not specified or empty then the value will be null.
 	 * 
 	 * @param moduleElement
 	 *            Dom {@link Element}
@@ -333,7 +338,7 @@ public class XmlUtils {
 
 	/**
 	 * Returns the Elements with name childName, in the group groupName inside
-	 * the specified Element e.  groupName must be a direct child of e.  
+	 * the specified Element e. groupName must be a direct child of e.
 	 * 
 	 * @param e
 	 *            {@link Element}
@@ -343,8 +348,8 @@ public class XmlUtils {
 	 *            name of children Elements returned
 	 * @return List of child {@link Element}s
 	 */
-	public static List<Element> getChildrenInGroup(Element e,
-			String groupName, String childName) {
+	public static List<Element> getChildrenInGroup(Element e, String groupName,
+			String childName) {
 		List<Element> children = new ArrayList<Element>();
 		Element groupElement = getChild(e, groupName);
 		if (groupElement != null) {

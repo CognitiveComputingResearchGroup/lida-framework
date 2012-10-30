@@ -8,10 +8,11 @@
 package edu.memphis.ccrg.lida.globalworkspace;
 
 /**
- * This interface serves as a mark for data which is sent in the conscious broadcast.
- *  
+ * This interface serves as a mark for data which is sent in the conscious
+ * broadcast.
+ * 
  * @author Javier Snaider
  */
 public interface BroadcastContent {
-	
+
 }

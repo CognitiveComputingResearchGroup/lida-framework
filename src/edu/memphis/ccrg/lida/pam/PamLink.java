@@ -9,12 +9,12 @@ package edu.memphis.ccrg.lida.pam;
 
 import edu.memphis.ccrg.lida.framework.shared.Link;
 
-
 /**
  * A {@link Link} in {@link PerceptualAssociativeMemory}
+ * 
  * @author Ryan J. McCall
- *
+ * 
  */
-public interface PamLink extends Link, PamLinkable{
+public interface PamLink extends Link, PamLinkable {
 
 }

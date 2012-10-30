@@ -18,24 +18,30 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
  * 
  * @author Ryan J. McCall
  */
-public interface PamListener extends ModuleListener{
-	
+public interface PamListener extends ModuleListener {
+
 	/**
 	 * Receive a {@link NodeStructure} percept.
-	 * @param ns a NodeStructure
+	 * 
+	 * @param ns
+	 *            a NodeStructure
 	 */
 	public void receivePercept(NodeStructure ns);
-	
+
 	/**
 	 * Receive a {@link Node} percept.
-	 * @param n a {@link Node}
+	 * 
+	 * @param n
+	 *            a {@link Node}
 	 */
 	public void receivePercept(Node n);
-	
+
 	/**
 	 * Receive a {@link Link} percept.
-	 * @param l a {@link Link}
+	 * 
+	 * @param l
+	 *            a {@link Link}
 	 */
 	public void receivePercept(Link l);
-	
+
 }

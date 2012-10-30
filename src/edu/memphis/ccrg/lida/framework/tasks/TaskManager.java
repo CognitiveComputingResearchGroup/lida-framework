@@ -103,6 +103,7 @@ public class TaskManager implements GuiEventProvider {
 
 	/**
 	 * Constructs a new TaskManager.
+	 * 
 	 * @param tickDuration
 	 *            - length of time of 1 tick in milliseconds
 	 * @param maxPoolSize
@@ -217,8 +218,10 @@ public class TaskManager implements GuiEventProvider {
 	}
 
 	/**
-	 * Sets inIntervalMode. 
-	 * @param intervalMode true to set the system to interval execution mode, false to
+	 * Sets inIntervalMode.
+	 * 
+	 * @param intervalMode
+	 *            true to set the system to interval execution mode, false to
 	 *            exit.
 	 */
 	public void setInIntervalMode(boolean intervalMode) {
@@ -456,8 +459,8 @@ public class TaskManager implements GuiEventProvider {
 
 				long duration = System.currentTimeMillis() - initTime;
 				if (duration < tickDuration) {// TODO change this if multiple
-												// ticks are executed in
-												// goNextTick()
+					// ticks are executed in
+					// goNextTick()
 					try {
 						Thread.sleep(tickDuration - duration);
 					} catch (InterruptedException e) {
@@ -579,8 +582,8 @@ public class TaskManager implements GuiEventProvider {
 	/**
 	 * This method clean up the Task Queue and reset to 0 the currentTick and
 	 * the maxTick. All {@link TaskSpawner} must be reset also. This method is
-	 * intended to be used only when the {@link Agent} is reset. Currently used only for testing. To be
-	 * implemented in the framework in the future.
+	 * intended to be used only when the {@link Agent} is reset. Currently used
+	 * only for testing. To be implemented in the framework in the future.
 	 */
 	void reset() {
 		taskQueue = new ConcurrentHashMap<Long, Set<FrameworkTask>>();

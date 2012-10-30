@@ -32,9 +32,10 @@ import edu.memphis.ccrg.lida.pam.tasks.DetectionAlgorithm;
 
 /**
  * @author Javier Snaider
- *
+ * 
  */
-public class MockPAM extends FrameworkModuleImpl implements PerceptualAssociativeMemory {
+public class MockPAM extends FrameworkModuleImpl implements
+		PerceptualAssociativeMemory {
 
 	private static double perceptThreshold = 0.0;
 
@@ -55,6 +56,7 @@ public class MockPAM extends FrameworkModuleImpl implements PerceptualAssociativ
 		// not implemented
 		return null;
 	}
+
 	@Override
 	public Set<PamNode> addDefaultNodes(Set<? extends Node> nodes) {
 		// not implemented
@@ -125,7 +127,7 @@ public class MockPAM extends FrameworkModuleImpl implements PerceptualAssociativ
 
 	@Override
 	public void setPerceptThreshold(double t) {
-		MockPAM.perceptThreshold =t;
+		MockPAM.perceptThreshold = t;
 
 	}
 
@@ -133,7 +135,7 @@ public class MockPAM extends FrameworkModuleImpl implements PerceptualAssociativ
 	public void setUpscaleFactor(double f) {
 		upscaleFactor = f;
 	}
-	
+
 	public double upscaleFactor;
 
 	@Override
@@ -156,7 +158,7 @@ public class MockPAM extends FrameworkModuleImpl implements PerceptualAssociativ
 	@Override
 	public boolean isOverPerceptThreshold(PamLinkable l) {
 		// not implemented
-		return l.getTotalActivation()>= MockPAM.perceptThreshold;
+		return l.getTotalActivation() >= MockPAM.perceptThreshold;
 
 	}
 
@@ -172,6 +174,7 @@ public class MockPAM extends FrameworkModuleImpl implements PerceptualAssociativ
 		// not implemented
 		return null;
 	}
+
 	@Override
 	public Link getLink(ExtendedId id) {
 		// not implemented
@@ -227,11 +230,14 @@ public class MockPAM extends FrameworkModuleImpl implements PerceptualAssociativ
 	}
 
 	public Link linkPercept;
+
 	@Override
 	public void addToPercept(Link l) {
 		linkPercept = l;
 	}
+
 	public Node nodePercept;
+
 	@Override
 	public void addToPercept(Node n) {
 		nodePercept = n;

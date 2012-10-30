@@ -18,17 +18,16 @@ public class MockFrameworkModule extends FrameworkModuleImpl {
 
 	public boolean wasDecayed;
 	public long decayTicks;
-	public List<ModuleListener>listeners = new ArrayList<ModuleListener>();
+	public List<ModuleListener> listeners = new ArrayList<ModuleListener>();
 
 	@Override
 	public Object getModuleContent(Object... params) {
-		
+
 		return null;
 	}
 
 	@Override
 	public void init() {
-		
 
 	}
 
@@ -40,13 +39,13 @@ public class MockFrameworkModule extends FrameworkModuleImpl {
 
 	@Override
 	public void decayModule(long ticks) {
-		decayTicks=ticks;
+		decayTicks = ticks;
 		wasDecayed = true;
 	}
-	
+
 	public FrameworkModule associatedModule;
 	public String moduleUsage;
-	
+
 	@Override
 	public void setAssociatedModule(FrameworkModule module, String moduleUsage) {
 		associatedModule = module;

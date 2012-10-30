@@ -19,11 +19,12 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
  * @author Javier Snaider
  */
 public class HardLocationImpl implements HardLocation {
-	
-	private static final Logger logger = Logger.getLogger(HardLocationImpl.class.getCanonicalName());
+
+	private static final Logger logger = Logger
+			.getLogger(HardLocationImpl.class.getCanonicalName());
 	private static final byte DEFAULT_COUNTER_MAX = 40;
 	private final byte counterMax = DEFAULT_COUNTER_MAX;
-	
+
 	private BitVector address;
 	private int wordLength;
 	private byte[] counters;
@@ -31,8 +32,11 @@ public class HardLocationImpl implements HardLocation {
 
 	/**
 	 * Constructs a new hard location with specified address and length.
-	 * @param address {@link BitVector}
-	 * @param wordLength length of the words
+	 * 
+	 * @param address
+	 *            {@link BitVector}
+	 * @param wordLength
+	 *            length of the words
 	 */
 	public HardLocationImpl(BitVector address, int wordLength) {
 		this.address = address;
@@ -42,7 +46,9 @@ public class HardLocationImpl implements HardLocation {
 
 	/**
 	 * Constructs a new hard location with specified address
-	 * @param address {@link BitVector} address of this HardLocation
+	 * 
+	 * @param address
+	 *            {@link BitVector} address of this HardLocation
 	 */
 	public HardLocationImpl(BitVector address) {
 		this(address, address.size());
@@ -104,7 +110,7 @@ public class HardLocationImpl implements HardLocation {
 		// }
 
 		for (int i = 0; i < wordLength; i++) {
-//			int inc=0;
+			// int inc=0;
 			buff[i] += Integer.signum(counters[i]);
 		}
 		return buff;
@@ -112,10 +118,12 @@ public class HardLocationImpl implements HardLocation {
 
 	@Override
 	public int hammingDistance(BitVector vector) {
-		if(vector == null){
-			logger.log(Level.WARNING,"The vector can not be null.",TaskManager.getCurrentTick());			return Integer.MAX_VALUE;
+		if (vector == null) {
+			logger.log(Level.WARNING, "The vector can not be null.",
+					TaskManager.getCurrentTick());
+			return Integer.MAX_VALUE;
 		}
-		
+
 		BitVector aux = vector.copy();
 		aux.xor(address);
 

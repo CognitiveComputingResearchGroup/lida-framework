@@ -18,8 +18,8 @@ import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspaceImpl;
 
 /**
- * Implements a trigger that is activated when the sum of all {@link Coalition} objects
- * in {@link GlobalWorkspace} is greater than a threshold.
+ * Implements a trigger that is activated when the sum of all {@link Coalition}
+ * objects in {@link GlobalWorkspace} is greater than a threshold.
  * 
  * @author Javier Snaider
  * 
@@ -40,12 +40,14 @@ public class AggregateCoalitionActivationTrigger implements BroadcastTrigger {
 	protected double threshold;
 
 	/**
-	 * Calculates the aggregate activation of all coalitions in the {@link GlobalWorkspace} and 
-	 * if it is over threshold a broadcast is triggered.
-	 * This method is called each time a new {@link Coalition} enters the {@link GlobalWorkspace}
+	 * Calculates the aggregate activation of all coalitions in the
+	 * {@link GlobalWorkspace} and if it is over threshold a broadcast is
+	 * triggered. This method is called each time a new {@link Coalition} enters
+	 * the {@link GlobalWorkspace}
 	 * 
 	 * @param coalitions
-	 *            a Collection of all the {@link Coalition} objects in the {@link GlobalWorkspace}.
+	 *            a Collection of all the {@link Coalition} objects in the
+	 *            {@link GlobalWorkspace}.
 	 * @see GlobalWorkspaceImpl#addCoalition(Coalition)
 	 */
 	@Override
@@ -67,8 +69,9 @@ public class AggregateCoalitionActivationTrigger implements BroadcastTrigger {
 	}
 
 	/**
-	 * This method expects a parameter with name "threshold" of type double representing the coalition activation threshold 
-	 * at which the trigger will fire.
+	 * This method expects a parameter with name "threshold" of type double
+	 * representing the coalition activation threshold at which the trigger will
+	 * fire.
 	 * 
 	 * @see BroadcastTrigger#init(Map, GlobalWorkspace)
 	 */
@@ -78,13 +81,17 @@ public class AggregateCoalitionActivationTrigger implements BroadcastTrigger {
 		Object o = parameters.get("threshold");
 		if ((o != null) && (o instanceof Double)) {
 			threshold = (Double) o;
-			if(threshold < 0.0){
-				logger.log(Level.WARNING, "Invalid threshold parameter, using default.", TaskManager.getCurrentTick());
+			if (threshold < 0.0) {
+				logger.log(Level.WARNING,
+						"Invalid threshold parameter, using default.",
+						TaskManager.getCurrentTick());
 				threshold = DEFAULT_THRESHOLD;
 			}
-		}else{
+		} else {
 			threshold = DEFAULT_THRESHOLD;
-			logger.log(Level.WARNING, "Failed to set threshold parameter, using default.", TaskManager.getCurrentTick());
+			logger.log(Level.WARNING,
+					"Failed to set threshold parameter, using default.",
+					TaskManager.getCurrentTick());
 		}
 	}
 
@@ -92,12 +99,13 @@ public class AggregateCoalitionActivationTrigger implements BroadcastTrigger {
 	public void start() {
 		// not applicable
 	}
-	
+
 	/**
 	 * Gets threshold
-	 * @return threshold to activate the trigger 
+	 * 
+	 * @return threshold to activate the trigger
 	 */
-	public double getThreshold(){
+	public double getThreshold() {
 		return threshold;
 	}
 

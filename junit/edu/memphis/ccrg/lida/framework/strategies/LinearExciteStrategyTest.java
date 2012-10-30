@@ -20,13 +20,13 @@ import org.junit.Test;
 
 /**
  * @author Siminder Kaur, Javier, Ryan
- *
+ * 
  */
-public class LinearExciteStrategyTest{
-	
+public class LinearExciteStrategyTest {
+
 	private LinearExciteStrategy exciteStrategy;
 	private double epsilon = 1e-5;
-	
+
 	@Before
 	public void setUp() throws Exception {
 		exciteStrategy = new LinearExciteStrategy();
@@ -40,22 +40,23 @@ public class LinearExciteStrategyTest{
 
 	@Test
 	public void testexcite2() {
-		double newact = exciteStrategy.excite(1.0, -2, (Map<String, Object>) null);
-		assertEquals(0.0, newact,epsilon);
+		double newact = exciteStrategy.excite(1.0, -2,
+				(Map<String, Object>) null);
+		assertEquals(0.0, newact, epsilon);
 	}
 
 	@Test
 	public void testexcite3() {
-		double newact = exciteStrategy
-				.excite(0.0, 0.5, (Map<String, Object>) null);
+		double newact = exciteStrategy.excite(0.0, 0.5,
+				(Map<String, Object>) null);
 		assertEquals(0.5, newact, epsilon);
 
 	}
 
 	@Test
 	public void testexcite4() {
-		double newact = exciteStrategy
-				.excite(0.6, 0.1, (Map<String, Object>) null);
+		double newact = exciteStrategy.excite(0.6, 0.1,
+				(Map<String, Object>) null);
 		assertEquals(0.7, newact, epsilon);
 
 	}
@@ -78,26 +79,28 @@ public class LinearExciteStrategyTest{
 		assertEquals(1.0, newact, epsilon);
 
 	}
+
 	@Test
 	public void testexcite8() {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("m", 0.2);
-		
+
 		double newact = exciteStrategy.excite(0.0, 3, map);
 		assertEquals(0.6, newact, epsilon);
 
 	}
+
 	@Test
 	public void testexcite7() {
 		Object[] params = new Object[2];
 		params[0] = 0.4;
-		
+
 		double newact = exciteStrategy.excite(0.1, 2, params);
 		assertEquals(0.9, newact, epsilon);
-		
+
 		newact = exciteStrategy.excite(1.0, -0.2, params);
 		assertEquals(0.92, newact, epsilon);
-		
+
 		newact = exciteStrategy.excite(1.0, -3.0, params);
 		assertEquals(0.0, newact, epsilon);
 	}

@@ -19,28 +19,34 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.workspace.WorkspaceContent;
 
 /**
- * This class implements module of WorkspaceBuffer. WorkspaceBuffer is a submodule of workspace and 
- * it contains nodeStructures. Also this class maintains activation lower bound of its nodeStructures.
- * {@link WorkspaceBuffer} implementation. Uses a single NodeStructure for the content.
+ * This class implements module of WorkspaceBuffer. WorkspaceBuffer is a
+ * submodule of workspace and it contains nodeStructures. Also this class
+ * maintains activation lower bound of its nodeStructures.
+ * {@link WorkspaceBuffer} implementation. Uses a single NodeStructure for the
+ * content.
+ * 
  * @author Ryan J. McCall
  */
-public class WorkspaceBufferImpl extends FrameworkModuleImpl implements WorkspaceBuffer{
-	
-	private static final Logger logger = Logger.getLogger(WorkspaceBufferImpl.class.getCanonicalName());
-	
-	private NodeStructure buffer = new NodeStructureImpl();	
-	
+public class WorkspaceBufferImpl extends FrameworkModuleImpl implements
+		WorkspaceBuffer {
+
+	private static final Logger logger = Logger
+			.getLogger(WorkspaceBufferImpl.class.getCanonicalName());
+
+	private NodeStructure buffer = new NodeStructureImpl();
+
 	/**
-	 * Default constructor 
+	 * Default constructor
 	 */
 	public WorkspaceBufferImpl() {
 	}
-	
+
 	/*
-	 * Note that this method <i>merges</i> the specified content into the buffer.
-	 * Since {@link NodeStructure} copies all added Linkables, the resultant content 
-	 * inside the buffer consists of different Java objects than those supplied in the argument.
-	 * The {@link ExtendedId} of the new Linkables are still the same as the originals.  
+	 * Note that this method <i>merges</i> the specified content into the
+	 * buffer. Since {@link NodeStructure} copies all added Linkables, the
+	 * resultant content inside the buffer consists of different Java objects
+	 * than those supplied in the argument. The {@link ExtendedId} of the new
+	 * Linkables are still the same as the originals.
 	 */
 	@Override
 	public void addBufferContent(WorkspaceContent content) {
@@ -51,10 +57,12 @@ public class WorkspaceBufferImpl extends FrameworkModuleImpl implements Workspac
 	public WorkspaceContent getBufferContent(Map<String, Object> params) {
 		return (WorkspaceContent) buffer;
 	}
-	
+
 	@Override
-	public void decayModule(long ticks){
-		logger.log(Level.FINE, "Decaying buffer.", TaskManager.getCurrentTick());
+	public void decayModule(long ticks) {
+		logger
+				.log(Level.FINE, "Decaying buffer.", TaskManager
+						.getCurrentTick());
 		buffer.decayNodeStructure(ticks);
 	}
 
@@ -62,5 +70,5 @@ public class WorkspaceBufferImpl extends FrameworkModuleImpl implements Workspac
 	public Object getModuleContent(Object... params) {
 		return new UnmodifiableNodeStructureImpl(buffer);
 	}
-	
+
 }

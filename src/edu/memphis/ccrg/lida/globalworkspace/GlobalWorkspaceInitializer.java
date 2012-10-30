@@ -24,8 +24,8 @@ import edu.memphis.ccrg.lida.globalworkspace.triggers.NoCoalitionArrivingTrigger
 
 /**
  * Default {@link Initializer} implementation for the {@link GlobalWorkspace}.
- * Other implementations should always add at least one {@link BroadcastTrigger} to their
- * {@link GlobalWorkspace} module.
+ * Other implementations should always add at least one {@link BroadcastTrigger}
+ * to their {@link GlobalWorkspace} module.
  * 
  * @author Javier Snaider
  */
@@ -44,10 +44,12 @@ public class GlobalWorkspaceInitializer implements Initializer {
 			Map<String, ?> params) {
 		GlobalWorkspace globalWksp = (GlobalWorkspace) module;
 
-        Integer delayNoBroadcast = (Integer) params.get("globalWorkspace.delayNoBroadcast");
+		Integer delayNoBroadcast = (Integer) params
+				.get("globalWorkspace.delayNoBroadcast");
 		if (delayNoBroadcast == null || delayNoBroadcast <= 0) {
 			delayNoBroadcast = DEFAULT_DELAY_NO_BROADCAST;
-			logger.log(Level.WARNING, "Invalid delay no broadcast parameter, using default",
+			logger.log(Level.WARNING,
+					"Invalid delay no broadcast parameter, using default",
 					TaskManager.getCurrentTick());
 		}
 
@@ -62,7 +64,8 @@ public class GlobalWorkspaceInitializer implements Initializer {
 
 		Double aggregateActivationThreshold = (Double) params
 				.get("globalWorkspace.aggregateActivationThreshold");
-		if (aggregateActivationThreshold == null || aggregateActivationThreshold < 0.0) {
+		if (aggregateActivationThreshold == null
+				|| aggregateActivationThreshold < 0.0) {
 			aggregateActivationThreshold = DEFAULT_AGGREGATE_ACT_THRESHOLD;
 			logger
 					.log(
@@ -73,9 +76,12 @@ public class GlobalWorkspaceInitializer implements Initializer {
 
 		Double individualActivationThreshold = (Double) params
 				.get("globalWorkspace.individualActivationThreshold");
-		if (individualActivationThreshold == null || individualActivationThreshold < 0.0) {
+		if (individualActivationThreshold == null
+				|| individualActivationThreshold < 0.0) {
 			individualActivationThreshold = DEFAULT_INDIVIDUAL_ACT_THRESHOLD;
-			logger.log(Level.WARNING,
+			logger
+					.log(
+							Level.WARNING,
 							"Invalid individual activation threshold parameter, using default",
 							TaskManager.getCurrentTick());
 		}

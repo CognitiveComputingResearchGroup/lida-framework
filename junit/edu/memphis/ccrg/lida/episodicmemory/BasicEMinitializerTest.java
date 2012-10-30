@@ -21,10 +21,10 @@ import edu.memphis.ccrg.lida.framework.mockclasses.MockPAM;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 
-
 public class BasicEMinitializerTest {
 
 	private BasicEpisodicMemoryInitializer initializer;
+
 	@Before
 	public void setUp() throws Exception {
 		initializer = new BasicEpisodicMemoryInitializer();

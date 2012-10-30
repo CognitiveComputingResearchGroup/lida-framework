@@ -15,10 +15,11 @@ public class MockFrameworkGuiEventListener implements FrameworkGuiEventListener 
 
 	public FrameworkGuiEvent event;
 	public long tick;
+
 	@Override
 	public void receiveFrameworkGuiEvent(FrameworkGuiEvent event) {
 		this.event = event;
-		tick=TaskManager.getCurrentTick();
+		tick = TaskManager.getCurrentTick();
 	}
 
 }

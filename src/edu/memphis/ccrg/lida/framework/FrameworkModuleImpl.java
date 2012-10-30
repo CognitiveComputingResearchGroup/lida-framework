@@ -71,15 +71,15 @@ public abstract class FrameworkModuleImpl extends InitializableImpl implements
 
 	@Override
 	public FrameworkModule getSubmodule(ModuleName name) {
-		return (name==null)? null:submodules.get(name);
+		return (name == null) ? null : submodules.get(name);
 	}
 
 	@Override
 	public FrameworkModule getSubmodule(String name) {
-		if(name==null){
+		if (name == null) {
 			return null;
 		}
-	    return getSubmodule(ModuleName.getModuleName(name));
+		return getSubmodule(ModuleName.getModuleName(name));
 	}
 
 	@Override
@@ -94,11 +94,10 @@ public abstract class FrameworkModuleImpl extends InitializableImpl implements
 
 	@Override
 	public void addSubModule(FrameworkModule module) {
-		if (module == null){
-			logger.log(Level.WARNING,
-					"Cannot add null submodule", 
-					TaskManager.getCurrentTick());
-		}else if(module.getModuleName() == null){
+		if (module == null) {
+			logger.log(Level.WARNING, "Cannot add null submodule", TaskManager
+					.getCurrentTick());
+		} else if (module.getModuleName() == null) {
 			logger.log(Level.WARNING,
 					"Cannot add a  submodule with null ModuleName", TaskManager
 							.getCurrentTick());
@@ -113,31 +112,39 @@ public abstract class FrameworkModuleImpl extends InitializableImpl implements
 	}
 
 	/**
-	 * Framework users should not call this method. 
-	 * It will be called by the {@link TaskManager}. Decays this module and all its submodules. 
-	 * Subclasses overriding this method must call this method first in order to have all
-	 * submodules decayed.
+	 * Framework users should not call this method. It will be called by the
+	 * {@link TaskManager}. Decays this module and all its submodules.
+	 * Subclasses overriding this method must call this method first in order to
+	 * have all submodules decayed.
 	 * 
 	 * @param ticks
 	 *            number of ticks to decay.
 	 */
 	@Override
 	public void taskManagerDecayModule(long ticks) {
-		try{
-			decayModule(ticks); //First call this FrameworkModule's decayModule method.
-		}catch(Exception e){
-			logger.log(Level.WARNING, 
-					"Exception occurred during the execution of the 'decayModule(long ticks)' method in module: {1}. \n{2}",
-					new Object[]{TaskManager.getCurrentTick(),moduleName,e});
+		try {
+			decayModule(ticks); // First call this FrameworkModule's decayModule
+								// method.
+		} catch (Exception e) {
+			logger
+					.log(
+							Level.WARNING,
+							"Exception occurred during the execution of the 'decayModule(long ticks)' method in module: {1}. \n{2}",
+							new Object[] { TaskManager.getCurrentTick(),
+									moduleName, e });
 			e.printStackTrace();
 		}
 		for (FrameworkModule lm : submodules.values()) {
-			try{
-				lm.taskManagerDecayModule(ticks); //Then call all submodule's taskManagerDecayModule.
-			}catch(Exception e){
-				logger.log(Level.WARNING, 
-						"Exception occurred during the execution of the 'taskManagerDecayModule(long ticks)' method in module: {1}. \n{2}",
-						new Object[]{TaskManager.getCurrentTick(),moduleName,e});
+			try {
+				lm.taskManagerDecayModule(ticks); // Then call all submodule's
+													// taskManagerDecayModule.
+			} catch (Exception e) {
+				logger
+						.log(
+								Level.WARNING,
+								"Exception occurred during the execution of the 'taskManagerDecayModule(long ticks)' method in module: {1}. \n{2}",
+								new Object[] { TaskManager.getCurrentTick(),
+										moduleName, e });
 				e.printStackTrace();
 			}
 		}
@@ -155,7 +162,7 @@ public abstract class FrameworkModuleImpl extends InitializableImpl implements
 
 	@Override
 	public String toString() {
-		return (moduleName == null)? null:moduleName.name;
+		return (moduleName == null) ? null : moduleName.name;
 	}
 
 	@Override

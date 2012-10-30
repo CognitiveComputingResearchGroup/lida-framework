@@ -84,9 +84,11 @@ public abstract class BasicDetectionAlgorithm extends FrameworkTaskImpl
 	}
 
 	/**
-	 * This task can be initialized with the following parameters:<br><br/>
+	 * This task can be initialized with the following parameters:<br>
+	 * <br/>
 	 * 
-	 * <b>node type=string</b>label of the Node in {@link PerceptualAssociativeMemory} this algorithm detects<br/>
+	 * <b>node type=string</b>label of the Node in
+	 * {@link PerceptualAssociativeMemory} this algorithm detects<br/>
 	 * 
 	 * @see Initializable
 	 */
@@ -101,7 +103,9 @@ public abstract class BasicDetectionAlgorithm extends FrameworkTaskImpl
 			if (node != null) {
 				setPamLinkable(node);
 			} else {
-				logger.log(Level.WARNING,
+				logger
+						.log(
+								Level.WARNING,
 								"could not get node {1} from global initializer",
 								new Object[] { TaskManager.getCurrentTick(),
 										nodeLabel });

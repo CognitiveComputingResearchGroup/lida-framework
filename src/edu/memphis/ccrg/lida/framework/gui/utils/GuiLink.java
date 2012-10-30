@@ -12,30 +12,32 @@ import edu.memphis.ccrg.lida.framework.shared.Link;
 
 /**
  * Utility which {@link NodeStructurePanel} uses to represent {@link Link}s.
- * This represents a Link in the Panel.  For every {@link Link} we create two {@link GuiLink}s:
- * The first {@link GuiLink}  has type 'S' for "source".  
- * It connects the source of the {@link Link} to the {@link Link} itself.
+ * This represents a Link in the Panel. For every {@link Link} we create two
+ * {@link GuiLink}s: The first {@link GuiLink} has type 'S' for "source". It
+ * connects the source of the {@link Link} to the {@link Link} itself.
  * 
- * The second {@link GuiLink}  has type 'D' for "destination".  
- * It connects the {@link Link} itself to the sink of the {@link Link}   
+ * The second {@link GuiLink} has type 'D' for "destination". It connects the
+ * {@link Link} itself to the sink of the {@link Link}
  * 
  * @author Javier Snaider
- *
+ * 
  */
 public class GuiLink {
-	
+
 	private Link link;
 	private char type;
 
 	/**
-	 * @param link {@link Link}
-	 * @param type type
+	 * @param link
+	 *            {@link Link}
+	 * @param type
+	 *            type
 	 */
 	public GuiLink(Link link, char type) {
 		this.link = link;
 		this.type = type;
 	}
-	
+
 	/**
 	 * @return the link
 	 */
@@ -44,7 +46,8 @@ public class GuiLink {
 	}
 
 	/**
-	 * @param link the link to set
+	 * @param link
+	 *            the link to set
 	 */
 	public void setLink(Link link) {
 		this.link = link;
@@ -58,28 +61,30 @@ public class GuiLink {
 	}
 
 	/**
-	 * @param type the type to set
+	 * @param type
+	 *            the type to set
 	 */
 	public void setType(char type) {
 		this.type = type;
 	}
 
 	@Override
-	public boolean equals (Object o){
-		if (o instanceof GuiLink){
-			GuiLink gl= (GuiLink)o;
+	public boolean equals(Object o) {
+		if (o instanceof GuiLink) {
+			GuiLink gl = (GuiLink) o;
 			return (link.equals(gl.link) && type == gl.type);
 		}
 		return false;
-		
+
 	}
-	
+
 	@Override
-	public int hashCode(){
+	public int hashCode() {
 		return link.hashCode() + type;
 	}
+
 	@Override
-	public String toString(){
-		return type+"";
+	public String toString() {
+		return type + "";
 	}
 }
