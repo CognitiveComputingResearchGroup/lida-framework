@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<schema targetNamespace="http://ccrg.cs.memphis.edu/LidaGuiDef" elementFormDefault="qualified" 
+        xmlns="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://ccrg.cs.memphis.edu/LidaGuiDef">
+    <element name="guiDef" type="tns:guiDef"></element>
+    
+    <complexType name="guiDef">
+    	<sequence>
+            <element name="frame" type="tns:frame" maxOccurs="1" minOccurs="0"/>
+    		<element name="panels" type="tns:panels" maxOccurs="1" minOccurs="0"/>
+    	</sequence>
+    </complexType>
+
+    <complexType name="frame">
+    	<attribute name="left" type="nonNegativeInteger" use="optional"/>
+    	<attribute name="top" type="nonNegativeInteger" use="optional"/>
+    	<attribute name="width" type="nonNegativeInteger" use="optional"/>
+    	<attribute name="height" type="nonNegativeInteger" use="optional"/>
+    	<attribute name="extendedState" type="tns:ExtendedState" use="optional" default="MAXIMIZED_BOTH"/>
+    </complexType>
+    
+    <simpleType name="ExtendedState">
+        <restriction base="string">
+            <enumeration value="NORMAL"/>
+            <enumeration value="ICONIFIED"/>
+            <enumeration value="MAXIMIZED_HORIZ"/>
+            <enumeration value="MAXIMIZED_VERT"/>
+            <enumeration value="MAXIMIZED_BOTH"/>
+        </restriction>
+    </simpleType>
+    
+    <complexType name="panels">
+    	<sequence>
+    		<element name="panel" type="tns:panel" maxOccurs="unbounded" minOccurs="1"/>
+    	</sequence>
+    </complexType>
+    
+    <complexType name="panel">
+    	<sequence>
+    		<element name="class" type="string" maxOccurs="1" minOccurs="1"/>
+    		<element name="options" type="string" maxOccurs="1" minOccurs="0"/>
+    	</sequence>
+    	<attribute name="name" type="string" use="required"/>
+    	<attribute name="title" type="string" use="required"/>
+    	<attribute name="position" type="tns:Position" use="required"/>
+    	<attribute name="tabOrder" type="nonNegativeInteger" use="required"/>
+    	<attribute name="refreshAfterLoad" type="boolean" use="optional" default="true"/>
+    </complexType>
+
+    <simpleType name="Position">
+        <restriction base="string">
+            <enumeration value="A"/>
+            <enumeration value="B"/>
+            <enumeration value="C"/>
+            <enumeration value="FLOAT"/>
+            <enumeration value="TOOL"/>
+        </restriction>
+    </simpleType>
+</schema>
