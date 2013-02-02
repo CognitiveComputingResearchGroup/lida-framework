@@ -118,7 +118,7 @@ public class AgentXmlFactoryTest {
 				+ "</taskspawner>";
 
 		Element docEle = parseDomElement(xml);
-		TaskManager tm = new TaskManager(10, 10);
+		TaskManager tm = new TaskManager(10, 10,-1);
 		Map<String, TaskSpawner> spawners = new HashMap<String, TaskSpawner>();
 		factory.getTaskSpawner(docEle, tm, spawners);
 		assertEquals(1, spawners.size());
@@ -143,7 +143,7 @@ public class AgentXmlFactoryTest {
 				+ "</taskspawner>" + "</taskspawners></lida>";
 
 		Element docEle = parseDomElement(xml);
-		TaskManager tm = new TaskManager(10, 10);
+		TaskManager tm = new TaskManager(10, 10,-1);
 		Map<String, TaskSpawner> spawners = factory.getTaskSpawners(docEle, tm);
 		assertEquals(2, spawners.size());
 		TaskSpawner ts = (TaskSpawner) spawners.get("defaultTS");

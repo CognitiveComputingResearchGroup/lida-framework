@@ -58,15 +58,12 @@ public class GlobalInitializer {
 	 * Returns the value associated with a key, or a specified default value if 
 	 * no such attribute exists.
 	 * @param key the key
-	 * @param defValue the default value
+	 * @param defaultValue the default value
 	 * @return the value associated with key or the default value
 	 */
-	public Object getAttribute(String key, Object defValue){
-		Object res = globalAttributes.get(key);
-		if(res == null){
-			res = defValue;
-		}
-		return res;
+	public Object getAttribute(String key, Object defaultValue){
+		Object attribute = globalAttributes.get(key);
+		return (attribute==null)?defaultValue:attribute;
 	}
 
 	/**

@@ -26,7 +26,7 @@ public class TaskSpawnerImplTest {
 
 	@Before
 	public void setUp() throws Exception {
-		tm = new MockTaskManager(10, 10);
+		tm = new MockTaskManager(10, 10, -1);
 		taskSpawner = new TaskSpawnerImpl();
 		taskSpawner.setTaskManager(tm);
 		task1 = null;

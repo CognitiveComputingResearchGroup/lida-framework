@@ -56,6 +56,10 @@ public class TaskManager implements GuiEventProvider {
 	 * Default number of threads in the {@link ExecutorService}
 	 */
 	public static final int DEFAULT_NUMBER_OF_THREADS = 50;
+	/**
+	 * Default tick at which the TaskManager will shut itself down.
+	 */
+	public static final int DEFAULT_SHUTDOWN_TICK = -1;
 	/*
 	 * Determines whether or not spawned tasks should run
 	 */
@@ -101,6 +105,8 @@ public class TaskManager implements GuiEventProvider {
 	private FrameworkGuiEvent defaultGuiEvent = new FrameworkGuiEvent(
 			ModuleName.Agent, "TicksEvent", null);
 
+	private int shutdownTick = DEFAULT_SHUTDOWN_TICK;
+
 	/**
 	 * Constructs a new TaskManager.
 	 * 
@@ -108,8 +114,9 @@ public class TaskManager implements GuiEventProvider {
 	 *            - length of time of 1 tick in milliseconds
 	 * @param maxPoolSize
 	 *            - max number of threads used by the ExecutorService
+	 * @param shutdownTick the tick at which the TaskManager will automatically shut the application down.
 	 */
-	public TaskManager(int tickDuration, int maxPoolSize) {
+	public TaskManager(int tickDuration, int maxPoolSize, int shutdownTick) {
 		int corePoolSize = DEFAULT_NUMBER_OF_THREADS;
 		long keepAliveTime = 10;
 		if (tickDuration >= 0) {
@@ -125,7 +132,7 @@ public class TaskManager implements GuiEventProvider {
 		executorService = new ThreadPoolExecutor(corePoolSize, maxPoolSize,
 				keepAliveTime, TimeUnit.SECONDS,
 				new LinkedBlockingQueue<Runnable>());
-
+		this.shutdownTick = shutdownTick;
 		taskManagerThread = new Thread(new TaskManagerMainLoop());
 		taskManagerThread.start();
 	}
@@ -342,9 +349,7 @@ public class TaskManager implements GuiEventProvider {
 			return false;
 		}
 		if (inXTicks < 1) {
-			logger
-					.log(
-							Level.WARNING,
+			logger.log(Level.WARNING,
 							"task {1} was scheduled with inXTicks of {2} but this must be 1 or greater",
 							new Object[] { currentTick, task, inXTicks });
 			return false;
@@ -439,9 +444,9 @@ public class TaskManager implements GuiEventProvider {
 		public void run() {
 			while (!shuttingDown) {
 				synchronized (lock) {
-					if ((currentTick >= maxTick)
-							|| (inIntervalMode && (currentTick >= endOfNextInterval))
-							|| tasksPaused) {
+					if ((currentTick >= maxTick) ||
+						(inIntervalMode && (currentTick >= endOfNextInterval))||
+						 tasksPaused) {
 						try {
 							lock.wait();
 							continue;
@@ -452,7 +457,6 @@ public class TaskManager implements GuiEventProvider {
 						}
 					}
 				}
-
 				long initTime = System.currentTimeMillis(); // For real time
 
 				goNextTick(); // Execute one tick of the simulation
@@ -473,6 +477,10 @@ public class TaskManager implements GuiEventProvider {
 						sendEventToGui(defaultGuiEvent);
 						lastGuiEventTick = currentTick;
 					}
+				}
+				if(currentTick == shutdownTick){//TODO check this in goNextTick if multiple ticks are run at once
+					logger.log(Level.INFO, "Reached shutdown tick: {0}, initiating application shutdown.", currentTick);
+					stopRunning();
 				}
 			}// while
 		}

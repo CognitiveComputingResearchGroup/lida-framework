@@ -178,49 +178,58 @@ public class AgentXmlFactory implements AgentFactory {
 		if (nl != null && nl.size() > 0) {
 			taskManagerElement = nl.get(0);
 		}
-		Map<String, Object> params = XmlUtils
-				.getTypedParams(taskManagerElement);
-
-		Object t = params.get("taskManager.tickDuration");
-		Object m = params.get("taskManager.maxNumberOfThreads");
-
+		Map<String, Object> params = XmlUtils.getTypedParams(taskManagerElement);
 		Integer tickDuration = null;
-		Integer maxNumberOfThreads = null;
-
-		if (t instanceof String) {
+		Object o = params.get("taskManager.tickDuration");
+		if (o instanceof String) {
 			try {
-				tickDuration = Integer.parseInt((String) t);
+				tickDuration = Integer.parseInt((String) o);
 			} catch (NumberFormatException e) {
 				logger.warning("Could not load tick duration. using default");
 			}
-		} else if (t instanceof Integer) {
-			tickDuration = (Integer) t;
+		} else if (o instanceof Integer) {
+			tickDuration = (Integer)o;
 		} else {
 			logger.warning("Could not load tick duration. using default");
 		}
+		if (tickDuration == null) {
+			tickDuration = TaskManager.DEFAULT_TICK_DURATION;
+		}
 
+		Integer maxNumberOfThreads = null;
+		Object m = params.get("taskManager.maxNumberOfThreads");
 		if (m instanceof String) {
 			try {
 				maxNumberOfThreads = Integer.parseInt((String) m);
 			} catch (NumberFormatException e) {
-				logger
-						.warning("Could not load max no of threads, using default");
+				logger.warning("Could not load max no of threads, using default");
 			}
 		} else if (m instanceof Integer) {
 			maxNumberOfThreads = (Integer) m;
 		} else {
 			logger.warning("Could not load max no of threads, using default");
 		}
-
-		if (tickDuration == null) {
-			tickDuration = TaskManager.DEFAULT_TICK_DURATION;
-		}
 		if (maxNumberOfThreads == null) {
 			maxNumberOfThreads = TaskManager.DEFAULT_NUMBER_OF_THREADS;
 		}
-		TaskManager taskManager = new TaskManager(tickDuration,
-				maxNumberOfThreads);
-
+		
+		Integer shutdownTick = null;
+		Object s = params.get("taskManager.shutdownTick");
+		if (s instanceof String) {
+			try {
+				shutdownTick = Integer.parseInt((String) s);
+			} catch (NumberFormatException e) {
+				logger.warning("Could not load shutdownTick, using default");
+			}
+		} else if (s instanceof Integer) {
+			shutdownTick = (Integer) s;
+		} else {
+			logger.warning("Could not load shutdownTick, using default");
+		}
+		if (shutdownTick == null) {
+			shutdownTick = TaskManager.DEFAULT_SHUTDOWN_TICK;
+		}
+		TaskManager taskManager = new TaskManager(tickDuration,maxNumberOfThreads,shutdownTick);
 		return taskManager;
 	}
 
