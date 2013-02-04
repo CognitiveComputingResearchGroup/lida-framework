@@ -479,7 +479,7 @@ public class TaskManager implements GuiEventProvider {
 					}
 				}
 				if(currentTick == shutdownTick){//TODO check this in goNextTick if multiple ticks are run at once
-					logger.log(Level.INFO, "Reached shutdown tick: {0}, initiating application shutdown.", currentTick);
+					logger.log(Level.INFO, "Reached the shutdown tick: {0}, initiating application shutdown.", currentTick);
 					stopRunning();
 				}
 			}// while
@@ -563,9 +563,9 @@ public class TaskManager implements GuiEventProvider {
 			executorService.shutdownNow();
 			Thread.sleep(400);
 		} catch (InterruptedException e) {
-			e.printStackTrace();
+			logger.log(Level.INFO,"Shutdown interrupted scheduled tasks. Message: {0}",e.getMessage());
 		}
-		logger.log(Level.INFO, "TaskManager shutting down. System exiting.",
+		logger.log(Level.INFO, "Calling \"System.exit(0)\"",
 				currentTick);
 		System.exit(0);
 	}

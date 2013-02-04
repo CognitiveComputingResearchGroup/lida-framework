@@ -234,6 +234,9 @@ public class AddEditPanel extends GuiPanelImpl {
 
     private String tabOrder = "1";
 
+    /**
+     * @return a {@link FrameworkGuiPanelDef}
+     */
     public FrameworkGuiPanelDef getPanelConfig() {
         FrameworkGuiPanelDef config = new FrameworkGuiPanelDef();
         config.setName(txtName.getText());
