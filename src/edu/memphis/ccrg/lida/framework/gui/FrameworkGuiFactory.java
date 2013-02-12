@@ -241,8 +241,8 @@ public class FrameworkGuiFactory {
                 panel.setTitle(vals[PANEL_TITLE]);
                 panel.setClassName(vals[PANEL_CLASS_NAME]);
                 panel.setPosition(vals[PANEL_POSITION]);
-                panel.setTabOrder(Integer.parseInt(vals[PANEL_TAB_ORDER]));
-                panel.setRefreshAfterLoad(Boolean.parseBoolean(vals[PANEL_MUST_REFRESH]));
+                panel.setTabOrder(Integer.parseInt(vals[PANEL_TAB_ORDER]));  //TODO catch and log Exceptions
+                panel.setRefreshAfterLoad(Boolean.parseBoolean(vals[PANEL_MUST_REFRESH]));//TODO catch and log Exceptions
 
                 String[] options;
                 if (vals.length > PANEL_FIRST_PARAM) {
