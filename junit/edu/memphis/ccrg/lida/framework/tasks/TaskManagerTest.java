@@ -31,7 +31,7 @@ public class TaskManagerTest {
 
 	@Before
 	public void setUp() throws Exception {
-		tm = new TaskManager(10, 20, -1);
+		tm = new TaskManager(10, 20, -1,null);
 		taskSpawner = new MockTaskSpawner();
 	}
 

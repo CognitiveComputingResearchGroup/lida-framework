@@ -18,7 +18,7 @@ public class MockTaskManager extends TaskManager {
 	public List<FrameworkTask> tasks = new ArrayList<FrameworkTask>();
 
 	public MockTaskManager(int tickDuration, int maxPoolSize, int shutdownTick) {
-		super(tickDuration, maxPoolSize, shutdownTick);
+		super(tickDuration, maxPoolSize, shutdownTick,null);
 
 	}
 

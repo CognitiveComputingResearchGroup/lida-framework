@@ -32,7 +32,7 @@ public class BasicEMinitializerTest {
 
 	@Test
 	public void testInitModule() {
-		TaskManager tm = new TaskManager(10, 10, -1);
+		TaskManager tm = new TaskManager(10, 10, -1,null);
 		Agent agent = new AgentImpl(tm);
 		PerceptualAssociativeMemory pam = new MockPAM();
 		pam.setModuleName(ModuleName.PerceptualAssociativeMemory);
@@ -44,7 +44,7 @@ public class BasicEMinitializerTest {
 
 	@Test
 	public void testInitModule1() {
-		TaskManager tm = new TaskManager(10, 10, -1);
+		TaskManager tm = new TaskManager(10, 10, -1,null);
 		Agent agent = new AgentImpl(tm);
 		EpisodicMemoryImpl module = new EpisodicMemoryImpl();
 		initializer.initModule(module, agent, null);

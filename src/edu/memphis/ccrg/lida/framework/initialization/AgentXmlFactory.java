@@ -229,7 +229,13 @@ public class AgentXmlFactory implements AgentFactory {
 		if (shutdownTick == null) {
 			shutdownTick = TaskManager.DEFAULT_SHUTDOWN_TICK;
 		}
-		TaskManager taskManager = new TaskManager(tickDuration,maxNumberOfThreads,shutdownTick);
+		
+		String className = null;
+		Object pec = params.get("taskManager.postExecutionClass");
+		if(pec instanceof String){
+			className = (String) pec;
+		}
+		TaskManager taskManager = new TaskManager(tickDuration,maxNumberOfThreads,shutdownTick,className);
 		return taskManager;
 	}
 

@@ -106,6 +106,7 @@ public class TaskManager implements GuiEventProvider {
 			ModuleName.Agent, "TicksEvent", null);
 
 	private int shutdownTick = DEFAULT_SHUTDOWN_TICK;
+	private String postExecutationClassCanoncialName;
 
 	/**
 	 * Constructs a new TaskManager.
@@ -115,8 +116,9 @@ public class TaskManager implements GuiEventProvider {
 	 * @param maxPoolSize
 	 *            - max number of threads used by the ExecutorService
 	 * @param shutdownTick the tick at which the TaskManager will automatically shut the application down.
+	 * @param canonicalName an optional canonical name of a Class whose default constructor will be invoked right before the TaskManager will shutdown. 
 	 */
-	public TaskManager(int tickDuration, int maxPoolSize, int shutdownTick) {
+	public TaskManager(int tickDuration, int maxPoolSize, int shutdownTick, String canonicalName) {
 		int corePoolSize = DEFAULT_NUMBER_OF_THREADS;
 		long keepAliveTime = 10;
 		if (tickDuration >= 0) {
@@ -133,6 +135,7 @@ public class TaskManager implements GuiEventProvider {
 				keepAliveTime, TimeUnit.SECONDS,
 				new LinkedBlockingQueue<Runnable>());
 		this.shutdownTick = shutdownTick;
+		postExecutationClassCanoncialName=canonicalName;
 		taskManagerThread = new Thread(new TaskManagerMainLoop());
 		taskManagerThread.start();
 	}
@@ -565,8 +568,19 @@ public class TaskManager implements GuiEventProvider {
 		} catch (InterruptedException e) {
 			logger.log(Level.INFO,"Shutdown interrupted scheduled tasks. Message: {0}",e.getMessage());
 		}
-		logger.log(Level.INFO, "Calling \"System.exit(0)\"",
-				currentTick);
+
+		if(postExecutationClassCanoncialName != null){
+			logger.log(Level.INFO, "Preparing to run post-execution Class: {1}",
+					new Object[]{currentTick,postExecutationClassCanoncialName});
+			try {
+				Class.forName(postExecutationClassCanoncialName).newInstance();
+			} catch (Exception e) {
+				logger.log(Level.WARNING,
+							"Exception: {1} occurred during creation of post-executation Class object.",
+							new Object[]{currentTick,e});
+			} 
+		}
+		logger.log(Level.INFO, "Calling \"System.exit(0)\"",currentTick);
 		System.exit(0);
 	}
 
