@@ -40,10 +40,10 @@ public class InitializableImpl implements Initializable {
 	public <T> T getParam(String name, T defaultValue) {
 		if (defaultValue == null) {
 			logger.log(Level.SEVERE,
-					"Illegal argument: Default value cannot be null",
-					TaskManager.getCurrentTick());
+					"Call to getParam(name,defaultValue) with null defaultValue for {1}.",
+					new Object[]{TaskManager.getCurrentTick(),this});
 			throw new IllegalArgumentException(
-					"Illegal argument: Default value cannot be null");
+					"Second argument 'defaultValue' cannot be null");
 		}
 
 		T value = null;
