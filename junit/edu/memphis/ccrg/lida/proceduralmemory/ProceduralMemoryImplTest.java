@@ -317,7 +317,7 @@ public class ProceduralMemoryImplTest {
 	@Test
 	public void testReceiveBroadcast4() {
 		// Activation should be updated by broadcast
-		// Desirability should be updated by broadcast
+		// Incentive salience should be updated by broadcast
 		c2.setActivation(0.1);
 		c2.setIncentiveSalience(0.2);
 		s1.addCondition(c2, ConditionType.CONTEXT);
@@ -355,9 +355,8 @@ public class ProceduralMemoryImplTest {
 
 	@Test
 	public void testReceiveBroadcast5() {
-		
 		// Activation should be updated by broadcast
-		// Desirability should NOT be updated by broadcast
+		// Incentive salience should NOT be updated by broadcast
 		c2.setActivation(0.1);
 		c2.setIncentiveSalience(0.2);
 		s1.addCondition(c2, ConditionType.CONTEXT);

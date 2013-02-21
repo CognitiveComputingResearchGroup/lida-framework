@@ -210,16 +210,16 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 	 */
 	protected double getAverageAddingListIncentiveSalience() {
 		int numConditions = 0;
-		double aggregateNetDesirability = 0.0;
+		double incentiveSalienceSum = 0.0;
 		for (Condition c : addingList.values()) {
 			// if required to use Condition weight, use it here
-			aggregateNetDesirability += c.getIncentiveSalience();
+			incentiveSalienceSum += c.getIncentiveSalience();
 			numConditions++;
 		}
 		if (numConditions == 0) {
 			return 0.0;
 		} else {
-			return aggregateNetDesirability / numConditions;
+			return incentiveSalienceSum / numConditions;
 		}
 	}
 
