@@ -16,7 +16,6 @@ import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
  * activation
  * 
  * @author Ryan J. McCall
- * 
  */
 public interface Activatible extends Initializable {
 
@@ -29,6 +28,27 @@ public interface Activatible extends Initializable {
 	 * Default activation for {@link Activatible}
 	 */
 	public static final double DEFAULT_ACTIVATION = 0.0;
+	
+	/**
+	 * Default incentive salience for {@link Activatible}.
+	 */
+	public static final double DEFAULT_INCENTIVE_SALIENCE = 0.0;
+	
+	/**
+	 * Gets the incentive salience of the {@link Activatible}.
+	 * @return an amount of incentive salience
+	 */
+	public double getIncentiveSalience();
+	/**
+	 * Sets the incentive salience of the {@link Activatible}.
+	 * @param s an amount of incentive salience
+	 */
+	public void setIncentiveSalience(double s);
+	/**
+	 * Gets the total incentive salience of the {@link Activatible}.
+	 * @return total amount of incentive salience 
+	 */
+	public double getTotalIncentiveSalience();
 
 	/**
 	 * Returns the current activation of this activatible

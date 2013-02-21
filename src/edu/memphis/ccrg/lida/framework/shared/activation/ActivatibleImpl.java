@@ -23,7 +23,7 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
  * it, e.g. {@link Node} and {@link Codelet}.
  * 
  * @author Javier Snaider
- * 
+ * @author Ryan J. McCall
  */
 public class ActivatibleImpl extends InitializableImpl implements Activatible {
 
@@ -35,6 +35,7 @@ public class ActivatibleImpl extends InitializableImpl implements Activatible {
 	private DecayStrategy decayStrategy;
 	private double activation;
 	private double removalThreshold;
+	private double incentiveSalience;
 
 	/**
 	 * Default constructor
@@ -64,6 +65,21 @@ public class ActivatibleImpl extends InitializableImpl implements Activatible {
 		this.removalThreshold = removalThreshold;
 		this.exciteStrategy = excite;
 		this.decayStrategy = decay;
+	}
+	
+	@Override
+	public double getIncentiveSalience() {
+		return incentiveSalience;
+	}
+
+	@Override
+	public double getTotalIncentiveSalience() {
+		return getIncentiveSalience();
+	}
+
+	@Override
+	public synchronized void setIncentiveSalience(double s) {
+		incentiveSalience = s;
 	}
 
 	@Override

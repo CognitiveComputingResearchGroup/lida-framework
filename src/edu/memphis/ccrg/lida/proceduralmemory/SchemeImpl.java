@@ -15,7 +15,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.actionselection.Action;
-import edu.memphis.ccrg.lida.framework.shared.RootableNode;
 import edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryImpl.ConditionType;
@@ -205,20 +204,17 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 	}
 
 	/**
-	 * Gets the average net desirability of this unit's adding list
+	 * Gets the average incentive salience of this unit's adding list
 	 * 
-	 * @return average net desirability of this unit's adding list
+	 * @return average incentive salience of this unit's adding list
 	 */
-	protected double getAverageAddingListNetDesirability() {
+	protected double getAverageAddingListIncentiveSalience() {
 		int numConditions = 0;
 		double aggregateNetDesirability = 0.0;
 		for (Condition c : addingList.values()) {
-			if (c instanceof RootableNode) {
-				// if required to use Condition weight, use it here
-				aggregateNetDesirability += ((RootableNode) c)
-						.getNetDesirability();
-				numConditions++;
-			}
+			// if required to use Condition weight, use it here
+			aggregateNetDesirability += c.getIncentiveSalience();
+			numConditions++;
 		}
 		if (numConditions == 0) {
 			return 0.0;
@@ -238,7 +234,7 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 	@Override
 	public double getActivation() {
 		double overallSalience = contextWeight * getAverageContextActivation()
-				+ addingListWeight * getAverageAddingListNetDesirability();
+				+ addingListWeight * getAverageAddingListIncentiveSalience();
 		return (overallSalience > 1.0) ? 1.0 : overallSalience;
 	}
 

@@ -26,7 +26,6 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
  * 
  * @author Javier Snaider
  * @author Ryan J. McCall
- * 
  */
 public class LearnableImpl extends ActivatibleImpl implements Learnable {
 
@@ -36,6 +35,7 @@ public class LearnableImpl extends ActivatibleImpl implements Learnable {
 
 	private double baseLevelActivation;
 	private double learnableRemovalThreshold;
+	private double baseLevelIncentiveSalience;
 	private ExciteStrategy baseLevelExciteStrategy;
 	private DecayStrategy baseLevelDecayStrategy;
 	private TotalActivationStrategy totalActivationStrategy;
@@ -115,6 +115,21 @@ public class LearnableImpl extends ActivatibleImpl implements Learnable {
 		this.baseLevelExciteStrategy = baseLevelExciteStrategy;
 		this.baseLevelDecayStrategy = baseLevelDecayStrategy;
 		this.totalActivationStrategy = taStrategy;
+	}
+	
+	@Override
+	public double getBaseLevelIncentiveSalience() {
+		return baseLevelIncentiveSalience;
+	}
+
+	@Override
+	public void setBaseLevelIncentiveSalience(double s) {
+		baseLevelIncentiveSalience=s;
+	}
+
+	@Override
+	public double getTotalIncentiveSalience() {
+		return totalActivationStrategy.calculateTotalActivation(getBaseLevelIncentiveSalience(), getIncentiveSalience());
 	}
 
 	/**

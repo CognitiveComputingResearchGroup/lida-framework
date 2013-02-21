@@ -36,7 +36,24 @@ public interface Learnable extends Activatible {
 	 * Default base-level activation for Learnable
 	 */
 	public static final double DEFAULT_BASE_LEVEL_ACTIVATION = 0.5;
+	
+	/**
+	 * Default base-level incentive salience for {@link Learnable}.
+	 */
+	public static final double DEFAULT_BASE_LEVEL_INCENTIVE_SALIENCE = 0.0;
+	
+	/**
+	 * Gets the base-level incentive salience of the {@link Learnable}.
+	 * @return an amount of base-level incentive salience
+	 */
+	public double getBaseLevelIncentiveSalience();
 
+	/**
+	 * Sets the base-level incentive salience of the Learnable
+	 * @param s an amount of base-level incentive salience
+	 */
+	public void setBaseLevelIncentiveSalience(double s);	
+	
 	/**
 	 * Returns base level activation.
 	 * 

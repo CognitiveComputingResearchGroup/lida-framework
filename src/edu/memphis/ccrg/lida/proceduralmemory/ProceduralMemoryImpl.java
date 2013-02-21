@@ -31,7 +31,6 @@ import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
-import edu.memphis.ccrg.lida.framework.shared.RootableNode;
 import edu.memphis.ccrg.lida.framework.shared.UnmodifiableNodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
@@ -314,25 +313,8 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements
 				}
 				// Update the desirability of the
 				// condition-pool/broadcast-buffer node if needed
-				if (bNode instanceof RootableNode) {
-					RootableNode rootableBroadcastNode = (RootableNode) bNode;
-					if (condition instanceof RootableNode) {
-						RootableNode rootableCondition = (RootableNode) condition;
-						if (rootableBroadcastNode.getDesirability() > rootableCondition
-								.getDesirability()) {
-							rootableCondition
-									.setDesirability(rootableBroadcastNode
-											.getDesirability());
-						}
-					} else {
-						logger
-								.log(
-										Level.WARNING,
-										"Expected condition to be RootableNode but was {1}",
-										new Object[] {
-												TaskManager.getCurrentTick(),
-												condition.getClass() });
-					}
+				if(bNode.getIncentiveSalience()>condition.getIncentiveSalience()){
+					condition.setIncentiveSalience(bNode.getIncentiveSalience());
 				}
 			}
 		}
@@ -369,13 +351,10 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements
 			// If Node n has positive desirability,
 			// get the schemes that have n in their adding list and add them to
 			// relevantSchemes
-			if (n instanceof RootableNode) {
-				RootableNode uNode = (RootableNode) n;
-				if (uNode.getNetDesirability() > 0.0) {// TODO think about more
-					schemes = addingSchemeMap.get(uNode.getConditionId());
-					if (schemes != null) {
-						relevantSchemes.addAll(schemes);
-					}
+			if (n.getIncentiveSalience() > 0.0) {// TODO think about more
+				schemes = addingSchemeMap.get(n.getConditionId());
+				if (schemes != null) {
+					relevantSchemes.addAll(schemes);
 				}
 			}
 		}

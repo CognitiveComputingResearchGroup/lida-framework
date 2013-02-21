@@ -234,4 +234,14 @@ public class PamLinkImpl extends LinkImpl implements PamLink {
 	public void setTotalActivationStrategy(TotalActivationStrategy strategy) {
 		learnable.setTotalActivationStrategy(strategy);
 	}
+
+	@Override
+	public double getBaseLevelIncentiveSalience() {
+		return learnable.getBaseLevelIncentiveSalience();
+	}
+
+	@Override
+	public void setBaseLevelIncentiveSalience(double s) {
+		learnable.setBaseLevelIncentiveSalience(s);
+	}
 }

@@ -220,4 +220,14 @@ public class PamNodeImpl extends NodeImpl implements PamNode {
 	public void setTotalActivationStrategy(TotalActivationStrategy strategy) {
 		learnable.setTotalActivationStrategy(strategy);
 	}
+
+	@Override
+	public double getBaseLevelIncentiveSalience() {
+		return learnable.getBaseLevelIncentiveSalience();
+	}
+
+	@Override
+	public void setBaseLevelIncentiveSalience(double s) {
+		learnable.setBaseLevelIncentiveSalience(s);
+	}
 }

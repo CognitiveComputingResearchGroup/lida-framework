@@ -25,8 +25,6 @@ import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeImpl;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
-import edu.memphis.ccrg.lida.framework.shared.RootableNode;
-import edu.memphis.ccrg.lida.framework.shared.RootableNodeImpl;
 import edu.memphis.ccrg.lida.globalworkspace.Coalition;
 import edu.memphis.ccrg.lida.globalworkspace.CoalitionImpl;
 import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryImpl.ConditionType;
@@ -42,8 +40,7 @@ public class ProceduralMemoryImplTest {
 	private static final double epsilon = 10e-9;
 	private ProceduralMemoryImpl pm;
 	private Scheme s1, s2, s3;
-	private Node c1, c3;
-	private RootableNode c2, c4;
+	private Node c1, c3, c2, c4;
 	private MockTaskSpawner mockTs;
 
 	/**
@@ -60,9 +57,9 @@ public class ProceduralMemoryImplTest {
 
 		pm.setAssistingTaskSpawner(mockTs);
 		c1 = factory.getNode("NodeImpl", "c1");
-		c2 = (RootableNode) factory.getNode("RootableNodeImpl", "c2");
+		c2 = factory.getNode("NodeImpl", "c2");
 		c3 = factory.getNode("NodeImpl", "c3");
-		c4 = (RootableNode) factory.getNode("RootableNodeImpl", "c4");
+		c4 = factory.getNode("NodeImpl", "c4");
 
 		Action a = new ActionImpl("action1");
 		s1 = pm.getNewScheme(a);
@@ -185,7 +182,7 @@ public class ProceduralMemoryImplTest {
 		// Insufficient
 		c1.setActivation(0.89);
 		c2.setActivation(0.0);
-		((RootableNode) c2).setDesirability(0.89);
+		c2.setIncentiveSalience(0.89);
 		s1.addCondition(c1, ConditionType.CONTEXT);
 		s1.addCondition(c2, ConditionType.ADDINGLIST);
 		ns = new NodeStructureImpl();
@@ -196,7 +193,7 @@ public class ProceduralMemoryImplTest {
 		// Sufficient
 		c1.setActivation(1.0);
 		c2.setActivation(0.0);
-		((RootableNode) c2).setDesirability(0.9);
+		c2.setIncentiveSalience(0.9);
 		s1.addCondition(c1, ConditionType.CONTEXT);
 		s1.addCondition(c2, ConditionType.ADDINGLIST);
 		ns = new NodeStructureImpl();
@@ -322,18 +319,18 @@ public class ProceduralMemoryImplTest {
 		// Activation should be updated by broadcast
 		// Desirability should be updated by broadcast
 		c2.setActivation(0.1);
-		((RootableNode) c2).setDesirability(0.2);
+		c2.setIncentiveSalience(0.2);
 		s1.addCondition(c2, ConditionType.CONTEXT);
 		Condition stored = pm.getConditionPool().iterator().next();
 		assertEquals(0.1, stored.getActivation(), epsilon);
-		assertEquals(0.2, ((RootableNode) stored).getDesirability(), epsilon);
+		assertEquals(0.2, stored.getIncentiveSalience(), epsilon);
 
 		NodeStructure ns = new NodeStructureImpl();
-		RootableNode bNode = new RootableNodeImpl();
+		Node bNode = new NodeImpl();
 		bNode.setId(c2.getId());
 		bNode.setActivation(0.2);
-		bNode.setDesirability(0.3);
-		ns.addNode(bNode, "RootableNodeImpl");
+		bNode.setIncentiveSalience(0.3);
+		ns.addNode(bNode, "NodeImpl");
 		Coalition coal = new CoalitionImpl(ns, null);
 
 		pm.receiveBroadcast(coal);
@@ -350,29 +347,30 @@ public class ProceduralMemoryImplTest {
 		// Activation has been updated by broadcast
 		assertEquals(0.2, bufferNode.getActivation(), epsilon);
 		assertEquals(0.2, c2Condition.getActivation(), epsilon);
-		assertEquals(0.3, ((RootableNode) c2Condition).getDesirability(),
+		assertEquals(0.3, c2Condition.getIncentiveSalience(),
 				epsilon);
-		assertEquals(0.3, ((RootableNode) bufferNode).getDesirability(),
+		assertEquals(0.3, bufferNode.getIncentiveSalience(),
 				epsilon);
 	}
 
 	@Test
 	public void testReceiveBroadcast5() {
+		
 		// Activation should be updated by broadcast
 		// Desirability should NOT be updated by broadcast
 		c2.setActivation(0.1);
-		((RootableNode) c2).setDesirability(0.2);
+		c2.setIncentiveSalience(0.2);
 		s1.addCondition(c2, ConditionType.CONTEXT);
 		Condition stored = pm.getConditionPool().iterator().next();
 		assertEquals(0.1, stored.getActivation(), epsilon);
-		assertEquals(0.2, ((RootableNode) stored).getDesirability(), epsilon);
+		assertEquals(0.2, stored.getIncentiveSalience(), epsilon);
 
 		NodeStructure ns = new NodeStructureImpl();
-		RootableNode bNode = new RootableNodeImpl();
+		Node bNode = new NodeImpl();
 		bNode.setId(c2.getId());
 		bNode.setActivation(0.21);
-		bNode.setDesirability(0.001);
-		ns.addNode(bNode, "RootableNodeImpl");
+		bNode.setIncentiveSalience(0.001);
+		ns.addNode(bNode, "NodeImpl");
 		Coalition coal = new CoalitionImpl(ns, null);
 
 		pm.receiveBroadcast(coal);
@@ -389,9 +387,9 @@ public class ProceduralMemoryImplTest {
 		// Activation has been updated by broadcast
 		assertEquals(0.21, bufferNode.getActivation(), epsilon);
 		assertEquals(0.21, c2Condition.getActivation(), epsilon);
-		assertEquals(0.2, ((RootableNode) c2Condition).getDesirability(),
+		assertEquals(0.2, c2Condition.getIncentiveSalience(),
 				epsilon);
-		assertEquals(0.2, ((RootableNode) bufferNode).getDesirability(),
+		assertEquals(0.2, bufferNode.getIncentiveSalience(),
 				epsilon);
 	}
 
@@ -421,7 +419,7 @@ public class ProceduralMemoryImplTest {
 		c1.setActivation(1.0);
 		s1.addCondition(c1, ConditionType.CONTEXT);
 
-		c2.setDesirability(1.0);
+		c2.setIncentiveSalience(1.0);
 		s2.addCondition(c2, ConditionType.ADDINGLIST);
 
 		NodeStructure ns = new NodeStructureImpl();
@@ -450,8 +448,8 @@ public class ProceduralMemoryImplTest {
 		c3.setActivation(1.0);
 		s1.addCondition(c1, ConditionType.CONTEXT);
 		s1.addCondition(c3, ConditionType.CONTEXT);
-		c2.setDesirability(1.0);
-		c4.setDesirability(1.0);
+		c2.setIncentiveSalience(1.0);
+		c4.setIncentiveSalience(1.0);
 		s1.addCondition(c2, ConditionType.ADDINGLIST);
 		s1.addCondition(c4, ConditionType.ADDINGLIST);
 
@@ -480,7 +478,7 @@ public class ProceduralMemoryImplTest {
 		pm.addListener(listener);
 		NodeStructure ns = new NodeStructureImpl();
 		c1.setActivation(1.0);
-		c2.setDesirability(1.0);
+		c2.setIncentiveSalience(1.0);
 		ns.addDefaultNode((Node) c1);
 		ns.addNode(c2, c2.getFactoryType());
 		Coalition coal = new CoalitionImpl(ns, null);
