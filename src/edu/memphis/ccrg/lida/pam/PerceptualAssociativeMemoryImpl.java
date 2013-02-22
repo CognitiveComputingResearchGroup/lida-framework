@@ -306,9 +306,7 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 			return;
 		}
 		if (!pamNodeStructure.containsLinkable(pl)) {
-			logger
-					.log(
-							Level.WARNING,
+			logger.log(Level.WARNING,
 							"Adding detection algorithm {1} but, detector's pam linkable {2} is not in PAM.",
 							new Object[] { TaskManager.getCurrentTick(),
 									detector, detector.getPamLinkable() });
@@ -328,22 +326,6 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 	public synchronized void receiveBroadcast(Coalition coalition) {
 		learn(coalition);
 	}
-
-	@Override
-	public synchronized void receiveWorkspaceContent(
-			ModuleName originatingBuffer, WorkspaceContent content) {
-		// NodeStructure ns = (NodeStructure) content;
-		// FrameworkTask t = new FooTask(ns.copy());
-		// taskSpawner.addTask(t);
-		// TODO Task
-	}
-
-	@Override
-	public synchronized void receivePreafference(NodeStructure addList,
-			NodeStructure deleteList) {
-		// TODO task to use preafferent signal
-	}
-
 	@Override
 	public void learn(Coalition coalition) {
 	}
@@ -390,37 +372,32 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 	@Override
 	public void propagateActivationToParents(PamNode pn) {
 		double nodeActivation = pn.getTotalActivation();
-		if (nodeActivation < propagateActivationThreshold) {
-			return;
-		}
-
-		// Calculate the amount to propagate
-		propagateParams.put("upscale", upscaleFactor);
-		propagateParams.put("totalActivation", nodeActivation);
-		double amountToPropagate = propagationStrategy
-				.getActivationToPropagate(propagateParams);
-
-		// Get parents of pamNode and the connecting link
-		Map<Linkable, Link> parentLinkMap = pamNodeStructure
-				.getConnectedSinks(pn);
-		for (Linkable parent : parentLinkMap.keySet()) {
-			// Excite the connecting link and the parent
-			propagateActivation(parentLinkMap.get(parent), amountToPropagate);
+		if (nodeActivation >= propagateActivationThreshold) {
+			propagateParams.put("upscale", upscaleFactor);// Calculate the amount to propagate
+			propagateParams.put("totalActivation", nodeActivation);
+			double amountToPropagate = propagationStrategy.getActivationToPropagate(propagateParams);
+			Map<Linkable, Link> parentLinkMap = pamNodeStructure.getConnectedSinks(pn);
+			for (Linkable parent: parentLinkMap.keySet()) {
+				propagateActivation((PamLinkable)parent,(PamLink)parentLinkMap.get(parent),
+									amountToPropagate);
+			}
 		}
 	}
 
-	/*
-	 * Propagates specified activation along specified link to link's sink.
+	/**
+	 * Propagates specified activation from specified source along specified link.
+	 * @param src the source of the activation 
+	 * @param link the {@link PamLink} to propagate the activation down.
+	 * @param activation amount of activation coming from the source
 	 */
-	private void propagateActivation(Link link, double activation) {
+	protected void propagateActivation(PamLinkable src, PamLink link, double activation) {
 		if (logger.isLoggable(Level.FINEST)) {
 			logger.log(Level.FINEST,
-					"exciting parent: {1} and connecting link {2} amount: {3}",
-					new Object[] { TaskManager.getCurrentTick(),
-							link.getSink(), link, activation });
+					"Exciting sink: {1} and connecting link {2} amount: {3}",
+					new Object[]{TaskManager.getCurrentTick(),link.getSink(),link,activation});
 		}
 		PropagationTask task = new PropagationTask(propagationTaskTicksPerRun,
-				(PamLink) link, activation, this);
+													(PamLink)link,activation,this);
 		taskSpawner.addTask(task);
 	}
 
@@ -539,17 +516,16 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 		if (t >= 0.0 && t <= 1.0) {
 			PerceptualAssociativeMemoryImpl.perceptThreshold = t;
 		} else {
-			logger
-					.log(
-							Level.WARNING,
-							"Percept threshold must in range [0.0, 1.0]. Threshold will not be modified.",
-							TaskManager.getCurrentTick());
+			logger.log(Level.WARNING,
+						"Percept threshold must in range [0.0, 1.0]. Threshold will not be modified.",
+						TaskManager.getCurrentTick());
 		}
 	}
 
 	@Override
 	public boolean isOverPerceptThreshold(PamLinkable l) {
-		return l.getTotalActivation() > perceptThreshold;
+		//TODO OR if incentive salience is over threshold...
+		return l.getTotalActivation()>perceptThreshold;
 	}
 
 	@Override
@@ -661,5 +637,12 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 	@Override
 	public Node getNode(String label) {
 		return nodesByLabel.get(label);
+	}
+
+	@Override
+	public synchronized void receiveWorkspaceContent(ModuleName n, WorkspaceContent c) {
+	}
+	@Override
+	public synchronized void receivePreafference(NodeStructure addList,NodeStructure deleteList) {
 	}
 }
