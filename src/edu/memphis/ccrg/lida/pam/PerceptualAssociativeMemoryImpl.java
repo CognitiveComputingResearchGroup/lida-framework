@@ -524,7 +524,6 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 
 	@Override
 	public boolean isOverPerceptThreshold(PamLinkable l) {
-		//TODO OR if incentive salience is over threshold...
 		return l.getTotalActivation()>perceptThreshold;
 	}
 

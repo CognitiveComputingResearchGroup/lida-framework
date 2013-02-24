@@ -35,6 +35,28 @@ public interface Activatible extends Initializable {
 	public static final double DEFAULT_INCENTIVE_SALIENCE = 0.0;
 	
 	/**
+	 * Returns the current activation of this activatible
+	 * 
+	 * @return the current activation.
+	 */
+	public double getActivation();
+	/**
+	 * Set the current activation. Used for initialization, not during regular
+	 * execution, use excite instead.
+	 * 
+	 * @param activation
+	 *            new activation
+	 */
+	public void setActivation(double activation);
+	/**
+	 * Returns the total activation of this activatible
+	 * 
+	 * @return The total activation. It should return the current activation if
+	 *         no base activation is used.
+	 */
+	public double getTotalActivation();
+
+	/**
 	 * Gets the incentive salience of the {@link Activatible}.
 	 * @return an amount of incentive salience
 	 */
@@ -49,30 +71,23 @@ public interface Activatible extends Initializable {
 	 * @return total amount of incentive salience 
 	 */
 	public double getTotalIncentiveSalience();
-
+	
 	/**
-	 * Returns the current activation of this activatible
+	 * Updates the activation of the {@link Activatible} via its {@link ExciteStrategy} by specified amount.
+	 * The actual change to the activation depends on the specific strategy used.
 	 * 
-	 * @return the current activation.
+	 * @param amount
+	 *            the amount of excitation in units of activation
 	 */
-	public double getActivation();
-
+	public void exciteActivation(double amount);
 	/**
-	 * Set the current activation. Used for initialization, not during regular
-	 * execution, use excite instead.
+	 * Updates the incentive salience of the {@link Activatible} via its {@link ExciteStrategy} by specified amount.
+	 * The actual change to the incentive salience depends on the specific strategy used.
 	 * 
-	 * @param activation
-	 *            new activation
+	 * @param amount
+	 *            the amount of excitation in units of incentive salience
 	 */
-	public void setActivation(double activation);
-
-	/**
-	 * Returns the total activation of this activatible
-	 * 
-	 * @return The total activation. It should return the current activation if
-	 *         no base activation is used.
-	 */
-	public double getTotalActivation();
+	public void exciteIncentiveSalience(double amount);
 
 	/**
 	 * The current activation of this node is increased using the excitation
@@ -81,7 +96,9 @@ public interface Activatible extends Initializable {
 	 * @param amount
 	 *            the value to be used to increase the current activation of
 	 *            this node
+	 * @deprecated Use {@link #exciteActivation(double)} instead. This deprecation is to avoid confusion with the new {@link #exciteIncentiveSalience(double)} method. 
 	 */
+	@Deprecated
 	public void excite(double amount);
 
 	/**
@@ -145,5 +162,4 @@ public interface Activatible extends Initializable {
 	 * @return true if activation is less than activatibleRemovalThreshold
 	 */
 	public boolean isRemovable();
-
 }

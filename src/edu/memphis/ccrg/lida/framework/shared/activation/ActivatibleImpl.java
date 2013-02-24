@@ -104,7 +104,12 @@ public class ActivatibleImpl extends InitializableImpl implements Activatible {
 	}
 
 	@Override
-	public void excite(double excitation) {
+	public void excite(double amount) {
+		exciteActivation(amount);
+	}
+
+	@Override
+	public void exciteActivation(double amount) {
 		if (exciteStrategy != null) {
 			if (logger.isLoggable(Level.FINEST)) {
 				logger.log(Level.FINEST,
@@ -113,13 +118,34 @@ public class ActivatibleImpl extends InitializableImpl implements Activatible {
 								getActivation() });
 			}
 			synchronized (this) {
-				activation = exciteStrategy.excite(getActivation(), excitation);
+				activation = exciteStrategy.excite(getActivation(), amount);
 			}
 			if (logger.isLoggable(Level.FINEST)) {
 				logger.log(Level.FINEST,
 						"After excitation {1} has current activation: {2}",
 						new Object[] { TaskManager.getCurrentTick(), this,
 								getActivation() });
+			}
+		}
+	}
+
+	@Override
+	public void exciteIncentiveSalience(double amount) {
+		if (exciteStrategy != null) {
+			if (logger.isLoggable(Level.FINEST)) {
+				logger.log(Level.FINEST,
+						"Before excitation {1} has current incentive salience: {2}",
+						new Object[] { TaskManager.getCurrentTick(), this,
+								getIncentiveSalience() });
+			}
+			synchronized (this) {
+				incentiveSalience = exciteStrategy.excite(getIncentiveSalience(), amount);
+			}
+			if (logger.isLoggable(Level.FINEST)) {
+				logger.log(Level.FINEST,
+						"After excitation {1} has current incentive salience: {2}",
+						new Object[] { TaskManager.getCurrentTick(), this,
+								getIncentiveSalience()});
 			}
 		}
 	}
@@ -193,5 +219,4 @@ public class ActivatibleImpl extends InitializableImpl implements Activatible {
 	public boolean isRemovable() {
 		return getActivation() <= removalThreshold;
 	}
-
 }

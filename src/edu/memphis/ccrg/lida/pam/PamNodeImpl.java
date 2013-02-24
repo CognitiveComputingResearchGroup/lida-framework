@@ -32,7 +32,12 @@ public class PamNodeImpl extends NodeImpl implements PamNode {
 	private static final Logger logger = Logger.getLogger(PamNodeImpl.class
 			.getCanonicalName());
 	/*
-	 * Private Learnable object used for all learnable methods
+	 * Private Learnable object used for all learnable methods.
+	 * WARNING: Any changes to the methods of ActivatibleImpl and its superclasses can introduce
+	 * bugs to this class. This is due to the fact that this class extends ActivatibleImpl via NodeImpl
+	 * but it actually uses this private LearnableImpl (also an ActivatibleImpl) to store the data related
+	 * to ActivatibeImpl. So any new methods added to LearnableImpl or its superclasses must be readded here
+	 * and overridden using the learnable.
 	 */
 	private LearnableImpl learnable;
 
@@ -116,9 +121,30 @@ public class PamNodeImpl extends NodeImpl implements PamNode {
 		return learnable.getTotalActivation();
 	}
 
+	@Deprecated
 	@Override
 	public void excite(double amount) {
-		learnable.excite(amount);
+		learnable.exciteActivation(amount);
+	}
+	@Override
+	public void exciteActivation(double amount){
+		learnable.exciteActivation(amount);
+	}
+	@Override
+	public void exciteIncentiveSalience(double amount){
+		learnable.exciteIncentiveSalience(amount);
+	}
+	@Override
+	public double getIncentiveSalience(){
+		return learnable.getIncentiveSalience();
+	}
+	@Override
+	public double getTotalIncentiveSalience(){
+		return learnable.getTotalIncentiveSalience();
+	}
+	@Override
+	public synchronized void setIncentiveSalience(double s){
+		learnable.setIncentiveSalience(s);
 	}
 
 	@Override
