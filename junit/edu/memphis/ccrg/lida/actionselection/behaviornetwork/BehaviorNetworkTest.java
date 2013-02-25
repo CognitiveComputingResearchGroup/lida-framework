@@ -28,7 +28,7 @@ import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryImpl.ConditionType
 /**
  * Test for {@link BehaviorNetwork} class.
  * 
- * @author Ryan McCall
+ * @author Ryan J. McCall
  * @author Javier Snaider
  */
 public class BehaviorNetworkTest {

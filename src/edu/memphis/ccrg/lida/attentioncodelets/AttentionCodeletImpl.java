@@ -87,12 +87,9 @@ public abstract class AttentionCodeletImpl extends CodeletImpl implements
 		if (bufferContainsSoughtContent(currentSituationalModel)) {
 			NodeStructure csmContent = retrieveWorkspaceContent(currentSituationalModel);
 			if (csmContent == null) {
-				logger
-						.log(
-								Level.WARNING,
-								"Null WorkspaceContent returned in {1}. Coalition cannot be formed.",
-								new Object[] { TaskManager.getCurrentTick(),
-										this });
+				logger.log(Level.WARNING,
+							"Null WorkspaceContent returned in {1}. Coalition cannot be formed.",
+							new Object[]{TaskManager.getCurrentTick(),this});
 			} else if (csmContent.getLinkableCount() > 0) {
 				Coalition coalition = new CoalitionImpl(csmContent, this);
 				globalWorkspace.addCoalition(coalition);

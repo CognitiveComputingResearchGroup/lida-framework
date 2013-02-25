@@ -26,7 +26,8 @@ import edu.memphis.ccrg.lida.framework.strategies.LinearExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.TotalActivationStrategy;
 
 /**
- * @author Siminder Kaur, Ryan J. McCall
+ * @author Siminder Kaur
+ * @author Ryan J. McCall
  */
 public class PamNodeImplTest {
 

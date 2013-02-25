@@ -22,7 +22,6 @@ import edu.memphis.ccrg.lida.framework.strategies.TotalActivationStrategy;
  * 
  * @author Javier Snaider
  * @author Ryan J. McCall
- * 
  */
 public interface Learnable extends Activatible {
 
@@ -33,7 +32,7 @@ public interface Learnable extends Activatible {
 	public static final double DEFAULT_LEARNABLE_REMOVAL_THRESHOLD = -1.0;
 
 	/**
-	 * Default base-level activation for Learnable
+	 * Default base-level activation for Learnables.
 	 */
 	public static final double DEFAULT_BASE_LEVEL_ACTIVATION = 0.5;
 	
@@ -53,6 +52,17 @@ public interface Learnable extends Activatible {
 	 * @param s an amount of base-level incentive salience
 	 */
 	public void setBaseLevelIncentiveSalience(double s);	
+	
+	/**
+	 * Positively updates the base-level incentive salience of this learnable by specified amount.
+	 * @param a amount of reinforcment
+	 */
+	public void reinforceBaseLevelIncentiveSalience(double a);
+	/**
+	 * Decays base-level incentive salience for specified number of ticks.
+	 * @param t time ticks base-level incentive salience is to be decayed for
+	 */
+	public void decayBaseLevelIncentiveSalience(long t);
 	
 	/**
 	 * Returns base level activation.

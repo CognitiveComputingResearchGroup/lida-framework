@@ -57,10 +57,8 @@ public class DefaultAttentionCodelet extends AttentionCodeletImpl {
 	@Override
 	public void init() {
 		super.init();
-		attentionThreshold = (Double) getParam("attentionThreshold",
-				DEFAULT_ATTENTION_THRESHOLD);
-		retrievalDepth = (Integer) getParam("retrievalDepth",
-				DEFAULT_RETRIEVAL_DEPTH);
+		attentionThreshold = (Double) getParam("attentionThreshold",DEFAULT_ATTENTION_THRESHOLD);
+		retrievalDepth = (Integer) getParam("retrievalDepth",DEFAULT_RETRIEVAL_DEPTH);
 	}
 
 	/**
@@ -71,7 +69,6 @@ public class DefaultAttentionCodelet extends AttentionCodeletImpl {
 	@Override
 	public boolean bufferContainsSoughtContent(WorkspaceBuffer buffer) {
 		soughtContent.clearNodeStructure();
-
 		Node winner = null;
 		double winnerActivation = -1.0;
 		NodeStructure ns = (NodeStructure) buffer.getBufferContent(null);

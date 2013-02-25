@@ -30,7 +30,8 @@ import edu.memphis.ccrg.lida.pam.PamNode;
 import edu.memphis.ccrg.lida.pam.PamNodeImpl;
 
 /**
- * @author Ryan J. McCall, Usef Faghihi
+ * @author Ryan J. McCall
+ * @author Usef Faghihi
  * 
  */
 public class AddToPerceptTaskTest {

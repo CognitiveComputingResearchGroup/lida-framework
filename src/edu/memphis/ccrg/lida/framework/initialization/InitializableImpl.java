@@ -101,8 +101,7 @@ public class InitializableImpl implements Initializable {
 
 	@Override
 	public Map<String, ?> getParameters() {
-		return (parameters != null) ? Collections.unmodifiableMap(parameters)
-				: null;
+		return (parameters != null)? Collections.unmodifiableMap(parameters):null;
 	}
 
 }

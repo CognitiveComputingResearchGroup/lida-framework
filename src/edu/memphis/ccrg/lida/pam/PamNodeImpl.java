@@ -255,5 +255,13 @@ public class PamNodeImpl extends NodeImpl implements PamNode {
 	@Override
 	public void setBaseLevelIncentiveSalience(double s) {
 		learnable.setBaseLevelIncentiveSalience(s);
+	}	
+	@Override
+	public void decayBaseLevelIncentiveSalience(long t) {
+		learnable.decayBaseLevelIncentiveSalience(t);
+	}
+	@Override
+	public void reinforceBaseLevelIncentiveSalience(double amount) {
+		learnable.reinforceBaseLevelIncentiveSalience(amount);
 	}
 }

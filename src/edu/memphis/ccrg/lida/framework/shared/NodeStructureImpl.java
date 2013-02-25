@@ -677,8 +677,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 			nodes.remove(((Node) linkable).getId());
 		} else if (linkable instanceof Link) {
 			// if removing a link then must also remove the 2 references to the
-			// link
-			// get actual link object
+			// link get actual link object
 			Link aux = links.get(linkable.getExtendedId());
 			// get and remove source's reference to link
 			Set<Link> sourceLinks = linkableMap.get(aux.getSource());
@@ -700,7 +699,6 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 		if (!containsLinkable(id)) {
 			return;
 		}
-
 		if (id.isNodeId()) {
 			removeLinkable(nodes.get(id.getSourceNodeId()));
 		} else {
@@ -725,11 +723,11 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 
 	@Override
 	public void decayNodeStructure(long ticks) {
-		for (Linkable linkable : linkableMap.keySet()) {
-			Activatible a = (Activatible) linkable;
+		for (Linkable lnk: linkableMap.keySet()) {
+			Activatible a = (Activatible)lnk;
 			a.decay(ticks);
 			if (a.isRemovable()) {
-				removeLinkable(linkable);
+				removeLinkable(lnk);
 			}
 		}
 	}
@@ -764,7 +762,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 
 	@Override
 	public Link getLink(ExtendedId id) {
-		return (id == null) ? null : links.get(id);
+		return (id==null)? null: links.get(id);
 	}
 
 	@Override

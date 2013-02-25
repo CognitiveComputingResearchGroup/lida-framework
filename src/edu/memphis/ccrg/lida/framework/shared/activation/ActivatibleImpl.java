@@ -43,12 +43,13 @@ public class ActivatibleImpl extends InitializableImpl implements Activatible {
 	public ActivatibleImpl() {
 		activation = DEFAULT_ACTIVATION;
 		removalThreshold = DEFAULT_ACTIVATIBLE_REMOVAL_THRESHOLD;
+		incentiveSalience = DEFAULT_INCENTIVE_SALIENCE;
 		decayStrategy = factory.getDefaultDecayStrategy();
 		exciteStrategy = factory.getDefaultExciteStrategy();
 	}
 
 	/**
-	 * @deprecated To be removed in the future.
+	 * @deprecated To be removed in the future. Only the default constructor is used by the framework. 
 	 * @param activation
 	 *            initial activation
 	 * @param removalThreshold
@@ -66,21 +67,7 @@ public class ActivatibleImpl extends InitializableImpl implements Activatible {
 		this.exciteStrategy = excite;
 		this.decayStrategy = decay;
 	}
-	
-	@Override
-	public double getIncentiveSalience() {
-		return incentiveSalience;
-	}
 
-	@Override
-	public double getTotalIncentiveSalience() {
-		return getIncentiveSalience();
-	}
-
-	@Override
-	public synchronized void setIncentiveSalience(double s) {
-		incentiveSalience = s;
-	}
 
 	@Override
 	public void decay(long ticks) {
@@ -93,6 +80,7 @@ public class ActivatibleImpl extends InitializableImpl implements Activatible {
 			}
 			synchronized (this) {
 				activation = decayStrategy.decay(getActivation(), ticks);
+				incentiveSalience=decayStrategy.decay(getIncentiveSalience(), ticks);
 			}
 			if (logger.isLoggable(Level.FINEST)) {
 				logger.log(Level.FINEST,
@@ -103,6 +91,7 @@ public class ActivatibleImpl extends InitializableImpl implements Activatible {
 		}
 	}
 
+	@Deprecated
 	@Override
 	public void excite(double amount) {
 		exciteActivation(amount);
@@ -151,10 +140,29 @@ public class ActivatibleImpl extends InitializableImpl implements Activatible {
 	}
 
 	@Override
+	public void setActivation(double a) {
+		if(a > 1.0){
+			synchronized (this) {
+				activation = 1.0;
+			}
+		}else if (a < -1.0) {
+			synchronized (this) {
+				activation = -1.0;
+			}
+		}else{
+			synchronized (this) {
+				activation = a;
+			}
+		}
+	}
+	@Override
 	public double getActivation() {
 		return activation;
 	}
-
+	@Override
+	public double getTotalActivation() {
+		return getActivation();
+	}
 	@Override
 	public double getActivatibleRemovalThreshold() {
 		return removalThreshold;
@@ -169,35 +177,35 @@ public class ActivatibleImpl extends InitializableImpl implements Activatible {
 	public ExciteStrategy getExciteStrategy() {
 		return exciteStrategy;
 	}
-
+	
 	@Override
-	public void setActivation(double a) {
-		if (a > 1.0) {
+	public double getIncentiveSalience() {
+		return incentiveSalience;
+	}
+	@Override
+	public synchronized void setIncentiveSalience(double s) {
+		if(s > 1.0){
 			synchronized (this) {
-				activation = 1.0;
+				incentiveSalience = 1.0;
 			}
-		} else if (a < 0.0) {
+		}else if (s < -1.0) {
 			synchronized (this) {
-				activation = 0.0;
+				incentiveSalience = -1.0;
 			}
-		} else {
+		}else{
 			synchronized (this) {
-				activation = a;
+				incentiveSalience = s;
 			}
 		}
 	}
+	@Override
+	public double getTotalIncentiveSalience() {
+		return getIncentiveSalience();
+	}
 
 	@Override
-	public void setActivatibleRemovalThreshold(double threshold) {
-		if (threshold > 1.0) {
-			synchronized (this) {
-				removalThreshold = 1.0;
-			}
-		} else {
-			synchronized (this) {
-				removalThreshold = threshold;
-			}
-		}
+	public void setActivatibleRemovalThreshold(double t) {
+		removalThreshold = t;
 	}
 
 	@Override
@@ -211,12 +219,7 @@ public class ActivatibleImpl extends InitializableImpl implements Activatible {
 	}
 
 	@Override
-	public double getTotalActivation() {
-		return getActivation();
-	}
-
-	@Override
 	public boolean isRemovable() {
-		return getActivation() <= removalThreshold;
+		return getActivation()+getIncentiveSalience()<=removalThreshold;
 	}
 }

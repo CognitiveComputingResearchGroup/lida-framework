@@ -49,6 +49,7 @@ public class LearnableImpl extends ActivatibleImpl implements Learnable {
 		super();
 		baseLevelActivation = DEFAULT_BASE_LEVEL_ACTIVATION;
 		learnableRemovalThreshold = DEFAULT_LEARNABLE_REMOVAL_THRESHOLD;
+		baseLevelIncentiveSalience=DEFAULT_BASE_LEVEL_INCENTIVE_SALIENCE;
 		baseLevelDecayStrategy = factory.getDefaultDecayStrategy();
 		baseLevelExciteStrategy = factory.getDefaultExciteStrategy();
 		totalActivationStrategy = (TotalActivationStrategy) factory
@@ -116,21 +117,6 @@ public class LearnableImpl extends ActivatibleImpl implements Learnable {
 		this.baseLevelDecayStrategy = baseLevelDecayStrategy;
 		this.totalActivationStrategy = taStrategy;
 	}
-	
-	@Override
-	public double getBaseLevelIncentiveSalience() {
-		return baseLevelIncentiveSalience;
-	}
-
-	@Override
-	public void setBaseLevelIncentiveSalience(double s) {
-		baseLevelIncentiveSalience=s;
-	}
-
-	@Override
-	public double getTotalIncentiveSalience() {
-		return totalActivationStrategy.calculateTotalActivation(getBaseLevelIncentiveSalience(), getIncentiveSalience());
-	}
 
 	/**
 	 * If this method is overridden, this init() must be called first! i.e.
@@ -151,47 +137,59 @@ public class LearnableImpl extends ActivatibleImpl implements Learnable {
 	 */
 	@Override
 	public void init() {
-		baseLevelActivation = (Double) getParam(
-				"learnable.baseLevelActivation", DEFAULT_BASE_LEVEL_ACTIVATION);
-		learnableRemovalThreshold = (Double) getParam(
-				"learnable.baseLevelRemovalThreshold",
-				DEFAULT_LEARNABLE_REMOVAL_THRESHOLD);
-		String decayName = (String) getParam(
-				"learnable.baseLevelDecayStrategy", factory
-						.getDefaultDecayType());
+		baseLevelActivation=getParam("learnable.baseLevelActivation", DEFAULT_BASE_LEVEL_ACTIVATION);
+		learnableRemovalThreshold=getParam("learnable.baseLevelRemovalThreshold",DEFAULT_LEARNABLE_REMOVAL_THRESHOLD);
+		String decayName=getParam("learnable.baseLevelDecayStrategy", factory.getDefaultDecayType());
 		baseLevelDecayStrategy = factory.getDecayStrategy(decayName);
-
-		String exciteName = (String) getParam(
-				"learnable.baseLevelExciteStrategy", factory
-						.getDefaultExciteType());
+		String exciteName=getParam("learnable.baseLevelExciteStrategy",factory.getDefaultExciteType());
 		baseLevelExciteStrategy = factory.getExciteStrategy(exciteName);
-
-		String totalActivationName = (String) getParam(
-				"learnable.totalActivationStrategy",
-				DEFAULT_TOTAL_ACTIVATION_TYPE);
-		totalActivationStrategy = (TotalActivationStrategy) factory
-				.getStrategy(totalActivationName);
-		if (totalActivationStrategy == null) {
-			totalActivationStrategy = (TotalActivationStrategy) factory
-					.getStrategy(DEFAULT_TOTAL_ACTIVATION_TYPE);
+		String totalActivationName=getParam("learnable.totalActivationStrategy",DEFAULT_TOTAL_ACTIVATION_TYPE);
+		totalActivationStrategy =(TotalActivationStrategy)factory.getStrategy(totalActivationName);
+		if (totalActivationStrategy==null) {
+			totalActivationStrategy=(TotalActivationStrategy)factory.getStrategy(DEFAULT_TOTAL_ACTIVATION_TYPE);
 		}
+	}
+
+	@Override
+	public double getBaseLevelIncentiveSalience() {
+		return baseLevelIncentiveSalience;
+	}
+	@Override
+	public synchronized void setBaseLevelIncentiveSalience(double s) {
+		if (s < 0.0) {
+			synchronized (this) {
+				baseLevelIncentiveSalience = 0.0;
+			}
+		} else if (s > 1.0) {
+			synchronized (this) {
+				baseLevelIncentiveSalience = 1.0;
+			}
+		} else {
+			synchronized (this) {
+				baseLevelIncentiveSalience = s;
+			}
+		}
+	}
+	@Override
+	public double getTotalIncentiveSalience() {
+		return totalActivationStrategy.calculateTotalActivation(getBaseLevelIncentiveSalience(), getIncentiveSalience());
 	}
 
 	@Override
 	public void decay(long ticks) {
 		decayBaseLevelActivation(ticks);
+		decayBaseLevelIncentiveSalience(ticks);
 		super.decay(ticks);
 	}
 
 	@Override
 	public boolean isRemovable() {
-		return getBaseLevelActivation() <= learnableRemovalThreshold;
+		return (getBaseLevelActivation()+getBaseLevelIncentiveSalience()) <= learnableRemovalThreshold;
 	}
 
 	@Override
 	public double getTotalActivation() {
-		return totalActivationStrategy.calculateTotalActivation(
-				getBaseLevelActivation(), getActivation());
+		return totalActivationStrategy.calculateTotalActivation(getBaseLevelActivation(), getActivation());
 	}
 
 	@Override
@@ -215,29 +213,66 @@ public class LearnableImpl extends ActivatibleImpl implements Learnable {
 			}
 		}
 	}
+	@Override
+	public void decayBaseLevelIncentiveSalience(long t) {
+		if (baseLevelDecayStrategy != null) {
+			if (logger.isLoggable(Level.FINEST)) {
+				logger.log(Level.FINEST,
+						"Before decaying {1} has base-level IncentiveSalience: {2}",
+						new Object[] { TaskManager.getCurrentTick(), this,
+								getBaseLevelIncentiveSalience() });
+			}
+			synchronized (this) {
+				baseLevelIncentiveSalience= baseLevelDecayStrategy.decay(
+						getBaseLevelIncentiveSalience(), t);
+			}
+			if (logger.isLoggable(Level.FINEST)) {
+				logger.log(Level.FINEST,
+						"After decaying {1} has base-level IncentiveSalience: {2}",
+						new Object[] { TaskManager.getCurrentTick(), this,
+								getBaseLevelIncentiveSalience() });
+			}
+		}
+	}
+
 
 	@Override
 	public void reinforceBaseLevelActivation(double amount) {
 		if (baseLevelExciteStrategy != null) {
 			if (logger.isLoggable(Level.FINEST)) {
-				logger
-						.log(
-								Level.FINEST,
+				logger.log(Level.FINEST,
 								"Before reinforcement {1} has base-level activation: {2}",
 								new Object[] { TaskManager.getCurrentTick(),
 										this, getBaseLevelActivation() });
 			}
 			synchronized (this) {
-				baseLevelActivation = baseLevelExciteStrategy.excite(
-						getBaseLevelActivation(), amount);
+				baseLevelActivation = baseLevelExciteStrategy.excite(getBaseLevelActivation(), amount);
 			}
 			if (logger.isLoggable(Level.FINEST)) {
-				logger
-						.log(
-								Level.FINEST,
+				logger.log(Level.FINEST,
 								"After reinforcement {1} has base-level activation: {2}",
 								new Object[] { TaskManager.getCurrentTick(),
 										this, getBaseLevelActivation() });
+			}
+		}
+	}
+	@Override
+	public void reinforceBaseLevelIncentiveSalience(double amount) {
+		if (baseLevelExciteStrategy != null) {
+			if (logger.isLoggable(Level.FINEST)) {
+				logger.log(Level.FINEST,
+								"Before reinforcement {1} has base-level IncentiveSalience: {2}",
+								new Object[] { TaskManager.getCurrentTick(),
+										this, getBaseLevelIncentiveSalience() });
+			}
+			synchronized (this) {
+				baseLevelIncentiveSalience = baseLevelExciteStrategy.excite(getBaseLevelIncentiveSalience(), amount);
+			}
+			if (logger.isLoggable(Level.FINEST)) {
+				logger.log(Level.FINEST,
+								"After reinforcement {1} has base-level IncentiveSalience: {2}",
+								new Object[] { TaskManager.getCurrentTick(),
+										this, getBaseLevelIncentiveSalience() });
 			}
 		}
 	}

@@ -123,6 +123,12 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 	 */
 	public static LinkCategory FEATURE = (PamNode) factory.getNode(
 			DEFAULT_NONDECAYING_PAMNODE, "Feature");
+	/*
+	 * A map where an entry represents a mapping between one factory element type and another.
+	 * The mapping governs a conversion that occurs for each Linkable send out of PAM as a percept.
+	 * The most basic example would be: "PamNodeImpl","NodeImpl"  
+	 */
+	private Map<String,String> typeConversionMap = new HashMap<String,String>();
 
 	/**
 	 * Default constructor.
@@ -151,24 +157,59 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 	 * of activation from a Node or Link, default is 1 tick<br/>
 	 * <b>pam.propagateActivationThreshold</b> the amount of activation
 	 * necessary to be propagated i.e. a lesser amount is not (worth being)
-	 * passed<br/>
+	 * passed.<br/>
+	 * <b>pam.perceptMapping.*</b> (String)- Can accept multiple mapping definitions of the form: mappingType:originalFactoryName:mappedFactoryname<br/>
 	 * 
 	 * @see Initializable
 	 */
 	@Override
 	public void init() {
-		upscaleFactor = (Double) getParam("pam.upscale", DEFAULT_UPSCALE_FACTOR);
-		downscaleFactor = (Double) getParam("pam.downscale",
-				DEFAULT_DOWNSCALE_FACTOR);
-		perceptThreshold = (Double) getParam("pam.perceptThreshold",
-				DEFAULT_PERCEPT_THRESHOLD);
-		excitationTaskTicksPerRun = (Integer) getParam(
-				"pam.excitationTicksPerRun", DEFAULT_EXCITATION_TASK_TICKS);
-		propagationTaskTicksPerRun = (Integer) getParam(
-				"pam.propagationTicksPerRun", DEFAULT_PROPAGATION_TASK_TICKS);
-		propagateActivationThreshold = (Double) getParam(
-				"pam.propagateActivationThreshold",
-				DEFAULT_PROPAGATION_THRESHOLD);
+		upscaleFactor=getParam("pam.upscale", DEFAULT_UPSCALE_FACTOR);
+		downscaleFactor=getParam("pam.downscale",DEFAULT_DOWNSCALE_FACTOR);
+		perceptThreshold=getParam("pam.perceptThreshold",DEFAULT_PERCEPT_THRESHOLD);
+		excitationTaskTicksPerRun=getParam("pam.excitationTicksPerRun",DEFAULT_EXCITATION_TASK_TICKS);
+		propagationTaskTicksPerRun=getParam("pam.propagationTicksPerRun",DEFAULT_PROPAGATION_TASK_TICKS);
+		propagateActivationThreshold=getParam("pam.propagateActivationThreshold",DEFAULT_PROPAGATION_THRESHOLD);
+		initTypeConversion();
+	}
+
+	private void initTypeConversion() {
+		Map<String,?> parameters = getParameters();
+		for(String key: parameters.keySet()){
+			if(key.startsWith("pam.perceptMapping.")){
+				Object o = parameters.get(key);
+				if(o instanceof String){
+					String value = (String) o;
+					String[] mappingParams = value.trim().split(",");
+					if(mappingParams.length==3){
+						if("node".equalsIgnoreCase(mappingParams[0])){
+							if(factory.containsNodeType(mappingParams[1])&&
+							   factory.containsNodeType(mappingParams[2])){
+								typeConversionMap.put(mappingParams[1],mappingParams[2]);
+							}else{
+								logger.log(Level.WARNING,"One of the requested node types is not in the ElementFactory: {1}, {2}.",
+										new Object[]{TaskManager.getCurrentTick(),mappingParams[1],mappingParams[2]});
+							}
+						}else if("link".equalsIgnoreCase(mappingParams[0])){
+							if(factory.containsLinkType(mappingParams[1])&&
+							   factory.containsLinkType(mappingParams[2])){
+								typeConversionMap.put(mappingParams[1],mappingParams[2]);
+							}else{
+								logger.log(Level.WARNING,"One of the requested link types is not in the ElementFactory: {1}, {2}.",
+										new Object[]{TaskManager.getCurrentTick(),mappingParams[1],mappingParams[2]});
+							}
+						}else{
+							logger.log(Level.WARNING,"Bad mapping type: {1}. Must be 'node' or 'link'.",
+										new Object[]{TaskManager.getCurrentTick(),mappingParams[0]});
+						}
+					}else{
+						logger.log(Level.WARNING,"Mapping parameters must have 3 parts: mappingType:originalType:mappedType separated by ','.",TaskManager.getCurrentTick());
+					}
+				}else{
+					logger.log(Level.WARNING,"Mapping parameters must be of type String.",TaskManager.getCurrentTick());
+				}
+			}
+		}
 	}
 
 	@Override
@@ -408,6 +449,36 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 			pl.receivePercept(ns);
 		}
 	}
+	private NodeStructure convertNodeStructure(NodeStructure ns) {
+		NodeStructure convertedNS = new NodeStructureImpl();
+		String convertedType=null;
+		for (Node n: ns.getNodes()) {
+			convertedType=typeConversionMap.get(n.getFactoryType());
+			if(convertedType==null){
+				convertedType=factory.getDefaultNodeType();
+			}
+			convertedNS.addNode(n, convertedType);
+		}
+		for (Link l: ns.getLinks()) {
+			if (l.isSimpleLink()) {
+				convertedType = typeConversionMap.get(l.getFactoryType());
+				if(convertedType==null){
+					convertedType=factory.getDefaultLinkType();
+				}
+				convertedNS.addLink(l, convertedType);
+			}
+		}
+		for (Link l: ns.getLinks()) {
+			if (!l.isSimpleLink()) {
+				convertedType = typeConversionMap.get(l.getFactoryType());
+				if(convertedType==null){
+					convertedType=factory.getDefaultLinkType();
+				}
+				convertedNS.addLink(l, convertedType);
+			}
+		}
+		return convertedNS;
+	}
 
 	@Override
 	public void addToPercept(Link l) {
@@ -415,6 +486,16 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 		for (PamListener pl : pamListeners) {
 			pl.receivePercept(converted);
 		}
+	}	
+	private Link convertLink(Link l) {
+		String convertedType = typeConversionMap.get(l.getFactoryType());
+		if(convertedType==null){
+			convertedType=factory.getDefaultLinkType();
+		}
+		Link res = factory.getLink(convertedType, l.getSource(),
+				l.getSink(), l.getCategory());
+		res.setActivation(l.getActivation());
+		return res;
 	}
 
 	@Override
@@ -424,35 +505,12 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 			pl.receivePercept(converted);
 		}
 	}
-
-	// TODO a more sophisticated mapping
-	private NodeStructure convertNodeStructure(NodeStructure ns) {
-		NodeStructure copy = new NodeStructureImpl();
-		for (Node n : ns.getNodes()) {
-			copy.addDefaultNode(n);
-		}
-		for (Link l : ns.getLinks()) {
-			if (l.isSimpleLink()) {
-				copy.addDefaultLink(l);
-			}
-		}
-		for (Link l : ns.getLinks()) {
-			if (!l.isSimpleLink()) {
-				copy.addDefaultLink(l);
-			}
-		}
-		return copy;
-	}
-
 	private Node convertNode(Node n) {
-		return factory.getNode(n, factory.getDefaultNodeType());
-	}
-
-	private Link convertLink(Link l) {
-		Link res = factory.getLink(factory.getDefaultLinkType(), l.getSource(),
-				l.getSink(), l.getCategory());
-		res.setActivation(l.getActivation());
-		return res;
+		String convertedType = typeConversionMap.get(n.getFactoryType());
+		if(convertedType==null){
+			convertedType=factory.getDefaultNodeType();
+		}
+		return factory.getNode(n,convertedType);
 	}
 
 	@Override

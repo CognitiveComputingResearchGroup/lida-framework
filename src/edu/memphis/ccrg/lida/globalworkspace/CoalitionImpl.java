@@ -39,7 +39,7 @@ public class CoalitionImpl extends ActivatibleImpl implements Coalition {
 	/**
 	 * the {@link BroadcastContent} of the coalition
 	 */
-	protected BroadcastContent broadcastContent;
+	protected NodeStructure broadcastContent;
 
 	/**
 	 * the {@link AttentionCodelet} that created the coalition
@@ -66,34 +66,29 @@ public class CoalitionImpl extends ActivatibleImpl implements Coalition {
 	 */
 	public CoalitionImpl(NodeStructure ns, AttentionCodelet c) {
 		this();
-		broadcastContent = (BroadcastContent) new UnmodifiableNodeStructureImpl(
-				ns, true);
+		broadcastContent = new UnmodifiableNodeStructureImpl(ns,true);
 		creatingAttentionCodelet = c;
-		updateActivation();
+		if(creatingAttentionCodelet != null) {
+			updateActivation();
+		}else{
+			logger.log(Level.WARNING, "Coalition received null AttentionCodelet",
+					TaskManager.getCurrentTick());
+		}
 	}
 
 	/**
-	 * Calculates the coalition's activation. This implementation uses the
-	 * average activation of the broadcast content multiplied by the attention
-	 * codelet's base-level activation.
+	 * Calculates and sets the coalition's activation. This implementation uses the
+	 * average total activation and total incentive salience of the broadcast content 
+	 * multiplied by the attention codelet's base-level activation.
 	 */
 	protected void updateActivation() {
-		double sum = 0.0;
-		NodeStructure ns = (NodeStructure) broadcastContent;
-		for (Linkable lnk : ns.getLinkables()) {
-			sum += lnk.getActivation();
+		double salienceSum = 0.0;
+		for (Linkable lnk: broadcastContent.getLinkables()) {
+			salienceSum += lnk.getTotalActivation()+lnk.getTotalIncentiveSalience();
 		}
-		int contentSize = ns.getLinkableCount();
-		if (contentSize == 0) {
-			logger.log(Level.FINEST, "Coalition has no content", TaskManager
-					.getCurrentTick());
-		} else if (creatingAttentionCodelet == null) {
-			logger.log(Level.FINEST, "Coalition has no attention codelet",
-					TaskManager.getCurrentTick());
-		} else {
-			setActivation(creatingAttentionCodelet.getBaseLevelActivation()
-					* sum / contentSize);
-		}
+		double aveLinkableSalience = salienceSum/(2.0*broadcastContent.getLinkableCount());
+		double a = creatingAttentionCodelet.getBaseLevelActivation()*aveLinkableSalience;
+		setActivation(a);
 	}
 
 	/**
@@ -103,7 +98,7 @@ public class CoalitionImpl extends ActivatibleImpl implements Coalition {
 	 */
 	@Override
 	public BroadcastContent getContent() {
-		return broadcastContent;
+		return (BroadcastContent) broadcastContent;
 	}
 
 	@Override
