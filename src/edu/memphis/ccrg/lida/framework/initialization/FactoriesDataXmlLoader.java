@@ -271,10 +271,9 @@ public class FactoriesDataXmlLoader {
 				if (name != null) {
 					associatedModules.put(name, function);
 				} else {
-					logger
-							.log(
-									Level.WARNING,
-									"{1} is not a defined ModuleName so it cannot be an associate module of {2}",
+					name = ModuleName.addModuleName(assocMod);
+					logger.log(Level.INFO,
+									"{1} is not a pre-defined ModuleName so a new ModuleName was created for element: {2}",
 									new Object[] { 0L, assocMod, elementName });
 				}
 			}

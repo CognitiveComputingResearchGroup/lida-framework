@@ -59,8 +59,8 @@ public class BroadcastQueueImpl extends FrameworkModuleImpl implements
 	 */
 	@Override
 	public void init() {
-		int requestedCapacity = (Integer) getParam(
-				"workspace.broadcastQueueCapacity", DEFAULT_QUEUE_CAPACITY);
+		int requestedCapacity = getParam("workspace.broadcastQueueCapacity", 
+										 DEFAULT_QUEUE_CAPACITY);
 		if (requestedCapacity > 0) {
 			broadcastQueueCapacity = requestedCapacity;
 		} else {
@@ -89,8 +89,8 @@ public class BroadcastQueueImpl extends FrameworkModuleImpl implements
 	}
 
 	@Override
-	public void addBufferContent(WorkspaceContent content) {
-		broadcastQueue.addFirst(content);
+	public void addBufferContent(WorkspaceContent c) {
+		broadcastQueue.addFirst(c);
 	}
 
 	@Override
@@ -105,22 +105,22 @@ public class BroadcastQueueImpl extends FrameworkModuleImpl implements
 	}
 
 	@Override
-	public WorkspaceContent getPositionContent(int index) {
-		if (index > -1 && index < broadcastQueue.size()) {
-			return (WorkspaceContent) broadcastQueue.get(index);
+	public WorkspaceContent getPositionContent(int i) {
+		if (i > -1 && i < broadcastQueue.size()) {
+			return (WorkspaceContent) broadcastQueue.get(i);
 		}
 		return null;
 	}
 
 	@Override
-	public void decayModule(long ticks) {
+	public void decayModule(long t) {
 		logger.log(Level.FINER, "Decaying Broadcast Queue", TaskManager
 				.getCurrentTick());
 		synchronized (this) {
 			Iterator<WorkspaceContent> itr = broadcastQueue.iterator();
 			while (itr.hasNext()) {
 				NodeStructure ns = itr.next();
-				ns.decayNodeStructure(ticks);
+				ns.decayNodeStructure(t);
 				if (ns.getNodeCount() == 0) {
 					itr.remove();
 				}
@@ -129,7 +129,7 @@ public class BroadcastQueueImpl extends FrameworkModuleImpl implements
 	}
 
 	@Override
-	public void learn(Coalition coalition) {
+	public void learn(Coalition c) {
 		// Not applicable
 	}
 }
