@@ -277,7 +277,7 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements
 		for (Behavior b : behaviors.values()) {
 			double amount = b.getScheme().getTotalActivation()
 					* broadcastExcitationFactor;
-			b.excite(amount);
+			b.exciteActivation(amount);
 		}
 	}
 
@@ -345,7 +345,7 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements
 				double amount = b.getActivation()
 						/ getUnsatisfiedContextCount(successor)
 						* successorExcitationFactor;
-				successor.excite(amount);
+				successor.exciteActivation(amount);
 				logger
 						.log(
 								Level.FINEST,
@@ -379,7 +379,7 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements
 			// think about being your own predecessor
 			double amount = b.getActivation() / getUnsatisfiedContextCount(b)
 					* predecessorExcitationFactor;
-			predecessor.excite(amount);
+			predecessor.exciteActivation(amount);
 			logger
 					.log(
 							Level.FINEST,
@@ -425,7 +425,7 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements
 	private void auxPassActivationToConflictor(Behavior b, Behavior conflictor) {
 		double inhibitionAmount = -(b.getActivation() * conflictorExcitationFactor)
 				/ b.getContextConditions().size();
-		conflictor.excite(inhibitionAmount);
+		conflictor.exciteActivation(inhibitionAmount);
 		logger.log(Level.FINEST, "{1} inhibits conflictor {2} amount {3}",
 				new Object[] { TaskManager.getCurrentTick(), b.getLabel(),
 						conflictor.getLabel(), inhibitionAmount });

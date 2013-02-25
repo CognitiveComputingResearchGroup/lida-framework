@@ -76,7 +76,7 @@ public class ExcitationTask extends FrameworkTaskImpl {
 	 */
 	@Override
 	protected void runThisFrameworkTask() {
-		node.excite(excitationAmount);
+		node.exciteActivation(excitationAmount);
 		if (pam.isOverPerceptThreshold(node)) {
 			if (logger.isLoggable(Level.FINEST)) {
 				logger.log(Level.FINEST, "PamNode {1} over threshold",

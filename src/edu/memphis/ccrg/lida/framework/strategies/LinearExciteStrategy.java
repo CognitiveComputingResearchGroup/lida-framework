@@ -24,19 +24,15 @@ public class LinearExciteStrategy extends StrategyImpl implements
 	 * The default slope
 	 */
 	private static final double DEFAULT_M = 1.0;
-
 	/*
 	 * The slope of this linear curve.
 	 */
-	private double m;
-
-	/**
-	 * Creates a new instance of LinearCurve. Values for slope and intercept are
-	 * set to the default ones.
-	 */
-	public LinearExciteStrategy() {
-		m = DEFAULT_M;
-	}
+	private double m=DEFAULT_M;
+	
+	private static final double DEFAULT_UPPER_BOUND=1.0;
+	private double upperBound=DEFAULT_UPPER_BOUND;
+	private static final double DEFAULT_LOWER_BOUND=0.0;
+	private double lowerBound=DEFAULT_LOWER_BOUND;
 
 	/**
 	 * If this method is overridden, this init() must be called first! i.e.
@@ -50,7 +46,9 @@ public class LinearExciteStrategy extends StrategyImpl implements
 	 */
 	@Override
 	public void init() {
-		m = (Double) getParam("m", DEFAULT_M);
+		m = getParam("m", DEFAULT_M);
+		upperBound=getParam("upperBound",DEFAULT_UPPER_BOUND);
+		lowerBound=getParam("lowerBound",DEFAULT_LOWER_BOUND);
 	}
 
 	/**
@@ -114,13 +112,12 @@ public class LinearExciteStrategy extends StrategyImpl implements
 	 */
 	private double calcActivation(double currentActivation, double excitation,
 			double mm) {
-		currentActivation += mm * excitation;
-		if (currentActivation > 1.0) {
-			return 1.0;
-		} else if (currentActivation < 0.0) {
-			return 0.0;
+		currentActivation += mm*excitation;
+		if (currentActivation > upperBound) {
+			return upperBound;
+		} else if (currentActivation < lowerBound) {
+			return lowerBound;
 		}
 		return currentActivation;
 	}
-
 }
