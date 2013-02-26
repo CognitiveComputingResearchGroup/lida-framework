@@ -41,9 +41,7 @@ import edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBuffer;
 public class WorkspaceImpl extends FrameworkModuleImpl implements Workspace,
 		PamListener, LocalAssociationListener, BroadcastListener {
 
-	private static final Logger logger = Logger.getLogger(WorkspaceImpl.class
-			.getCanonicalName());
-
+	private static final Logger logger = Logger.getLogger(WorkspaceImpl.class.getCanonicalName());
 	private List<CueListener> cueListeners = new ArrayList<CueListener>();
 	private List<WorkspaceListener> workspaceListeners = new ArrayList<WorkspaceListener>();
 
@@ -54,15 +52,15 @@ public class WorkspaceImpl extends FrameworkModuleImpl implements Workspace,
 	}
 
 	@Override
-	public void addListener(ModuleListener listener) {
-		if (listener instanceof WorkspaceListener) {
-			addWorkspaceListener((WorkspaceListener) listener);
-		} else if (listener instanceof CueListener) {
-			addCueListener((CueListener) listener);
+	public void addListener(ModuleListener l) {
+		if (l instanceof WorkspaceListener) {
+			addWorkspaceListener((WorkspaceListener) l);
+		} else if (l instanceof CueListener) {
+			addCueListener((CueListener) l);
 		} else {
 			logger.log(Level.WARNING,
 					"Listener {1} was not added, wrong type.", new Object[] {
-							TaskManager.getCurrentTick(), listener });
+							TaskManager.getCurrentTick(), l });
 		}
 	}
 
@@ -84,18 +82,13 @@ public class WorkspaceImpl extends FrameworkModuleImpl implements Workspace,
 		logger.log(Level.FINER, "Cue performed.", TaskManager.getCurrentTick());
 	}
 
-	/*
-	 * Received broadcasts are sent to the BroadcastQueue
-	 */
 	@Override
 	public void receiveBroadcast(Coalition c) {
 		if (containsSubmodule(ModuleName.BroadcastQueue)) {
 			BroadcastListener listener = (BroadcastListener) getSubmodule(ModuleName.BroadcastQueue);
 			listener.receiveBroadcast(c);
 		} else {
-			logger
-					.log(
-							Level.WARNING,
+			logger.log(Level.WARNING,
 							"Received broadcast content but Workspace does not have a broadcast queue.",
 							TaskManager.getCurrentTick());
 		}
@@ -115,19 +108,13 @@ public class WorkspaceImpl extends FrameworkModuleImpl implements Workspace,
 						buffer.getBufferContent(null));
 			}
 		} else {
-			logger
-					.log(
-							Level.WARNING,
+			logger.log(Level.WARNING,
 							"Received a Local assocation but Workspace does not have an episodic buffer.",
 							TaskManager.getCurrentTick());
 		}
 
 	}
 
-	/*
-	 * Implementation of the PamListener interface. Adds newPercept to the the
-	 * perceptualBuffer.
-	 */
 	@Override
 	public void receivePercept(NodeStructure newPercept) {
 		if (containsSubmodule(ModuleName.PerceptualBuffer)) {
@@ -147,7 +134,7 @@ public class WorkspaceImpl extends FrameworkModuleImpl implements Workspace,
 		if (containsSubmodule(ModuleName.PerceptualBuffer)) {
 			WorkspaceBuffer buffer = (WorkspaceBuffer) getSubmodule(ModuleName.PerceptualBuffer);
 			NodeStructure ns = buffer.getBufferContent(null);
-			ns.addDefaultNode(n);
+			ns.addNode(n,n.getFactoryType());
 		} else {
 			logger
 					.log(
@@ -162,7 +149,7 @@ public class WorkspaceImpl extends FrameworkModuleImpl implements Workspace,
 		if (containsSubmodule(ModuleName.PerceptualBuffer)) {
 			WorkspaceBuffer buffer = (WorkspaceBuffer) getSubmodule(ModuleName.PerceptualBuffer);
 			NodeStructure ns = buffer.getBufferContent(null);
-			ns.addDefaultLink(l);
+			ns.addLink(l,l.getFactoryType());
 		} else {
 			logger
 					.log(
@@ -176,12 +163,10 @@ public class WorkspaceImpl extends FrameworkModuleImpl implements Workspace,
 	public Object getModuleContent(Object... params) {
 		return null;
 	}
-
 	@Override
-	public void learn(Coalition coalition) {
+	public void learn(Coalition c) {
 		// Not applicable
 	}
-
 	/**
 	 * Should do nothing, submodules' decayModule method will be called in
 	 * FrameworkModuleImpl#taskManagerDecayModule.
@@ -189,7 +174,6 @@ public class WorkspaceImpl extends FrameworkModuleImpl implements Workspace,
 	 * @see edu.memphis.ccrg.lida.framework.FrameworkModule#decayModule(long)
 	 */
 	@Override
-	public void decayModule(long ticks) {
+	public void decayModule(long t) {
 	}
-
 }

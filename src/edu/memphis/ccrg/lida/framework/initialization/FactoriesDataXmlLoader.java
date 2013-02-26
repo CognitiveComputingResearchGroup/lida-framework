@@ -268,14 +268,13 @@ public class FactoriesDataXmlLoader {
 				String function = assocModuleElement.getAttribute("function")
 						.trim();
 				ModuleName name = ModuleName.getModuleName(assocMod);
-				if (name != null) {
-					associatedModules.put(name, function);
-				} else {
+				if (name == null) {
 					name = ModuleName.addModuleName(assocMod);
 					logger.log(Level.INFO,
 									"{1} is not a pre-defined ModuleName so a new ModuleName was created for element: {2}",
 									new Object[] { 0L, assocMod, elementName });
 				}
+				associatedModules.put(name, function);
 			}
 		}
 		return associatedModules;
