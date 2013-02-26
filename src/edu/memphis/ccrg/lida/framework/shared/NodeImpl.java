@@ -181,6 +181,7 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 	 */
 	@Override
 	public void updateNodeValues(Node n) {
+		setIncentiveSalience(n.getIncentiveSalience());//TODO move to ElementFactory methods
 	}
 
 	@Override

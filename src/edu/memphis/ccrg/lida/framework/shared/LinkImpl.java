@@ -264,6 +264,7 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 	 */
 	@Override
 	public void updateLinkValues(Link l) {
+		setIncentiveSalience(l.getIncentiveSalience());//TODO move to ElementFactory methods
 	}
 
 	@Override
