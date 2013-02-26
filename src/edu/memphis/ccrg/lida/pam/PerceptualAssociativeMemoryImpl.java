@@ -457,6 +457,7 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 			if(convertedType==null){
 				convertedType=factory.getDefaultNodeType();
 			}
+			n.setActivation(n.getTotalActivation());
 			convertedNS.addNode(n, convertedType);
 		}
 		for (Link l: ns.getLinks()) {
@@ -465,6 +466,7 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 				if(convertedType==null){
 					convertedType=factory.getDefaultLinkType();
 				}
+				l.setActivation(l.getTotalActivation());
 				convertedNS.addLink(l, convertedType);
 			}
 		}
@@ -474,6 +476,7 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 				if(convertedType==null){
 					convertedType=factory.getDefaultLinkType();
 				}
+				l.setActivation(l.getTotalActivation());
 				convertedNS.addLink(l, convertedType);
 			}
 		}
@@ -494,7 +497,7 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 		}
 		Link res = factory.getLink(convertedType, l.getSource(),
 				l.getSink(), l.getCategory());
-		res.setActivation(l.getActivation());
+		res.setActivation(l.getTotalActivation());
 		return res;
 	}
 
@@ -510,7 +513,9 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 		if(convertedType==null){
 			convertedType=factory.getDefaultNodeType();
 		}
-		return factory.getNode(n,convertedType);
+		Node res = factory.getNode(n,convertedType);
+		res.setActivation(n.getTotalActivation());
+		return res;
 	}
 
 	@Override
