@@ -99,7 +99,13 @@ public class SigmoidDecayStrategy extends StrategyImpl implements DecayStrategy 
 	}
 
 	/*
-	 * To calculate activation value of decay operation by sigmoid strategy
+	 * To calculate activation value of decay operation by sigmoid strategy.
+	 * The currentActivation is in terms of the range (output) of the function while the ticks is in terms of the function's domain (input). 
+	 * We want to subtract the ticks from the currentActivation but cannot immediately because of this difference. 
+	 * So we convert the currentActivation to the domain space, which occurs with -(Math.log((1.0 + epsilon - curActiv)
+				/ (curActiv + epsilon)) + cc)
+				/ aa  then we subtract the ticks. 
+	 * Finally the result is input to the sigmoid function for the final result, the updated activation value.
 	 * 
 	 * @param curActiv current activation
 	 * 
@@ -111,7 +117,7 @@ public class SigmoidDecayStrategy extends StrategyImpl implements DecayStrategy 
 	 * 
 	 * @return Calculated activation value
 	 */
-	private double calcActivation(double curActiv, long ticks, double aa,
+	private static double calcActivation(double curActiv, long ticks, double aa,
 			double cc) {
 		double curExcitation = -(Math.log((1.0 + epsilon - curActiv)
 				/ (curActiv + epsilon)) + cc)

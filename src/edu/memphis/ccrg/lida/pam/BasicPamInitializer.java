@@ -124,7 +124,7 @@ public class BasicPamInitializer implements Initializer {
 		}
 	}
 
-	private void parseBaseLevelActivation(String param, Learnable learnable) {
+	private static void parseBaseLevelActivation(String param, Learnable learnable) {
 		double blActivation = Learnable.DEFAULT_BASE_LEVEL_ACTIVATION;
 		try{
 			blActivation = Double.parseDouble(param);

@@ -1275,6 +1275,7 @@ public class ElementFactory {
 	 *            qualified name of the desired {@link Behavior} class
 	 * @return a new {@link Behavior}
 	 */
+	@SuppressWarnings("static-method")
 	public Behavior getBehavior(Scheme s, String className) {
 		if (s == null) {
 			logger.log(Level.WARNING,

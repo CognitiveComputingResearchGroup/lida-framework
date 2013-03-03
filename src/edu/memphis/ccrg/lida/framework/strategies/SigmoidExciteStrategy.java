@@ -101,24 +101,22 @@ public class SigmoidExciteStrategy extends StrategyImpl implements
 	}
 
 	/*
-	 * To calculate activation value of excite operation by sigmoid strategy
+	 * To calculate activation value of excite operation by sigmoid strategy. 
+	 * The currentActivation is in terms of the range (output) of the function while the excitation is in terms of the function's domain (input). We want to add the excitation to the currentActivation but cannot immediately because of this difference. 
+	 * So we convert the currentActivation to the domain space, which occurs with -(Math.log((1.0 + epsilon - curActiv)/(curActiv + epsilon)) + cc) / aa  then we add the excitation. 
+	 * Finally the result is input to the sigmoid function for the final result, the updated activation value.
 	 * 
-	 * @param curActiv current activation
-	 * 
-	 * @param excitation parameter of excitation
-	 * 
-	 * @param aa parameter of M (default value is 1.0)
-	 * 
-	 * @param cc parameter of M (default value is 0.0)
-	 * 
+	 * @param curActiv current activation 
+	 * @param excitation parameter of excitation 
+	 * @param aa parameter of M (default value is 1.0) 
+	 * @param cc parameter of M (default value is 0.0) 
 	 * @return Calculated activation value
 	 */
-	private double calcExcitation(double curActiv, double excitation,
+	private static double calcExcitation(double curActiv, double excitation,
 			double aa, double cc) {
 		double curExcitation = -(Math.log((1.0 + epsilon - curActiv)
 				/ (curActiv + epsilon)) + cc)
 				/ aa + excitation;
 		return 1 / (1 + Math.exp(-(aa * curExcitation + cc)));
 	}
-
 }

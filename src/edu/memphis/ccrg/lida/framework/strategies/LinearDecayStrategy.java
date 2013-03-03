@@ -106,7 +106,7 @@ public class LinearDecayStrategy extends StrategyImpl implements DecayStrategy {
 	 * 
 	 * @return Calculated activation value
 	 */
-	private double calcActivation(double currentActivation, long ticks,
+	private static double calcActivation(double currentActivation, long ticks,
 			double mm) {
 		currentActivation -= (mm * ticks);
 		return (currentActivation > 0.0) ? currentActivation : 0.0;
