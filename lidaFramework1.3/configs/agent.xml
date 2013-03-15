@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+    Copyright (c) 2009, 2011 The University of Memphis.  All rights reserved. 
+    This program and the accompanying materials are made available 
+    under the terms of the LIDA Software Framework Non-Commercial License v1.0 
+    which accompanies this distribution, and is available at
+    http://ccrg.cs.memphis.edu/assets/papers/2010/LIDA-framework-non-commercial-v1.0.pdf
+ -->
+
+<lida xmlns="http://ccrg.cs.memphis.edu/LidaXMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://ccrg.cs.memphis.edu/LidaXMLSchema LidaXMLSchema.xsd ">	<globalparams>		<param name="ff" type="int">50 </param>	</globalparams>
+	<taskmanager>
+		<param name="taskManager.tickDuration" type="int">50 </param>
+		<param name="taskManager.maxNumberOfThreads" type="int"> 100</param>
+	</taskmanager>	<taskspawners>		<taskspawner name="defaultTS">			<class>edu.memphis.ccrg.lida.framework.tasks.TaskSpawnerImpl</class>		</taskspawner>	</taskspawners>	<submodules>
+		<module name="Environment">
+			<class>edu.memphis.ccrg.lida.example.genericlida.environment.VisionEnvironment
+			</class>
+			<param name="height" type="int"> 10 </param>
+			<param name="width" type="int">10 </param>			<taskspawner>defaultTS</taskspawner>		</module>
+		<module name="SensoryMemory">
+			<class>edu.memphis.ccrg.lida.example.genericlida.environment.VisualSensoryMemory
+			</class>
+			<associatedmodule>Environment</associatedmodule>			<taskspawner>defaultTS</taskspawner>			<initialTasks>				<task name="start">					<tasktype>SensoryMemoryBackgroundTask					</tasktype>					<ticksperrun>5</ticksperrun>					</task>			</initialTasks>
+		</module>
+		<module name="SensoryMotorMemory">
+			<class>edu.memphis.ccrg.lida.sensorymotormemory.BasicSensoryMotorMemory
+			</class>			<associatedmodule>Environment</associatedmodule>
+			<taskspawner>defaultTS</taskspawner>		</module>
+		<module name="PerceptualAssociativeMemory">
+			<class>edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl
+			</class>
+			<param name="pam.Upscale" type="double">.7 </param>
+			<param name="pam.Downscale" type="double">.6 </param>
+			<param name="pam.Selectivity" type="double">.5 </param>
+			<param name="pam.newNodeType" type="string">PamNodeImpl</param>
+			<param name="pam.newLinkType" type="string">PamLinkImpl</param>
+			<taskspawner>defaultTS</taskspawner>			<initializerclass>edu.memphis.ccrg.lida.example.framework.initialization.PamInitializer			</initializerclass>
+		</module>
+		<module name="TransientEpisodicMemory">
+			<class>edu.memphis.ccrg.lida.episodicmemory.EpisodicMemoryImpl
+			</class>
+			<associatedmodule>PerceptualAssociativeMemory</associatedmodule>
+			<param name="tem.numOfHardLoc" type="int">10000</param>
+			<param name="tem.addressLength" type="int">1000</param>
+			<param name="tem.wordLength" type="int">1000</param>
+			<param name="tem.activationRadius" type="int">451</param>
+			<taskspawner>defaultTS</taskspawner>			<initializerclass>edu.memphis.ccrg.lida.episodicmemory.BasicEpisodicMemoryInitializer			</initializerclass>		</module>
+		<module name="DeclarativeMemory">
+			<class>edu.memphis.ccrg.lida.episodicmemory.EpisodicMemoryImpl
+			</class>
+			<associatedmodule>PerceptualAssociativeMemory</associatedmodule>			<param name="tem.numOfHardLoc" type="int">10000</param>
+			<param name="tem.addressLength" type="int">1000</param>
+			<param name="tem.wordLength" type="int">1000</param>
+			<param name="tem.activationRadius" type="int">451</param>
+			<taskspawner>defaultTS</taskspawner>			<initializerclass>edu.memphis.ccrg.lida.episodicmemory.BasicEpisodicMemoryInitializer			</initializerclass>		</module>
+		<module name="Workspace">
+			<class>edu.memphis.ccrg.lida.workspace.WorkspaceImpl</class>
+			<submodules>
+				<module name="EpisodicBuffer">
+					<class>edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBufferImpl
+					</class>
+					<taskspawner>defaultTS</taskspawner>				</module>
+				<module name="PerceptualBuffer">
+					<class>edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBufferImpl
+					</class>
+					<taskspawner>defaultTS</taskspawner>				</module>
+				<module name="CurrentSituationalModel">
+					<class>edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBufferImpl
+					</class>
+					<taskspawner>defaultTS</taskspawner>				</module>
+				<module name="BroadcastQueue">
+					<class>edu.memphis.ccrg.lida.workspace.workspacebuffers.BroadcastQueueImpl
+					</class>					<param name="workspace.broadcastQueueCapacity" type="int">20					</param>
+					<taskspawner>defaultTS</taskspawner>				</module>
+			</submodules>
+			<taskspawner>defaultTS</taskspawner>			<initialTasks>				<task name="cueBackground">					<tasktype>CueBackgroundTask</tasktype>					<ticksperrun>15</ticksperrun>					<param name="workspace.actThreshold" type="double">0.4</param>				</task>				<task name="updateCsmBackground">					<tasktype>UpdateCsmBackgroundTask					</tasktype>					<ticksperrun>5</ticksperrun>				</task>			</initialTasks>		</module>
+		<module name="AttentionModule">			<class>edu.memphis.ccrg.lida.attentioncodelets.AttentionCodeletModule			</class>			<associatedmodule>Workspace</associatedmodule>			<associatedmodule>GlobalWorkspace</associatedmodule>			<taskspawner>defaultTS</taskspawner>			<initializerclass>edu.memphis.ccrg.lida.example.framework.initialization.AttentionModuleInitializer			</initializerclass>		</module>		<module name="StructureBuildingCodeletModule">			<class>edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.StructureBuildingCodeletModule			</class>			<associatedmodule>Workspace</associatedmodule>			<taskspawner>defaultTS</taskspawner>		</module>		<module name="GlobalWorkspace">
+			<class>edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspaceImpl
+			</class>
+			<param name="globalWorkspace.delayNoBroadcast" type="int">100 </param>
+			<param name="globalWorkspace.delayNoNewCoalition" type="int">50
+			</param>
+			<param name="globalWorkspace.aggregateActivationThreshold"
+				type="double">.8 </param>
+			<param name="globalWorkspace.individualActivationThreshold"
+				type="double">.5 </param>		    <param name="globalWorkspace.refractoryPeriod" type="int">40</param>
+			<taskspawner>defaultTS</taskspawner>			<initializerclass>edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspaceInitalizer			</initializerclass>
+		</module>
+		<module name="ProceduralMemory">
+			<class>edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryImpl
+			</class>
+			<param name="proceduralMemory.ticksPerRun" type="int"> 14 </param>
+			<taskspawner>defaultTS</taskspawner>			<initializerclass>edu.memphis.ccrg.lida.example.framework.initialization.ProceduralMemoryInitializer			</initializerclass>
+		</module>
+		<module name="ActionSelection">
+			<class>edu.memphis.ccrg.lida.actionselection.BasicActionSelection
+			</class>
+			<param name="actionSelection.ticksPerRun" type="int"> 10</param>
+			<taskspawner>defaultTS</taskspawner>		</module>
+	</submodules>	<listeners>
+		<listener>
+			<listenertype>edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorMemoryListener
+			</listenertype>
+			<modulename>SensoryMotorMemory</modulename>
+			<listenername>SensoryMemory</listenername>
+		</listener>
+		<listener>
+			<listenertype>edu.memphis.ccrg.lida.sensorymemory.SensoryMemoryListener
+			</listenertype>
+			<modulename>SensoryMemory</modulename>
+			<listenername>SensoryMotorMemory</listenername>
+		</listener>
+		<listener>
+			<listenertype>edu.memphis.ccrg.lida.pam.PamListener</listenertype>
+			<modulename>PerceptualAssociativeMemory</modulename>
+			<listenername>Workspace</listenername>
+		</listener>
+		<listener>
+			<listenertype>edu.memphis.ccrg.lida.episodicmemory.CueListener
+			</listenertype>
+			<modulename>Workspace</modulename>
+			<listenername>DeclarativeMemory</listenername>
+		</listener>
+		<listener>
+			<listenertype>edu.memphis.ccrg.lida.episodicmemory.CueListener
+			</listenertype>
+			<modulename>Workspace</modulename>
+			<listenername>TransientEpisodicMemory</listenername>
+		</listener>
+		<listener>
+			<listenertype>edu.memphis.ccrg.lida.workspace.WorkspaceListener
+			</listenertype>
+			<modulename>Workspace</modulename>
+			<listenername>PerceptualAssociativeMemory</listenername>
+		</listener>
+		<listener>
+			<listenertype>edu.memphis.ccrg.lida.globalworkspace.BroadcastListener
+			</listenertype>
+			<modulename>GlobalWorkspace</modulename>
+			<listenername>PerceptualAssociativeMemory</listenername>
+		</listener>
+		<listener>
+			<listenertype>edu.memphis.ccrg.lida.globalworkspace.BroadcastListener
+			</listenertype>
+			<modulename>GlobalWorkspace</modulename>
+			<listenername>Workspace</listenername>
+		</listener>
+		<listener>
+			<listenertype>edu.memphis.ccrg.lida.globalworkspace.BroadcastListener
+			</listenertype>
+			<modulename>GlobalWorkspace</modulename>
+			<listenername>TransientEpisodicMemory</listenername>
+		</listener>
+		<listener>
+			<listenertype>edu.memphis.ccrg.lida.globalworkspace.BroadcastListener
+			</listenertype>
+			<modulename>GlobalWorkspace</modulename>
+			<listenername>ProceduralMemory</listenername>
+		</listener>
+		<listener>
+			<listenertype>edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryListener
+			</listenertype>
+			<modulename>ProceduralMemory</modulename>
+			<listenername>ActionSelection</listenername>
+		</listener>
+		<listener>
+			<listenertype>edu.memphis.ccrg.lida.episodicmemory.LocalAssociationListener
+			</listenertype>
+			<modulename>TransientEpisodicMemory</modulename>
+			<listenername>Workspace</listenername>
+		</listener>
+	</listeners>
+</lida>
