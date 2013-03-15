@@ -871,12 +871,12 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 			return false;
 		}
 		for (Node n1 : ns1.getNodes()) {
-			if (!ns1.containsNode(n1)) {
+			if (!ns2.containsNode(n1)) {
 				return false;
 			}
 		}
 		for (Link l1 : ns1.getLinks()) {
-			if (!ns1.containsLink(l1)) {
+			if (!ns2.containsLink(l1)) {
 				return false;
 			}
 		}
