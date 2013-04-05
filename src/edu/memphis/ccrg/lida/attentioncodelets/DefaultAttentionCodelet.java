@@ -15,7 +15,7 @@ import edu.memphis.ccrg.lida.workspace.WorkspaceContent;
 import edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBuffer;
 
 /**
- * Default {@link AttentionCodelet} which seeks to create a {@link Coalition}
+ * Default {@link AttentionCodelet}, which seeks to create a {@link Coalition}
  * from the most activate content above a threshold.
  * 
  * @author Ryan J. McCall
@@ -80,12 +80,10 @@ public class DefaultAttentionCodelet extends AttentionCodeletImpl {
 				winnerActivation = activation;
 			}
 		}
-
 		if (winner != null) {
 			soughtContent.addDefaultNode(winner);
 			return true;
 		}
-
 		return false;
 	}
 
