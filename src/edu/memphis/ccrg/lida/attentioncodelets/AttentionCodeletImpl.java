@@ -104,15 +104,14 @@ public abstract class AttentionCodeletImpl extends CodeletImpl implements
 
 	@Override
 	public void setRefractoryPeriod(int ticks) {
-		if (ticks > 0) {
+		if(ticks > 0) {
 			codeletRefractoryPeriod = ticks;
-		} else {
+		}else{
 			codeletRefractoryPeriod = DEFAULT_CODELET_REFRACTORY_PERIOD;
 			logger.log(Level.WARNING,
 					"refractory period must be positive, using default value",
 					TaskManager.getCurrentTick());
 		}
-
 	}
 
 	@Override
