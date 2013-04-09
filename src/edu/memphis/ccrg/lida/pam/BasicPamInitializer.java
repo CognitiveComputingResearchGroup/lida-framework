@@ -15,6 +15,7 @@ import edu.memphis.ccrg.lida.framework.Agent;
 import edu.memphis.ccrg.lida.framework.initialization.FullyInitializable;
 import edu.memphis.ccrg.lida.framework.initialization.GlobalInitializer;
 import edu.memphis.ccrg.lida.framework.initialization.Initializer;
+import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.activation.Learnable;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
@@ -46,6 +47,7 @@ public class BasicPamInitializer implements Initializer {
 
 	private static final Logger logger = Logger.getLogger(BasicPamInitializer.class.getCanonicalName());
 	private static final GlobalInitializer globalInitializer = GlobalInitializer.getInstance();
+	private static final ElementFactory factory = ElementFactory.getInstance();
 
 	@Override
 	public void initModule(FullyInitializable m, Agent agent, Map<String, ?> params) {
@@ -75,6 +77,33 @@ public class BasicPamInitializer implements Initializer {
 						globalInitializer.setAttribute(label, node);
 						if (nodeParams.length >= 2) {
 							parseBaseLevelActivation(nodeParams[1],node);
+						}
+					}
+				}
+			}
+		}
+		
+		String linkCategories = (String) params.get("linkCategories");
+		if (linkCategories != null) {
+			String[] defs = linkCategories.split(",");
+			for (String categoryDef : defs) {
+				categoryDef = categoryDef.trim();
+				String[] categoryParams = categoryDef.split(":");
+				String label = categoryParams[0];
+				if ("".equals(label)) {
+					logger.log(Level.WARNING,
+							"Empty string found in link category specification, link category labels must be non-empty");
+				}else{
+					logger.log(Level.INFO, "Loading LinkCategory: {0}", label);
+					PamNode node=(PamNode)factory.getNode("PamNodeImpl", label);
+					if (node == null) {
+						logger.log(Level.WARNING,
+								"Failed to add LinkCategory '{0}' to PAM.", label);
+					}else{
+						pam.addLinkCategory(node);
+						globalInitializer.setAttribute(label, node);
+						if (categoryParams.length >= 2) {
+							parseBaseLevelActivation(categoryParams[1],node);
 						}
 					}
 				}

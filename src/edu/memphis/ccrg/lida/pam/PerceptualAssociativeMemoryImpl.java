@@ -654,6 +654,7 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 			result = (LinkCategory) pamNodeStructure.addNode((Node) cat,
 					DEFAULT_NONDECAYING_PAMNODE);
 			linkCategories.put(cat.getId(), cat);
+			nodesByLabel.put(cat.getLabel(),(PamNode) cat);
 		}
 		return result;
 	}
