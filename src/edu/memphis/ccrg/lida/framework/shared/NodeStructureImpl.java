@@ -159,17 +159,14 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 			return null;
 		}
 		if (!factory.containsNodeType(type)) {
-			logger
-					.log(
-							Level.WARNING,
+			logger.log(Level.WARNING,
 							"Factory does not contain node type {1}. Check that type is defined in factoryData.xml. Node {2} not added",
-							new Object[] { TaskManager.getCurrentTick(), type,
-									n });
+							new Object[] {TaskManager.getCurrentTick(), type,n});
 			return null;
 		}
 		Node node = nodes.get(n.getId());
 		if (node == null) {
-			node = getNewNode(n, type);
+			node = getNewNode(n, type);//Calls #updateNodeValues
 			if (node != null) {
 				nodes.put(node.getId(), node);
 				linkableMap.put(node, new HashSet<Link>());
@@ -182,7 +179,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 			if (node.getActivation() < n.getActivation()) {
 				node.setActivation(n.getActivation());
 			}
-			node.updateNodeValues(n);
+			node.updateNodeValues(n); 
 		} else {
 			logger
 					.log(
@@ -314,8 +311,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	@Override
 	public synchronized Link addLink(Link l, String type) {
 		if (!factory.containsLinkType(type)) {
-			logger
-					.log(
+			logger.log(
 							Level.WARNING,
 							"Cannot add link {1} of type {2} because factory does not contain that Link type. Check that type is defined in factoryData xml file.",
 							new Object[] { TaskManager.getCurrentTick(), l,
@@ -341,12 +337,12 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 			link = generateNewLink(l, type, newSource, newSink,
 					l.getCategory(), newActivation, l
 							.getActivatibleRemovalThreshold(), l
-							.getGroundingPamLink());
+							.getGroundingPamLink());//Calls #updateLinkValues
 		} else if (type.equals(link.getFactoryType())) {
 			if (newActivation > link.getActivation()) {
 				link.setActivation(newActivation);
 			}
-			link.updateLinkValues(l);
+			link.updateLinkValues(l); 
 		} else {
 			logger
 					.log(

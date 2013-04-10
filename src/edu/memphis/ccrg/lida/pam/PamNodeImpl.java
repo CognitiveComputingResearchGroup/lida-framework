@@ -83,9 +83,7 @@ public class PamNodeImpl extends NodeImpl implements PamNode {
 			PamNodeImpl pn = (PamNodeImpl) n;
 			learnable.setBaseLevelActivation(pn.getBaseLevelActivation());
 		} else {
-			logger
-					.log(
-							Level.FINEST,
+			logger.log(Level.FINEST,
 							"Cannot set PamNodeImpl-specific values. Required: {1} \n Received: {2}",
 							new Object[] { TaskManager.getCurrentTick(),
 									PamNodeImpl.class.getCanonicalName(), n });

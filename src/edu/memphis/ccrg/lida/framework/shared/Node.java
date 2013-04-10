@@ -69,7 +69,7 @@ public interface Node extends Linkable, Condition {
 
 	/**
 	 * Subclasses of Node should override this method to set all of their
-	 * type-specific member data using the values of the specified Link. Thus
+	 * type-specific member data using the values of the specified Node. Thus
 	 * specified Node must be of the same subclass type.
 	 * 
 	 * @param n

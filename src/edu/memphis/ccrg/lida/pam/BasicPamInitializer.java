@@ -46,70 +46,19 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 public class BasicPamInitializer implements Initializer {
 
 	private static final Logger logger = Logger.getLogger(BasicPamInitializer.class.getCanonicalName());
-	private static final GlobalInitializer globalInitializer = GlobalInitializer.getInstance();
+	protected static final GlobalInitializer globalInitializer = GlobalInitializer.getInstance();
 	private static final ElementFactory factory = ElementFactory.getInstance();
 
 	@Override
 	public void initModule(FullyInitializable m, Agent agent, Map<String, ?> params) {
 		PerceptualAssociativeMemory pam = (PerceptualAssociativeMemory)m;
-		String nodes = (String) params.get("nodes");
-		if (nodes != null) {
-			String[] defs = nodes.split(",");
-			for (String nodeDef : defs) {
-				nodeDef = nodeDef.trim();
-				String[] nodeParams = nodeDef.split(":");
-				String label = nodeParams[0];
-				if ("".equals(label)) {
-					logger.log(Level.WARNING,
-							"Empty string found in node specification, node labels must be non-empty");
-				}else{
-					logger.log(Level.INFO, "Loading PamNode: {0}", label);
-					PamNode node = null;
-					if(nodeParams.length >= 3){
-						node=pam.addNode(nodeParams[2], label);
-					}else{
-						node=pam.addDefaultNode(label);
-					}
-					if (node == null) {
-						logger.log(Level.WARNING,
-								"Failed to get Node '{0}' from PAM.", label);
-					}else{
-						globalInitializer.setAttribute(label, node);
-						if (nodeParams.length >= 2) {
-							parseBaseLevelActivation(nodeParams[1],node);
-						}
-					}
-				}
-			}
-		}
-		
-		String linkCategories = (String) params.get("linkCategories");
-		if (linkCategories != null) {
-			String[] defs = linkCategories.split(",");
-			for (String categoryDef : defs) {
-				categoryDef = categoryDef.trim();
-				String[] categoryParams = categoryDef.split(":");
-				String label = categoryParams[0];
-				if ("".equals(label)) {
-					logger.log(Level.WARNING,
-							"Empty string found in link category specification, link category labels must be non-empty");
-				}else{
-					logger.log(Level.INFO, "Loading LinkCategory: {0}", label);
-					PamNode node=(PamNode)factory.getNode("PamNodeImpl", label);
-					if (node == null) {
-						logger.log(Level.WARNING,
-								"Failed to add LinkCategory '{0}' to PAM.", label);
-					}else{
-						pam.addLinkCategory(node);
-						globalInitializer.setAttribute(label, node);
-						if (categoryParams.length >= 2) {
-							parseBaseLevelActivation(categoryParams[1],node);
-						}
-					}
-				}
-			}
-		}
+		initNodes(pam,params);		
+		initLinkCategories(pam, params);
+		initLinks(pam, params);
+	}
 
+	protected void initLinks(PerceptualAssociativeMemory pam,
+			Map<String, ?> params) {
 		String links = (String) params.get("links");
 		if (links != null) {
 			String[] linkDefs = links.split(",");
@@ -153,7 +102,70 @@ public class BasicPamInitializer implements Initializer {
 		}
 	}
 
-	private static void parseBaseLevelActivation(String param, Learnable learnable) {
+	protected void initLinkCategories(PerceptualAssociativeMemory pam,
+			Map<String, ?> params) {
+		String linkCategories = (String) params.get("linkCategories");
+		if (linkCategories != null) {
+			String[] defs = linkCategories.split(",");
+			for (String categoryDef : defs) {
+				categoryDef = categoryDef.trim();
+				String[] categoryParams = categoryDef.split(":");
+				String label = categoryParams[0];
+				if ("".equals(label)) {
+					logger.log(Level.WARNING,
+							"Empty string found in link category specification, link category labels must be non-empty");
+				}else{
+					logger.log(Level.INFO, "Loading LinkCategory: {0}", label);
+					PamNode node=(PamNode)factory.getNode("PamNodeImpl", label);
+					if (node == null) {
+						logger.log(Level.WARNING,
+								"Failed to add LinkCategory '{0}' to PAM.", label);
+					}else{
+						pam.addLinkCategory(node);
+						globalInitializer.setAttribute(label, node);
+						if (categoryParams.length >= 2) {
+							parseBaseLevelActivation(categoryParams[1],node);
+						}
+					}
+				}
+			}
+		}
+	}
+
+	protected void initNodes(PerceptualAssociativeMemory pam,Map<String, ?> params) {
+		String nodes = (String) params.get("nodes");
+		if (nodes != null) {
+			String[] defs = nodes.split(",");
+			for (String nodeDef : defs) {
+				nodeDef = nodeDef.trim();
+				String[] nodeParams = nodeDef.split(":");
+				String label = nodeParams[0];
+				if ("".equals(label)) {
+					logger.log(Level.WARNING,
+							"Empty string found in node specification, node labels must be non-empty");
+				}else{
+					logger.log(Level.INFO, "Loading PamNode: {0}", label);
+					PamNode node = null;
+					if(nodeParams.length >= 3){
+						node=pam.addNode(nodeParams[2], label);
+					}else{
+						node=pam.addDefaultNode(label);
+					}
+					if (node == null) {
+						logger.log(Level.WARNING,
+								"Failed to get Node '{0}' from PAM.", label);
+					}else{
+						globalInitializer.setAttribute(label, node);
+						if (nodeParams.length >= 2) {
+							parseBaseLevelActivation(nodeParams[1],node);
+						}
+					}
+				}
+			}
+		}
+	}
+
+	protected static void parseBaseLevelActivation(String param, Learnable learnable) {
 		double blActivation = Learnable.DEFAULT_BASE_LEVEL_ACTIVATION;
 		try{
 			blActivation = Double.parseDouble(param);
