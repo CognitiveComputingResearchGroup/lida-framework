@@ -498,7 +498,7 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 		Link res = factory.getLink(convertedType,l.getSource(),
 								   l.getSink(), l.getCategory());
 		res.setActivation(l.getTotalActivation());
-		res.setIncentiveSalience(l.getTotalIncentiveSalience());
+		res.updateLinkValues(l);
 		return res;
 	}
 
