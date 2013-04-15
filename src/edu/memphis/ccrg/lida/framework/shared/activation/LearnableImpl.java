@@ -66,7 +66,7 @@ public class LearnableImpl extends ActivatibleImpl implements Learnable {
 	@Deprecated
 	public LearnableImpl(LearnableImpl l) {
 		this(l.getActivation(), l.getActivatibleRemovalThreshold(), l
-				.getBaseLevelActivation(), l.getLearnableRemovalThreshold(), l
+				.getBaseLevelActivation(), l.getBaseLevelRemovalThreshold(), l
 				.getExciteStrategy(), l.getDecayStrategy(), l
 				.getBaseLevelExciteStrategy(), l.getBaseLevelDecayStrategy(), l
 				.getTotalActivationStrategy());
@@ -320,7 +320,7 @@ public class LearnableImpl extends ActivatibleImpl implements Learnable {
 	}
 
 	@Override
-	public double getLearnableRemovalThreshold() {
+	public double getBaseLevelRemovalThreshold() {
 		return learnableRemovalThreshold;
 	}
 

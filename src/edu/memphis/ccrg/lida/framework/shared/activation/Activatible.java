@@ -142,7 +142,7 @@ public interface Activatible extends Initializable {
 	public DecayStrategy getDecayStrategy();
 
 	/**
-	 * Sets activatibleRemovalThreshold
+	 * Sets the threshold on the amount of activation and incentive salience required to remain active.
 	 * 
 	 * @param threshold
 	 *            threshold for removal of this activatible
@@ -150,14 +150,14 @@ public interface Activatible extends Initializable {
 	public void setActivatibleRemovalThreshold(double threshold);
 
 	/**
-	 * Gets activatibleRemovalThreshold
+	 * Gets the threshold on the amount of activation and incentive salience required to remain active.
 	 * 
 	 * @return threshold for removal of this activatible
 	 */
 	public double getActivatibleRemovalThreshold();
 
 	/**
-	 * Returns true if this Activatible is removable
+	 * Returns true if this Activatible is removable.
 	 * 
 	 * @return true if activation is less than activatibleRemovalThreshold
 	 */

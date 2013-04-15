@@ -245,8 +245,8 @@ public class PamLinkImpl extends LinkImpl implements PamLink {
 	}
 
 	@Override
-	public double getLearnableRemovalThreshold() {
-		return learnable.getLearnableRemovalThreshold();
+	public double getBaseLevelRemovalThreshold() {
+		return learnable.getBaseLevelRemovalThreshold();
 	}
 
 	@Override

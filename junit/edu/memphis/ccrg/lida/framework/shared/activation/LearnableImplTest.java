@@ -73,7 +73,7 @@ public class LearnableImplTest {
 		assertEquals(activatibleRemovalThreshold, learnable2
 				.getActivatibleRemovalThreshold(), epsilon);
 		assertEquals(learnableRemovalThreshold, learnable2
-				.getLearnableRemovalThreshold(), epsilon);
+				.getBaseLevelRemovalThreshold(), epsilon);
 		assertEquals(baseLevelActivation, learnable2.getBaseLevelActivation(),
 				epsilon);
 
@@ -105,8 +105,8 @@ public class LearnableImplTest {
 		assertEquals(learnable1.getActivation(), copy.getActivation(), epsilon);
 		assertEquals(learnable1.getBaseLevelActivation(), copy
 				.getBaseLevelActivation(), epsilon);
-		assertEquals(learnable1.getLearnableRemovalThreshold(), copy
-				.getLearnableRemovalThreshold(), epsilon);
+		assertEquals(learnable1.getBaseLevelRemovalThreshold(), copy
+				.getBaseLevelRemovalThreshold(), epsilon);
 
 		assertEquals(learnable1.getDecayStrategy(), copy.getDecayStrategy());
 		assertEquals(learnable1.getExciteStrategy(), copy.getExciteStrategy());
@@ -273,7 +273,7 @@ public class LearnableImplTest {
 	@Test
 	public void testSetLearnableRemovalThreshold() {
 		learnable1.setBaseLevelRemovalThreshold(0.4);
-		assertEquals(0.4, learnable1.getLearnableRemovalThreshold(), 0.0001);
+		assertEquals(0.4, learnable1.getBaseLevelRemovalThreshold(), 0.0001);
 	}
 
 	/**

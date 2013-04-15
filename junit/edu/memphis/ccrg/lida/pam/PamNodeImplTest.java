@@ -84,7 +84,7 @@ public class PamNodeImplTest {
 
 		double t = 0.7;
 		node1.setBaseLevelRemovalThreshold(t);
-		assertTrue(t == node1.getLearnableRemovalThreshold());
+		assertTrue(t == node1.getBaseLevelRemovalThreshold());
 
 		node1.setBaseLevelActivation(1.0);
 		assertFalse(node1.isRemovable());
@@ -247,7 +247,7 @@ public class PamNodeImplTest {
 	@Test
 	public void testSetLearnableRemovalThreshold() {
 		node1.setBaseLevelRemovalThreshold(0.4);
-		assertEquals(0.4, node1.getLearnableRemovalThreshold(), 0.0001);
+		assertEquals(0.4, node1.getBaseLevelRemovalThreshold(), 0.0001);
 	}
 
 	/**

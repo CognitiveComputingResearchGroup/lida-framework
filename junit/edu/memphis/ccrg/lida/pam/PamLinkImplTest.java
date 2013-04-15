@@ -242,7 +242,7 @@ public class PamLinkImplTest {
 	@Test
 	public void testSetLearnableRemovalThreshold() {
 		link1.setBaseLevelRemovalThreshold(0.4);
-		assertEquals(0.4, link1.getLearnableRemovalThreshold(), 0.0001);
+		assertEquals(0.4, link1.getBaseLevelRemovalThreshold(), 0.0001);
 	}
 
 	/**

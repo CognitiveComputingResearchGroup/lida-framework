@@ -231,8 +231,8 @@ public class PamNodeImpl extends NodeImpl implements PamNode {
 	}
 
 	@Override
-	public double getLearnableRemovalThreshold() {
-		return learnable.getLearnableRemovalThreshold();
+	public double getBaseLevelRemovalThreshold() {
+		return learnable.getBaseLevelRemovalThreshold();
 	}
 
 	@Override

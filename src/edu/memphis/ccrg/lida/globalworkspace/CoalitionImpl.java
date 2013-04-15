@@ -122,6 +122,6 @@ public class CoalitionImpl extends ActivatibleImpl implements Coalition {
 
 	@Override
 	public int hashCode() {
-		return (int) id;
+		return (int)id;
 	}
 }

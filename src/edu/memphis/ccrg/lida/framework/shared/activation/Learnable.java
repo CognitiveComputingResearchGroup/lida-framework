@@ -42,29 +42,6 @@ public interface Learnable extends Activatible {
 	public static final double DEFAULT_BASE_LEVEL_INCENTIVE_SALIENCE = 0.0;
 	
 	/**
-	 * Gets the base-level incentive salience of the {@link Learnable}.
-	 * @return an amount of base-level incentive salience
-	 */
-	public double getBaseLevelIncentiveSalience();
-
-	/**
-	 * Sets the base-level incentive salience of the Learnable
-	 * @param s an amount of base-level incentive salience
-	 */
-	public void setBaseLevelIncentiveSalience(double s);	
-	
-	/**
-	 * Positively updates the base-level incentive salience of this learnable by specified amount.
-	 * @param a amount of reinforcment
-	 */
-	public void reinforceBaseLevelIncentiveSalience(double a);
-	/**
-	 * Decays base-level incentive salience for specified number of ticks.
-	 * @param t time ticks base-level incentive salience is to be decayed for
-	 */
-	public void decayBaseLevelIncentiveSalience(long t);
-	
-	/**
 	 * Returns base level activation.
 	 * 
 	 * @return activation representing the degree this Learnable has been
@@ -101,6 +78,30 @@ public interface Learnable extends Activatible {
 	 *            the number of ticks to decay
 	 */
 	public void decayBaseLevelActivation(long ticks);
+	
+	/**
+	 * Gets the base-level incentive salience of the {@link Learnable}.
+	 * @return an amount of base-level incentive salience
+	 */
+	public double getBaseLevelIncentiveSalience();
+
+	/**
+	 * Sets the base-level incentive salience of the Learnable
+	 * @param s an amount of base-level incentive salience
+	 */
+	public void setBaseLevelIncentiveSalience(double s);	
+	
+	/**
+	 * Positively updates the base-level incentive salience of this learnable by specified amount.
+	 * @param a amount of reinforcment
+	 */
+	public void reinforceBaseLevelIncentiveSalience(double a);
+	
+	/**
+	 * Decays base-level incentive salience for specified number of ticks.
+	 * @param t time ticks base-level incentive salience is to be decayed for
+	 */
+	public void decayBaseLevelIncentiveSalience(long t);
 
 	/**
 	 * Sets BaseLevelExciteStrategy
@@ -145,7 +146,7 @@ public interface Learnable extends Activatible {
 	 * 
 	 * @return threshold for removal of this learnable
 	 */
-	public double getLearnableRemovalThreshold();
+	public double getBaseLevelRemovalThreshold();
 
 	/**
 	 * Returns {@link TotalActivationStrategy}
