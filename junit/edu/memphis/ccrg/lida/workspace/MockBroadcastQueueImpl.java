@@ -11,13 +11,13 @@ import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.Coalition;
 import edu.memphis.ccrg.lida.workspace.workspacebuffers.BroadcastQueueImpl;
 
-public class MockBroadcastQueueImpl extends BroadcastQueueImpl{
+public class MockBroadcastQueueImpl extends BroadcastQueueImpl {
 
 	public BroadcastContent broadcastContent;
-	
+
 	@Override
 	public void receiveBroadcast(Coalition c) {
 		this.broadcastContent = c.getContent();
 	}
-	
+
 }

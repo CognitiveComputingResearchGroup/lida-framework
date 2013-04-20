@@ -20,7 +20,9 @@ import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemory;
 import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
 
 /**
- * A {@link GuiPanel} to display the {@link Scheme} elements of {@link ProceduralMemory}
+ * A {@link GuiPanel} to display the {@link Scheme} elements of
+ * {@link ProceduralMemory}
+ * 
  * @author Ryan J. McCall
  */
 public class ProceduralMemoryPanel extends GuiPanelImpl {
@@ -70,26 +72,29 @@ public class ProceduralMemoryPanel extends GuiPanelImpl {
 
 		javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
 		this.setLayout(layout);
-		layout.setHorizontalGroup(layout
-				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE,
-						400, Short.MAX_VALUE)
-				.addComponent(jScrollPane1,
-						javax.swing.GroupLayout.DEFAULT_SIZE, 400,
-						Short.MAX_VALUE));
-		layout.setVerticalGroup(layout
-				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGroup(
-						layout.createSequentialGroup()
-								.addComponent(jToolBar1,
-										javax.swing.GroupLayout.PREFERRED_SIZE,
-										25,
-										javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addPreferredGap(
-										javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-								.addComponent(jScrollPane1,
-										javax.swing.GroupLayout.DEFAULT_SIZE,
-										278, Short.MAX_VALUE)));
+		layout.setHorizontalGroup(layout.createParallelGroup(
+				javax.swing.GroupLayout.Alignment.LEADING).addComponent(
+				jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 400,
+				Short.MAX_VALUE).addComponent(jScrollPane1,
+				javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE));
+		layout
+				.setVerticalGroup(layout
+						.createParallelGroup(
+								javax.swing.GroupLayout.Alignment.LEADING)
+						.addGroup(
+								layout
+										.createSequentialGroup()
+										.addComponent(
+												jToolBar1,
+												javax.swing.GroupLayout.PREFERRED_SIZE,
+												25,
+												javax.swing.GroupLayout.PREFERRED_SIZE)
+										.addPreferredGap(
+												javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+										.addComponent(
+												jScrollPane1,
+												javax.swing.GroupLayout.DEFAULT_SIZE,
+												278, Short.MAX_VALUE)));
 	}// </editor-fold>//GEN-END:initComponents
 
 	private void refreshButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_refreshButtonActionPerformed
@@ -101,6 +106,7 @@ public class ProceduralMemoryPanel extends GuiPanelImpl {
 	private javax.swing.JToolBar jToolBar1;
 	private javax.swing.JButton refreshButton;
 	private javax.swing.JTable schemeTable;
+
 	// End of variables declaration//GEN-END:variables
 
 	@Override
@@ -108,10 +114,11 @@ public class ProceduralMemoryPanel extends GuiPanelImpl {
 		module = (ProceduralMemory) agent
 				.getSubmodule(ModuleName.ProceduralMemory);
 		if (module == null) {
-			logger.log(
-					Level.WARNING,
-					"Error initializing ProceduralMemoryPanel, Module does not exist in agent.",
-					0L);
+			logger
+					.log(
+							Level.WARNING,
+							"Error initializing ProceduralMemoryPanel, Module does not exist in agent.",
+							0L);
 			return;
 		}
 	}
@@ -127,7 +134,8 @@ public class ProceduralMemoryPanel extends GuiPanelImpl {
 		schemes = (Collection<Scheme>) o;
 		schemeArray = schemes.toArray(new Scheme[0]);
 
-		((AbstractTableModel) schemeTable.getModel()).fireTableStructureChanged();
+		((AbstractTableModel) schemeTable.getModel())
+				.fireTableStructureChanged();
 	}
 
 	private class SchemeTableModel extends AbstractTableModel {
@@ -184,13 +192,13 @@ public class ProceduralMemoryPanel extends GuiPanelImpl {
 			}
 
 		}
-		
-		private String generateConditionsString(Collection<Condition> conditions){
-			if(conditions == null){
+
+		private String generateConditionsString(Collection<Condition> conditions) {
+			if (conditions == null) {
 				return "";
 			}
 			StringBuilder res = new StringBuilder();
-			for(Condition c: conditions){
+			for (Condition c : conditions) {
 				res.append(c.toString());
 				res.append(",");
 			}

@@ -23,8 +23,9 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
  */
 public class FrameworkGuiControllerImpl implements FrameworkGuiController {
 
-	private static final Logger logger = Logger.getLogger(FrameworkGuiControllerImpl.class.getCanonicalName());
-	
+	private static final Logger logger = Logger
+			.getLogger(FrameworkGuiControllerImpl.class.getCanonicalName());
+
 	private Agent agent;
 	private Properties commands;
 
@@ -39,42 +40,44 @@ public class FrameworkGuiControllerImpl implements FrameworkGuiController {
 	public FrameworkGuiControllerImpl(Agent agent, Properties commands) {
 		super();
 		this.agent = agent;
- 		this.commands = commands;
+		this.commands = commands;
 	}
-	
+
 	@Override
-	public Object executeCommand (String commandName, Map<String,Object> parameters){
-		if(commandName == null){
-			logger.log(Level.WARNING,"Received null command name");
+	public Object executeCommand(String commandName,
+			Map<String, Object> parameters) {
+		if (commandName == null) {
+			logger.log(Level.WARNING, "Received null command name");
 			return null;
 		}
 		String commandClass = commands.getProperty(commandName);
-		Command command=null;
-		if(commandClass != null){
+		Command command = null;
+		if (commandClass != null) {
 			try {
-				command=(Command)(Class.forName(commandClass)).newInstance();
+				command = (Command) (Class.forName(commandClass)).newInstance();
 			} catch (Exception e) {
-				logger.log(Level.WARNING,e.getMessage(),e);
+				logger.log(Level.WARNING, e.getMessage(), e);
 			}
 		}
-		if (command == null){
+		if (command == null) {
 			return null;
 		}
-		if(parameters != null){
+		if (parameters != null) {
 			command.setParameters(parameters);
 		}
 		return executeCommand(command);
 	}
 
 	@Override
-	public Object executeCommand (Command command){
-		if(command != null){
+	public Object executeCommand(Command command) {
+		if (command != null) {
 			command.execute(agent);
-			logger.log(Level.FINE, "Command {1} executed",
-					new Object[]{TaskManager.getCurrentTick(),command});
+			logger.log(Level.FINE, "Command {1} executed", new Object[] {
+					TaskManager.getCurrentTick(), command });
 			return command.getResult();
 		}
-		logger.log(Level.WARNING, "Cannot execute null command", TaskManager.getCurrentTick());
+		logger.log(Level.WARNING, "Cannot execute null command", TaskManager
+				.getCurrentTick());
 		return null;
 	}
 

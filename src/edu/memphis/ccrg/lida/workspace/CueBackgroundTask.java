@@ -37,14 +37,16 @@ public class CueBackgroundTask extends FrameworkTaskImpl {
 	private static final double DEFAULT_CUEING_THRESHOLD = 0.4;
 	private double actThreshold = DEFAULT_CUEING_THRESHOLD;
 	private Workspace workspace;
-	
+
 	private static final Logger logger = Logger
 			.getLogger(CueBackgroundTask.class.getCanonicalName());
 
 	/**
-	 * Will set parameters with the following names:<br/><br/>
+	 * Will set parameters with the following names:<br/>
+	 * <br/>
 	 * 
-	 * <b>workspace.cueingThreshold type=double</b> the amount of activation {@link WorkspaceContent} must have to cue {@link EpisodicMemory}<br/>
+	 * <b>workspace.cueingThreshold type=double</b> the amount of activation
+	 * {@link WorkspaceContent} must have to cue {@link EpisodicMemory}<br/>
 	 * 
 	 * @see Initializable
 	 */
@@ -71,22 +73,23 @@ public class CueBackgroundTask extends FrameworkTaskImpl {
 	protected void runThisFrameworkTask() {
 		WorkspaceBuffer perceptualBuffer = (WorkspaceBuffer) workspace
 				.getSubmodule(ModuleName.PerceptualBuffer);
-		NodeStructure ns = (NodeStructure) perceptualBuffer.getBufferContent(null);
+		NodeStructure ns = (NodeStructure) perceptualBuffer
+				.getBufferContent(null);
 
 		NodeStructure cueNodeStrucutre = new NodeStructureImpl();
 		// Current impl. of episodic memory only processes Nodes.
 		// TODO add links when episodic memory supports them
-		if(ns != null){
+		if (ns != null) {
 			for (Node n : ns.getNodes()) {
 				if (n.getActivation() >= actThreshold) {
 					cueNodeStrucutre.addDefaultNode(n);
 				}
 			}
-		}else{
+		} else {
 			logger.log(Level.WARNING, "Got a null nodestructure", TaskManager
 					.getCurrentTick());
 		}
-		
+
 		if (cueNodeStrucutre.getNodeCount() > 0) {
 			logger.log(Level.FINER, "Cueing Episodic Memories", TaskManager
 					.getCurrentTick());

@@ -58,7 +58,8 @@ public class ExcitationTask extends FrameworkTaskImpl {
 	 * @param pam
 	 *            PerceptualAssociativeMemory module
 	 */
-	public ExcitationTask(int ticksPerRun, PamNode n, double excitation,PerceptualAssociativeMemory pam) {
+	public ExcitationTask(int ticksPerRun, PamNode n, double excitation,
+			PerceptualAssociativeMemory pam) {
 		super(ticksPerRun);
 		node = n;
 		excitationAmount = excitation;
@@ -66,15 +67,16 @@ public class ExcitationTask extends FrameworkTaskImpl {
 	}
 
 	/**
-	 * This method first excites the {@link PamNode}, if this puts the {@link PamNode}
-	 * over the percept threshold it creates an {@link AddNodeToPerceptTask} to
-	 * add it to the percept. In either case it calls
+	 * This method first excites the {@link PamNode}, if this puts the
+	 * {@link PamNode} over the percept threshold it creates an
+	 * {@link AddNodeToPerceptTask} to add it to the percept. In either case it
+	 * calls
 	 * {@link PerceptualAssociativeMemory#propagateActivationToParents(PamNode)}
 	 * to pass the node's activation, then the tasks finishes.
 	 */
 	@Override
 	protected void runThisFrameworkTask() {
-		node.excite(excitationAmount);
+		node.exciteActivation(excitationAmount);
 		if (pam.isOverPerceptThreshold(node)) {
 			if (logger.isLoggable(Level.FINEST)) {
 				logger.log(Level.FINEST, "PamNode {1} over threshold",

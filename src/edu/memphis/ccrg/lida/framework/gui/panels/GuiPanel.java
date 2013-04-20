@@ -22,52 +22,63 @@ import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiController;
  * @author Javier Snaider
  */
 public interface GuiPanel {
-    /**
-     * Initializes panel
-     * @param param Parameters to initialize with.
-     */
-    public void initPanel(String[] param);
-	
+	/**
+	 * Initializes panel
+	 * 
+	 * @param param
+	 *            Parameters to initialize with.
+	 */
+	public void initPanel(String[] param);
+
 	/**
 	 * Registers the {@link FrameworkGuiController} as the controller.
-	 * @param lgc GuiController for this panel
+	 * 
+	 * @param lgc
+	 *            GuiController for this panel
 	 */
 	public void registerGuiController(FrameworkGuiController lgc);
-	
+
 	/**
 	 * Sets {@link Agent} object as the model for this panel.
-	 * @param agent {@link Agent} object
+	 * 
+	 * @param agent
+	 *            {@link Agent} object
 	 */
 	public void registerAgent(Agent agent);
-	
+
 	/**
 	 * Update Panel to display supplied object
-	 * @param o Object to display
+	 * 
+	 * @param o
+	 *            Object to display
 	 */
-	public void display (Object o);
-	
+	public void display(Object o);
+
 	/**
 	 * Refreshes the content this panel displays.
 	 */
 	public void refresh();
-	
+
 	/**
 	 * Returns associated JPanel
+	 * 
 	 * @return a JPanel
 	 */
 	public JPanel getPanel();
-    
-    /**
-     * Sets name of panel
-     * @param name label for panel
-     */
-    public void setName(String name);
-    
-    /**
-     * Gets name of panels
-     * @return name of panel
-     */
-    public String getName();
-    
-}
 
+	/**
+	 * Sets name of panel
+	 * 
+	 * @param name
+	 *            label for panel
+	 */
+	public void setName(String name);
+
+	/**
+	 * Gets name of panels
+	 * 
+	 * @return name of panel
+	 */
+	public String getName();
+
+}

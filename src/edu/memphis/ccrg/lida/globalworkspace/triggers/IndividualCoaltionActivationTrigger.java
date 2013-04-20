@@ -19,21 +19,29 @@ import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
  * A trigger that fires if any coalition is above a threshold.
  * 
  * @author Javier Snaider
- *
+ * 
  */
-public class IndividualCoaltionActivationTrigger extends AggregateCoalitionActivationTrigger {
-	
-	private static final Logger logger = Logger.getLogger(IndividualCoaltionActivationTrigger.class.getCanonicalName());
-	
+public class IndividualCoaltionActivationTrigger extends
+		AggregateCoalitionActivationTrigger {
+
+	private static final Logger logger = Logger
+			.getLogger(IndividualCoaltionActivationTrigger.class
+					.getCanonicalName());
+
 	/**
-	 * Triggers a broadcast if any {@link Coalition} object's activation is over threshold.
-	 * @param coalitions {@link Coalition} objects current in the {@link GlobalWorkspace}
+	 * Triggers a broadcast if any {@link Coalition} object's activation is over
+	 * threshold.
+	 * 
+	 * @param coalitions
+	 *            {@link Coalition} objects current in the
+	 *            {@link GlobalWorkspace}
 	 */
 	@Override
 	public void checkForTriggerCondition(Collection<Coalition> coalitions) {
-		for(Coalition c : coalitions){
-			if(c.getActivation() > threshold){
-				logger.log(Level.FINE,"Individual Activation trigger fires",TaskManager.getCurrentTick());
+		for (Coalition c : coalitions) {
+			if (c.getActivation() > threshold) {
+				logger.log(Level.FINE, "Individual Activation trigger fires",
+						TaskManager.getCurrentTick());
 				gw.triggerBroadcast(this);
 				break;
 			}

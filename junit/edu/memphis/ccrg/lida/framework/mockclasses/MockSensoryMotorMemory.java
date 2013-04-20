@@ -11,21 +11,20 @@ import edu.memphis.ccrg.lida.actionselection.Action;
 import edu.memphis.ccrg.lida.actionselection.ActionSelectionListener;
 import edu.memphis.ccrg.lida.sensorymotormemory.BasicSensoryMotorMemory;
 
-
 public class MockSensoryMotorMemory extends BasicSensoryMotorMemory implements
 		ActionSelectionListener {
-	
+
 	public boolean actionReceived = false;
 	public Action action;
-	
+
 	@Override
 	public synchronized void receiveAction(Action action) {
-		if(action != null){
+		if (action != null) {
 			actionReceived = true;
-			this.action=action;
-		}else{
+			this.action = action;
+		} else {
 			actionReceived = false;
 		}
 	}
-	
+
 }

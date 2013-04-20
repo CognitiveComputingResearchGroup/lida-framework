@@ -16,13 +16,14 @@ import edu.memphis.ccrg.lida.framework.strategies.Strategy;
  * 
  * @author Ryan J. McCall
  */
-public interface PropagationStrategy extends Strategy{
-	
+public interface PropagationStrategy extends Strategy {
+
 	/**
-	 * Various parameters can be passed to this method for the
-	 * calculation of activation to propagate.
-	 *
-	 * @param params Map of parameters
+	 * Various parameters can be passed to this method for the calculation of
+	 * activation to propagate.
+	 * 
+	 * @param params
+	 *            Map of parameters
 	 * @return the calculated activation to propagate
 	 */
 	public double getActivationToPropagate(Map<String, Object> params);

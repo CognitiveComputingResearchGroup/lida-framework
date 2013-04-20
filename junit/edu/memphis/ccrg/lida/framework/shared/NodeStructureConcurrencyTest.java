@@ -22,7 +22,7 @@ import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl;
 public class NodeStructureConcurrencyTest {
 
 	private static final Logger logger = Logger.getLogger("Testthreads");
-	private Node[] nodes= new Node[10];
+	private Node[] nodes = new Node[10];
 	private Link link1, link2;
 	private LinkCategory category1, category2;
 	private NodeStructureImpl ns1, ns2;
@@ -36,7 +36,9 @@ public class NodeStructureConcurrencyTest {
 	/**
 	 * This method is called before running each test case to initialize the
 	 * objects
-	 * @throws Exception e
+	 * 
+	 * @throws Exception
+	 *             e
 	 * 
 	 */
 	@Before
@@ -65,12 +67,12 @@ public class NodeStructureConcurrencyTest {
 
 		ns1 = new NodeStructureImpl();
 		ns2 = new NodeStructureImpl();
-		
+
 		ns1.addDefaultNode(nodes[0]);
 		ns1.addDefaultNode(nodes[1]);
 		ns1.addDefaultNode(nodes[3]);
 		ns1.addDefaultLink(link1);
-		
+
 		ns2.addDefaultNode(nodes[0]);
 		ns2.addDefaultNode(nodes[1]);
 		ns2.addDefaultNode(nodes[2]);
@@ -86,65 +88,67 @@ public class NodeStructureConcurrencyTest {
 				@Override
 				public void run() {
 					Node n = factory.getNode();
-					try{
-					for (int j= 0; j < 5000; j++) {
-						int a = (int) (Math.random() * 7);
-						if((j%2000)==0){
-						logger.log(Level.INFO,""+Thread.currentThread().getName()+":"+a+" j:"+j);
+					try {
+						for (int j = 0; j < 5000; j++) {
+							int a = (int) (Math.random() * 7);
+							if ((j % 2000) == 0) {
+								logger.log(Level.INFO, ""
+										+ Thread.currentThread().getName()
+										+ ":" + a + " j:" + j);
+							}
+							switch (a) {
+							case 0:
+								n = factory.getNode();
+								ns1.addDefaultNode(n);
+								break;
+							case 1:
+								Node n1 = factory.getNode();
+								Node n2 = factory.getNode();
+								ns1.addDefaultNode(n1);
+								ns1.addDefaultNode(n2);
+								ns1.addDefaultLink(n1, n2, category1, 1.0, 0.0);
+								break;
+
+							case 2:
+								int sum = 0;
+								Collection<Node> nodesCol = ns1.getNodes();
+								for (Node nn : nodesCol) {
+									sum += nn.getId();
+								}
+								break;
+							case 3:
+								NodeStructure ns4 = new NodeStructureImpl();
+								Node n3 = factory.getNode();
+								Node n4 = nodes[((int) (Math.random() * 4))];
+
+								ns4.addDefaultNode(n3);
+								ns4.addDefaultNode(n4);
+
+								ns4.addDefaultLink(n3, n4, category1, .5, 0.0);
+
+								ns1.mergeWith(ns4);
+								break;
+							case 4:
+								ns1.removeNode(n);
+								break;
+
+							case 5:
+								ns1.clearLinks();
+								break;
+							case 6:
+								ns1.decayNodeStructure(1);
+								break;
+							}
 						}
-						switch (a) {
-						case 0:
-							n = factory.getNode();
-							ns1.addDefaultNode(n);
-							break;
-						case 1:
-							Node n1 = factory.getNode();
-							Node n2 = factory.getNode();
-							ns1.addDefaultNode(n1);
-							ns1.addDefaultNode(n2);
-							ns1.addDefaultLink(n1, n2, category1, 1.0, 0.0);
-							break;
-
-						case 2:
-							int sum = 0;
-							Collection<Node>nodesCol = ns1.getNodes();
-							 for(Node nn:nodesCol){
-								 sum += nn.getId();
-							 }
-							break;
-						case 3:
-							NodeStructure ns4 = new NodeStructureImpl();
-							Node n3= factory.getNode();
-							Node n4= nodes[((int)(Math.random()*4))];
-
-							ns4.addDefaultNode(n3);
-							ns4.addDefaultNode(n4);
-							
-							ns4.addDefaultLink(n3,n4 , category1, .5, 0.0);
-							
-							ns1.mergeWith(ns4);
-							break;
-						case 4:
-							ns1.removeNode(n);
-							break;
-
-						case 5:
-							ns1.clearLinks();
-							break;
-						case 6:
-							ns1.decayNodeStructure(1);
-							break;
-						}						
-					}
-					}catch(Exception e){
+					} catch (Exception e) {
 						e.printStackTrace();
 						fail();
 					}
-					
+
 				}
 			});
 		}
-		
+
 		for (int i = 0; i < 10; i++) {
 			threads[i].start();
 		}

@@ -24,26 +24,29 @@ public interface Linkable extends Activatible, Initializable {
 	 * @return readable label
 	 */
 	public String getLabel();
-	
+
 	/**
 	 * Gets extendedId.
 	 * 
 	 * @return a general id for Linkables.
 	 */
 	public ExtendedId getExtendedId();
-	
-    /**
-     * Gets factory type
-     * @return the factory type of the Linkable 
-     * @see ElementFactory
-     */
-    public String getFactoryType();
-    
-    /**
-     * Sets factory type
-     * @param t the factory type of the Linkable
-     * @see ElementFactory
-     */
-    public void setFactoryType(String t);
+
+	/**
+	 * Gets factory type
+	 * 
+	 * @return the factory type of the Linkable
+	 * @see ElementFactory
+	 */
+	public String getFactoryType();
+
+	/**
+	 * Sets factory type
+	 * 
+	 * @param t
+	 *            the factory type of the Linkable
+	 * @see ElementFactory
+	 */
+	public void setFactoryType(String t);
 
 }

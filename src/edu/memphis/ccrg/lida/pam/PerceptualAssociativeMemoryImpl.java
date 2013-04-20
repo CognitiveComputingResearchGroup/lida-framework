@@ -65,11 +65,13 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 	 * A {@link NodeStructure} which contains all of the {@link PamNode},
 	 * {@link PamLink} and their connections.
 	 */
-	protected PamNodeStructure pamNodeStructure = new PamNodeStructure("PamNodeImpl", "PamLinkImpl");	
-	
-	//TODO consider links as well
+	protected PamNodeStructure pamNodeStructure = new PamNodeStructure(
+			"PamNodeImpl", "PamLinkImpl");
+
+	// TODO consider links as well
 	/**
-	 * All {@link PamNode} objects currently in {@link PerceptualAssociativeMemoryImpl} indexed by their label. 
+	 * All {@link PamNode} objects currently in
+	 * {@link PerceptualAssociativeMemoryImpl} indexed by their label.
 	 */
 	protected Map<String, PamNode> nodesByLabel = new ConcurrentHashMap<String, PamNode>();
 
@@ -92,7 +94,7 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 
 	private static final double DEFAULT_DOWNSCALE_FACTOR = 0.5;
 	private double downscaleFactor = DEFAULT_DOWNSCALE_FACTOR;
-	
+
 	private static final double DEFAULT_PROPAGATION_THRESHOLD = 0.05;
 	private double propagateActivationThreshold = DEFAULT_PROPAGATION_THRESHOLD;
 
@@ -121,6 +123,12 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 	 */
 	public static LinkCategory FEATURE = (PamNode) factory.getNode(
 			DEFAULT_NONDECAYING_PAMNODE, "Feature");
+	/*
+	 * A map where an entry represents a mapping between one factory element type and another.
+	 * The mapping governs a conversion that occurs for each Linkable send out of PAM as a percept.
+	 * The most basic example would be: "PamNodeImpl","NodeImpl"  
+	 */
+	private Map<String,String> typeConversionMap = new HashMap<String,String>();
 
 	/**
 	 * Default constructor.
@@ -134,28 +142,74 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 	}
 
 	/**
-     * Will set parameters with the following names:<br/><br/>
-     * 
-     * <b>pam.upscale</b> the scaling on the amount of activation passed upwards from Nodes of lower conceptual depth to those of higher depth<br/>
-     * <b>pam.downscale</b> the scaling on the amount of activation passed downwards from Nodes of higher conceptual depth to those of lower depth<br/>
-     * <b>pam.perceptThreshold</b> the amount of activation a Node or Link must have to be part of the percept (be sent to the Workspace)<br/>
-     * <b>pam.excitationTicksPerRun</b> the delay (in ticks) on the excitation of Nodes and Links after they receive some activation, default is 1 tick<br/>
-     * <b>pam.propagationTicksPerRun</b> the delay (in ticks) on the propagation of activation from a Node or Link, default is 1 tick<br/>
-     * <b>pam.propagateActivationThreshold</b> the amount of activation necessary to be propagated i.e. a lesser amount is not (worth being) passed<br/>
-     * @see Initializable
-     */
+	 * Will set parameters with the following names:<br/>
+	 * <br/>
+	 * 
+	 * <b>pam.upscale</b> the scaling on the amount of activation passed upwards
+	 * from Nodes of lower conceptual depth to those of higher depth<br/>
+	 * <b>pam.downscale</b> the scaling on the amount of activation passed
+	 * downwards from Nodes of higher conceptual depth to those of lower depth<br/>
+	 * <b>pam.perceptThreshold</b> the amount of activation a Node or Link must
+	 * have to be part of the percept (be sent to the Workspace)<br/>
+	 * <b>pam.excitationTicksPerRun</b> the delay (in ticks) on the excitation
+	 * of Nodes and Links after they receive some activation, default is 1 tick<br/>
+	 * <b>pam.propagationTicksPerRun</b> the delay (in ticks) on the propagation
+	 * of activation from a Node or Link, default is 1 tick<br/>
+	 * <b>pam.propagateActivationThreshold</b> the amount of activation
+	 * necessary to be propagated i.e. a lesser amount is not (worth being)
+	 * passed.<br/>
+	 * <b>pam.perceptMapping.*</b> (String)- Can accept multiple mapping definitions of the form: mappingType:originalFactoryName:mappedFactoryname<br/>
+	 * 
+	 * @see Initializable
+	 */
 	@Override
 	public void init() {
-		upscaleFactor = (Double) getParam("pam.upscale", DEFAULT_UPSCALE_FACTOR);
-		downscaleFactor = (Double) getParam("pam.downscale",
-				DEFAULT_DOWNSCALE_FACTOR);
-		perceptThreshold = (Double) getParam("pam.perceptThreshold",
-				DEFAULT_PERCEPT_THRESHOLD);
-		excitationTaskTicksPerRun = (Integer) getParam(
-				"pam.excitationTicksPerRun", DEFAULT_EXCITATION_TASK_TICKS);
-		propagationTaskTicksPerRun = (Integer) getParam(
-				"pam.propagationTicksPerRun", DEFAULT_PROPAGATION_TASK_TICKS);
-		propagateActivationThreshold = (Double)getParam("pam.propagateActivationThreshold",DEFAULT_PROPAGATION_THRESHOLD);
+		upscaleFactor=getParam("pam.upscale", DEFAULT_UPSCALE_FACTOR);
+		downscaleFactor=getParam("pam.downscale",DEFAULT_DOWNSCALE_FACTOR);
+		perceptThreshold=getParam("pam.perceptThreshold",DEFAULT_PERCEPT_THRESHOLD);
+		excitationTaskTicksPerRun=getParam("pam.excitationTicksPerRun",DEFAULT_EXCITATION_TASK_TICKS);
+		propagationTaskTicksPerRun=getParam("pam.propagationTicksPerRun",DEFAULT_PROPAGATION_TASK_TICKS);
+		propagateActivationThreshold=getParam("pam.propagateActivationThreshold",DEFAULT_PROPAGATION_THRESHOLD);
+		initTypeConversion();
+	}
+
+	private void initTypeConversion() {
+		Map<String,?> parameters = getParameters();
+		for(String key: parameters.keySet()){
+			if(key.startsWith("pam.perceptMapping.")){
+				Object o = parameters.get(key);
+				if(o instanceof String){
+					String value = (String) o;
+					String[] mappingParams = value.trim().split(",");
+					if(mappingParams.length==3){
+						if("node".equalsIgnoreCase(mappingParams[0])){
+							if(factory.containsNodeType(mappingParams[1])&&
+							   factory.containsNodeType(mappingParams[2])){
+								typeConversionMap.put(mappingParams[1],mappingParams[2]);
+							}else{
+								logger.log(Level.WARNING,"One of the requested node types is not in the ElementFactory: {1}, {2}.",
+										new Object[]{TaskManager.getCurrentTick(),mappingParams[1],mappingParams[2]});
+							}
+						}else if("link".equalsIgnoreCase(mappingParams[0])){
+							if(factory.containsLinkType(mappingParams[1])&&
+							   factory.containsLinkType(mappingParams[2])){
+								typeConversionMap.put(mappingParams[1],mappingParams[2]);
+							}else{
+								logger.log(Level.WARNING,"One of the requested link types is not in the ElementFactory: {1}, {2}.",
+										new Object[]{TaskManager.getCurrentTick(),mappingParams[1],mappingParams[2]});
+							}
+						}else{
+							logger.log(Level.WARNING,"Bad mapping type: {1}. Must be 'node' or 'link'.",
+										new Object[]{TaskManager.getCurrentTick(),mappingParams[0]});
+						}
+					}else{
+						logger.log(Level.WARNING,"Mapping parameters must have 3 parts: mappingType:originalType:mappedType separated by ','.",TaskManager.getCurrentTick());
+					}
+				}else{
+					logger.log(Level.WARNING,"Mapping parameters must be of type String.",TaskManager.getCurrentTick());
+				}
+			}
+		}
 	}
 
 	@Override
@@ -230,66 +284,70 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 		PamLink newlink = (PamLink) pamNodeStructure.addDefaultLink(link);
 		return newlink;
 	}
-	
+
 	@Override
-	public PamNode addDefaultNode(String label){
+	public PamNode addDefaultNode(String label) {
 		return addNode(pamNodeStructure.getDefaultNodeType(), label);
 	}
-	
+
 	@Override
-	public PamNode addNode(String type, String label){
-		if(label == null){
-			logger.log(Level.WARNING, "Cannot add a Node to Pam with a null label", 
-					TaskManager.getCurrentTick());
+	public PamNode addNode(String type, String label) {
+		if (label == null) {
+			logger.log(Level.WARNING,
+					"Cannot add a Node to Pam with a null label", TaskManager
+							.getCurrentTick());
 			return null;
 		}
-		
+
 		PamNode n = nodesByLabel.get(label);
-		if(n != null){
-			logger.log(Level.WARNING, "A Node with the label {1} already exists in PAM", 
-					new Object[]{TaskManager.getCurrentTick(),label});
-		}else{		
-			n = (PamNode) pamNodeStructure.addNode(type,label,0.0,0.0);
-			if(n != null){
+		if (n != null) {
+			logger.log(Level.WARNING,
+					"A Node with the label {1} already exists in PAM",
+					new Object[] { TaskManager.getCurrentTick(), label });
+		} else {
+			n = (PamNode) pamNodeStructure.addNode(type, label, 0.0, 0.0);
+			if (n != null) {
 				nodesByLabel.put(n.getLabel(), n);
 			}
 		}
 		return n;
 	}
-	
+
 	@Override
-	public PamLink addDefaultLink(Node src, Linkable snk, LinkCategory cat){
+	public PamLink addDefaultLink(Node src, Linkable snk, LinkCategory cat) {
 		return addLink(pamNodeStructure.getDefaultLinkType(), src, snk, cat);
 	}
-	
+
 	@Override
-	public PamLink addLink(String type, Node src, Linkable snk, LinkCategory cat){
-		if(cat == null){
+	public PamLink addLink(String type, Node src, Linkable snk, LinkCategory cat) {
+		if (cat == null) {
 			logger.log(Level.WARNING, "Cannot add new Link. Category is null",
 					TaskManager.getCurrentTick());
 			return null;
 		}
-		if(!linkCategories.containsKey(cat.getId())){
-			logger.log(Level.WARNING, "Cannot add new Link. Pam does not contain LinkCategory {1}",
-					TaskManager.getCurrentTick());
+		if (!linkCategories.containsKey(cat.getId())) {
+			logger
+					.log(
+							Level.WARNING,
+							"Cannot add new Link. Pam does not contain LinkCategory {1}",
+							TaskManager.getCurrentTick());
 			return null;
 		}
-		return (PamLink)pamNodeStructure.addLink(type,src,snk,cat,0.0,0.0);
+		return (PamLink) pamNodeStructure
+				.addLink(type, src, snk, cat, 0.0, 0.0);
 	}
 
 	@Override
 	public void addDetectionAlgorithm(DetectionAlgorithm detector) {
 		PamLinkable pl = detector.getPamLinkable();
-		if(pl == null){
-			logger.log(
-					Level.WARNING,
+		if (pl == null) {
+			logger.log(Level.WARNING,
 					"Detection algorithm {1} does not have a pamlinkable.",
-					new Object[] { TaskManager.getCurrentTick(),detector});
+					new Object[] { TaskManager.getCurrentTick(), detector });
 			return;
 		}
-		if ( !pamNodeStructure.containsLinkable(pl)) {
-			logger.log(
-							Level.WARNING,
+		if (!pamNodeStructure.containsLinkable(pl)) {
+			logger.log(Level.WARNING,
 							"Adding detection algorithm {1} but, detector's pam linkable {2} is not in PAM.",
 							new Object[] { TaskManager.getCurrentTick(),
 									detector, detector.getPamLinkable() });
@@ -309,22 +367,6 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 	public synchronized void receiveBroadcast(Coalition coalition) {
 		learn(coalition);
 	}
-
-	@Override
-	public synchronized void receiveWorkspaceContent(
-			ModuleName originatingBuffer, WorkspaceContent content) {
-		// NodeStructure ns = (NodeStructure) content;
-		// FrameworkTask t = new FooTask(ns.copy());
-		// taskSpawner.addTask(t);
-		// TODO Task
-	}
-
-	@Override
-	public synchronized void receivePreafference(NodeStructure addList,
-			NodeStructure deleteList) {
-		// TODO task to use preafferent signal
-	}
-
 	@Override
 	public void learn(Coalition coalition) {
 	}
@@ -342,11 +384,13 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 			return;
 		}
 
-		PamNode linkable = (PamNode) pamNodeStructure.getNode(pl.getExtendedId());
+		PamNode linkable = (PamNode) pamNodeStructure.getNode(pl
+				.getExtendedId());
 		if (linkable != null) {
-			if(logger.isLoggable(Level.FINEST)){
+			if (logger.isLoggable(Level.FINEST)) {
 				logger.log(Level.FINEST, "{1} receives excitation of: {2}",
-					new Object[] { TaskManager.getCurrentTick(), linkable,amount});
+						new Object[] { TaskManager.getCurrentTick(), linkable,
+								amount });
 			}
 			ExcitationTask task = new ExcitationTask(excitationTaskTicksPerRun,
 					linkable, amount, this);
@@ -365,48 +409,78 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 	}
 
 	private Map<String, Object> propagateParams = new HashMap<String, Object>();
-	
+
 	@Override
 	public void propagateActivationToParents(PamNode pn) {
 		double nodeActivation = pn.getTotalActivation();
-		if(nodeActivation < propagateActivationThreshold){
-			return;
-		}
-		
-		// Calculate the amount to propagate
-		propagateParams.put("upscale", upscaleFactor);
-		propagateParams.put("totalActivation", nodeActivation);
-		double amountToPropagate = propagationStrategy.getActivationToPropagate(propagateParams);
-
-		// Get parents of pamNode and the connecting link
-		Map<Linkable, Link> parentLinkMap = pamNodeStructure.getConnectedSinks(pn);
-		for (Linkable parent : parentLinkMap.keySet()) {
-			// Excite the connecting link and the parent
-			propagateActivation(parentLinkMap.get(parent),amountToPropagate);
+		if (nodeActivation >= propagateActivationThreshold) {
+			propagateParams.put("upscale", upscaleFactor);// Calculate the amount to propagate
+			propagateParams.put("totalActivation", nodeActivation);
+			double amountToPropagate = propagationStrategy.getActivationToPropagate(propagateParams);
+			Map<Linkable, Link> parentLinkMap = pamNodeStructure.getConnectedSinks(pn);
+			for (Linkable parent: parentLinkMap.keySet()) {
+				propagateActivation((PamLinkable)parent,(PamLink)parentLinkMap.get(parent),
+									amountToPropagate);
+			}
 		}
 	}
 
-	/*
-	 * Propagates specified activation along specified link to link's sink.
+	/**
+	 * Propagates specified activation from specified source along specified link.
+	 * @param src the source of the activation 
+	 * @param link the {@link PamLink} to propagate the activation down.
+	 * @param activation amount of activation coming from the source
 	 */
-	private void propagateActivation(Link link, double activation) {
+	protected void propagateActivation(PamLinkable src, PamLink link, double activation) {
 		if (logger.isLoggable(Level.FINEST)) {
 			logger.log(Level.FINEST,
-					"exciting parent: {1} and connecting link {2} amount: {3}",
-					new Object[] { TaskManager.getCurrentTick(),
-							link.getSink(), link, activation });
+					"Exciting sink: {1} and connecting link {2} amount: {3}",
+					new Object[]{TaskManager.getCurrentTick(),link.getSink(),link,activation});
 		}
 		PropagationTask task = new PropagationTask(propagationTaskTicksPerRun,
-				(PamLink) link, activation, this);
+													(PamLink)link,activation,this);
 		taskSpawner.addTask(task);
 	}
-	
+
 	@Override
 	public void addToPercept(NodeStructure ns) {
 		ns = convertNodeStructure(ns);
 		for (PamListener pl : pamListeners) {
 			pl.receivePercept(ns);
 		}
+	}
+	private NodeStructure convertNodeStructure(NodeStructure ns) {
+		NodeStructure convertedNS = new NodeStructureImpl();
+		String convertedType=null;
+		for (Node n: ns.getNodes()) {
+			convertedType=typeConversionMap.get(n.getFactoryType());
+			if(convertedType==null){
+				convertedType=factory.getDefaultNodeType();
+			}
+			n.setActivation(n.getTotalActivation());
+			convertedNS.addNode(n, convertedType);
+		}
+		for (Link l: ns.getLinks()) {
+			if (l.isSimpleLink()) {
+				convertedType = typeConversionMap.get(l.getFactoryType());
+				if(convertedType==null){
+					convertedType=factory.getDefaultLinkType();
+				}
+				l.setActivation(l.getTotalActivation());
+				convertedNS.addLink(l, convertedType);
+			}
+		}
+		for (Link l: ns.getLinks()) {
+			if (!l.isSimpleLink()) {
+				convertedType = typeConversionMap.get(l.getFactoryType());
+				if(convertedType==null){
+					convertedType=factory.getDefaultLinkType();
+				}
+				l.setActivation(l.getTotalActivation());
+				convertedNS.addLink(l, convertedType);
+			}
+		}
+		return convertedNS;
 	}
 
 	@Override
@@ -415,6 +489,16 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 		for (PamListener pl : pamListeners) {
 			pl.receivePercept(converted);
 		}
+	}	
+	private Link convertLink(Link l) {
+		String convertedType = typeConversionMap.get(l.getFactoryType());
+		if(convertedType==null){
+			convertedType=factory.getDefaultLinkType();
+		}
+		Link res = factory.getLink(convertedType, l.getSource(),
+				l.getSink(), l.getCategory());
+		res.setActivation(l.getTotalActivation());
+		return res;
 	}
 
 	@Override
@@ -424,30 +508,13 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 			pl.receivePercept(converted);
 		}
 	}
-	//TODO a more sophisticated mapping
-	private NodeStructure convertNodeStructure(NodeStructure ns){
-		NodeStructure copy = new NodeStructureImpl();
-		for(Node n: ns.getNodes()){
-			copy.addDefaultNode(n);
+	private Node convertNode(Node n) {
+		String convertedType = typeConversionMap.get(n.getFactoryType());
+		if(convertedType==null){
+			convertedType=factory.getDefaultNodeType();
 		}
-		for(Link l: ns.getLinks()){
-			if(l.isSimpleLink()){
-				copy.addDefaultLink(l);
-			}
-		}
-		for(Link l: ns.getLinks()){
-			if(!l.isSimpleLink()){
-				copy.addDefaultLink(l);
-			}
-		}
-		return copy;
-	}
-	private Node convertNode(Node n){
-		return factory.getNode(n, factory.getDefaultNodeType());		
-	}
-	private Link convertLink(Link l){
-		Link res = factory.getLink(factory.getDefaultLinkType(), l.getSource(), l.getSink(), l.getCategory());
-		res.setActivation(l.getActivation());
+		Node res = factory.getNode(n,convertedType);
+		res.setActivation(n.getTotalActivation());
 		return res;
 	}
 
@@ -513,14 +580,14 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 			PerceptualAssociativeMemoryImpl.perceptThreshold = t;
 		} else {
 			logger.log(Level.WARNING,
-							"Percept threshold must in range [0.0, 1.0]. Threshold will not be modified.",
-							TaskManager.getCurrentTick());
+						"Percept threshold must in range [0.0, 1.0]. Threshold will not be modified.",
+						TaskManager.getCurrentTick());
 		}
 	}
 
 	@Override
 	public boolean isOverPerceptThreshold(PamLinkable l) {
-		return l.getTotalActivation() > perceptThreshold;
+		return l.getTotalActivation()>perceptThreshold;
 	}
 
 	@Override
@@ -632,5 +699,12 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 	@Override
 	public Node getNode(String label) {
 		return nodesByLabel.get(label);
+	}
+
+	@Override
+	public synchronized void receiveWorkspaceContent(ModuleName n, WorkspaceContent c) {
+	}
+	@Override
+	public synchronized void receivePreafference(NodeStructure addList,NodeStructure deleteList) {
 	}
 }

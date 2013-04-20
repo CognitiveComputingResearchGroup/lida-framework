@@ -16,7 +16,7 @@ public class MockProceduralMemoryListener implements ProceduralMemoryListener {
 
 	public List<Behavior> behaviors = new ArrayList<Behavior>();
 	public int timesCalled;
-	
+
 	@Override
 	public void receiveBehavior(Behavior b) {
 		timesCalled++;

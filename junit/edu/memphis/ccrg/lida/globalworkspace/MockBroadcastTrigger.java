@@ -15,6 +15,7 @@ import edu.memphis.ccrg.lida.globalworkspace.triggers.BroadcastTrigger;
 public class MockBroadcastTrigger implements BroadcastTrigger {
 
 	public Collection<Coalition> coalitions;
+
 	@Override
 	public void checkForTriggerCondition(Collection<Coalition> coalitions) {
 		this.coalitions = coalitions;
@@ -22,11 +23,11 @@ public class MockBroadcastTrigger implements BroadcastTrigger {
 
 	@Override
 	public void init(Map<String, Object> parameters, GlobalWorkspace gw) {
-		
 
 	}
 
 	public boolean wasReset;
+
 	@Override
 	public void reset() {
 		wasReset = true;
@@ -35,7 +36,6 @@ public class MockBroadcastTrigger implements BroadcastTrigger {
 
 	@Override
 	public void start() {
-		
 
 	}
 

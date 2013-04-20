@@ -178,11 +178,10 @@ public class WorkspaceImplTest {
 		assertTrue(listener.content.containsNode(node3));
 
 		assertTrue(eBuffer.content.containsNode(node3));
-//		System.out.println(eBuffer.content.toString());
-//		System.out.println(listener.content.toString());
+		// System.out.println(eBuffer.content.toString());
+		// System.out.println(listener.content.toString());
 	}
 
-	
 	@Test
 	public void testReceiveNodeStructurePercept() {
 		MockWorkspaceBufferImpl buffer = new MockWorkspaceBufferImpl();
@@ -232,10 +231,11 @@ public class WorkspaceImplTest {
 		assertEquals(2, ns.getLinkableCount());
 		assertEquals(2, ns.getNodeCount());
 		assertEquals(0, ns.getLinkCount());
-		
-		Link l12 = factory.getLink(node1, node2, PerceptualAssociativeMemoryImpl.FEATURE);
+
+		Link l12 = factory.getLink(node1, node2,
+				PerceptualAssociativeMemoryImpl.FEATURE);
 		workspace.receivePercept(l12);
-		
+
 		ns = buffer.getBufferContent(null);
 		assertTrue(ns.containsLink(l12));
 		assertTrue(ns.containsNode(node1));

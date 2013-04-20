@@ -19,23 +19,28 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
  * 
  * @author Ryan J. McCall
  */
-public class UpscalePropagationStrategy extends StrategyImpl implements PropagationStrategy{
-	
-	private Logger logger = Logger.getLogger(UpscalePropagationStrategy.class.getCanonicalName());
+public class UpscalePropagationStrategy extends StrategyImpl implements
+		PropagationStrategy {
+
+	private Logger logger = Logger.getLogger(UpscalePropagationStrategy.class
+			.getCanonicalName());
 
 	/*
 	 * Calculate and return an activation to propagate.
 	 * 
-	 * @param params
-	 *            the params
+	 * @param params the params
+	 * 
 	 * @return the activation to propagate
 	 */
 	@Override
 	public double getActivationToPropagate(Map<String, Object> params) {
-		if(params.containsKey("totalActivation") && params.containsKey("upscale")){
-			return (Double)params.get("totalActivation") * (Double)params.get("upscale");
-		}else{
-			logger.log(Level.WARNING,"Unable to obtain parameters",TaskManager.getCurrentTick());
+		if (params.containsKey("totalActivation")
+				&& params.containsKey("upscale")) {
+			return (Double) params.get("totalActivation")
+					* (Double) params.get("upscale");
+		} else {
+			logger.log(Level.WARNING, "Unable to obtain parameters",
+					TaskManager.getCurrentTick());
 			return 0.0;
 		}
 	}

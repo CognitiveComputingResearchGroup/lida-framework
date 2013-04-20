@@ -13,17 +13,18 @@ import java.util.Map;
 import edu.memphis.ccrg.lida.framework.Agent;
 
 /**
- * Abstract implementation of {@link Command}.
- * Extend from this base class to create new commands overriding {@link #execute(Agent)}.
+ * Abstract implementation of {@link Command}. Extend from this base class to
+ * create new commands overriding {@link #execute(Agent)}.
  * 
  * @author Javier Snaider
- *
+ * 
  */
 public abstract class CommandImpl implements Command {
-	
-	private Map<String,Object> parameters=new HashMap<String,Object>();
+
+	private Map<String, Object> parameters = new HashMap<String, Object>();
 	/**
-	 * Result of the command's execution. May be set during the execution of the {@link #execute(Agent)} method.
+	 * Result of the command's execution. May be set during the execution of the
+	 * {@link #execute(Agent)} method.
 	 */
 	protected Object result;
 
@@ -32,9 +33,9 @@ public abstract class CommandImpl implements Command {
 
 	@Override
 	public Object getParameter(String name) {
-		Object res=null;
-		if (parameters!=null){
-			res=parameters.get(name);
+		Object res = null;
+		if (parameters != null) {
+			res = parameters.get(name);
 		}
 		return res;
 	}
@@ -53,9 +54,9 @@ public abstract class CommandImpl implements Command {
 	public void setParameters(Map<String, Object> parameters) {
 		this.parameters = parameters;
 	}
-	
-	@Override 
-	public String toString(){
+
+	@Override
+	public String toString() {
 		return getClass().getSimpleName();
 	}
 

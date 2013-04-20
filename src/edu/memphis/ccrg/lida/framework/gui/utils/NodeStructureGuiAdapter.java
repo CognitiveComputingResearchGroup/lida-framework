@@ -37,7 +37,9 @@ public class NodeStructureGuiAdapter extends
 
 	/**
 	 * Default constructor
-	 * @param ns {@link NodeStructure} to be adapted.
+	 * 
+	 * @param ns
+	 *            {@link NodeStructure} to be adapted.
 	 */
 	public NodeStructureGuiAdapter(NodeStructure ns) {
 		super(EdgeType.DIRECTED);
@@ -113,8 +115,8 @@ public class NodeStructureGuiAdapter extends
 
 	/**
 	 * 
-	 * Creates and returns {@link GuiLink}s for all {@link Link}s in the {@link NodeStructure} whose
-	 * source is the argument
+	 * Creates and returns {@link GuiLink}s for all {@link Link}s in the
+	 * {@link NodeStructure} whose source is the argument
 	 * 
 	 * @see edu.uci.ics.jung.graph.Graph#getOutEdges(java.lang.Object)
 	 */
@@ -175,7 +177,7 @@ public class NodeStructureGuiAdapter extends
 	 * Returns true if arg0 is a destination of {@link GuiLink} arg1
 	 * 
 	 * @see edu.uci.ics.jung.graph.Graph#isDest(java.lang.Object,
-	 * java.lang.Object)
+	 *      java.lang.Object)
 	 */
 	@Override
 	public boolean isDest(Linkable arg0, GuiLink arg1) {
@@ -190,7 +192,7 @@ public class NodeStructureGuiAdapter extends
 	 * Returns true if arg0 is a source of {@link GuiLink} arg1
 	 * 
 	 * @see edu.uci.ics.jung.graph.Graph#isSource(java.lang.Object,
-	 * java.lang.Object)
+	 *      java.lang.Object)
 	 */
 	@Override
 	public boolean isSource(Linkable arg0, GuiLink arg1) {
@@ -237,7 +239,7 @@ public class NodeStructureGuiAdapter extends
 	}
 
 	/**
-	 *  Returns all edges attached to specified {@link Linkable}
+	 * Returns all edges attached to specified {@link Linkable}
 	 * 
 	 * @see edu.uci.ics.jung.graph.Hypergraph#getIncidentEdges(java.lang.Object)
 	 */

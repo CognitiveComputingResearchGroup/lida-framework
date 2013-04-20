@@ -9,17 +9,18 @@ package edu.memphis.ccrg.lida.framework;
 
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 
-
 /**
- * A {@link FrameworkModule} containing all of the {@link FrameworkModule}s of an agent.
+ * A {@link FrameworkModule} containing all of the {@link FrameworkModule}s of
+ * an agent.
  * 
  * @author Javier Snaider
- *
+ * 
  */
-public interface Agent extends FrameworkModule{
+public interface Agent extends FrameworkModule {
 
 	/**
 	 * Returns the Task Manager
+	 * 
 	 * @return {@link TaskManager} in charge of all tasks.
 	 */
 	public TaskManager getTaskManager();

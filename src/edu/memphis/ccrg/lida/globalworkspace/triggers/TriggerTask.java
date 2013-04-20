@@ -18,8 +18,8 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 
 /**
- * TriggerTask is executed when certain number of ticks has passed. In this case the
- * {@link GlobalWorkspace} is told to trigger the broadcast
+ * TriggerTask is executed when certain number of ticks has passed. In this case
+ * the {@link GlobalWorkspace} is told to trigger the broadcast
  * 
  * @author Javier Snaider
  */
@@ -31,21 +31,27 @@ public class TriggerTask extends FrameworkTaskImpl {
 	private String name;
 
 	private TriggerListener gw;
-	
+
 	private BroadcastTrigger trigger;
 
 	/**
 	 * Constructors a new TriggerTask with specified attributes
-	 * @param tpr ticksPerRun of this task
-	 * @param gw {@link TriggerListener} which is the {@link GlobalWorkspace}
-	 * @param name Name of the trigger
-	 * @param trigger {@link BroadcastTrigger} that created this task
+	 * 
+	 * @param tpr
+	 *            ticksPerRun of this task
+	 * @param gw
+	 *            {@link TriggerListener} which is the {@link GlobalWorkspace}
+	 * @param name
+	 *            Name of the trigger
+	 * @param trigger
+	 *            {@link BroadcastTrigger} that created this task
 	 */
-	public TriggerTask(int tpr, TriggerListener gw, String name, BroadcastTrigger trigger) {
+	public TriggerTask(int tpr, TriggerListener gw, String name,
+			BroadcastTrigger trigger) {
 		super(tpr);
 		this.gw = gw;
 		this.name = name;
-		this.trigger=trigger;
+		this.trigger = trigger;
 	}
 
 	@Override
@@ -55,7 +61,7 @@ public class TriggerTask extends FrameworkTaskImpl {
 		cancel();
 	}
 
-	//TODO remove name
+	// TODO remove name
 	@Override
 	public String toString() {
 		return name + "-" + super.toString();

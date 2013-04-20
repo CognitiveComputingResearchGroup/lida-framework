@@ -17,38 +17,40 @@ import java.util.Map;
 import edu.memphis.ccrg.lida.framework.Agent;
 
 /**
- * A command is an encapsulation of an event from the Gui such as a button press or a 
- * slider state change.  
+ * A command is an encapsulation of an event from the Gui such as a button press
+ * or a slider state change.
  * 
  * Implementations should add themselves to guiCommands.properties.
+ * 
  * @author Javier Snaider
  */
 public interface Command {
 
-    /**
-	 * Executes this command performing the necessary actions in the model (the {@link Agent}).
+	/**
+	 * Executes this command performing the necessary actions in the model (the
+	 * {@link Agent}).
 	 * 
 	 * @param agent
 	 *            {@link Agent} Object
 	 */
-    public void execute(Agent agent);
-    
-    /**
+	public void execute(Agent agent);
+
+	/**
 	 * Returns result of the command.
 	 * 
 	 * @return the result of the command's execution
 	 */
-    public Object getResult();    
+	public Object getResult();
 
-    /**
+	/**
 	 * Sets optional parameters for command.
 	 * 
 	 * @param parameters
 	 *            parameters
 	 */
-    public void setParameters(Map<String, Object> parameters);
-    
-    /**
+	public void setParameters(Map<String, Object> parameters);
+
+	/**
 	 * Set single parameter for command.
 	 * 
 	 * @param name
@@ -56,16 +58,15 @@ public interface Command {
 	 * @param value
 	 *            default value to use if parameter cannot be found
 	 */
-    public void setParameter(String name, Object value);
-    
-    /**
+	public void setParameter(String name, Object value);
+
+	/**
 	 * Gets a parameter by name.
 	 * 
 	 * @param name
 	 *            retrieved parameter
 	 * @return the parameter
 	 */
-    public Object getParameter(String name);
-    
-    
+	public Object getParameter(String name);
+
 }

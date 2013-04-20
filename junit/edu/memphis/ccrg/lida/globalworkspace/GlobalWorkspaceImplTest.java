@@ -29,7 +29,9 @@ import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.pam.PamNodeImpl;
 
 /**
- * This is a JUnit class which can be used to test methods of the GlobalWorkspaceImpl class
+ * This is a JUnit class which can be used to test methods of the
+ * GlobalWorkspaceImpl class
+ * 
  * @author Siminder Kaur
  * @author Ryan J. McCall
  */
@@ -69,18 +71,17 @@ public class GlobalWorkspaceImplTest {
 		ns2.addDefaultNode(n1);
 		ns2.addDefaultNode(n2);
 		ns2.addDefaultLink(l);
-		
 
 		AttentionCodelet codelet = new NeighborhoodAttentionCodelet();
 		codelet.setBaseLevelActivation(0.8);
-		coalition = new CoalitionImpl(ns,codelet);
+		coalition = new CoalitionImpl(ns, codelet);
 		codelet = new NeighborhoodAttentionCodelet();
 		codelet.setBaseLevelActivation(0.9);
-		coalition2 = new CoalitionImpl(ns2,codelet);
+		coalition2 = new CoalitionImpl(ns2, codelet);
 		codelet = new NeighborhoodAttentionCodelet();
 		codelet.setBaseLevelActivation(0.1);
-		coalition3 = new CoalitionImpl(ns,codelet);
-		
+		coalition3 = new CoalitionImpl(ns, codelet);
+
 		ElementFactory factory = ElementFactory.getInstance();
 		double threshold = 0.0;
 		DecayStrategy ds = factory.getDefaultDecayStrategy();
@@ -93,19 +94,21 @@ public class GlobalWorkspaceImplTest {
 	public void testGetModuleContent() {
 		gw.addCoalition(coalition);
 		gw.addCoalition(coalition2);
-		Collection<Coalition> content = (Collection<Coalition>) gw.getModuleContent();
+		Collection<Coalition> content = (Collection<Coalition>) gw
+				.getModuleContent();
 
 		assertTrue(content.contains(coalition));
 		assertTrue(content.contains(coalition2));
 	}
-	
+
 	private static final double epsilon = 10e-9;
 
 	@Test
-	public void testInit() {		
+	public void testInit() {
 		gw.init();
 		assertEquals(1, ts.getTasks().size());
-		assertEquals(ElementFactory.getInstance().getDefaultDecayStrategy(), gw.getCoalitionDecayStrategy());
+		assertEquals(ElementFactory.getInstance().getDefaultDecayStrategy(), gw
+				.getCoalitionDecayStrategy());
 		assertEquals(0.0, gw.getCoalitionRemovalThreshold(), epsilon);
 		assertEquals(40, gw.getRefractoryPeriod());
 	}
@@ -117,16 +120,17 @@ public class GlobalWorkspaceImplTest {
 		gw.addCoalition(coalition);
 		coalition3.setActivation(0.00001);
 		gw.addCoalition(coalition3);
-		
+
 		gw.taskManagerDecayModule(1);
-		
+
 		assertTrue(coalition.getActivation() < 0.8);
-		Collection<Coalition> content = (Collection<Coalition>) gw.getModuleContent();
+		Collection<Coalition> content = (Collection<Coalition>) gw
+				.getModuleContent();
 		assertEquals(1, content.size());
 		assertTrue(content.contains(coalition));
 
 		gw.taskManagerDecayModule(1000);
-		
+
 		content = (Collection<Coalition>) gw.getModuleContent();
 		assertTrue(content.isEmpty());
 	}
@@ -136,18 +140,20 @@ public class GlobalWorkspaceImplTest {
 	public void testAddCoalition() {
 		MockBroadcastTrigger trigger = new MockBroadcastTrigger();
 		gw.addBroadcastTrigger(trigger);
-		
+
 		boolean result = gw.addCoalition(coalition);
 		assertTrue(result);
-				
-		Collection<Coalition> content = (Collection<Coalition>) gw.getModuleContent();
+
+		Collection<Coalition> content = (Collection<Coalition>) gw
+				.getModuleContent();
 		assertEquals(1, content.size());
 
 		Coalition actual = trigger.coalitions.iterator().next();
 		assertEquals(coalition, actual);
 		assertEquals(1, trigger.coalitions.size());
 		assertEquals(0.0, coalition.getActivatibleRemovalThreshold(), epsilon);
-		assertEquals(ElementFactory.getInstance().getDefaultDecayStrategy(), coalition.getDecayStrategy());
+		assertEquals(ElementFactory.getInstance().getDefaultDecayStrategy(),
+				coalition.getDecayStrategy());
 	}
 
 	@SuppressWarnings("unchecked")
@@ -155,10 +161,10 @@ public class GlobalWorkspaceImplTest {
 	public void testTriggerBroadcast() {
 		MockBroadcastTrigger trigger = new MockBroadcastTrigger();
 		gw.addBroadcastTrigger(trigger);
-		
+
 		MockBroadcastTrigger trigger2 = new MockBroadcastTrigger();
 		gw.addBroadcastTrigger(trigger2);
-		
+
 		coalition.setActivation(0.8);
 		coalition2.setActivation(0.9);
 		coalition3.setActivation(0.1);
@@ -170,13 +176,15 @@ public class GlobalWorkspaceImplTest {
 
 		//
 		gw.triggerBroadcast(trigger);
-		
-		assertTrue(NodeStructureImpl.compareNodeStructures((NodeStructure)coalition2.getContent(), 
-								(NodeStructure)listener.content));
+
+		assertTrue(NodeStructureImpl.compareNodeStructures(
+				(NodeStructure) coalition2.getContent(),
+				(NodeStructure) listener.content));
 		assertTrue(trigger.wasReset);
 		assertTrue(trigger2.wasReset);
-		
-		Collection<Coalition> content = (Collection<Coalition>) gw.getModuleContent();
+
+		Collection<Coalition> content = (Collection<Coalition>) gw
+				.getModuleContent();
 		assertEquals(2, content.size());
 		assertFalse(content.contains(coalition2));
 	}

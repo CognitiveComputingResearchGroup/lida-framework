@@ -25,10 +25,11 @@ import edu.memphis.ccrg.lida.framework.strategies.Strategy;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTask;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 
-/** 
+/**
  * Loads the factoriesData.xml file which configures the factories of the
  * framework i.e. what strategies are used by the objects created by the
- * factory, the types of node, links, and {@link FrameworkTask} that can be created as well.
+ * factory, the types of node, links, and {@link FrameworkTask} that can be
+ * created as well.
  * 
  * @author Javier Snaider
  * 
@@ -60,14 +61,17 @@ public class FactoriesDataXmlLoader {
 
 	/**
 	 * Parses the xml document creating the elements for {@link ElementFactory}
-	 * @param dom the xml dom Document
+	 * 
+	 * @param dom
+	 *            the xml dom Document
 	 */
 	static void parseDocument(Document dom) {
-		if(dom == null){
-			logger.log(Level.SEVERE, "Document dom was null. Factory data will not be loaded.");
+		if (dom == null) {
+			logger.log(Level.SEVERE,
+					"Document dom was null. Factory data will not be loaded.");
 			return;
 		}
-		
+
 		// get the root element
 		Element docEle = dom.getDocumentElement();
 		Map<String, StrategyDef> strategies = getStrategies(docEle);
@@ -112,14 +116,17 @@ public class FactoriesDataXmlLoader {
 	}
 
 	/**
-	 * Reads in and creates all {@link StrategyDef}s specified in {@link Element}
-	 * @param element Dom element
+	 * Reads in and creates all {@link StrategyDef}s specified in
+	 * {@link Element}
+	 * 
+	 * @param element
+	 *            Dom element
 	 * @return a Map with the {@link StrategyDef} indexed by name
 	 */
 	static Map<String, StrategyDef> getStrategies(Element element) {
 		Map<String, StrategyDef> strat = new HashMap<String, StrategyDef>();
-		List<Element> list = XmlUtils.getChildrenInGroup(element,
-				"strategies", "strategy");
+		List<Element> list = XmlUtils.getChildrenInGroup(element, "strategies",
+				"strategy");
 		if (list != null && list.size() > 0) {
 			for (Element e : list) {
 				StrategyDef strategy = getStrategyDef(e);
@@ -130,7 +137,8 @@ public class FactoriesDataXmlLoader {
 	}
 
 	/**
-	 * @param e Dom element
+	 * @param e
+	 *            Dom element
 	 * @return the {@link Strategy} definition
 	 */
 	static StrategyDef getStrategyDef(Element e) {
@@ -164,8 +172,9 @@ public class FactoriesDataXmlLoader {
 	 *            Map with {@link StrategyDef} indexed by name
 	 * @return a Map of {@link LinkableDef} indexed by name
 	 */
-	static Map<String, LinkableDef> getLinkables(Element element, String groupName,
-			String childName, Map<String, StrategyDef> strategies) {
+	static Map<String, LinkableDef> getLinkables(Element element,
+			String groupName, String childName,
+			Map<String, StrategyDef> strategies) {
 		Map<String, LinkableDef> linkables = new HashMap<String, LinkableDef>();
 		List<Element> list = XmlUtils.getChildrenInGroup(element, groupName,
 				childName);
@@ -179,12 +188,14 @@ public class FactoriesDataXmlLoader {
 	}
 
 	/**
-	 * @param e Dom element
+	 * @param e
+	 *            Dom element
 	 * @param strategies
 	 *            Map with {@link StrategyDef} indexed by name
 	 * @return the {@link Linkable} definition
 	 */
-	static LinkableDef getLinkable(Element e, Map<String, StrategyDef> strategies) {
+	static LinkableDef getLinkable(Element e,
+			Map<String, StrategyDef> strategies) {
 		LinkableDef node = new LinkableDef();
 		String className = XmlUtils.getTextValue(e, "class");
 		String name = e.getAttribute("name");
@@ -195,8 +206,12 @@ public class FactoriesDataXmlLoader {
 			StrategyDef bd = strategies.get(s);
 			String type = bd.getType();
 			if (strat.containsKey(type)) {
-				logger.log(Level.WARNING, "Cannot add strategy {1} a strategy of type {2} already exists", 
-						new Object[]{TaskManager.getCurrentTick(), s, type});
+				logger
+						.log(
+								Level.WARNING,
+								"Cannot add strategy {1} a strategy of type {2} already exists",
+								new Object[] { TaskManager.getCurrentTick(), s,
+										type });
 			} else {
 				strat.put(type, s);
 			}
@@ -235,39 +250,45 @@ public class FactoriesDataXmlLoader {
 		}
 		return tasks;
 	}
+
 	/**
 	 * reads the associated modules of this element
 	 * 
-	 * @param element Dom element
+	 * @param element
+	 *            Dom element
 	 * @return a Map with the associated modules
 	 */
-	static Map<ModuleName,String> getAssociatedModules(Element element) {
-		Map<ModuleName,String> associatedModules = new HashMap<ModuleName, String>();
-		List<Element> nl = XmlUtils.getChildren(element,"associatedmodule");
+	static Map<ModuleName, String> getAssociatedModules(Element element) {
+		Map<ModuleName, String> associatedModules = new HashMap<ModuleName, String>();
+		List<Element> nl = XmlUtils.getChildren(element, "associatedmodule");
 		String elementName = element.getAttribute("name");
 		if (nl != null && nl.size() > 0) {
-			for (Element assocModuleElement:nl ) {
-				String assocMod=XmlUtils.getValue(assocModuleElement);
-				String function = assocModuleElement.getAttribute("function").trim();
+			for (Element assocModuleElement : nl) {
+				String assocMod = XmlUtils.getValue(assocModuleElement);
+				String function = assocModuleElement.getAttribute("function")
+						.trim();
 				ModuleName name = ModuleName.getModuleName(assocMod);
-				if(name !=null){
-					associatedModules.put(name, function);
-				}else{
-					logger.log(Level.WARNING, "{1} is not a defined ModuleName so it cannot be an associate module of {2}", 
-							new Object[]{0L,assocMod,elementName});
+				if (name == null) {
+					name = ModuleName.addModuleName(assocMod);
+					logger.log(Level.INFO,
+									"{1} is not a pre-defined ModuleName so a new ModuleName was created for element: {2}",
+									new Object[] { 0L, assocMod, elementName });
 				}
+				associatedModules.put(name, function);
 			}
 		}
 		return associatedModules;
 	}
 
 	/**
-	 * @param e Dom element
+	 * @param e
+	 *            Dom element
 	 * @param strategies
 	 *            Map with {@link StrategyDef} indexed by name
 	 * @return the {@link FrameworkTaskDef} definition
 	 */
-	static FrameworkTaskDef getTaskDef(Element e, Map<String, StrategyDef> strategies) {
+	static FrameworkTaskDef getTaskDef(Element e,
+			Map<String, StrategyDef> strategies) {
 		FrameworkTaskDef taskDef = null;
 		String className = XmlUtils.getTextValue(e, "class");
 		String name = e.getAttribute("name");
@@ -282,7 +303,7 @@ public class FactoriesDataXmlLoader {
 
 		Map<String, Object> params = XmlUtils.getTypedParams(e);
 
-		Map<ModuleName,String> associatedModules = getAssociatedModules(e);
+		Map<ModuleName, String> associatedModules = getAssociatedModules(e);
 		taskDef = new FrameworkTaskDef();
 		taskDef.setClassName(className.trim());
 		taskDef.setName(name.trim());
@@ -295,18 +316,22 @@ public class FactoriesDataXmlLoader {
 
 	/**
 	 * Verifies if the List of Strategies names are defined
-	 * @param strat Strategies names to validate
+	 * 
+	 * @param strat
+	 *            Strategies names to validate
 	 * @param strategies
 	 *            Map with {@link StrategyDef} indexed by name
 	 */
-	static void checkStrategies(List<String> strat, Map<String, StrategyDef> strategies) {
+	static void checkStrategies(List<String> strat,
+			Map<String, StrategyDef> strategies) {
 		Iterator<String> it = strat.iterator();
 		String b;
 		while (it.hasNext()) {
 			b = it.next();
 			if (!strategies.containsKey(b)) {
-				logger.log(Level.WARNING, "{1} is not a defined Strategy. It is excluded", 
-						new Object[]{0L,b});
+				logger.log(Level.WARNING,
+						"{1} is not a defined Strategy. It is excluded",
+						new Object[] { 0L, b });
 				it.remove();
 			}
 		}

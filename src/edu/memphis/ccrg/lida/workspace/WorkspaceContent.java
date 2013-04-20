@@ -10,12 +10,12 @@ package edu.memphis.ccrg.lida.workspace;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 
 /**
- * WorkspaceContent is a general name for the content of the workspace.  
- * Currently it is a NodeStructure only.  
- * In the future it may include Sensory Scene layers
+ * WorkspaceContent is a general name for the content of the workspace.
+ * Currently it is a NodeStructure only. In the future it may include Sensory
+ * Scene layers
  * 
  * @author Ryan J. McCall
  */
 public interface WorkspaceContent extends NodeStructure {
-	
+
 }

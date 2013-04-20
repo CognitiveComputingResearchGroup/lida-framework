@@ -18,7 +18,7 @@ import edu.memphis.ccrg.lida.framework.FrameworkModule;
  * 
  * @author Ryan J. McCall
  */
-public interface SensoryMemory extends FrameworkModule{
+public interface SensoryMemory extends FrameworkModule {
 
 	/**
 	 * Adds a listener to this memory. This listener constantly checks for
@@ -36,12 +36,15 @@ public interface SensoryMemory extends FrameworkModule{
 	 * processing and passing to the perceptual memory module.
 	 */
 	public void runSensors();
-	
+
 	/**
-	 * Returns content from this SensoryMemory.
-	 * Intended to be used by feature detectors to get specific parts of the sensory memory.
-	 * @param modality user may optionally use this parameter to specify modality.
-	 * @param params optional parameters
+	 * Returns content from this SensoryMemory. Intended to be used by feature
+	 * detectors to get specific parts of the sensory memory.
+	 * 
+	 * @param modality
+	 *            user may optionally use this parameter to specify modality.
+	 * @param params
+	 *            optional parameters
 	 * @return content
 	 */
 	public Object getSensoryContent(String modality, Map<String, Object> params);

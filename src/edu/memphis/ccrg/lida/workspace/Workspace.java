@@ -12,31 +12,36 @@ import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 
 /**
- * The workspace collection of submodules where Cues from episodic memories, the recent contents
- * of conscious, the perceptual buffer, and the current situational model are stored. 
- * A workspace should be interfaceable with codelets whose job is to
- *  operate on the contents of these submodules.  
+ * The workspace collection of submodules where Cues from episodic memories, the
+ * recent contents of conscious, the perceptual buffer, and the current
+ * situational model are stored. A workspace should be interfaceable with
+ * codelets whose job is to operate on the contents of these submodules.
  * 
  * @author Ryan J. McCall
  */
-public interface Workspace extends FrameworkModule{
+public interface Workspace extends FrameworkModule {
 
 	/**
 	 * Add episodic memory that will listen for cues from the Workspace
-	 * @param l listener
+	 * 
+	 * @param l
+	 *            listener
 	 */
 	public void addCueListener(CueListener l);
-	
+
 	/**
 	 * Adds specified {@link WorkspaceListener}
-	 * @param l listener of this Workspace
+	 * 
+	 * @param l
+	 *            listener of this Workspace
 	 */
 	public void addWorkspaceListener(WorkspaceListener l);
 
 	/**
 	 * Prompts this Workspace to cue episodic memories with content.
 	 * 
-	 * @param ns NodeStructure to cue with.
+	 * @param ns
+	 *            NodeStructure to cue with.
 	 */
 	public void cueEpisodicMemories(NodeStructure ns);
 

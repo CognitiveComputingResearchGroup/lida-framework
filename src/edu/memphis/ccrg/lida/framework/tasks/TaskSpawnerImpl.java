@@ -38,14 +38,17 @@ public class TaskSpawnerImpl extends InitializableImpl implements TaskSpawner {
 
 	/**
 	 * This default constructor is used by the {@link AgentXmlFactory}.
-	 * {@link TaskManager} must be set using {@link TaskSpawner#setTaskManager(TaskManager)}
+	 * {@link TaskManager} must be set using
+	 * {@link TaskSpawner#setTaskManager(TaskManager)}
 	 */
 	public TaskSpawnerImpl() {
 	}
 
 	/**
 	 * Convenience constructor that sets the {@link TaskManager}
-	 * @param tm the {@link TaskManager} to set
+	 * 
+	 * @param tm
+	 *            the {@link TaskManager} to set
 	 */
 	public TaskSpawnerImpl(TaskManager tm) {
 		taskManager = tm;
@@ -58,7 +61,7 @@ public class TaskSpawnerImpl extends InitializableImpl implements TaskSpawner {
 
 	@Override
 	public void addTasks(Collection<? extends FrameworkTask> tasks) {
-		if(tasks != null){
+		if (tasks != null) {
 			for (FrameworkTask r : tasks) {
 				addTask(r);
 			}
@@ -67,12 +70,14 @@ public class TaskSpawnerImpl extends InitializableImpl implements TaskSpawner {
 
 	@Override
 	public void addTask(FrameworkTask task) {
-		if(task == null){
-			logger.log(Level.WARNING, "Cannot add a null task",TaskManager.getCurrentTick());
-		}else if(task.getTaskStatus() == TaskStatus.CANCELED){
-			logger.log(Level.WARNING, "Cannot add task {1} because its TaskStatus is CANCELED.", new Object[] {
-					TaskManager.getCurrentTick(), task });
-		}else{
+		if (task == null) {
+			logger.log(Level.WARNING, "Cannot add a null task", TaskManager
+					.getCurrentTick());
+		} else if (task.getTaskStatus() == TaskStatus.CANCELED) {
+			logger.log(Level.WARNING,
+					"Cannot add task {1} because its TaskStatus is CANCELED.",
+					new Object[] { TaskManager.getCurrentTick(), task });
+		} else {
 			task.setControllingTaskSpawner(this);
 			controlledTasks.add(task);
 			runTask(task);
@@ -94,27 +99,27 @@ public class TaskSpawnerImpl extends InitializableImpl implements TaskSpawner {
 	@Override
 	public void receiveFinishedTask(FrameworkTask task) {
 		switch (task.getTaskStatus()) {
-			case FINISHED_WITH_RESULTS:
-				processResults(task);
-				removeTask(task);
-				logger.log(Level.FINEST, "FINISHED_WITH_RESULTS {1}", new Object[] {
-						TaskManager.getCurrentTick(), task });
-				break;
-			case FINISHED:
-				removeTask(task);
-				logger.log(Level.FINEST, "FINISHED {1}", new Object[] {
-						TaskManager.getCurrentTick(), task });
-				break;
-			case CANCELED:
-				removeTask(task);
-				logger.log(Level.FINEST, "CANCELLED {1}", new Object[] {
-						TaskManager.getCurrentTick(), task });
-				break;
-			case RUNNING:
-				logger.log(Level.FINEST, "RUNNING",
-						new Object[] { TaskManager.getCurrentTick(), task });
-				runTask(task);
-				break;
+		case FINISHED_WITH_RESULTS:
+			processResults(task);
+			removeTask(task);
+			logger.log(Level.FINEST, "FINISHED_WITH_RESULTS {1}", new Object[] {
+					TaskManager.getCurrentTick(), task });
+			break;
+		case FINISHED:
+			removeTask(task);
+			logger.log(Level.FINEST, "FINISHED {1}", new Object[] {
+					TaskManager.getCurrentTick(), task });
+			break;
+		case CANCELED:
+			removeTask(task);
+			logger.log(Level.FINEST, "CANCELLED {1}", new Object[] {
+					TaskManager.getCurrentTick(), task });
+			break;
+		case RUNNING:
+			logger.log(Level.FINEST, "RUNNING", new Object[] {
+					TaskManager.getCurrentTick(), task });
+			runTask(task);
+			break;
 		}
 	}
 
@@ -130,17 +135,19 @@ public class TaskSpawnerImpl extends InitializableImpl implements TaskSpawner {
 	}
 
 	/**
-	 * When a {@link FrameworkTask} has completed one execution and its status is {@link TaskStatus#FINISHED_WITH_RESULTS}
-	 * this method is called to handle the results.
+	 * When a {@link FrameworkTask} has completed one execution and its status
+	 * is {@link TaskStatus#FINISHED_WITH_RESULTS} this method is called to
+	 * handle the results.
 	 * 
-	 * @param task the task to be processed
+	 * @param task
+	 *            the task to be processed
 	 */
 	protected void processResults(FrameworkTask task) {
 	}
 
 	@Override
 	public boolean cancelTask(FrameworkTask task) {
-		if(containsTask(task)){
+		if (containsTask(task)) {
 			removeTask(task);
 			return taskManager.cancelTask(task);
 		}
@@ -149,7 +156,7 @@ public class TaskSpawnerImpl extends InitializableImpl implements TaskSpawner {
 
 	@Override
 	public boolean containsTask(FrameworkTask task) {
-		return (task == null)? false:controlledTasks.contains(task);
+		return (task == null) ? false : controlledTasks.contains(task);
 	}
 
 	@Deprecated
@@ -157,7 +164,7 @@ public class TaskSpawnerImpl extends InitializableImpl implements TaskSpawner {
 	public Collection<FrameworkTask> getRunningTasks() {
 		return getTasks();
 	}
-	
+
 	@Override
 	public Collection<FrameworkTask> getTasks() {
 		return Collections.unmodifiableCollection(controlledTasks);

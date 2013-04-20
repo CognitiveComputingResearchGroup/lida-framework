@@ -7,7 +7,6 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.framework.initialization;
 
-
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -37,14 +36,15 @@ public class FactoriesDataXmlLoaderTest3 {
 	public void setUp() throws Exception {
 		loader = new FactoriesDataXmlLoader();
 	}
-	
+
 	@Test
 	public void testLoadFactoriesData() {
 		Properties p = new Properties();
-		p.setProperty("lida.elementfactory.data", "testData/testFactoriesData.xml");
-		
+		p.setProperty("lida.elementfactory.data",
+				"testData/testFactoriesData.xml");
+
 		loader.loadFactoriesData(p);
-		
+
 		assertTrue(factory.containsStrategy("excite1"));
 		assertTrue(factory.containsStrategy("decay1"));
 		assertTrue(factory.containsNodeType("node1"));
@@ -52,12 +52,12 @@ public class FactoriesDataXmlLoaderTest3 {
 		assertTrue(factory.containsLinkType("link1"));
 		assertTrue(factory.containsTaskType("topleft"));
 		assertTrue(factory.containsTaskType("bottomright"));
-		
+
 		Strategy s = factory.getStrategy("excite1");
 		assertTrue(s instanceof LinearExciteStrategy);
 		s = factory.getStrategy("decay1");
 		assertTrue(s instanceof LinearDecayStrategy);
-		
+
 		Linkable l = factory.getNode("node1");
 		assertTrue(l instanceof PamNodeImpl);
 		l = factory.getNode("node2");
@@ -68,11 +68,11 @@ public class FactoriesDataXmlLoaderTest3 {
 		n1.setId(3043);
 		l = factory.getLink("link1", n, n1, new PamNodeImpl());
 		assertTrue(l instanceof PamLinkImpl);
-		
-		Codelet c = (Codelet)factory.getFrameworkTask("topleft", null);
+
+		Codelet c = (Codelet) factory.getFrameworkTask("topleft", null);
 		assertTrue(c instanceof BasicStructureBuildingCodelet);
-		
-		c = (Codelet)factory.getFrameworkTask("bottomright", null);
+
+		c = (Codelet) factory.getFrameworkTask("bottomright", null);
 		assertNull(c);
 	}
 

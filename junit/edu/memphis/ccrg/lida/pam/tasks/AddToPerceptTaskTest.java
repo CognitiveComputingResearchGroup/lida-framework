@@ -30,15 +30,16 @@ import edu.memphis.ccrg.lida.pam.PamNode;
 import edu.memphis.ccrg.lida.pam.PamNodeImpl;
 
 /**
- * @author Ryan J. McCall, Usef Faghihi
- *
+ * @author Ryan J. McCall
+ * @author Usef Faghihi
+ * 
  */
-public class AddToPerceptTaskTest{
-	
+public class AddToPerceptTaskTest {
+
 	private PamNode nodeA, nodeB;
 	private PamLink pl;
 	private MockPAM pam;
-	
+
 	private static ElementFactory factory = ElementFactory.getInstance();
 
 	@Before
@@ -48,55 +49,57 @@ public class AddToPerceptTaskTest{
 		pl = (PamLink) factory.getLink("PamLinkImpl", nodeA, nodeB, nodeA);
 		pam = new MockPAM();
 	}
-	
+
 	@Test
-	public void testAddNodeToPercept(){
+	public void testAddNodeToPercept() {
 		AddNodeToPerceptTask t = new AddNodeToPerceptTask(nodeA, pam);
 		assertNull(pam.nodePercept);
-		
+
 		t.call();
-		
+
 		assertEquals(nodeA, pam.nodePercept);
 		assertEquals(TaskStatus.CANCELED, t.getTaskStatus());
 	}
-	
+
 	@Test
-	public void testAddLinkToPercept(){
+	public void testAddLinkToPercept() {
 		AddLinkToPerceptTask t = new AddLinkToPerceptTask(pl, pam);
 		assertNull(pam.linkPercept);
-		
+
 		t.call();
-		
+
 		assertEquals(pl, pam.linkPercept);
 		assertEquals(TaskStatus.CANCELED, t.getTaskStatus());
 	}
-	
+
 	@Test
-	public void test2(){
-		//Setup
-		NodeStructure expectedNS = new NodeStructureImpl("PamNodeImpl", "PamLinkImpl");
+	public void test2() {
+		// Setup
+		NodeStructure expectedNS = new NodeStructureImpl("PamNodeImpl",
+				"PamLinkImpl");
 		expectedNS.addDefaultNode(nodeA);
 		expectedNS.addDefaultNode(nodeB);
 		Link expectedLink = expectedNS.addDefaultLink(pl);
 		assertNull(pam.nsPercept);
-			
-		//Code being tested
-		AddNodeStructureToPerceptTask t = new AddNodeStructureToPerceptTask(expectedNS, pam);
+
+		// Code being tested
+		AddNodeStructureToPerceptTask t = new AddNodeStructureToPerceptTask(
+				expectedNS, pam);
 		t.call();
-		
-		//Check results
+
+		// Check results
 		NodeStructure actualNS = pam.nsPercept;
 		assertEquals(2, actualNS.getNodeCount());
 		assertEquals(1, actualNS.getLinkCount());
 		assertEquals(3, actualNS.getLinkableCount());
-				
+
 		Node resultNodeA = actualNS.getNode(nodeA.getId());
 		assertEquals(nodeA, resultNodeA);
 		assertEquals(nodeA.getId(), resultNodeA.getId());
 		assertTrue(resultNodeA instanceof PamNodeImpl);
-		
+
 		Node resultNodeB = actualNS.getNode(nodeB.getId());
-		assertEquals("" + resultNodeB , nodeB, resultNodeB);
+		assertEquals("" + resultNodeB, nodeB, resultNodeB);
 		assertEquals(nodeB.getId(), resultNodeB.getId());
 		assertTrue(resultNodeB instanceof PamNodeImpl);
 

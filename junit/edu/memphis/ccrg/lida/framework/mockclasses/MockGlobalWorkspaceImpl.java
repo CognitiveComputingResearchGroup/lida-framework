@@ -18,18 +18,20 @@ import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspaceImpl;
 import edu.memphis.ccrg.lida.globalworkspace.triggers.BroadcastTrigger;
 
-public class MockGlobalWorkspaceImpl extends GlobalWorkspaceImpl implements GlobalWorkspace {
-	
+public class MockGlobalWorkspaceImpl extends GlobalWorkspaceImpl implements
+		GlobalWorkspace {
+
 	public List<BroadcastTrigger> triggers = new ArrayList<BroadcastTrigger>();
+
 	@Override
 	public void addBroadcastListener(BroadcastListener bl) {
 	}
 
 	@Override
-	public void addBroadcastTrigger(BroadcastTrigger t) {	
+	public void addBroadcastTrigger(BroadcastTrigger t) {
 		triggers.add(t);
 	}
-	
+
 	public Coalition coalition;
 
 	@Override
@@ -37,9 +39,9 @@ public class MockGlobalWorkspaceImpl extends GlobalWorkspaceImpl implements Glob
 		this.coalition = coalition;
 		return true;
 	}
-	
+
 	public BroadcastTrigger trigger;
-	
+
 	@Override
 	public void triggerBroadcast(BroadcastTrigger trigger) {
 		this.trigger = trigger;
@@ -50,7 +52,7 @@ public class MockGlobalWorkspaceImpl extends GlobalWorkspaceImpl implements Glob
 	}
 
 	@Override
-	public void decayModule(long ticks) {	
+	public void decayModule(long ticks) {
 	}
 
 	@Override
@@ -60,7 +62,7 @@ public class MockGlobalWorkspaceImpl extends GlobalWorkspaceImpl implements Glob
 
 	@Override
 	public void init() {
-		
+
 	}
 
 	@Override

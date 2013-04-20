@@ -24,19 +24,22 @@ import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 import edu.memphis.ccrg.lida.sensorymemory.SensoryMemory;
 
 /**
- * This class implements the FeatureDetector interface and provides default methods. 
- * Users should extend this class and overwrite the detect() and excitePam() methods.
- * A convenience init() method is added to initialize the class. This method can be 
- * overwritten as well.
- * This implementation is oriented to detect features from sensoryMemory, but the implementation 
- * can be used to detect and send excitation from other modules, like Workspace, emotions or internal states.
+ * This class implements the FeatureDetector interface and provides default
+ * methods. Users should extend this class and overwrite the detect() and
+ * excitePam() methods. A convenience init() method is added to initialize the
+ * class. This method can be overwritten as well. This implementation is
+ * oriented to detect features from sensoryMemory, but the implementation can be
+ * used to detect and send excitation from other modules, like Workspace,
+ * emotions or internal states.
  * 
  * @author Ryan J. McCall
  * 
  */
-public abstract class MultipleDetectionAlgorithm extends FrameworkTaskImpl implements DetectionAlgorithm {
+public abstract class MultipleDetectionAlgorithm extends FrameworkTaskImpl
+		implements DetectionAlgorithm {
 
-	private static final Logger logger = Logger.getLogger(MultipleDetectionAlgorithm.class.getCanonicalName());
+	private static final Logger logger = Logger
+			.getLogger(MultipleDetectionAlgorithm.class.getCanonicalName());
 	/**
 	 * Map of {@link PamLinkable}
 	 */
@@ -49,34 +52,36 @@ public abstract class MultipleDetectionAlgorithm extends FrameworkTaskImpl imple
 	 * {@link PamLinkable} this algorithm detects
 	 */
 	protected SensoryMemory sensoryMemory;
-	
+
 	/**
 	 * 
 	 */
-	public MultipleDetectionAlgorithm(){
+	public MultipleDetectionAlgorithm() {
 	}
-	
+
 	@Override
-	public void setAssociatedModule(FrameworkModule module, String moduleUsage){
-		if(module instanceof PerceptualAssociativeMemory){
+	public void setAssociatedModule(FrameworkModule module, String moduleUsage) {
+		if (module instanceof PerceptualAssociativeMemory) {
 			pam = (PerceptualAssociativeMemory) module;
-		}else if(module instanceof SensoryMemory){
+		} else if (module instanceof SensoryMemory) {
 			sensoryMemory = (SensoryMemory) module;
-		}else{
+		} else {
 			logger.log(Level.WARNING, "Cannot set associated module {1}",
-					new Object[]{TaskManager.getCurrentTick(),module});
+					new Object[] { TaskManager.getCurrentTick(), module });
 		}
 	}
-	
+
 	/**
-	 * This task can be initialized with the following parameters:<br><br/>
+	 * This task can be initialized with the following parameters:<br>
+	 * <br/>
 	 * 
-	 * <b>nodes type=string</b>labels of the Nodes in {@link PerceptualAssociativeMemory} this algorithm detects<br/>
+	 * <b>nodes type=string</b>labels of the Nodes in
+	 * {@link PerceptualAssociativeMemory} this algorithm detects<br/>
 	 * 
 	 * @see Initializable
 	 */
 	@Override
-	public void init (){
+	public void init() {
 		super.init();
 		String nodeLabels = (String) getParam("nodes", "");
 		if (nodeLabels != null) {
@@ -88,28 +93,34 @@ public abstract class MultipleDetectionAlgorithm extends FrameworkTaskImpl imple
 				PamNode node = (PamNode) globalInitializer.getAttribute(label);
 				if (node != null) {
 					addPamLinkable(node);
-				}else{
-					logger.log(Level.WARNING, "could not get node with label {1} from global initializer",
-							new Object[]{TaskManager.getCurrentTick(),label});
+				} else {
+					logger
+							.log(
+									Level.WARNING,
+									"could not get node with label {1} from global initializer",
+									new Object[] {
+											TaskManager.getCurrentTick(), label });
 				}
 			}
 		}
 	}
-	
+
 	/**
 	 * Adds {@link PamLinkable}.
-	 * @param linkable {@link PamLinkable} that will be detected by this algorithm
+	 * 
+	 * @param linkable
+	 *            {@link PamLinkable} that will be detected by this algorithm
 	 */
 	public void addPamLinkable(PamLinkable linkable) {
 		pamNodeMap.put(linkable.getLabel(), linkable);
 	}
-	
+
 	@Override
-	protected void runThisFrameworkTask(){
+	protected void runThisFrameworkTask() {
 		detectLinkables();
-		if(logger.isLoggable(Level.FINEST)){
-			logger.log(Level.FINEST,"detection performed {1}"
-					,new Object[]{TaskManager.getCurrentTick(),this});
+		if (logger.isLoggable(Level.FINEST)) {
+			logger.log(Level.FINEST, "detection performed {1}", new Object[] {
+					TaskManager.getCurrentTick(), this });
 		}
 	}
 
@@ -118,19 +129,21 @@ public abstract class MultipleDetectionAlgorithm extends FrameworkTaskImpl imple
 	 */
 	public abstract void detectLinkables();
 
-	//Methods below are not applicable
+	// Methods below are not applicable
 	@Override
 	public double detect() {
 		return 0;
 	}
+
 	@Override
 	public PamLinkable getPamLinkable() {
 		Collection<PamLinkable> nodes = pamNodeMap.values();
-		if(nodes.size() != 0){
+		if (nodes.size() != 0) {
 			return nodes.iterator().next();
 		}
 		return null;
 	}
+
 	@Override
 	public void setPamLinkable(PamLinkable linkable) {
 	}

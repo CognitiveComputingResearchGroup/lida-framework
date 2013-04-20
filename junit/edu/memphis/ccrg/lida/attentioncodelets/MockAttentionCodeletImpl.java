@@ -14,13 +14,13 @@ public class MockAttentionCodeletImpl extends AttentionCodeletImpl {
 
 	@Override
 	public boolean bufferContainsSoughtContent(WorkspaceBuffer buffer) {
-		
+
 		return false;
 	}
 
 	@Override
 	public NodeStructure retrieveWorkspaceContent(WorkspaceBuffer buffer) {
-		
+
 		return null;
 	}
 

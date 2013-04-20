@@ -18,7 +18,7 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
  * Pauses all {@link FrameworkTask} using the {@link TaskManager}
  * 
  * @author Javier Snaider
- *
+ * 
  */
 public class PauseRunningThreadsCommand extends CommandImpl {
 

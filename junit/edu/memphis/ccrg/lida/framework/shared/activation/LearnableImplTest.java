@@ -31,8 +31,9 @@ import edu.memphis.ccrg.lida.framework.strategies.TotalActivationStrategy;
  * This is a JUnit class which can be used to test methods of the LearnableImpl
  * class
  * 
- * @author Nisrine, Siminder Kaur, Ryan J. McCall
- * 
+ * @author Nisrine Enyinda
+ * @author Siminder Kaur
+ * @author Ryan J. McCall
  */
 public class LearnableImplTest {
 
@@ -69,10 +70,10 @@ public class LearnableImplTest {
 				blDs, ts);
 
 		assertEquals(activation, learnable2.getActivation(), epsilon);
-		assertEquals(activatibleRemovalThreshold,
-				learnable2.getActivatibleRemovalThreshold(), epsilon);
-		assertEquals(learnableRemovalThreshold,
-				learnable2.getLearnableRemovalThreshold(), epsilon);
+		assertEquals(activatibleRemovalThreshold, learnable2
+				.getActivatibleRemovalThreshold(), epsilon);
+		assertEquals(learnableRemovalThreshold, learnable2
+				.getLearnableRemovalThreshold(), epsilon);
 		assertEquals(baseLevelActivation, learnable2.getBaseLevelActivation(),
 				epsilon);
 
@@ -99,22 +100,22 @@ public class LearnableImplTest {
 
 		LearnableImpl copy = new LearnableImpl(learnable1);
 
-		assertEquals(learnable1.getActivatibleRemovalThreshold(),
-				copy.getActivatibleRemovalThreshold(), epsilon);
+		assertEquals(learnable1.getActivatibleRemovalThreshold(), copy
+				.getActivatibleRemovalThreshold(), epsilon);
 		assertEquals(learnable1.getActivation(), copy.getActivation(), epsilon);
-		assertEquals(learnable1.getBaseLevelActivation(),
-				copy.getBaseLevelActivation(), epsilon);
-		assertEquals(learnable1.getLearnableRemovalThreshold(),
-				copy.getLearnableRemovalThreshold(), epsilon);
+		assertEquals(learnable1.getBaseLevelActivation(), copy
+				.getBaseLevelActivation(), epsilon);
+		assertEquals(learnable1.getLearnableRemovalThreshold(), copy
+				.getLearnableRemovalThreshold(), epsilon);
 
 		assertEquals(learnable1.getDecayStrategy(), copy.getDecayStrategy());
 		assertEquals(learnable1.getExciteStrategy(), copy.getExciteStrategy());
-		assertEquals(learnable1.getTotalActivationStrategy(),
-				copy.getTotalActivationStrategy());
-		assertEquals(learnable1.getBaseLevelDecayStrategy(),
-				copy.getBaseLevelDecayStrategy());
-		assertEquals(learnable1.getBaseLevelExciteStrategy(),
-				copy.getBaseLevelExciteStrategy());
+		assertEquals(learnable1.getTotalActivationStrategy(), copy
+				.getTotalActivationStrategy());
+		assertEquals(learnable1.getBaseLevelDecayStrategy(), copy
+				.getBaseLevelDecayStrategy());
+		assertEquals(learnable1.getBaseLevelExciteStrategy(), copy
+				.getBaseLevelExciteStrategy());
 	}
 
 	/**
@@ -217,8 +218,8 @@ public class LearnableImplTest {
 		ExciteStrategy es = new LinearExciteStrategy();
 		learnable1.setBaseLevelExciteStrategy(es);
 
-		assertEquals("Problem with SetBaseLevelExciteStrategy", es,
-				learnable1.getBaseLevelExciteStrategy());
+		assertEquals("Problem with SetBaseLevelExciteStrategy", es, learnable1
+				.getBaseLevelExciteStrategy());
 
 	}
 
@@ -232,8 +233,8 @@ public class LearnableImplTest {
 		DecayStrategy ds = new LinearDecayStrategy();
 		learnable1.setBaseLevelDecayStrategy(ds);
 
-		assertEquals("Problem with SetBaseLevelDecayStrategy", ds,
-				learnable1.getBaseLevelDecayStrategy());
+		assertEquals("Problem with SetBaseLevelDecayStrategy", ds, learnable1
+				.getBaseLevelDecayStrategy());
 	}
 
 	/**

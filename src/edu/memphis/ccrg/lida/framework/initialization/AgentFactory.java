@@ -13,13 +13,16 @@ import edu.memphis.ccrg.lida.framework.Agent;
 
 /**
  * Factory for {@link Agent} objects.
+ * 
  * @author Javier Snaider
  */
 public interface AgentFactory {
 
 	/**
 	 * Creates and returns a {@link Agent} from specified {@link Properties}
-	 * @param properties Agent properties
+	 * 
+	 * @param properties
+	 *            Agent properties
 	 * @return Constructed {@link Agent} object
 	 */
 	public Agent getAgent(Properties properties);

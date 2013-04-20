@@ -13,16 +13,19 @@
 package edu.memphis.ccrg.lida.framework.gui.events;
 
 /**
- * An object that listens for FrameworkGuiEvents, that is, data being sent from the model (framework)
- * to the GUI.
+ * An object that listens for FrameworkGuiEvents, that is, data being sent from
+ * the model (framework) to the GUI.
+ * 
  * @author Javier Snaider
  */
 public interface FrameworkGuiEventListener {
-	
+
 	/**
-	 * Must be able to receive FrameworkGuiEvents  
-	 * @param event GuiEvent
+	 * Must be able to receive FrameworkGuiEvents
+	 * 
+	 * @param event
+	 *            GuiEvent
 	 */
 	public void receiveFrameworkGuiEvent(FrameworkGuiEvent event);
-	
+
 }

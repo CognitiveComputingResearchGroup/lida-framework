@@ -16,109 +16,123 @@ import edu.memphis.ccrg.lida.framework.initialization.FullyInitializable;
 import edu.memphis.ccrg.lida.framework.initialization.GlobalInitializer;
 import edu.memphis.ccrg.lida.framework.initialization.Initializer;
 import edu.memphis.ccrg.lida.framework.shared.Node;
+import edu.memphis.ccrg.lida.framework.shared.activation.Learnable;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 
 /**
- * An {@link Initializer} for {@link PerceptualAssociativeMemory} which receives a parameter named
- * 'nodes' containing a list of node labels.  Nodes are created in {@link PerceptualAssociativeMemory} and 
- * nodes are added to the {@link GlobalInitializer}.
- * A parameter name 'links' contains a list of link definitions.
+ * An {@link Initializer} for {@link PerceptualAssociativeMemory} that processes
+ * a parameter named 'nodes' containing all node definitions and/or a parameter named 'links' containing all link
+ * definitions. For each such definition an element is created and added to {@link PerceptualAssociativeMemory} based on the definitions 
+ * and references to the added element are added to the {@link GlobalInitializer} indexed by the element's label. <br/><br/>
+ * Each {@link PamNode} definition must by separated by a comma and has the following form: <br/><br/>
  * 
- * The definition for 'nodes' is: <br/>
- * <b>nodeLabel1,nodeLabel2,...</b>
- * <br/>
- * The definition for 'links' is: <br/>
- * <b>sourceNodeLabel1:sinkNodeLabel2,...</b>
+ * &nbsp;&nbsp;&nbsp; <b>label:baseLevelActivation:factoryName</b><br/><br/>
+ * 
+ * The parameters of a node definition are separated by ':' and only the first parameter is required.<br/>
+ * 
+ * E.g. <b><param name="nodes">apple, bell:0.0, dog:0.7:PamNodeImpl, hunger:0.0:FeelingPamNodeImpl</param></b>
+ * <br/><br/>
+ * 
+ * Each {@link PamLink} definition is separate by a comma and has the following form: <br/><br/>
+ * &nbsp;&nbsp;&nbsp; <b>sourceLabel:sinkLabel:baseLevelActivation:factoryName</b><br/><br/>
+ * The parameters of a link definition are separated by ':' and the first 2 parameters are required.<br/>
+ * 
+ * E.g. <b><param name="links">apple:bell, bell:dog:0.7, bell:hunger:0.0:FeelingPamLinkImpl</param></b><br/>
  * 
  * @author Javier Snaider
  * @author Ryan J. McCall
  */
 public class BasicPamInitializer implements Initializer {
 
-    private static final Logger logger = Logger.getLogger(BasicPamInitializer.class.getCanonicalName());
+	private static final Logger logger = Logger.getLogger(BasicPamInitializer.class.getCanonicalName());
+	private static final GlobalInitializer globalInitializer = GlobalInitializer.getInstance();
 
-    @Override
-    public void initModule(FullyInitializable module, Agent agent,
-            Map<String, ?> params) {
-        PerceptualAssociativeMemory pam = (PerceptualAssociativeMemory) module;
-//        ElementFactory factory = ElementFactory.getInstance();
-
-        String nodes = (String) params.get("nodes");
-        if (nodes != null) {
-            GlobalInitializer globalInitializer = GlobalInitializer.getInstance();
-            String[] defs = nodes.split(",");
-            for (String nodeDef : defs) {
-                nodeDef = nodeDef.trim();
-                String[] nodeParams = nodeDef.split(":");
-                String label = nodeParams[0];
-                if("".equals(label)){
-                	logger.log(Level.WARNING, 
-        			"empty string found in nodes specification, node labels must be non-empty");
-                }else{
-                	logger.log(Level.INFO, "loading PamNode: {0}", label);
-                	PamNode node = pam.addDefaultNode(label);
-//	                PamNode node = (PamNode) factory.getNode("PamNodeImpl", label);
-	                if(node == null){
-	                	logger.log(Level.WARNING, "failed to get node '{0}' from pam", label);
-	                }else{
-//	                	node = pam.addDefaultNode(node);
-	                	globalInitializer.setAttribute(label, node);
-	                	 if (nodeParams.length > 1) {
-	 	                	double blActivation = 0;
-	                     	try{
-	                     		blActivation = Double.parseDouble(nodeParams[2]);
-	                     	}catch (NumberFormatException e) {
-	                     		logger.log(Level.WARNING, "Bad base-level activation for link {1}.", 
-	                     				new Object[]{TaskManager.getCurrentTick(),node});
-	 						}
-	                     	node.setBaseLevelActivation(blActivation);
-	 	                }
-	                }
-	               
-                }
-            }
-        }
-
-        String links = (String) params.get("links");
-        if (links != null) {
-            String[] linkDefs = links.split(",");
-            for (String linkDef : linkDefs) {
-                linkDef = linkDef.trim();
-                if("".equals(linkDef)){
-                	logger.log(Level.WARNING, 
-        			"empty string found in links specification, link defs must be non-empty");
-                	continue;
-                }
-                logger.log(Level.INFO, "loading PamLink: {0}", linkDef);
-                String[] linkParams = linkDef.split(":");
-                if (linkParams.length < 2) {
-                    logger.log(Level.WARNING, "bad link specification " + linkDef, TaskManager.getCurrentTick());
-                    continue;
-                }
-                Node source = pam.getNode(linkParams[0].trim());
-                Node sink = pam.getNode(linkParams[1].trim());
-                if (source != null && sink != null) {
-//                    Link link = factory.getLink("PamLinkImpl", source, sink, PerceptualAssociativeMemoryImpl.PARENT);
-//                    pam.addDefaultLink(link);
-                    PamLink pl = pam.addDefaultLink(source, sink, PerceptualAssociativeMemoryImpl.PARENT);
-                    if(pl == null){
-                    	logger.log(Level.WARNING, "bad link specification " + linkDef, TaskManager.getCurrentTick());
-                    }else if(linkParams.length > 2){
-                    	double blActivation = 0;
-                    	try{
-                    		blActivation = Double.parseDouble(linkParams[2]);
-                    	}catch (NumberFormatException e) {
-                    		logger.log(Level.WARNING, "Bad base-level activation for link {1}.", 
-                    				new Object[]{TaskManager.getCurrentTick(),pl});
+	@Override
+	public void initModule(FullyInitializable m, Agent agent, Map<String, ?> params) {
+		PerceptualAssociativeMemory pam = (PerceptualAssociativeMemory)m;
+		String nodes = (String) params.get("nodes");
+		if (nodes != null) {
+			String[] defs = nodes.split(",");
+			for (String nodeDef : defs) {
+				nodeDef = nodeDef.trim();
+				String[] nodeParams = nodeDef.split(":");
+				String label = nodeParams[0];
+				if ("".equals(label)) {
+					logger.log(Level.WARNING,
+							"Empty string found in node specification, node labels must be non-empty");
+				}else{
+					logger.log(Level.INFO, "Loading PamNode: {0}", label);
+					PamNode node = null;
+					if(nodeParams.length >= 3){
+						node=pam.addNode(nodeParams[2], label);
+					}else{
+						node=pam.addDefaultNode(label);
+					}
+					if (node == null) {
+						logger.log(Level.WARNING,
+								"Failed to get Node '{0}' from PAM.", label);
+					}else{
+						globalInitializer.setAttribute(label, node);
+						if (nodeParams.length >= 2) {
+							parseBaseLevelActivation(nodeParams[1],node);
 						}
-                    	pl.setBaseLevelActivation(blActivation);
-                    }
-                } else {
-                    logger.log(Level.WARNING, "could not find source or sink " + linkDef, TaskManager.getCurrentTick());
-                }
-                
-                
-            }
-        }
-    }
+					}
+				}
+			}
+		}
+
+		String links = (String) params.get("links");
+		if (links != null) {
+			String[] linkDefs = links.split(",");
+			for (String linkDef: linkDefs) {
+				linkDef = linkDef.trim();
+				if ("".equals(linkDef)) {
+					logger.log(Level.WARNING,
+								"Empty string found in links specification, link defs must be non-empty");
+					continue;
+				}
+				logger.log(Level.INFO, "Loading PamLink: {0}", linkDef);
+				String[] linkParams = linkDef.split(":");
+				if (linkParams.length < 2) {
+					logger.log(Level.WARNING, 
+								"Bad link specification "+linkDef,
+								TaskManager.getCurrentTick());
+					continue;
+				}
+				Node source = pam.getNode(linkParams[0].trim());
+				Node sink = pam.getNode(linkParams[1].trim());
+				if (source != null && sink != null) {
+					PamLink pamLink = null;
+					if(linkParams.length >= 4){//Custom Factory name desired
+						pamLink = pam.addLink(linkParams[3].trim(), source, sink,
+								PerceptualAssociativeMemoryImpl.PARENT);
+					}else{
+						pamLink = pam.addDefaultLink(source, sink,
+								PerceptualAssociativeMemoryImpl.PARENT);
+					}
+					if (pamLink == null) {
+						logger.log(Level.WARNING, "Bad link specification, unable to create link: {1}",
+									new Object[]{TaskManager.getCurrentTick(),linkDef});
+					} else if (linkParams.length >= 3) {
+						parseBaseLevelActivation(linkParams[2],pamLink);
+					}
+				} else {
+					logger.log(Level.WARNING, "Could not find source or sink: {1}",
+							new Object[]{TaskManager.getCurrentTick(),linkDef});
+				}
+			}
+		}
+	}
+
+	private static void parseBaseLevelActivation(String param, Learnable learnable) {
+		double blActivation = Learnable.DEFAULT_BASE_LEVEL_ACTIVATION;
+		try{
+			blActivation = Double.parseDouble(param);
+		}catch(NumberFormatException e){
+			logger.log(Level.WARNING,
+					"NumberFormatException parsing base-level activation for Learnable: {1}.",
+					new Object[]{TaskManager.getCurrentTick(),learnable});
+		}
+		learnable.setBaseLevelActivation(blActivation);
+	}
 }

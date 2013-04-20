@@ -10,24 +10,31 @@ package edu.memphis.ccrg.lida.sensorymotormemory;
 import edu.memphis.ccrg.lida.framework.FrameworkModule;
 
 /**
- * Sensory Motor Memory is a module which receives selected actions from ActionSelection and
- * content from SensoryMemory.  It contains the algorithm for a selected action.  When it executes an algorithm it
- * directly calls a method in the environment (doesn't use a listener).  
+ * Sensory Motor Memory is a module which receives selected actions from
+ * ActionSelection and content from SensoryMemory. It contains the algorithm for
+ * a selected action. When it executes an algorithm it directly calls a method
+ * in the environment (doesn't use a listener).
+ * 
  * @author Ryan J. McCall
  * @author Javier Snaider
- *
+ * 
  */
-public interface SensoryMotorMemory extends FrameworkModule{
+public interface SensoryMotorMemory extends FrameworkModule {
 
 	/**
 	 * Any non-environment communication should use listeners.
-	 * @param l SensoryMotorMemoryListener
+	 * 
+	 * @param l
+	 *            SensoryMotorMemoryListener
 	 */
 	public void addSensoryMotorMemoryListener(SensoryMotorMemoryListener l);
-		
+
 	/**
-	 * Executes specified action algorithm 
-	 * @param command algorithm to execute in the agent's actuators or directly in the environment.
+	 * Executes specified action algorithm
+	 * 
+	 * @param command
+	 *            algorithm to execute in the agent's actuators or directly in
+	 *            the environment.
 	 */
 	public void sendActuatorCommand(Object command);
 

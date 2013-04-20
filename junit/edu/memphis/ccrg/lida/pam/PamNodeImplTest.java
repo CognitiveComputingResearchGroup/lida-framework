@@ -26,19 +26,20 @@ import edu.memphis.ccrg.lida.framework.strategies.LinearExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.TotalActivationStrategy;
 
 /**
- * @author Siminder Kaur, Ryan J. McCall
+ * @author Siminder Kaur
+ * @author Ryan J. McCall
  */
-public class PamNodeImplTest{
-	
-	private ElementFactory factory = ElementFactory.getInstance();	
+public class PamNodeImplTest {
+
+	private ElementFactory factory = ElementFactory.getInstance();
 	private PamNodeImpl node1;
 	private PamNodeImpl node2;
 	private double epsilon = 0.000000001;
-	
+
 	@Before
 	public void setUp() throws Exception {
 		node1 = (PamNodeImpl) factory.getNode("PamNodeImpl");
-		node2 = (PamNodeImpl) factory.getNode("PamNodeImpl");	
+		node2 = (PamNodeImpl) factory.getNode("PamNodeImpl");
 	}
 
 	/**
@@ -46,50 +47,51 @@ public class PamNodeImplTest{
 	 */
 	@Test
 	public void testEquals() {
-		int id = (int) (Math.random()*Integer.MAX_VALUE);
+		int id = (int) (Math.random() * Integer.MAX_VALUE);
 		node1.setId(id);
 		node2.setId(id);
 		assertEquals(node1, node2);
 		assertEquals(node2, node1);
 	}
+
 	@Test
-	public void testNotEqual(){
+	public void testNotEqual() {
 		node1.setId(0);
 		node2.setId(Integer.MIN_VALUE);
 		assertFalse(node1.equals(node2));
 		assertFalse(node2.equals(node1));
 	}
-	
+
 	/**
 	 * {@link PamNodeImpl#hashCode()}
 	 */
 	@Test
-	public void testHashCode(){
-		int id = (int) (Math.random()*Integer.MAX_VALUE);
+	public void testHashCode() {
+		int id = (int) (Math.random() * Integer.MAX_VALUE);
 		node1.setId(id);
 		node2.setId(id);
 		assertEquals(node1.hashCode(), node2.hashCode());
 	}
-	
+
 	/**
 	 * 
 	 */
 	@Test
-	public void testSetActivationThreshold(){
+	public void testSetActivationThreshold() {
 		node1.setBaseLevelDecayStrategy(new LinearDecayStrategy());
 		node1.setActivatibleRemovalThreshold(1.0);
 		node1.setActivation(0.0);
-		
+
 		double t = 0.7;
 		node1.setBaseLevelRemovalThreshold(t);
-		assertTrue(t== node1.getLearnableRemovalThreshold());
-		
+		assertTrue(t == node1.getLearnableRemovalThreshold());
+
 		node1.setBaseLevelActivation(1.0);
 		assertFalse(node1.isRemovable());
 		node1.decay(1000);
 		assertTrue(node1.isRemovable());
 	}
-	
+
 	/**
 	 * Test method for
 	 * {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl#decay(long)}
@@ -190,8 +192,8 @@ public class PamNodeImplTest{
 		ExciteStrategy es = new LinearExciteStrategy();
 		node1.setBaseLevelExciteStrategy(es);
 
-		assertEquals("Problem with SetBaseLevelExciteStrategy", es,
-				node1.getBaseLevelExciteStrategy());
+		assertEquals("Problem with SetBaseLevelExciteStrategy", es, node1
+				.getBaseLevelExciteStrategy());
 
 	}
 
@@ -205,8 +207,8 @@ public class PamNodeImplTest{
 		DecayStrategy ds = new LinearDecayStrategy();
 		node1.setBaseLevelDecayStrategy(ds);
 
-		assertEquals("Problem with SetBaseLevelDecayStrategy", ds,
-				node1.getBaseLevelDecayStrategy());
+		assertEquals("Problem with SetBaseLevelDecayStrategy", ds, node1
+				.getBaseLevelDecayStrategy());
 	}
 
 	/**
@@ -257,9 +259,8 @@ public class PamNodeImplTest{
 	public void testGetTotalActivationStrategy() {
 		TotalActivationStrategy ts = new DefaultTotalActivationStrategy();
 		node1.setTotalActivationStrategy(ts);
-		assertEquals("problem with GetTotalActivationStrategy() ", ts,
-				node1.getTotalActivationStrategy());
+		assertEquals("problem with GetTotalActivationStrategy() ", ts, node1
+				.getTotalActivationStrategy());
 	}
-	
 
 }

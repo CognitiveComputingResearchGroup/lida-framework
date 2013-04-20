@@ -13,23 +13,26 @@ import java.util.TimerTask;
 import edu.memphis.ccrg.lida.globalworkspace.Coalition;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 
-
 /**
- * A trigger that fires when a certain number of ticks have passed without 
- * a new {@link Coalition} being added to the {@link GlobalWorkspace}.
- * Inherits most of its fields and methods from its parent class {@link NoBroadcastOccurringTrigger}.
+ * A trigger that fires when a certain number of ticks have passed without a new
+ * {@link Coalition} being added to the {@link GlobalWorkspace}. Inherits most
+ * of its fields and methods from its parent class
+ * {@link NoBroadcastOccurringTrigger}.
  * 
  * @author Javier Snaider
  * @see NoBroadcastOccurringTrigger
  */
 public class NoCoalitionArrivingTrigger extends NoBroadcastOccurringTrigger {
-	
+
 	/**
 	 * Called each time a new coalition is added to the {@link GlobalWorkspace}.
-	 * Specifically for this trigger {@link NoBroadcastOccurringTrigger#reset()} is called which resets the {@link TimerTask} object.  
-	 * Thus this trigger fires when a certain number of ticks have passed without a new {@link Coalition} entering the {@link GlobalWorkspace}. 
+	 * Specifically for this trigger {@link NoBroadcastOccurringTrigger#reset()}
+	 * is called which resets the {@link TimerTask} object. Thus this trigger
+	 * fires when a certain number of ticks have passed without a new
+	 * {@link Coalition} entering the {@link GlobalWorkspace}.
 	 * 
-	 * @param coalitions {@link Coalition} objects the trigger can check
+	 * @param coalitions
+	 *            {@link Coalition} objects the trigger can check
 	 */
 	@Override
 	public void checkForTriggerCondition(Collection<Coalition> coalitions) {

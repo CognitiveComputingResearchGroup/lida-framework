@@ -26,81 +26,84 @@ import edu.memphis.ccrg.lida.pam.MockPamListener;
 
 /**
  * This class is the JUnit test for <code>SensoryMemoryImpl</code> class.
+ * 
  * @author Rodrigo Silva-Lugo
  * @author Ryan J. McCall
  */
 public class SensoryMemoryImplTest {
-	
+
 	private SensoryMemoryImpl sensoryMemory;
 
-    @Before
-    public void setUp() {
-    	sensoryMemory = new MockSensoryMemoryImpl();
-    }
-    
-    @Test
-    public void testAddListener() {
-    	//test1
-    	ModuleListener listener = new MockSensoryMemoryListener();
-        assertEquals(0,sensoryMemory.sensoryMemoryListeners.size());
-        
-        sensoryMemory.addListener(listener);
-        
-        assertEquals(1,sensoryMemory.sensoryMemoryListeners.size());
-        assertTrue(sensoryMemory.sensoryMemoryListeners.contains(listener));
-        
-        //test2
-        ModuleListener badListener = new MockPamListener();
-        
-        sensoryMemory.addListener(badListener);
-        
-        assertEquals(1,sensoryMemory.sensoryMemoryListeners.size());
-        assertTrue(sensoryMemory.sensoryMemoryListeners.contains(listener));
-        assertFalse(sensoryMemory.sensoryMemoryListeners.contains(badListener));
-    }
+	@Before
+	public void setUp() {
+		sensoryMemory = new MockSensoryMemoryImpl();
+	}
 
-    /**
-     * Test of addSensoryMemoryListener method, of class SensoryMemoryImpl.
-     */
-    @Test
-    public void testAddSensoryMemoryListener() {
-        MockSensoryMemoryListener listener = new MockSensoryMemoryListener();
-        assertEquals(0,sensoryMemory.sensoryMemoryListeners.size());
-        
-        sensoryMemory.addSensoryMemoryListener(listener);
-        
-        assertEquals(1,sensoryMemory.sensoryMemoryListeners.size());
-        assertTrue(sensoryMemory.sensoryMemoryListeners.contains(listener));
-        
-        // test adding 2 listeners, one for SMM, and one for PAM
-        // Do we need to check addSensoryMemoryListener() with paras of SMM or PAM? --Daqi
-        // No because the argument type of the method being tested will not allow those. -- Ryan 
-    }
+	@Test
+	public void testAddListener() {
+		// test1
+		ModuleListener listener = new MockSensoryMemoryListener();
+		assertEquals(0, sensoryMemory.sensoryMemoryListeners.size());
 
-    /**
-     * Test of setAssociatedModule method, of class SensoryMemoryImpl.
-     */
-    @Test
-    public void testSetAssociatedModule() {
-    	//test1 should not set a non-environment module
-    	MockFrameworkModule module = new MockFrameworkModule();
-        String moduleUsage = ModuleUsage.NOT_SPECIFIED;
-        assertNull(sensoryMemory.environment);
-        
-        sensoryMemory.setAssociatedModule(module, moduleUsage);
-        
-        assertNull(sensoryMemory.environment);
-        
-        //test2 should set an environment module
-        MockEnvironmentImpl env = new MockEnvironmentImpl();
-        
-        sensoryMemory.setAssociatedModule(env, moduleUsage);
-        
-        assertNotNull(sensoryMemory.environment);
-        assertEquals(env, sensoryMemory.environment);        
-    }
+		sensoryMemory.addListener(listener);
 
-     class MockSensoryMemoryImpl extends SensoryMemoryImpl {
+		assertEquals(1, sensoryMemory.sensoryMemoryListeners.size());
+		assertTrue(sensoryMemory.sensoryMemoryListeners.contains(listener));
+
+		// test2
+		ModuleListener badListener = new MockPamListener();
+
+		sensoryMemory.addListener(badListener);
+
+		assertEquals(1, sensoryMemory.sensoryMemoryListeners.size());
+		assertTrue(sensoryMemory.sensoryMemoryListeners.contains(listener));
+		assertFalse(sensoryMemory.sensoryMemoryListeners.contains(badListener));
+	}
+
+	/**
+	 * Test of addSensoryMemoryListener method, of class SensoryMemoryImpl.
+	 */
+	@Test
+	public void testAddSensoryMemoryListener() {
+		MockSensoryMemoryListener listener = new MockSensoryMemoryListener();
+		assertEquals(0, sensoryMemory.sensoryMemoryListeners.size());
+
+		sensoryMemory.addSensoryMemoryListener(listener);
+
+		assertEquals(1, sensoryMemory.sensoryMemoryListeners.size());
+		assertTrue(sensoryMemory.sensoryMemoryListeners.contains(listener));
+
+		// test adding 2 listeners, one for SMM, and one for PAM
+		// Do we need to check addSensoryMemoryListener() with paras of SMM or
+		// PAM? --Daqi
+		// No because the argument type of the method being tested will not
+		// allow those. -- Ryan
+	}
+
+	/**
+	 * Test of setAssociatedModule method, of class SensoryMemoryImpl.
+	 */
+	@Test
+	public void testSetAssociatedModule() {
+		// test1 should not set a non-environment module
+		MockFrameworkModule module = new MockFrameworkModule();
+		String moduleUsage = ModuleUsage.NOT_SPECIFIED;
+		assertNull(sensoryMemory.environment);
+
+		sensoryMemory.setAssociatedModule(module, moduleUsage);
+
+		assertNull(sensoryMemory.environment);
+
+		// test2 should set an environment module
+		MockEnvironmentImpl env = new MockEnvironmentImpl();
+
+		sensoryMemory.setAssociatedModule(env, moduleUsage);
+
+		assertNotNull(sensoryMemory.environment);
+		assertEquals(env, sensoryMemory.environment);
+	}
+
+	class MockSensoryMemoryImpl extends SensoryMemoryImpl {
 
 		@Override
 		public void runSensors() {
@@ -109,7 +112,7 @@ public class SensoryMemoryImplTest {
 		@Override
 		public Object getSensoryContent(String modality,
 				Map<String, Object> params) {
-			
+
 			return null;
 		}
 
@@ -119,19 +122,19 @@ public class SensoryMemoryImplTest {
 
 		@Override
 		public Object getModuleContent(Object... params) {
-			
+
 			return null;
 		}
 
 		@Override
 		public void init() {
 		}
-    }
+	}
 
-    public class MockSensoryMemoryListener implements SensoryMemoryListener {
-        @Override
-        public void receiveSensoryMemoryContent(Object content) {
-        }
-    }
+	public class MockSensoryMemoryListener implements SensoryMemoryListener {
+		@Override
+		public void receiveSensoryMemoryContent(Object content) {
+		}
+	}
 
 }

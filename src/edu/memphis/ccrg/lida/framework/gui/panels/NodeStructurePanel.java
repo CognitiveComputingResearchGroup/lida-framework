@@ -14,6 +14,7 @@
  * NodeStructurePanel.java
  *
  * Created on 17/08/2009, 08:55:55
+ * @author Matthew Lohbihler (edits)
  */
 package edu.memphis.ccrg.lida.framework.gui.panels;
 
@@ -49,16 +50,18 @@ import edu.uci.ics.jung.visualization.control.ModalGraphMouse;
 /**
  * A {@link GuiPanel} which creates a graphical view of a {@link NodeStructure}.
  * 
- *  The {@link NodeStructure} is one from a paticular {@link FrameworkModule} which is defined as a parameter in the guiPanels.properties file.
- *  
- *  {@link FrameworkModule#getModuleContent(Object...)} must return {@link NodeStructure}.
- *   
+ * The {@link NodeStructure} is one from a paticular {@link FrameworkModule} which is defined as a parameter in the
+ * guiPanels.properties file (or whatever file name is given by the lida.gui.panels property).
+ * 
+ * {@link FrameworkModule#getModuleContent(Object...)} must return {@link NodeStructure}.
+ * 
  * @author Javier Snaider
+ * @author Matthew Lohbihler
  */
 public class NodeStructurePanel extends GuiPanelImpl {
 
     private static final Logger logger = Logger.getLogger(NodeStructurePanel.class.getCanonicalName());
-    private NodeStructureGuiAdapter guiGraph = new NodeStructureGuiAdapter(new NodeStructureImpl());
+    private final NodeStructureGuiAdapter guiGraph = new NodeStructureGuiAdapter(new NodeStructureImpl());
     private VisualizationViewer<Linkable, GuiLink> vizViewer;
     private FrameworkModule module;
 
@@ -90,7 +93,7 @@ public class NodeStructurePanel extends GuiPanelImpl {
         refreshButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         refreshButton.addActionListener(new java.awt.event.ActionListener() {
             @Override
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 refreshButtonActionPerformed(evt);
             }
         });
@@ -107,7 +110,7 @@ public class NodeStructurePanel extends GuiPanelImpl {
         relaxButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         relaxButton.addActionListener(new java.awt.event.ActionListener() {
             @Override
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 relaxButtonActionPerformed(evt);
             }
         });
@@ -115,55 +118,50 @@ public class NodeStructurePanel extends GuiPanelImpl {
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 398, Short.MAX_VALUE)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 267, Short.MAX_VALUE)
-        );
+        jPanel1Layout.setHorizontalGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(0, 398, Short.MAX_VALUE));
+        jPanel1Layout.setVerticalGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(0, 267, Short.MAX_VALUE));
 
         jScrollPane1.setViewportView(jPanel1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 269, Short.MAX_VALUE))
-        );
+        layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE));
+        layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(
+                layout.createSequentialGroup()
+                        .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 25,
+                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 269, Short.MAX_VALUE)));
     }// </editor-fold>
 
     private void relaxButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_relaxButtonActionPerformed
         relax();
     }//GEN-LAST:event_relaxButtonActionPerformed
 
-	private void relax() {
-		Relaxer relaxer = vizViewer.getModel().getRelaxer();
+    private void relax() {
+        Relaxer relaxer = vizViewer.getModel().getRelaxer();
         if (relaxer != null) {
-        	relaxer.stop();
-        	relaxer.prerelax();
-        	relaxer.relax();
+            relaxer.stop();
+            relaxer.prerelax();
+            relaxer.relax();
         }
-	}
+    }
 
     private void refreshButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_refreshButtonActionPerformed
         refresh();
     }// GEN-LAST:event_refreshButtonActionPerformed
-    // Variables declaration - do not modify//GEN-BEGIN:variables
+    
+     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JButton refreshButton;
     private javax.swing.JButton relaxButton;
+
     // End of variables declaration//GEN-END:variables
 
     private void draw() {
@@ -175,39 +173,38 @@ public class NodeStructurePanel extends GuiPanelImpl {
         vizViewer = new VisualizationViewer<Linkable, GuiLink>(layout);
         vizViewer.setPreferredSize(new Dimension(350, 350)); // Sets viewing area size
         // Show vertex and edge labels
-        vizViewer.getRenderContext().setVertexLabelTransformer(
-                new Transformer<Linkable, String>() {
+        vizViewer.getRenderContext().setVertexLabelTransformer(new Transformer<Linkable, String>() {
 
-                    @Override
-                    public String transform(final Linkable linkable) {
-                        if (linkable instanceof Link) {
-                            return ((Link) linkable).getCategory().getLabel();
-                        }
-                        return linkable.getLabel();
-                    }
-                });
+            @Override
+            public String transform(final Linkable linkable) {
+                if (linkable instanceof Link) {
+                    return ((Link) linkable).getCategory().getLabel();
+                }
+                return linkable.getLabel();
+            }
+        });
 
         // vv.getRenderContext().setEdgeLabelTransformer(new
         // ToStringLabeller<GuiLink>());
         // Create a graph mouse and add it to the visualization component
         DefaultModalGraphMouse<Linkable, GuiLink> gm2 = new DefaultModalGraphMouse<Linkable, GuiLink>();
         gm2.setMode(ModalGraphMouse.Mode.TRANSFORMING);
-        vizViewer.getRenderContext().setVertexIconTransformer(
-                new Transformer<Linkable, Icon>() {
-                    /*
-                     * Implements the Icon interface to draw an Icon with
-                     * background color
-                     */
+        vizViewer.getRenderContext().setVertexIconTransformer(new Transformer<Linkable, Icon>() {
+            /*
+             * Implements the Icon interface to draw an Icon with
+             * background color
+             */
 
-                    @Override
-                    public Icon transform(final Linkable v) {
-                        if (v instanceof Node) {
-                            return NodeIcon.NODE_ICON;
-                        } else {
-                            return NodeIcon.LINK_ICON;
-                        }
-                    }
-                });
+            @Override
+            public Icon transform(final Linkable v) {
+                if (v instanceof Node) {
+                    return NodeIcon.NODE_ICON;
+                }
+                else {
+                    return NodeIcon.LINK_ICON;
+                }
+            }
+        });
         vizViewer.setVertexToolTipTransformer(new Transformer<Linkable, String>() {
             //TODO use the toString of the linkable
 
@@ -218,11 +215,12 @@ public class NodeStructurePanel extends GuiPanelImpl {
                     if (l instanceof PamNode) {
                         PamNode pn = (PamNode) l;
                         tip = String.format("<html><b>%s</b><br/>Activation: %06.4f"
-                                + "<br /> BaseActivation: %06.4f<br /> Threshold:  %06.4f </html>",
-                                pn,pn.getActivation(),pn.getBaseLevelActivation(),
+                                + "<br /> BaseActivation: %06.4f<br /> Threshold:  %06.4f </html>", pn,
+                                pn.getActivation(), pn.getBaseLevelActivation(),
                                 PerceptualAssociativeMemoryImpl.getPerceptThreshold());
-                    } else {
-                        Activatible n = (Activatible) l;
+                    }
+                    else {
+                        Activatible n = l;
                         tip = String.format("<html><b>%s</b><br/>Activation: %06.4f</html>", n, n.getActivation());
                     }
                 }
@@ -251,14 +249,13 @@ public class NodeStructurePanel extends GuiPanelImpl {
      * Definition of this Panel should include a parameter for the ModuleName for the
      * module from which the NodeStructure will be obtained.
      * E.g., workspace.PerceptualBuffer or PerceptualAssociativeMemory
+     * 
      * @see edu.memphis.ccrg.lida.framework.gui.panels.GuiPanelImpl#initPanel(java.lang.String[])
      */
     @Override
     public void initPanel(String[] param) {
         if (param == null || param.length == 0) {
-            logger.log(Level.WARNING,
-                    "Error initializing NodeStructurePanel, not enough parameters.",
-                    0L);
+            logger.log(Level.WARNING, "Error initializing NodeStructurePanel, not enough parameters.", 0L);
             return;
         }
         module = GuiUtils.parseFrameworkModule(param[0], agent);
@@ -266,10 +263,10 @@ public class NodeStructurePanel extends GuiPanelImpl {
         if (module != null) {
             display(module.getModuleContent());
             draw();
-        } else {
-            logger.log(Level.WARNING,
-                    "Unable to parse module {1} Panel not initialized.",
-                    new Object[]{0L, param[0]});
+        }
+        else {
+            logger.log(Level.WARNING, "Unable to parse module {1} Panel not initialized.",
+                    new Object[] { 0L, param[0] });
         }
     }
 
@@ -284,10 +281,10 @@ public class NodeStructurePanel extends GuiPanelImpl {
     public void display(Object o) {
         if (o instanceof NodeStructure) {
             guiGraph.setNodeStructure((NodeStructure) o);
-        } else {
-            logger.log(Level.WARNING,
-                    "Panel can only display NodeStructure, but received {1} from module {2}",
-                    new Object[]{TaskManager.getCurrentTick(), o, module});
+        }
+        else {
+            logger.log(Level.WARNING, "Panel can only display NodeStructure, but received {1} from module {2}",
+                    new Object[] { TaskManager.getCurrentTick(), o, module });
         }
     }
 }

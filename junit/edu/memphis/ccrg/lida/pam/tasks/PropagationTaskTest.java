@@ -26,44 +26,46 @@ import edu.memphis.ccrg.lida.pam.PamNode;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl;
 
 /**
- * A propagation task excites a node and a link.  
- * The link connects the source of the activation to the node.
+ * A propagation task excites a node and a link. The link connects the source of
+ * the activation to the node.
+ * 
  * @author Ryan J. McCall
  * 
  */
-public class PropagationTaskTest{
-	
+public class PropagationTaskTest {
+
 	private static ElementFactory factory = ElementFactory.getInstance();
-	
+
 	private PamNode source;
 	private PamNode sink;
 	private PamLink link;
-	
+
 	private double epsilon = 1e-10;
-	
+
 	private MockPAM pam;
 	private MockTaskSpawner taskSpawner;
-	
+
 	@Before
 	public void setUp() throws Exception {
-		source =  (PamNode) ElementFactory.getInstance().getNode("PamNodeImpl");
-		sink   =  (PamNode) ElementFactory.getInstance().getNode("PamNodeImpl");
+		source = (PamNode) ElementFactory.getInstance().getNode("PamNodeImpl");
+		sink = (PamNode) ElementFactory.getInstance().getNode("PamNodeImpl");
 		sink.setActivation(0.0);
 		sink.setExciteStrategy(new LinearExciteStrategy());
-		link  = (PamLink) factory.getLink("PamLinkImpl", source, sink, PerceptualAssociativeMemoryImpl.NONE);
+		link = (PamLink) factory.getLink("PamLinkImpl", source, sink,
+				PerceptualAssociativeMemoryImpl.NONE);
 		link.setActivation(0.0);
 		link.setExciteStrategy(new LinearExciteStrategy());
-		 
+
 		pam = new MockPAM();
-		taskSpawner= new MockTaskSpawner();
+		taskSpawner = new MockTaskSpawner();
 		pam.setAssistingTaskSpawner(taskSpawner);
 	}
-	
+
 	@Test
-	public void testPropagateNotOverThreshold(){
+	public void testPropagateNotOverThreshold() {
 		double perceptThreshold = 1.0;
 		pam.setPerceptThreshold(perceptThreshold);
-		
+
 		double sourceActivation = 0.09;
 		double linkBLA = 0.08;
 		double linkActivation = 0.01;
@@ -71,19 +73,22 @@ public class PropagationTaskTest{
 		link.setActivation(linkActivation);
 		link.setBaseLevelActivation(linkBLA);
 		sink.setActivation(sinkActivation);
-		
-		PropagationTask task= new PropagationTask(1, link, sourceActivation, pam);
+
+		PropagationTask task = new PropagationTask(1, link, sourceActivation,
+				pam);
 		task.call();
-	 
+
 		assertEquals(sourceActivation, link.getActivation(), epsilon);
-		assertEquals(linkBLA*sourceActivation+sinkActivation, sink.getActivation(), epsilon);
+		assertEquals(linkBLA * sourceActivation + sinkActivation, sink
+				.getActivation(), epsilon);
 		assertEquals(TaskStatus.CANCELED, task.getTaskStatus());
-	 
+
 		assertEquals(sink, pam.pmNode);
 		assertEquals(0, taskSpawner.getTasks().size());
 	}
+
 	@Test
-	public void testPropagateOverThreshold(){
+	public void testPropagateOverThreshold() {
 		double perceptThreshold = 0.5;
 		pam.setPerceptThreshold(perceptThreshold);
 
@@ -94,22 +99,24 @@ public class PropagationTaskTest{
 		link.setActivation(linkActivation);
 		link.setBaseLevelActivation(linkBLA);
 		sink.setActivation(sinkActivation);
-		
-		PropagationTask excite= new PropagationTask(1, link, sourceActivation, pam);
+
+		PropagationTask excite = new PropagationTask(1, link, sourceActivation,
+				pam);
 		excite.call();
-	 
+
 		assertEquals(sourceActivation, link.getActivation(), epsilon);
-		//0.5*0.1 + .45 = .5
-		assertEquals(sourceActivation*linkBLA + sinkActivation, sink.getActivation(), epsilon);
+		// 0.5*0.1 + .45 = .5
+		assertEquals(sourceActivation * linkBLA + sinkActivation, sink
+				.getActivation(), epsilon);
 		assertEquals(TaskStatus.CANCELED, excite.getTaskStatus());
-	 
+
 		assertEquals(sink, pam.pmNode);
 		Collection<FrameworkTask> tasks = taskSpawner.getTasks();
 		assertEquals(1, tasks.size());
-		for(FrameworkTask tsk: tasks){
+		for (FrameworkTask tsk : tasks) {
 			assertTrue(tsk instanceof AddLinkToPerceptTask);
 		}
-	 
+
 	}
- 
+
 }

@@ -20,10 +20,11 @@ import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
 
 /**
  * Default implementation of {@link Behavior}
+ * 
  * @author Ryan J. McCall
  * @author Javier Snaider
  */
-public class BehaviorImpl extends ActivatibleImpl implements Behavior{
+public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 
 	/*
 	 * Unique identifier
@@ -31,18 +32,18 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior{
 	private int behaviorId;
 
 	/*
-	 * The scheme from which this behavior was instantiated. 
+	 * The scheme from which this behavior was instantiated.
 	 */
 	private Scheme scheme;
-	
+
 	/**
 	 * Construct a new behavior with default parameters
 	 */
-	public BehaviorImpl(){
+	public BehaviorImpl() {
 		super();
 	}
 
-	//Behavior methods
+	// Behavior methods
 	@Override
 	public void setId(int id) {
 		behaviorId = id;
@@ -60,15 +61,15 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior{
 
 	@Override
 	public void setScheme(Scheme s) {
-		scheme  = s;
+		scheme = s;
 	}
-	
-	//Object method
+
+	// Object method
 	@Override
-	public String toString(){
+	public String toString() {
 		return scheme.getLabel() + "-" + getId();
 	}
-	
+
 	@Override
 	public Collection<Condition> getContextConditions() {
 		return scheme.getContextConditions();
@@ -95,6 +96,6 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior{
 	}
 
 	@Override
-	public void setLabel(String l) {		
+	public void setLabel(String l) {
 	}
 }

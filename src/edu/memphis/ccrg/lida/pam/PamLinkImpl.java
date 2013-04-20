@@ -29,74 +29,93 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
  * @author Ryan J. McCall
  */
 public class PamLinkImpl extends LinkImpl implements PamLink {
-	
-	private static final Logger logger = Logger.getLogger(PamLinkImpl.class.getCanonicalName());
-	
+
+	private static final Logger logger = Logger.getLogger(PamLinkImpl.class
+			.getCanonicalName());
+
 	/*
-	 * Private Learnable object used for all learnable methods
+	 * Private Learnable object used for all learnable methods.
+	 * WARNING: Any changes to the methods of ActivatibleImpl and its superclasses can introduce
+	 * bugs to this class. This is due to the fact that this class extends ActivatibleImpl via NodeImpl
+	 * but it actually uses this private LearnableImpl (also an ActivatibleImpl) to store the data related
+	 * to ActivatibeImpl. So any new methods added to LearnableImpl or its superclasses must be readded here
+	 * and overridden using the learnable.
 	 */
 	private LearnableImpl learnable;
-	
+
 	/**
-	 * Default constructor
-	 * Only {@link ElementFactory} should be creating this Object.
+	 * Default constructor Only {@link ElementFactory} should be creating this
+	 * Object.
 	 */
 	public PamLinkImpl() {
 		super();
 		groundingPamLink = this;
 		learnable = new LearnableImpl();
 	}
+
 	/**
 	 * Copy constructor
-	 * @deprecated Use {@link ElementFactory#getLink(String, Node, Linkable, LinkCategory, String, String, double, double)} instead.
-	 * @param pl source {@link PamLinkImpl}
+	 * 
+	 * @deprecated Use
+	 *             {@link ElementFactory#getLink(String, Node, Linkable, LinkCategory, String, String, double, double)}
+	 *             instead.
+	 * @param pl
+	 *            source {@link PamLinkImpl}
 	 */
 	@Deprecated
 	public PamLinkImpl(PamLinkImpl pl) {
 		super(pl);
 		groundingPamLink = this;
-		learnable=new LearnableImpl((LearnableImpl)pl.learnable);
+		learnable = new LearnableImpl((LearnableImpl) pl.learnable);
 	}
 
-	/** 
+	/**
 	 * Must call the {@link #init()} of the internal {@link Learnable}.
+	 * 
 	 * @see LearnableImpl#init()
-	 * @see ElementFactory#getLink(String, edu.memphis.ccrg.lida.framework.shared.Node, edu.memphis.ccrg.lida.framework.shared.Linkable, edu.memphis.ccrg.lida.framework.shared.LinkCategory, String, String, double, double)
+	 * @see ElementFactory#getLink(String,
+	 *      edu.memphis.ccrg.lida.framework.shared.Node,
+	 *      edu.memphis.ccrg.lida.framework.shared.Linkable,
+	 *      edu.memphis.ccrg.lida.framework.shared.LinkCategory, String, String,
+	 *      double, double)
 	 */
 	@Override
-	public void init(){
+	public void init() {
 		learnable.init(getParameters());
 	}
 
-	//LINK
+	// LINK
 	@Override
 	public void updateLinkValues(Link link) {
-		if(link instanceof PamLinkImpl){
+		if (link instanceof PamLinkImpl) {
 			PamLinkImpl pl = (PamLinkImpl) link;
-			learnable.setBaseLevelActivation(pl.getBaseLevelActivation());           
-		}else if(link != null){
-			logger.log(Level.FINEST, "Cannot set PamLinkImpl-specific values. Required: {1} \n Received: {2}",
-					new Object[]{TaskManager.getCurrentTick(),PamLinkImpl.class.getCanonicalName(),link.getClass()});
+			learnable.setBaseLevelActivation(pl.getBaseLevelActivation());
+		} else if (link != null) {
+			logger.log(Level.FINEST,
+							"Cannot set PamLinkImpl-specific values. Required: {1} \n Received: {2}",
+							new Object[] { TaskManager.getCurrentTick(),
+									PamLinkImpl.class.getCanonicalName(),
+									link.getClass() });
 		}
 	}
 
-	//OBJECT
+	// OBJECT
 	@Override
 	public boolean equals(Object obj) {
-		if(obj instanceof PamLinkImpl){
+		if (obj instanceof PamLinkImpl) {
 			PamLinkImpl l = (PamLinkImpl) obj;
 			return getExtendedId().equals(l.getExtendedId());
 		}
-		return false;	
-	}
-	
-	@Override
-	public int hashCode() { 
-	    return getExtendedId().hashCode();
+		return false;
 	}
 
-	//LEARNABLE METHODS
-	
+	@Override
+	public int hashCode() {
+		return getExtendedId().hashCode();
+	}
+
+	// LEARNABLE METHODS
+
 	@Override
 	public double getActivation() {
 		return learnable.getActivation();
@@ -111,12 +130,33 @@ public class PamLinkImpl extends LinkImpl implements PamLink {
 	public double getTotalActivation() {
 		return learnable.getTotalActivation();
 	}
-
+	
+	@Deprecated
 	@Override
 	public void excite(double amount) {
-		learnable.excite(amount);
+		learnable.exciteActivation(amount);
 	}
-
+	@Override
+	public void exciteActivation(double amount){
+		learnable.exciteActivation(amount);
+	}
+	@Override
+	public void exciteIncentiveSalience(double amount){
+		learnable.exciteIncentiveSalience(amount);
+	}
+	@Override
+	public double getIncentiveSalience(){
+		return learnable.getIncentiveSalience();
+	}
+	@Override
+	public double getTotalIncentiveSalience(){
+		return learnable.getTotalIncentiveSalience();
+	}
+	@Override
+	public synchronized void setIncentiveSalience(double s){
+		learnable.setIncentiveSalience(s);
+	}
+	
 	@Override
 	public synchronized void setExciteStrategy(ExciteStrategy strategy) {
 		learnable.setExciteStrategy(strategy);
@@ -217,5 +257,24 @@ public class PamLinkImpl extends LinkImpl implements PamLink {
 	@Override
 	public void setTotalActivationStrategy(TotalActivationStrategy strategy) {
 		learnable.setTotalActivationStrategy(strategy);
-	}	
+	}
+
+	@Override
+	public double getBaseLevelIncentiveSalience() {
+		return learnable.getBaseLevelIncentiveSalience();
+	}
+
+	@Override
+	public void setBaseLevelIncentiveSalience(double s) {
+		learnable.setBaseLevelIncentiveSalience(s);
+	}
+
+	@Override
+	public void decayBaseLevelIncentiveSalience(long t) {
+		learnable.decayBaseLevelIncentiveSalience(t);
+	}
+	@Override
+	public void reinforceBaseLevelIncentiveSalience(double amount) {
+		learnable.reinforceBaseLevelIncentiveSalience(amount);
+	}
 }

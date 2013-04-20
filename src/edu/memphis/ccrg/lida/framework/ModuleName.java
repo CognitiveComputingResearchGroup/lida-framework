@@ -18,7 +18,9 @@ import edu.memphis.ccrg.lida.sensorymemory.SensoryMemory;
 import edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBuffer;
 
 /**
- * Encapsulation of the name of a {@link FrameworkModule}.  Provides several public-static instances by default. 
+ * Encapsulation of the name of a {@link FrameworkModule}. Provides several
+ * public-static instances by default.
+ * 
  * @author Javier Snaider
  * @author Ryan J. McCall
  */
@@ -31,8 +33,10 @@ public class ModuleName {
 	private static Map<String, ModuleName> moduleNames = new HashMap<String, ModuleName>();
 
 	/**
-	 * Returns ModuleName of specified name. 
-	 * @param name String
+	 * Returns ModuleName of specified name.
+	 * 
+	 * @param name
+	 *            String
 	 * @return ModuleName
 	 */
 	public static ModuleName getModuleName(String name) {
@@ -41,8 +45,11 @@ public class ModuleName {
 
 	/**
 	 * Creates and adds a new module name if name is not already defined.
-	 * Returns new ModuleName or existing {@link ModuleName} associated with the name.
-	 * @param name String
+	 * Returns new ModuleName or existing {@link ModuleName} associated with the
+	 * name.
+	 * 
+	 * @param name
+	 *            String
 	 * @return ModuleName
 	 */
 	public static ModuleName addModuleName(String name) {
@@ -56,14 +63,15 @@ public class ModuleName {
 		this.name = name;
 		moduleNames.put(name, this);
 	}
-	
+
 	@Override
-	public String toString(){
+	public String toString() {
 		return name;
 	}
 
 	/**
 	 * Returns a {@link Collection} of all {@link ModuleName}s
+	 * 
 	 * @return all module names
 	 */
 	public static Collection<ModuleName> values() {
@@ -80,7 +88,8 @@ public class ModuleName {
 	public final static ModuleName SensoryMemory = new ModuleName(
 			"SensoryMemory");
 	/**
-	 * Name of a {@link edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory} module
+	 * Name of a {@link edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory}
+	 * module
 	 */
 	public final static ModuleName PerceptualAssociativeMemory = new ModuleName(
 			"PerceptualAssociativeMemory");
@@ -109,7 +118,9 @@ public class ModuleName {
 	public final static ModuleName EpisodicBuffer = new ModuleName(
 			"EpisodicBuffer");
 	/**
-	 * Name of a {@link edu.memphis.ccrg.lida.workspace.workspacebuffers.BroadcastQueue} module
+	 * Name of a
+	 * {@link edu.memphis.ccrg.lida.workspace.workspacebuffers.BroadcastQueue}
+	 * module
 	 */
 	public final static ModuleName BroadcastQueue = new ModuleName(
 			"BroadcastQueue");
@@ -119,32 +130,38 @@ public class ModuleName {
 	public final static ModuleName CurrentSituationalModel = new ModuleName(
 			"CurrentSituationalModel");
 	/**
-	 * Name of an {@link AttentionCodeletModule} 
+	 * Name of an {@link AttentionCodeletModule}
 	 */
 	public final static ModuleName AttentionModule = new ModuleName(
 			"AttentionModule");
 	/**
-	 * Name of a {@link edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.StructureBuildingCodeletModule} 
+	 * Name of a
+	 * {@link edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.StructureBuildingCodeletModule}
 	 */
 	public final static ModuleName StructureBuildingCodeletModule = new ModuleName(
 			"StructureBuildingCodeletModule");
 	/**
-	 * Name of a {@link edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace} module
+	 * Name of a {@link edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace}
+	 * module
 	 */
 	public final static ModuleName GlobalWorkspace = new ModuleName(
 			"GlobalWorkspace");
 	/**
-	 * Name of a {@link edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemory} module
+	 * Name of a {@link edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemory}
+	 * module
 	 */
 	public final static ModuleName ProceduralMemory = new ModuleName(
 			"ProceduralMemory");
 	/**
-	 * Name of an {@link edu.memphis.ccrg.lida.actionselection.ActionSelection} module
+	 * Name of an {@link edu.memphis.ccrg.lida.actionselection.ActionSelection}
+	 * module
 	 */
 	public final static ModuleName ActionSelection = new ModuleName(
 			"ActionSelection");
 	/**
-	 * Name of a {@link edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorMemory} module
+	 * Name of a
+	 * {@link edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorMemory}
+	 * module
 	 */
 	public final static ModuleName SensoryMotorMemory = new ModuleName(
 			"SensoryMotorMemory");
@@ -155,5 +172,6 @@ public class ModuleName {
 	/**
 	 * Name of an unnamed module
 	 */
-	public final static ModuleName UnnamedModule = new ModuleName("UnnamedModule");
+	public final static ModuleName UnnamedModule = new ModuleName(
+			"UnnamedModule");
 }

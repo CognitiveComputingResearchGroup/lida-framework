@@ -9,31 +9,29 @@ package edu.memphis.ccrg.lida.framework.tasks;
 
 /**
  * Enumeration of the possible statuses of FrameworkTasks.
+ * 
  * @author Javier Snaider.
  */
 public enum TaskStatus {
-	
+
 	/**
-	 * FrameworkTask status value:
-	 * Task is running
+	 * FrameworkTask status value: Task is running
 	 */
 	RUNNING,
-	
+
 	/**
-	 * FrameworkTask status value:
-	 * Task is finished, cannot be restarted, and cannot have its TaskStatus changed again
+	 * FrameworkTask status value: Task is finished, cannot be restarted, and
+	 * cannot have its TaskStatus changed again
 	 */
 	CANCELED,
-	
+
 	/**
-	 * FrameworkTask status value:
-	 * Task is finished 
+	 * FrameworkTask status value: Task is finished
 	 */
 	FINISHED,
 
 	/**
-	 * FrameworkTask status value:
-	 * Task has finished and has results to process
+	 * FrameworkTask status value: Task has finished and has results to process
 	 */
 	FINISHED_WITH_RESULTS
 }

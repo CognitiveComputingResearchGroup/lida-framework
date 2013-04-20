@@ -17,44 +17,41 @@ import edu.memphis.ccrg.lida.actionselection.PreafferenceListener;
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 
-public class MockActionSelectionImpl extends FrameworkModuleImpl implements ActionSelection {
-	
-	private static final Logger logger = Logger.getLogger(MockActionSelectionImpl.class.getCanonicalName());
+public class MockActionSelectionImpl extends FrameworkModuleImpl implements
+		ActionSelection {
+
+	private static final Logger logger = Logger
+			.getLogger(MockActionSelectionImpl.class.getCanonicalName());
 
 	@Override
 	public void addActionSelectionListener(ActionSelectionListener listener) {
 	}
 
-
 	@Override
 	public void init() {
 	}
 
-
 	@Override
 	public void addPreafferenceListener(PreafferenceListener listener) {
-		
-		
+
 	}
 
 	@Override
 	public void decayModule(long ticks) {
 		// not implemented
-		
+
 	}
 
 	@Override
 	public Object getModuleContent(Object... params) {
-		
+
 		return null;
 	}
 
 	@Override
 	public void addListener(ModuleListener listener) {
-		
-		
-	}
 
+	}
 
 	@Override
 	public Behavior selectBehavior(Collection<Behavior> behaviors,
@@ -62,7 +59,6 @@ public class MockActionSelectionImpl extends FrameworkModuleImpl implements Acti
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 
 	@Override
 	public Collection<Behavior> getBehaviors() {

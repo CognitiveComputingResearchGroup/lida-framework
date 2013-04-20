@@ -19,16 +19,18 @@ import edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 
 /**
- * The default implementation of {@link Coalition}.  Wraps content entering the 
- * {@link GlobalWorkspace} to compete for consciousness. Extends {@link ActivatibleImpl}.
- * Contains reference to the {@link AttentionCodelet} that created it.
+ * The default implementation of {@link Coalition}. Wraps content entering the
+ * {@link GlobalWorkspace} to compete for consciousness. Extends
+ * {@link ActivatibleImpl}. Contains reference to the {@link AttentionCodelet}
+ * that created it.
  * 
  * @author Ryan J. McCall
  * @see AttentionCodeletImpl
  */
 public class CoalitionImpl extends ActivatibleImpl implements Coalition {
 
-	private static final Logger logger = Logger.getLogger(CoalitionImpl.class.getCanonicalName());
+	private static final Logger logger = Logger.getLogger(CoalitionImpl.class
+			.getCanonicalName());
 	private static int idCounter = 0;
 	/*
 	 * unique id
@@ -37,84 +39,89 @@ public class CoalitionImpl extends ActivatibleImpl implements Coalition {
 	/**
 	 * the {@link BroadcastContent} of the coalition
 	 */
-	protected BroadcastContent broadcastContent;	
-	
+	protected NodeStructure broadcastContent;
+
 	/**
 	 * the {@link AttentionCodelet} that created the coalition
 	 */
 	protected AttentionCodelet creatingAttentionCodelet;
-	
-    /**
-     * Default constructor
-     */
-    public CoalitionImpl(){
-    	super();
+
+	/**
+	 * Default constructor
+	 */
+	public CoalitionImpl() {
+		super();
 		id = idCounter++;
-    }
+	}
 
-    /**
-     * Constructs a {@link CoalitionImpl} with specified content that is being created by specified {@link AttentionCodelet}
-     * @param ns the {@link BroadcastContent}
-     * @param c The {@link AttentionCodelet} that created this Coalition
-     * @see AttentionCodeletImpl
-     */
-    public CoalitionImpl(NodeStructure ns, AttentionCodelet c) {
-    	this();
-        broadcastContent = (BroadcastContent) new UnmodifiableNodeStructureImpl(ns,true);
-        creatingAttentionCodelet = c;
-        updateActivation();
-    }
+	/**
+	 * Constructs a {@link CoalitionImpl} with specified content that is being
+	 * created by specified {@link AttentionCodelet}
+	 * 
+	 * @param ns
+	 *            the {@link BroadcastContent}
+	 * @param c
+	 *            The {@link AttentionCodelet} that created this Coalition
+	 * @see AttentionCodeletImpl
+	 */
+	public CoalitionImpl(NodeStructure ns, AttentionCodelet c) {
+		this();
+		broadcastContent = new UnmodifiableNodeStructureImpl(ns,true);
+		creatingAttentionCodelet = c;
+		if(creatingAttentionCodelet != null) {
+			updateActivation();
+		}else{
+			logger.log(Level.WARNING, "Coalition received null AttentionCodelet",
+					TaskManager.getCurrentTick());
+		}
+	}
 
-    /**
-     * Calculates the coalition's activation. This implementation uses the average activation of the broadcast content multiplied by
-     *  the attention codelet's base-level activation.
-     */
-    protected void updateActivation() {
-        double sum = 0.0;
-        NodeStructure ns = (NodeStructure) broadcastContent;
-        for (Linkable lnk : ns.getLinkables()) {
-            sum += lnk.getActivation();
-        }
-        int contentSize = ns.getLinkableCount();
-        if(contentSize == 0){
-        	logger.log(Level.FINEST, "Coalition has no content", TaskManager.getCurrentTick());
-        }else if(creatingAttentionCodelet == null){
-        	logger.log(Level.FINEST, "Coalition has no attention codelet", TaskManager.getCurrentTick());
-        }else{
-        	setActivation(creatingAttentionCodelet.getBaseLevelActivation() * sum / contentSize);
-        }
-    }
+	/**
+	 * Calculates and sets the coalition's activation. This implementation uses the
+	 * average total activation and total incentive salience of the broadcast content 
+	 * multiplied by the attention codelet's base-level activation.
+	 */
+	protected void updateActivation() {
+		double salienceSum = 0.0;
+		for (Linkable lnk: broadcastContent.getLinkables()) {
+			salienceSum += lnk.getTotalActivation()+lnk.getTotalIncentiveSalience();
+		}
+		double aveLinkableSalience = salienceSum/(2.0*broadcastContent.getLinkableCount());
+		double a = creatingAttentionCodelet.getBaseLevelActivation()*aveLinkableSalience;
+		setActivation(a);
+	}
 
-    /**
-     * Returns an {@link UnmodifiableNodeStructureImpl} containing the broadcast content.
-     * Note that {@link UnmodifiableNodeStructureImpl} cannot be modified.
-     */
-    @Override
-    public BroadcastContent getContent() {
-        return broadcastContent;
-    }
+	/**
+	 * Returns an {@link UnmodifiableNodeStructureImpl} containing the broadcast
+	 * content. Note that {@link UnmodifiableNodeStructureImpl} cannot be
+	 * modified.
+	 */
+	@Override
+	public BroadcastContent getContent() {
+		return (BroadcastContent) broadcastContent;
+	}
 
-    @Override
-    public AttentionCodelet getCreatingAttentionCodelet() {
-        return creatingAttentionCodelet;
-    }
+	@Override
+	public AttentionCodelet getCreatingAttentionCodelet() {
+		return creatingAttentionCodelet;
+	}
 
-    @Override
-    public int getId() {
-        return id;
-    }
-    
-    @Override
-    public boolean equals(Object o){
-    	if(o instanceof CoalitionImpl){
-    		CoalitionImpl c = (CoalitionImpl) o;
-    		return id == c.id;
-    	}
-    	return false;
-    }
-    
-    @Override
-    public int hashCode(){
-    	return (int) id;
-    }    
+	@Override
+	public int getId() {
+		return id;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o instanceof CoalitionImpl) {
+			CoalitionImpl c = (CoalitionImpl) o;
+			return id == c.id;
+		}
+		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		return (int) id;
+	}
 }

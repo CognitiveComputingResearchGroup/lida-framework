@@ -11,23 +11,26 @@ import edu.memphis.ccrg.lida.proceduralmemory.ProceduralUnit;
 import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
 
 /**
- * An instantiated {@link Scheme} with a context, adding list, and deleting list.
+ * An instantiated {@link Scheme} with a context, adding list, and deleting
+ * list.
+ * 
  * @author Javier Snaider
  * @author Ryan J. McCall
  */
 public interface Behavior extends ProceduralUnit {
-	
+
 	/**
 	 * Gets the scheme underlying the behavior.
 	 * 
 	 * @return the generating scheme
 	 */
 	public Scheme getScheme();
-	
+
 	/**
 	 * Gets the scheme underlying the behavior.
 	 * 
-	 * @param s the new generating scheme
+	 * @param s
+	 *            the new generating scheme
 	 */
 	public void setScheme(Scheme s);
 }

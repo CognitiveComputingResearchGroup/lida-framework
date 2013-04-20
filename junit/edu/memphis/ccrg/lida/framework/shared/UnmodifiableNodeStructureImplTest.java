@@ -31,9 +31,9 @@ public class UnmodifiableNodeStructureImplTest {
 	private UnmodifiableNodeStructureImpl uns;
 	private UnmodifiableNodeStructureImpl filledUNS;
 	private Node n1, n2, n3, n4, n5;
-	
+
 	private Link l23, l123, l43, l53;
-	
+
 	private Link noLink;
 	private Node noNode;
 
@@ -49,31 +49,31 @@ public class UnmodifiableNodeStructureImplTest {
 		cNode = factory.getNode();
 		cNode.setLabel("C");
 		category = (PamNode) factory.getNode("PamNodeImpl");
-		
+
 		uns = new UnmodifiableNodeStructureImpl(new NodeStructureImpl(), true);
-		
+
 		NodeStructure source = new NodeStructureImpl();
-		
+
 		n1 = factory.getNode();
 		n1.setLabel("1");
 		source.addDefaultNode(n1);
-		
+
 		n2 = factory.getNode();
 		n2.setLabel("2");
 		source.addDefaultNode(n2);
-		
+
 		n3 = factory.getNode();
 		n3.setLabel("3");
 		source.addDefaultNode(n3);
-		
+
 		n4 = factory.getNode();
 		n4.setLabel("4");
 		source.addDefaultNode(n4);
-		
+
 		n5 = factory.getNode();
 		n5.setLabel("5");
 		source.addDefaultNode(n5);
-		
+
 		l23 = source.addDefaultLink(n2, n3, category, 0.0, 0.0);
 		source.addDefaultLink(l23);
 		l123 = source.addDefaultLink(n1, l23, category, 0.0, 0.0);
@@ -82,9 +82,9 @@ public class UnmodifiableNodeStructureImplTest {
 		source.addDefaultLink(l43);
 		l53 = source.addDefaultLink(n5, n3, category, 0.0, 0.0);
 		source.addDefaultLink(l53);
-		
+
 		filledUNS = new UnmodifiableNodeStructureImpl(source);
-		
+
 		noNode = factory.getNode();
 		noLink = factory.getLink(n3, bNode, category);
 	}
@@ -106,12 +106,12 @@ public class UnmodifiableNodeStructureImplTest {
 		xx.addDefaultNode(aNode);
 		assertEqualsHashCode("Add 1 node: ", aa, xx, true);
 	}
-	
+
 	/**
 	 * Test copying.
 	 */
 	@Test
-	public void testCopyingEquality(){
+	public void testCopyingEquality() {
 		aa.addDefaultNode(cNode);
 		xx.addDefaultNode(cNode);
 		NodeStructure cc = new NodeStructureImpl(aa);
@@ -138,13 +138,14 @@ public class UnmodifiableNodeStructureImplTest {
 	public void testAddLinkEquality() {
 		aa.addDefaultNode(aNode);
 		aa.addDefaultNode(bNode);
-		aa.addDefaultLink(aNode.getId(), bNode.getExtendedId(), category, 0.0, 0.0);
-		
+		aa.addDefaultLink(aNode.getId(), bNode.getExtendedId(), category, 0.0,
+				0.0);
+
 		xx.addDefaultNode(aNode);
 		xx.addDefaultNode(bNode);
 		assertEqualsHashCode("Add link: ", aa, xx, false);
 	}
-	
+
 	/**
 	 * Test add link2.
 	 */
@@ -152,11 +153,13 @@ public class UnmodifiableNodeStructureImplTest {
 	public void testAddLinkEquality2() {
 		aa.addDefaultNode(aNode);
 		aa.addDefaultNode(bNode);
-		aa.addDefaultLink(aNode.getId(), bNode.getExtendedId(), category, 0.0, 0.0);
-		
+		aa.addDefaultLink(aNode.getId(), bNode.getExtendedId(), category, 0.0,
+				0.0);
+
 		xx.addDefaultNode(aNode);
 		xx.addDefaultNode(bNode);
-		xx.addDefaultLink(aNode.getId(), bNode.getExtendedId(), category, 0.0, 0.0);
+		xx.addDefaultLink(aNode.getId(), bNode.getExtendedId(), category, 0.0,
+				0.0);
 		assertEqualsHashCode("Add link: ", aa, xx, true);
 	}
 
@@ -170,24 +173,30 @@ public class UnmodifiableNodeStructureImplTest {
 		aa.addDefaultNode(cNode);
 		Link abLink = aa.addDefaultLink(aNode, bNode, category, 0.0, 0.0);
 		aa.addDefaultLink(cNode, abLink, category, 0.0, 0.0);
-		
+
 		xx.addDefaultNode(aNode);
 		xx.addDefaultNode(bNode);
 		xx.addDefaultNode(cNode);
-		abLink = xx.addDefaultLink(aNode.getId(), bNode.getExtendedId(), category, 0.0, 0.0);
+		abLink = xx.addDefaultLink(aNode.getId(), bNode.getExtendedId(),
+				category, 0.0, 0.0);
 		xx.addDefaultLink(cNode, abLink, category, 0.0, 0.0);
 		assertEqualsHashCode("Add link: ", aa, xx, true);
 	}
-	
+
 	/**
 	 * Check equals hash code.
-	 *
-	 * @param testName the test name
-	 * @param nsA the ns a
-	 * @param nsB the ns b
-	 * @param equalExpected the equal expected
+	 * 
+	 * @param testName
+	 *            the test name
+	 * @param nsA
+	 *            the ns a
+	 * @param nsB
+	 *            the ns b
+	 * @param equalExpected
+	 *            the equal expected
 	 */
-	private void assertEqualsHashCode(String testName, NodeStructure nsA, NodeStructure nsB, boolean equalExpected) {
+	private void assertEqualsHashCode(String testName, NodeStructure nsA,
+			NodeStructure nsB, boolean equalExpected) {
 		UnmodifiableNodeStructureImpl a = new UnmodifiableNodeStructureImpl(nsA);
 		UnmodifiableNodeStructureImpl b = new UnmodifiableNodeStructureImpl(nsB);
 		boolean aEqualsB = a.equals(b);
@@ -196,10 +205,10 @@ public class UnmodifiableNodeStructureImplTest {
 
 		assertEquals(testName + ": A equals B", aEqualsB, equalExpected);
 		assertEquals(testName + ": B equals A", bEqualsA, equalExpected);
-		
-		if (equalExpected){
+
+		if (equalExpected) {
 			assertTrue(testName + ": Hashcodes not equal but should be.",
-					   hashCodesEqual);
+					hashCodesEqual);
 		}
 	}
 
@@ -207,13 +216,14 @@ public class UnmodifiableNodeStructureImplTest {
 	public void testUnmodifiableNodeStructureImplNodeStructureConstructor() {
 		NodeStructure sourceNodeStructure = new NodeStructureImpl();
 		sourceNodeStructure.addDefaultNode(aNode);
-		
-		UnmodifiableNodeStructureImpl a = new UnmodifiableNodeStructureImpl(sourceNodeStructure);
-		
+
+		UnmodifiableNodeStructureImpl a = new UnmodifiableNodeStructureImpl(
+				sourceNodeStructure);
+
 		assertEquals(1, a.getNodeCount());
-		
+
 		sourceNodeStructure.addDefaultNode(bNode);
-		
+
 		assertEquals(2, sourceNodeStructure.getNodeCount());
 		assertEquals(2, a.getNodeCount());
 	}
@@ -222,30 +232,31 @@ public class UnmodifiableNodeStructureImplTest {
 	public void testUnmodifiableNodeStructureImplNodeStructureConstructor1() {
 		NodeStructure sourceNodeStructure = new NodeStructureImpl();
 		sourceNodeStructure.addDefaultNode(aNode);
-		
-		UnmodifiableNodeStructureImpl a = new UnmodifiableNodeStructureImpl(sourceNodeStructure, false);
-		
+
+		UnmodifiableNodeStructureImpl a = new UnmodifiableNodeStructureImpl(
+				sourceNodeStructure, false);
+
 		assertEquals(1, a.getNodeCount());
-		
+
 		sourceNodeStructure.addDefaultNode(bNode);
-		
+
 		assertEquals(2, sourceNodeStructure.getNodeCount());
 		assertEquals(2, a.getNodeCount());
-		
-		//true case
+
+		// true case
 		sourceNodeStructure = new NodeStructureImpl();
 		sourceNodeStructure.addDefaultNode(aNode);
 		a = new UnmodifiableNodeStructureImpl(sourceNodeStructure, true);
-		
+
 		assertEquals(1, a.getNodeCount());
-		
+
 		sourceNodeStructure.addDefaultNode(bNode);
-		
+
 		assertEquals(2, sourceNodeStructure.getNodeCount());
 		assertEquals(1, a.getNodeCount());
-		
+
 		sourceNodeStructure.clearNodeStructure();
-		
+
 		assertEquals(0, sourceNodeStructure.getNodeCount());
 		assertEquals(1, a.getNodeCount());
 	}
@@ -254,187 +265,189 @@ public class UnmodifiableNodeStructureImplTest {
 	public void testCopy() {
 		NodeStructure sourceNodeStructure = new NodeStructureImpl();
 		sourceNodeStructure.addDefaultNode(aNode);
-		UnmodifiableNodeStructureImpl a = new UnmodifiableNodeStructureImpl(sourceNodeStructure, false);
+		UnmodifiableNodeStructureImpl a = new UnmodifiableNodeStructureImpl(
+				sourceNodeStructure, false);
 		assertEquals(1, a.getNodeCount());
-		
+
 		NodeStructure copy = a.copy();
-		
+
 		assertEquals(1, copy.getNodeCount());
 		assertEquals(1, a.getNodeCount());
-		
+
 		sourceNodeStructure.clearNodeStructure();
-		
+
 		assertEquals(1, copy.getNodeCount());
 		assertEquals(0, a.getNodeCount());
 	}
-	
+
 	@Test
 	public void testAddLink() {
-		try{
+		try {
 			uns.addLink(null, null);
 			assertTrue(false);
-		}catch(UnsupportedOperationException e){
-			
+		} catch (UnsupportedOperationException e) {
+
 		}
 	}
 
 	@Test
 	public void testAddDefaultLinkLink() {
-		try{
+		try {
 			uns.addDefaultLink(null);
 			assertTrue(false);
-		}catch(UnsupportedOperationException e){
-			
+		} catch (UnsupportedOperationException e) {
+
 		}
 	}
 
 	@Test
 	public void testAddDefaultLinkIntExtendedIdLinkCategoryDoubleDouble() {
-		try{
-			uns.addDefaultLink(0, new ExtendedId(0), new PamNodeImpl(), 0.0, 0.0);
+		try {
+			uns.addDefaultLink(0, new ExtendedId(0), new PamNodeImpl(), 0.0,
+					0.0);
 			assertTrue(false);
-		}catch(UnsupportedOperationException e){
-			
+		} catch (UnsupportedOperationException e) {
+
 		}
 	}
 
 	@Test
 	public void testAddDefaultLinkIntIntLinkCategoryDoubleDouble() {
-		try{
+		try {
 			uns.addDefaultLink(0, 0, new PamNodeImpl(), 0.0, 0.0);
 			assertTrue(false);
-		}catch(UnsupportedOperationException e){
-			
+		} catch (UnsupportedOperationException e) {
+
 		}
 	}
-	
+
 	@Test
 	public void testAddDefaultLinkConven() {
-		try{
+		try {
 			uns.addDefaultLink(aNode, bNode, new PamNodeImpl(), 0.0, 0.0);
 			assertTrue(false);
-		}catch(UnsupportedOperationException e){
-			
+		} catch (UnsupportedOperationException e) {
+
 		}
 	}
-	
+
 	@Test
 	public void testAddDefaultLinks() {
-		try{
+		try {
 			uns.addDefaultLinks(null);
 			assertTrue(false);
-		}catch(UnsupportedOperationException e){
-			
+		} catch (UnsupportedOperationException e) {
+
 		}
 	}
 
 	@Test
 	public void testAddDefaultNode() {
-		try{
+		try {
 			uns.addDefaultNode(aNode);
 			assertTrue(false);
-		}catch(UnsupportedOperationException e){
-			
+		} catch (UnsupportedOperationException e) {
+
 		}
 	}
 
 	@Test
 	public void testAddNode() {
-		try{
+		try {
 			uns.addNode(null, null);
 			assertTrue(false);
-		}catch(UnsupportedOperationException e){
-			
+		} catch (UnsupportedOperationException e) {
+
 		}
 	}
 
 	@Test
 	public void testAddDefaultNodes() {
-		try{
+		try {
 			uns.addDefaultNodes(null);
 			assertTrue(false);
-		}catch(UnsupportedOperationException e){
-			
+		} catch (UnsupportedOperationException e) {
+
 		}
 	}
 
 	@Test
 	public void testRemoveLink() {
-		try{
+		try {
 			uns.removeLink(null);
 			assertTrue(false);
-		}catch(UnsupportedOperationException e){
-			
+		} catch (UnsupportedOperationException e) {
+
 		}
 	}
 
 	@Test
 	public void testRemoveLinkableLinkable() {
-		try{
+		try {
 			uns.removeLinkable(new ExtendedId(0));
 			assertTrue(false);
-		}catch(UnsupportedOperationException e){
-			
+		} catch (UnsupportedOperationException e) {
+
 		}
 	}
 
 	@Test
 	public void testRemoveLinkableExtendedId() {
-		try{
+		try {
 			uns.removeLinkable(new NodeImpl());
 			assertTrue(false);
-		}catch(UnsupportedOperationException e){
-			
+		} catch (UnsupportedOperationException e) {
+
 		}
 	}
-	
+
 	@Test
 	public void testRemoveNode() {
-		try{
+		try {
 			uns.removeNode(aNode);
 			assertTrue(false);
-		}catch(UnsupportedOperationException e){
-			
+		} catch (UnsupportedOperationException e) {
+
 		}
 	}
 
 	@Test
 	public void testClearLinks() {
-		try{
+		try {
 			uns.clearLinks();
 			assertTrue(false);
-		}catch(UnsupportedOperationException e){
-			
+		} catch (UnsupportedOperationException e) {
+
 		}
 	}
 
 	@Test
 	public void testClearNodeStructure() {
-		try{
+		try {
 			uns.clearNodeStructure();
 			assertTrue(false);
-		}catch(UnsupportedOperationException e){
-			
+		} catch (UnsupportedOperationException e) {
+
 		}
 	}
 
 	@Test
 	public void testMergeWith() {
-		try{
+		try {
 			uns.mergeWith(null);
 			assertTrue(false);
-		}catch(UnsupportedOperationException e){
-			
+		} catch (UnsupportedOperationException e) {
+
 		}
 	}
 
 	@Test
 	public void testDecayNodeStructure() {
-		try{
+		try {
 			uns.decayNodeStructure(0);
 			assertTrue(false);
-		}catch(UnsupportedOperationException e){
-			
+		} catch (UnsupportedOperationException e) {
+
 		}
 	}
 
@@ -444,7 +457,7 @@ public class UnmodifiableNodeStructureImplTest {
 		assertTrue(filledUNS.containsLink(l123));
 		assertTrue(filledUNS.containsLink(l43));
 		assertTrue(filledUNS.containsLink(l53));
-		
+
 		assertFalse(filledUNS.containsLink(noLink));
 	}
 
@@ -454,7 +467,7 @@ public class UnmodifiableNodeStructureImplTest {
 		assertTrue(filledUNS.containsLink(l123.getExtendedId()));
 		assertTrue(filledUNS.containsLink(l43.getExtendedId()));
 		assertTrue(filledUNS.containsLink(l53.getExtendedId()));
-		
+
 		assertFalse(filledUNS.containsLink(noLink.getExtendedId()));
 	}
 
@@ -464,13 +477,13 @@ public class UnmodifiableNodeStructureImplTest {
 		assertTrue(filledUNS.containsLinkable(l123));
 		assertTrue(filledUNS.containsLinkable(l43));
 		assertTrue(filledUNS.containsLinkable(l53));
-		
+
 		assertTrue(filledUNS.containsLinkable(n1));
 		assertTrue(filledUNS.containsLinkable(n2));
 		assertTrue(filledUNS.containsLinkable(n3));
 		assertTrue(filledUNS.containsLinkable(n4));
 		assertTrue(filledUNS.containsLinkable(n5));
-		
+
 		assertFalse(filledUNS.containsLinkable(noLink));
 		assertFalse(filledUNS.containsLinkable(noNode));
 	}
@@ -481,13 +494,13 @@ public class UnmodifiableNodeStructureImplTest {
 		assertTrue(filledUNS.containsLinkable(l123.getExtendedId()));
 		assertTrue(filledUNS.containsLinkable(l43.getExtendedId()));
 		assertTrue(filledUNS.containsLinkable(l53.getExtendedId()));
-		
+
 		assertTrue(filledUNS.containsLinkable(n1.getExtendedId()));
 		assertTrue(filledUNS.containsLinkable(n2.getExtendedId()));
 		assertTrue(filledUNS.containsLinkable(n3.getExtendedId()));
 		assertTrue(filledUNS.containsLinkable(n4.getExtendedId()));
 		assertTrue(filledUNS.containsLinkable(n5.getExtendedId()));
-		
+
 		assertFalse(filledUNS.containsLinkable(noLink.getExtendedId()));
 		assertFalse(filledUNS.containsLinkable(noNode.getExtendedId()));
 	}
@@ -499,7 +512,7 @@ public class UnmodifiableNodeStructureImplTest {
 		assertTrue(filledUNS.containsNode(n3));
 		assertTrue(filledUNS.containsNode(n4));
 		assertTrue(filledUNS.containsNode(n5));
-		
+
 		assertFalse(filledUNS.containsNode(noNode));
 	}
 
@@ -510,7 +523,7 @@ public class UnmodifiableNodeStructureImplTest {
 		assertTrue(filledUNS.containsNode(n3.getId()));
 		assertTrue(filledUNS.containsNode(n4.getId()));
 		assertTrue(filledUNS.containsNode(n5.getId()));
-		
+
 		assertFalse(filledUNS.containsNode(noNode.getId()));
 	}
 
@@ -521,7 +534,7 @@ public class UnmodifiableNodeStructureImplTest {
 		assertTrue(filledUNS.containsNode(n3.getExtendedId()));
 		assertTrue(filledUNS.containsNode(n4.getExtendedId()));
 		assertTrue(filledUNS.containsNode(n5.getExtendedId()));
-		
+
 		assertFalse(filledUNS.containsNode(noNode.getExtendedId()));
 	}
 
@@ -532,7 +545,7 @@ public class UnmodifiableNodeStructureImplTest {
 		assertEquals(3, filledUNS.getAttachedLinks(n3).size());
 		assertEquals(1, filledUNS.getAttachedLinks(n4).size());
 		assertEquals(1, filledUNS.getAttachedLinks(n5).size());
-		
+
 		assertEquals(1, filledUNS.getAttachedLinks(l23).size());
 		assertEquals(0, filledUNS.getAttachedLinks(l123).size());
 		assertEquals(0, filledUNS.getAttachedLinks(l43).size());
@@ -540,27 +553,27 @@ public class UnmodifiableNodeStructureImplTest {
 	}
 
 	@Test
-	public void testGetAttachedLinksLinkableLinkCategory() {		
+	public void testGetAttachedLinksLinkableLinkCategory() {
 		assertEquals(1, filledUNS.getAttachedLinks(n1, category).size());
 		assertEquals(1, filledUNS.getAttachedLinks(n2, category).size());
 		assertEquals(3, filledUNS.getAttachedLinks(n3, category).size());
 		assertEquals(1, filledUNS.getAttachedLinks(n4, category).size());
 		assertEquals(1, filledUNS.getAttachedLinks(n5, category).size());
-		
+
 		assertEquals(1, filledUNS.getAttachedLinks(l23, category).size());
 		assertEquals(0, filledUNS.getAttachedLinks(l123, category).size());
 		assertEquals(0, filledUNS.getAttachedLinks(l43, category).size());
 		assertEquals(0, filledUNS.getAttachedLinks(l53, category).size());
-		
+
 		PamNodeImpl dumbCat = new PamNodeImpl();
 		dumbCat.setId(Integer.MAX_VALUE);
-		
+
 		assertEquals(0, filledUNS.getAttachedLinks(n1, dumbCat).size());
 		assertEquals(0, filledUNS.getAttachedLinks(n2, dumbCat).size());
 		assertEquals(0, filledUNS.getAttachedLinks(n3, dumbCat).size());
 		assertEquals(0, filledUNS.getAttachedLinks(n4, dumbCat).size());
 		assertEquals(0, filledUNS.getAttachedLinks(n5, dumbCat).size());
-		
+
 		assertEquals(0, filledUNS.getAttachedLinks(l23, dumbCat).size());
 		assertEquals(0, filledUNS.getAttachedLinks(l123, dumbCat).size());
 		assertEquals(0, filledUNS.getAttachedLinks(l43, dumbCat).size());
@@ -571,7 +584,7 @@ public class UnmodifiableNodeStructureImplTest {
 	public void testGetConnectedSinks() {
 		Map<Linkable, Link> sinks = filledUNS.getConnectedSinks(n3);
 		assertEquals(0, sinks.size());
-		
+
 		sinks = filledUNS.getConnectedSinks(n5);
 		assertEquals(1, sinks.size());
 		assertTrue(sinks.containsKey(n3));
@@ -585,7 +598,7 @@ public class UnmodifiableNodeStructureImplTest {
 		assertTrue(sources.containsKey(n2));
 		assertTrue(sources.containsKey(n4));
 		assertTrue(sources.containsKey(n5));
-		
+
 		sources = filledUNS.getConnectedSources(n5);
 		assertEquals(0, sources.size());
 	}
@@ -637,7 +650,7 @@ public class UnmodifiableNodeStructureImplTest {
 		assertTrue(linkables.contains(n3));
 		assertTrue(linkables.contains(n4));
 		assertTrue(linkables.contains(n5));
-		
+
 		assertTrue(linkables.contains(l23));
 		assertTrue(linkables.contains(l123));
 		assertTrue(linkables.contains(l53));
@@ -660,7 +673,7 @@ public class UnmodifiableNodeStructureImplTest {
 		assertTrue(links.contains(l23));
 		assertTrue(links.contains(l43));
 		assertTrue(links.contains(l53));
-		
+
 		PamNodeImpl cat2 = new PamNodeImpl();
 		cat2.setId(453458934);
 		links = filledUNS.getLinks(cat2);

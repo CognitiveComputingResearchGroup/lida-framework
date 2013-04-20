@@ -15,6 +15,7 @@ import java.util.logging.LogRecord;
 
 /**
  * Logger formatter for the framework that can be used with any {@link Handler}.
+ * 
  * @author Javier Snaider
  * @see LogManager
  */
@@ -35,8 +36,9 @@ public class FrameworkFormatter extends Formatter {
 			if (param != null && param[0] instanceof Long) {
 				actualTick = (Long) param[0];
 			}
-			logMessages = String.format("%010d :%010d :%-10s :%-60s \t-> %s %n",
-					logRecord.getSequenceNumber(), actualTick, logRecord
+			logMessages = String.format(
+					"%010d :%010d :%-10s :%-60s \t-> %s %n", logRecord
+							.getSequenceNumber(), actualTick, logRecord
 							.getLevel(), logRecord.getLoggerName(), mf
 							.format(logRecord.getParameters()));
 			return logMessages;

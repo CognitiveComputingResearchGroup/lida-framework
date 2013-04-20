@@ -21,10 +21,10 @@ import edu.memphis.ccrg.lida.framework.mockclasses.MockPAM;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 
-
 public class BasicEMinitializerTest {
 
 	private BasicEpisodicMemoryInitializer initializer;
+
 	@Before
 	public void setUp() throws Exception {
 		initializer = new BasicEpisodicMemoryInitializer();
@@ -32,7 +32,7 @@ public class BasicEMinitializerTest {
 
 	@Test
 	public void testInitModule() {
-		TaskManager tm = new TaskManager(10, 10);
+		TaskManager tm = new TaskManager(10, 10, -1,null);
 		Agent agent = new AgentImpl(tm);
 		PerceptualAssociativeMemory pam = new MockPAM();
 		pam.setModuleName(ModuleName.PerceptualAssociativeMemory);
@@ -44,7 +44,7 @@ public class BasicEMinitializerTest {
 
 	@Test
 	public void testInitModule1() {
-		TaskManager tm = new TaskManager(10, 10);
+		TaskManager tm = new TaskManager(10, 10, -1,null);
 		Agent agent = new AgentImpl(tm);
 		EpisodicMemoryImpl module = new EpisodicMemoryImpl();
 		initializer.initModule(module, agent, null);

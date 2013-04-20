@@ -50,24 +50,27 @@ public class BasicSensoryMotorMemory extends FrameworkModuleImpl implements
 	}
 
 	/**
-     * Will set parameters with the following names:<br/><br/>
-     * 
-     * <b>smm.processActionTaskTicks</b> delay (in ticks) on the processing of an Action receive from ActionSelection<br/>
-     * 
-     * @see Initializable
-     */
+	 * Will set parameters with the following names:<br/>
+	 * <br/>
+	 * 
+	 * <b>smm.processActionTaskTicks</b> delay (in ticks) on the processing of
+	 * an Action receive from ActionSelection<br/>
+	 * 
+	 * @see Initializable
+	 */
 	@Override
 	public void init() {
-		processActionTaskTicks = (Integer)getParam("smm.processActionTaskTicks", DEFAULT_BACKGROUND_TASK_TICKS);
+		processActionTaskTicks = (Integer) getParam(
+				"smm.processActionTaskTicks", DEFAULT_BACKGROUND_TASK_TICKS);
 	}
-	
+
 	@Override
 	public void addListener(ModuleListener listener) {
 		if (listener instanceof SensoryMotorMemoryListener) {
 			addSensoryMotorMemoryListener((SensoryMotorMemoryListener) listener);
 		} else {
-			logger.log(Level.WARNING, "Cannot add listener {1}",
-					new Object[]{TaskManager.getCurrentTick(),listener});
+			logger.log(Level.WARNING, "Cannot add listener {1}", new Object[] {
+					TaskManager.getCurrentTick(), listener });
 		}
 	}
 
@@ -81,15 +84,18 @@ public class BasicSensoryMotorMemory extends FrameworkModuleImpl implements
 		if (module instanceof Environment) {
 			environment = (Environment) module;
 		} else {
-			logger.log(Level.WARNING, "Cannot add module {1}",
-					new Object[]{TaskManager.getCurrentTick(),module});
+			logger.log(Level.WARNING, "Cannot add module {1}", new Object[] {
+					TaskManager.getCurrentTick(), module });
 		}
 	}
 
 	/**
 	 * Adds an Algorithm to this {@link SensoryMotorMemory}
-	 * @param actionId Id of {@link Action} which is implemented by the algorithm
-	 * @param action an algorithm
+	 * 
+	 * @param actionId
+	 *            Id of {@link Action} which is implemented by the algorithm
+	 * @param action
+	 *            an algorithm
 	 */
 	public void addActionAlgorithm(Number actionId, Object action) {
 		actionAlgorithmMap.put(actionId, action);
@@ -97,27 +103,32 @@ public class BasicSensoryMotorMemory extends FrameworkModuleImpl implements
 
 	@Override
 	public synchronized void receiveAction(Action action) {
-		if(action != null){
+		if (action != null) {
 			ProcessActionTask t = new ProcessActionTask(action);
 			taskSpawner.addTask(t);
-		}else{
-			logger.log(Level.WARNING, "Received null action", TaskManager.getCurrentTick());
+		} else {
+			logger.log(Level.WARNING, "Received null action", TaskManager
+					.getCurrentTick());
 		}
 	}
+
 	private class ProcessActionTask extends FrameworkTaskImpl {
 		private Action action;
+
 		public ProcessActionTask(Action a) {
 			super(processActionTaskTicks);
 			action = a;
 		}
+
 		@Override
 		protected void runThisFrameworkTask() {
 			Object alg = actionAlgorithmMap.get((Number) action.getId());
-			if(alg != null){
+			if (alg != null) {
 				sendActuatorCommand(alg);
-			}else{
-				logger.log(Level.WARNING, "Could not find algorithm for action {1}",
-						new Object[]{TaskManager.getCurrentTick(),action});
+			} else {
+				logger.log(Level.WARNING,
+						"Could not find algorithm for action {1}",
+						new Object[] { TaskManager.getCurrentTick(), action });
 			}
 			cancel();
 		}

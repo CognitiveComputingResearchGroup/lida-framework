@@ -10,18 +10,18 @@ package edu.memphis.ccrg.lida.framework.gui.commands;
 import edu.memphis.ccrg.lida.framework.Agent;
 
 /**
- * This command is used for the tick mode to add ticks for execution.
- * A Integer "ticks" parameter must be specified. 
+ * This command is used for the tick mode to add ticks for execution. A Integer
+ * "ticks" parameter must be specified.
  * 
  * @author Javier Snaider
- *
+ * 
  */
 public class AddTicksCommand extends CommandImpl {
 
 	@Override
 	public void execute(Agent agent) {
-		Integer ticks= (Integer)getParameter("ticks");
-		if (ticks !=null){
+		Integer ticks = (Integer) getParameter("ticks");
+		if (ticks != null) {
 			agent.getTaskManager().addTicksToExecute(ticks);
 		}
 	}

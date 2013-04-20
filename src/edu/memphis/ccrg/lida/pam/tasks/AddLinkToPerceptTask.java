@@ -21,14 +21,17 @@ import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
  * @see PropagationTask creates this task
  */
 public class AddLinkToPerceptTask extends FrameworkTaskImpl {
-	
+
 	private PerceptualAssociativeMemory pam;
 	private Link link;
 
 	/**
 	 * Default constructor
-	 * @param link {@link PamLink}
-	 * @param pam {@link PerceptualAssociativeMemory}
+	 * 
+	 * @param link
+	 *            {@link PamLink}
+	 * @param pam
+	 *            {@link PerceptualAssociativeMemory}
 	 */
 	public AddLinkToPerceptTask(Link link, PerceptualAssociativeMemory pam) {
 		this.pam = pam;
@@ -36,14 +39,14 @@ public class AddLinkToPerceptTask extends FrameworkTaskImpl {
 	}
 
 	/**
-	 * Adds link's sink to the percept and tries to add the link as well then finishes.
+	 * Adds link's sink to the percept and tries to add the link as well then
+	 * finishes.
 	 */
 	@Override
-	protected void runThisFrameworkTask() {		
+	protected void runThisFrameworkTask() {
 		pam.addToPercept((Node) link.getSink());
 		pam.addToPercept(link);
 		cancel();
 	}
-	
-}
 
+}

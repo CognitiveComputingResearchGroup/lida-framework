@@ -18,14 +18,14 @@ public class FrameworkTaskImplTest {
 
 	private MockFrameworkTask task1;
 	private MockTaskSpawner taskSpawner;
-	private double epsilon=10e-9;
-	
+	private double epsilon = 10e-9;
+
 	@Before
 	public void setUp() throws Exception {
 		taskSpawner = new MockTaskSpawner();
 		task1 = new MockFrameworkTask(10, taskSpawner);
 	}
-	
+
 	@Test
 	public void testCall() {
 		task1.call();
@@ -35,18 +35,20 @@ public class FrameworkTaskImplTest {
 
 	@Test
 	public void testTaskName() {
-         assertEquals(MockFrameworkTask.class.getSimpleName()+"["+task1.getTaskId()+"]", task1.toString());
-    }
+		assertEquals(MockFrameworkTask.class.getSimpleName() + "["
+				+ task1.getTaskId() + "]", task1.toString());
+	}
+
 	@Test
 	public void testSetTaskStatus() {
 		assertEquals(TaskStatus.RUNNING, task1.getTaskStatus());
-		
+
 		task1.setTaskStatus(TaskStatus.FINISHED_WITH_RESULTS);
 		assertEquals(TaskStatus.FINISHED_WITH_RESULTS, task1.getTaskStatus());
-		
+
 		task1.setTaskStatus(TaskStatus.CANCELED);
 		assertEquals(TaskStatus.CANCELED, task1.getTaskStatus());
-		
+
 		task1.setTaskStatus(TaskStatus.FINISHED_WITH_RESULTS);
 		assertEquals(TaskStatus.CANCELED, task1.getTaskStatus());
 	}
@@ -59,7 +61,7 @@ public class FrameworkTaskImplTest {
 
 	@Test
 	public void testGetTicksPerRun() {
-		assertEquals(10, task1.getTicksPerRun());	
+		assertEquals(10, task1.getTicksPerRun());
 	}
 
 	@Test
@@ -72,10 +74,11 @@ public class FrameworkTaskImplTest {
 	public void testGetControllingTaskSpawner() {
 		assertEquals(taskSpawner, task1.getControllingTaskSpawner());
 	}
-	
+
 	@Test
 	public void testToString() {
-        assertEquals(MockFrameworkTask.class.getSimpleName()+"["+task1.getTaskId()+"]", task1.toString());
+		assertEquals(MockFrameworkTask.class.getSimpleName() + "["
+				+ task1.getTaskId() + "]", task1.toString());
 	}
 
 }

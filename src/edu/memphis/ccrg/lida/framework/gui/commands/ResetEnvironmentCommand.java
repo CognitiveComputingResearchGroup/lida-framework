@@ -14,16 +14,17 @@ import edu.memphis.ccrg.lida.framework.ModuleName;
 
 /**
  * Resets the {@link Environment} of the current application.
+ * 
  * @author Ryan Mccall
- *
+ * 
  */
 public class ResetEnvironmentCommand extends CommandImpl {
 
 	@Override
 	public void execute(Agent agent) {
 		FrameworkModule environ = agent.getSubmodule(ModuleName.Environment);
-		if(environ != null && environ instanceof Environment){
-			((Environment)environ).resetState();
+		if (environ != null && environ instanceof Environment) {
+			((Environment) environ).resetState();
 		}
 	}
 

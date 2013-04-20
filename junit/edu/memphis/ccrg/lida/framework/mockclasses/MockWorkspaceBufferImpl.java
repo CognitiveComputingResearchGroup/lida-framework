@@ -15,16 +15,16 @@ import edu.memphis.ccrg.lida.workspace.WorkspaceContent;
 import edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBufferImpl;
 
 public class MockWorkspaceBufferImpl extends WorkspaceBufferImpl {
-	
+
 	public Map<String, Object> params;
 	public NodeStructure content = new NodeStructureImpl();
-	
+
 	@Override
 	public WorkspaceContent getBufferContent(Map<String, Object> params) {
 		this.params = params;
 		return super.getBufferContent(params);
 	}
-	
+
 	@Override
 	public void addBufferContent(WorkspaceContent content) {
 		super.addBufferContent(content);

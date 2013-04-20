@@ -21,95 +21,102 @@ import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 import edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBuffer;
 
 /**
- * Abstract implementation of {@link AttentionCodelet} that checks the CSM for desired
- * content.  If this is found it creates a
- * {@link Coalition} and adds it to the {@link GlobalWorkspace}.
+ * Abstract implementation of {@link AttentionCodelet} that checks the CSM for
+ * desired content. If this is found it creates a {@link Coalition} and adds it
+ * to the {@link GlobalWorkspace}.
  * 
  * @author Ryan J. McCall
  * 
  */
 public abstract class AttentionCodeletImpl extends CodeletImpl implements
-        AttentionCodelet {
+		AttentionCodelet {
 
-    private static final Logger logger = Logger.getLogger(AttentionCodeletImpl.class.getCanonicalName());
-    private static final int DEFAULT_CODELET_REFRACTORY_PERIOD = 50;
-    private int codeletRefractoryPeriod;
+	private static final Logger logger = Logger
+			.getLogger(AttentionCodeletImpl.class.getCanonicalName());
+	private static final int DEFAULT_CODELET_REFRACTORY_PERIOD = 50;
+	private int codeletRefractoryPeriod;
 
-    /**
-     * Where codelet will look for and retrieve sought content from
-     */
-    protected WorkspaceBuffer currentSituationalModel;
-    /**
-     * where {@link Coalition}s will be added
-     */
-    protected GlobalWorkspace globalWorkspace;
-
-    /**
-     * If this method is overridden, this init must be called first! i.e. super.init();
-	 * Will set parameters with the following names:<br/><br/>
-     * 
-     * <b>refractoryPeriod</b> period in ticks that will pass after this codelet creates a coaltion before it can create another<br/> 
-     * <br/> 
-     * 
-     * If any parameter is not specified its default value will be used.
-     * @see LearnableImpl#init()
+	/**
+	 * Where codelet will look for and retrieve sought content from
 	 */
-    @Override
-    public void init() {
-    	super.init();
-        Integer refractoryPeriod = (Integer) getParam("refractoryPeriod", DEFAULT_CODELET_REFRACTORY_PERIOD);
-        setRefractoryPeriod(refractoryPeriod);
-    }
+	protected WorkspaceBuffer currentSituationalModel;
+	/**
+	 * where {@link Coalition}s will be added
+	 */
+	protected GlobalWorkspace globalWorkspace;
 
-    @Override
-    public void setAssociatedModule(FrameworkModule module, String usage) {
-        if (module instanceof WorkspaceBuffer) {
-            currentSituationalModel = (WorkspaceBuffer) module;
-        } else if (module instanceof GlobalWorkspace) {
-            globalWorkspace = (GlobalWorkspace) module;
-        } else {
-            logger.log(Level.WARNING, "module {1} cannot be associated",
-                    new Object[]{TaskManager.getCurrentTick(), module});
-        }
-    }
+	/**
+	 * If this method is overridden, this init must be called first! i.e.
+	 * super.init(); Will set parameters with the following names:<br/>
+	 * <br/>
+	 * 
+	 * <b>refractoryPeriod</b> period in ticks that will pass after this codelet
+	 * creates a coaltion before it can create another<br/>
+	 * <br/>
+	 * 
+	 * If any parameter is not specified its default value will be used.
+	 * 
+	 * @see LearnableImpl#init()
+	 */
+	@Override
+	public void init() {
+		super.init();
+		Integer refractoryPeriod = (Integer) getParam("refractoryPeriod",
+				DEFAULT_CODELET_REFRACTORY_PERIOD);
+		setRefractoryPeriod(refractoryPeriod);
+	}
 
-    /**
-     * If sought content is found it the CSM, then retrieve it
-     * and create a coalition from it finally adding it to the
-     * {@link GlobalWorkspace}.
-     */
-    @Override
-    protected void runThisFrameworkTask() {
-        if (bufferContainsSoughtContent(currentSituationalModel)) {
-            NodeStructure csmContent = retrieveWorkspaceContent(currentSituationalModel);
-            if(csmContent == null){
-            	logger.log(Level.WARNING, "Null WorkspaceContent returned in {1}. Coalition cannot be formed.",
-            			new Object[]{TaskManager.getCurrentTick(), this});
-            }else if (csmContent.getLinkableCount() > 0) {
-                Coalition coalition = new CoalitionImpl(csmContent, this);
-                globalWorkspace.addCoalition(coalition);
-                logger.log(Level.FINER, "{1} adds new coalition with activation {2}",
-                        new Object[]{TaskManager.getCurrentTick(), this, coalition.getActivation()});
-                setNextTicksPerRun(codeletRefractoryPeriod);
-            }
-        }
-    }
+	@Override
+	public void setAssociatedModule(FrameworkModule module, String usage) {
+		if (module instanceof WorkspaceBuffer) {
+			currentSituationalModel = (WorkspaceBuffer) module;
+		} else if (module instanceof GlobalWorkspace) {
+			globalWorkspace = (GlobalWorkspace) module;
+		} else {
+			logger.log(Level.WARNING, "module {1} cannot be associated",
+					new Object[] { TaskManager.getCurrentTick(), module });
+		}
+	}
 
-    @Override
-    public void setRefractoryPeriod(int ticks) {
-        if (ticks > 0) {
-            codeletRefractoryPeriod = ticks;
-        } else {
-            codeletRefractoryPeriod = DEFAULT_CODELET_REFRACTORY_PERIOD;
-            logger.log(Level.WARNING,
-                    "refractory period must be positive, using default value",
-                    TaskManager.getCurrentTick());
-        }
+	/**
+	 * If sought content is found it the CSM, then retrieve it and create a
+	 * coalition from it finally adding it to the {@link GlobalWorkspace}.
+	 */
+	@Override
+	protected void runThisFrameworkTask() {
+		if (bufferContainsSoughtContent(currentSituationalModel)) {
+			NodeStructure csmContent = retrieveWorkspaceContent(currentSituationalModel);
+			if (csmContent == null) {
+				logger.log(Level.WARNING,
+							"Null WorkspaceContent returned in {1}. Coalition cannot be formed.",
+							new Object[]{TaskManager.getCurrentTick(),this});
+			} else if (csmContent.getLinkableCount() > 0) {
+				Coalition coalition = new CoalitionImpl(csmContent, this);
+				globalWorkspace.addCoalition(coalition);
+				logger.log(Level.FINER,
+						"{1} adds new coalition with activation {2}",
+						new Object[] { TaskManager.getCurrentTick(), this,
+								coalition.getActivation() });
+				setNextTicksPerRun(codeletRefractoryPeriod);
+			}
+		}
+	}
 
-    }
+	@Override
+	public void setRefractoryPeriod(int ticks) {
+		if (ticks > 0) {
+			codeletRefractoryPeriod = ticks;
+		} else {
+			codeletRefractoryPeriod = DEFAULT_CODELET_REFRACTORY_PERIOD;
+			logger.log(Level.WARNING,
+					"refractory period must be positive, using default value",
+					TaskManager.getCurrentTick());
+		}
 
-    @Override
-    public int getRefractoryPeriod() {
-        return codeletRefractoryPeriod;
-    }
+	}
+
+	@Override
+	public int getRefractoryPeriod() {
+		return codeletRefractoryPeriod;
+	}
 }

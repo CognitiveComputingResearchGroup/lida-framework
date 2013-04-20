@@ -10,18 +10,17 @@ package edu.memphis.ccrg.lida.episodicmemory;
 
 import edu.memphis.ccrg.lida.framework.FrameworkModule;
 
-
 /**
  * The interface for LIDA's episodic memory. Episodic memory in LIDA
  * communicates with the workspace, receiving memory cues, and returning local
- * associations. 
+ * associations.
  * <p>
- * Specific implementations of episodic memories must implement
- * this interface. Every implementation of this interface must also implement
+ * Specific implementations of episodic memories must implement this interface.
+ * Every implementation of this interface must also implement
  * {@link edu.memphis.ccrg.lida.globalworkspace.BroadcastListener}.
  * 
  * @author Javier Snaider
  */
-public interface EpisodicMemory extends FrameworkModule{
-    
+public interface EpisodicMemory extends FrameworkModule {
+
 }

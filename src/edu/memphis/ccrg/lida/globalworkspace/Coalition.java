@@ -15,9 +15,10 @@ import edu.memphis.ccrg.lida.framework.shared.activation.Activatible;
 
 /**
  * An encapsulation of perceptual content and an {@link AttentionCodelet}
- * {@link Coalition} objects are created and added to the {@link GlobalWorkspace} by
- * {@link AttentionCodelet} objects. {@link Coalition} must overwrite correctly
- * {@link Object#equals(Object)} and {@link Object#hashCode()} methods.
+ * {@link Coalition} objects are created and added to the
+ * {@link GlobalWorkspace} by {@link AttentionCodelet} objects.
+ * {@link Coalition} must overwrite correctly {@link Object#equals(Object)} and
+ * {@link Object#hashCode()} methods.
  * 
  * @author Javier Snaider
  * @author Ryan J. McCall
@@ -30,7 +31,7 @@ public interface Coalition extends Activatible {
 	 * @return The {@link BroadcastContent} of the coalition
 	 */
 	public BroadcastContent getContent();
-	
+
 	/**
 	 * Returns the creating {@link AttentionCodelet} that created this coalition
 	 * 
