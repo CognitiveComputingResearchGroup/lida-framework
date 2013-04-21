@@ -156,9 +156,9 @@ public class LearnableImpl extends ActivatibleImpl implements Learnable {
 	}
 	@Override
 	public synchronized void setBaseLevelIncentiveSalience(double s) {
-		if (s < 0.0) {
+		if (s < -1.0) { 
 			synchronized (this) {
-				baseLevelIncentiveSalience = 0.0;
+				baseLevelIncentiveSalience = -1.0;
 			}
 		} else if (s > 1.0) {
 			synchronized (this) {
@@ -299,9 +299,9 @@ public class LearnableImpl extends ActivatibleImpl implements Learnable {
 
 	@Override
 	public void setBaseLevelActivation(double a) {
-		if (a < 0.0) {
+		if (a < -1.0) {
 			synchronized (this) {
-				baseLevelActivation = 0.0;
+				baseLevelActivation = -1.0;
 			}
 		} else if (a > 1.0) {
 			synchronized (this) {
