@@ -21,44 +21,59 @@ import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
  */
 public class PropagationTask extends FrameworkTaskImpl {
 
-	private PamLinkable sink;
-	private PamLink link;
-	private double excitationAmount;
+	/**
+	 * Link along which the excitation is being propagated.
+	 */
+	protected PamLink link;
+	/**
+	 * The sink of the link.
+	 */
+	protected PamLinkable sink;
+	/**
+	 * excitation amount being propagated
+	 */
+	protected double excitationAmount;
 	private PerceptualAssociativeMemory pam;
 
 	/**
 	 * Default constructor.
 	 * 
-	 * @param ticksPerRun
+	 * @param tpr
 	 *            task's ticks per run
 	 * 
-	 * @param link
+	 * @param l
 	 *            the link from the source to the parent
-	 * @param amount
-	 *            the amount to excite
+	 * @param a
+	 *            the amount of excitation
 	 * @param pam
-	 *            the pam
+	 *            the {@link PerceptualAssociativeMemory} module
 	 */
-	public PropagationTask(int ticksPerRun, PamLink link, double amount,
-			PerceptualAssociativeMemory pam) {
-		super(ticksPerRun);
-		this.link = link;
-		this.sink = (PamLinkable) link.getSink();
-		this.excitationAmount = amount;
+	public PropagationTask(int tpr, PamLink l, double a, PerceptualAssociativeMemory pam) {
+		super(tpr);
+		link = l;
+		sink = (PamLinkable)l.getSink();
+		excitationAmount = a;
 		this.pam = pam;
 	}
 
 	/**
-	 * Excites the {@link PamLink} specified amount. Excites link's sink based
-	 * on link's new activation. If this puts sink over its percept threshold
-	 * then both Link and sink will be send as a percept. Calls
-	 * {@link PerceptualAssociativeMemory#propagateActivationToParents(PamNode)}
-	 * with sink and finishes.
+	 * Excites the {@link PamLink}'s activation by excitationAmount.
+	 * Propagates the excitation along the link and excites the link's sink with the result. 
+	 * 
 	 */
 	@Override
 	protected void runThisFrameworkTask() {
-		link.setActivation(excitationAmount);
+		link.exciteActivation(excitationAmount);
 		sink.exciteActivation(excitationAmount*link.getBaseLevelActivation());
+		runPostExcitation();
+	}
+
+	/**
+	 * Processes the link and its sink after excitation. Add link and sink to the percept if the sink is over threshold.
+	 * Continues the activation propagation beyond the sink by calling {@link PerceptualAssociativeMemory#propagateActivationToParents(PamNode)}
+	 * before finishing with a call to {@link #cancel()}.
+	 */
+	protected void runPostExcitation() {
 		if (pam.isOverPerceptThreshold(sink)) {
 			AddLinkToPerceptTask task = new AddLinkToPerceptTask(link, pam);
 			pam.getAssistingTaskSpawner().addTask(task);
