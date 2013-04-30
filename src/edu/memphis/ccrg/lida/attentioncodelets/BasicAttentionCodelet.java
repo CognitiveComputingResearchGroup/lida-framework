@@ -55,7 +55,7 @@ public class BasicAttentionCodelet extends AttentionCodeletImpl {
 				label = label.trim();
 				Node node = (Node) globalInitializer.getAttribute(label);
 				if (node != null) {
-					soughtContent.addDefaultNode(node);
+					soughtContent.addNode(node,node.getFactoryType());
 				} else {
 					logger
 							.log(
@@ -104,12 +104,12 @@ public class BasicAttentionCodelet extends AttentionCodeletImpl {
 		NodeStructure result = new NodeStructureImpl();
 		for (Node n : soughtContent.getNodes()) {
 			if (ns.containsNode(n)) {
-				result.addDefaultNode(ns.getNode(n.getId()));
+				result.addDefaultNode(ns.getNode(n.getId()));//TODO remove DEFAULT
 			}
 		}
 		for (Link l : soughtContent.getLinks()) {
 			if (ns.containsLink(l)) {
-				result.addDefaultLink(ns.getLink(l.getExtendedId()));
+				result.addDefaultLink(ns.getLink(l.getExtendedId()));//TODO remove DEFAULT
 			}
 		}
 		return result;

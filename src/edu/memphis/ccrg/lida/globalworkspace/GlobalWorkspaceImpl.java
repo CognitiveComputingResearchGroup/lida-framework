@@ -198,7 +198,7 @@ public class GlobalWorkspaceImpl extends FrameworkModuleImpl implements
 		Coalition winningCoalition = chooseCoalition();
 		if (winningCoalition != null) {
 			coalitions.remove(winningCoalition);
-
+			
 			for (BroadcastListener bl : broadcastListeners) {
 				FrameworkTask broadcastTask = new SendBroadcastTask(bl,
 						winningCoalition);

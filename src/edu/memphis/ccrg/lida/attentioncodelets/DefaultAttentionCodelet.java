@@ -81,7 +81,7 @@ public class DefaultAttentionCodelet extends AttentionCodeletImpl {
 			}
 		}
 		if (winner != null) {
-			soughtContent.addDefaultNode(winner);
+			soughtContent.addNode(winner, winner.getFactoryType());
 			return true;
 		}
 		return false;
@@ -100,8 +100,8 @@ public class DefaultAttentionCodelet extends AttentionCodeletImpl {
 			// requiredActivation) method in NodeStructure
 			for (Node n : soughtContent.getNodes()) {// typically a small number
 				if (bufferNS.containsNode(n)) {
-					retrievedSubGraph.addDefaultNode(bufferNS
-							.getNode(n.getId()));
+					Node bufferNode = bufferNS.getNode(n.getId());
+					retrievedSubGraph.addNode(bufferNode,bufferNode.getFactoryType());
 					if (retrievalDepth > DEFAULT_RETRIEVAL_DEPTH) {
 						getNeighbors(bufferNS, retrievedSubGraph, n);
 					}
@@ -118,20 +118,21 @@ public class DefaultAttentionCodelet extends AttentionCodeletImpl {
 			NodeStructure retrievedSubGraph, Node n) {
 		Map<Linkable, Link> sinks = bufferNS.getConnectedSinks(n);
 		for (Linkable sink : sinks.keySet()) {
-			if (sink instanceof Node
-					&& sink.getActivation() >= attentionThreshold) {
-				retrievedSubGraph.addDefaultNode((Node) sink);
+			if (sink instanceof Node && 
+					sink.getActivation() >= attentionThreshold) {
+				Node sinkNode = (Node)sink;
+				retrievedSubGraph.addNode(sinkNode,sinkNode.getFactoryType());
 				Link connectingLink = sinks.get(sink);
-				retrievedSubGraph.addDefaultLink(connectingLink);
+				retrievedSubGraph.addLink(connectingLink,connectingLink.getFactoryType());
 			}
 		}
 
 		Map<Node, Link> sources = bufferNS.getConnectedSources(n);
 		for (Node source : sources.keySet()) {
 			if (source.getActivation() >= attentionThreshold) {
-				retrievedSubGraph.addDefaultNode(source);
+				retrievedSubGraph.addNode(source,source.getFactoryType());
 				Link connectingLink = sources.get(source);
-				retrievedSubGraph.addDefaultLink(connectingLink);
+				retrievedSubGraph.addLink(connectingLink,connectingLink.getFactoryType());
 			}
 		}
 	}
