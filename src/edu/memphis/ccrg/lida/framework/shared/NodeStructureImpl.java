@@ -181,13 +181,12 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 			}
 			node.updateNodeValues(n); 
 		} else {
-			logger
-					.log(
-							Level.WARNING,
+			logger.log(Level.WARNING,
 							"Cannot add Node {1} of type {2} because another Node {3} having a different type {4} and the same id is already present. Existing Node returned.",
 							new Object[] { TaskManager.getCurrentTick(), n,
 									type, node, node.getFactoryType() });
 			node = null;
+			throw new IllegalArgumentException();
 		}
 		return node;
 	}

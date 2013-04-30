@@ -305,12 +305,21 @@ public class FactoriesDataXmlLoader {
 
 		Map<ModuleName, String> associatedModules = getAssociatedModules(e);
 		taskDef = new FrameworkTaskDef();
-		taskDef.setClassName(className.trim());
-		taskDef.setName(name.trim());
-		taskDef.setParams(params);
-		taskDef.setDefaultStrategies(behav);
-		taskDef.setTicksPerRun(ticksPerRun);
-		taskDef.setAssociatedModules(associatedModules);
+		if(name != null){
+			taskDef.setName(name.trim());
+		}else{
+			logger.log(Level.WARNING, "TaskDef missing a name.");
+		}
+		if(className != null){
+			taskDef.setClassName(className.trim());
+			taskDef.setParams(params);
+			taskDef.setDefaultStrategies(behav);
+			taskDef.setTicksPerRun(ticksPerRun);
+			taskDef.setAssociatedModules(associatedModules);
+		}else{
+			logger.log(Level.WARNING, "TaskDef {0} missing class name, cannot create TaskDef.",name);
+			taskDef = null;
+		}
 		return taskDef;
 	}
 

@@ -61,9 +61,9 @@ public class BroadcastQueueImpl extends FrameworkModuleImpl implements
 	public void init() {
 		int requestedCapacity = getParam("workspace.broadcastQueueCapacity", 
 										 DEFAULT_QUEUE_CAPACITY);
-		if (requestedCapacity > 0) {
+		if(requestedCapacity > 0){
 			broadcastQueueCapacity = requestedCapacity;
-		} else {
+		}else{
 			logger.log(Level.WARNING, "Capacity must be greater than 0.",
 					TaskManager.getCurrentTick());
 		}
@@ -78,19 +78,14 @@ public class BroadcastQueueImpl extends FrameworkModuleImpl implements
 		NodeStructure contentCopy = new NodeStructureImpl();
 		contentCopy.mergeWith(content);
 		addBufferContent((WorkspaceContent) contentCopy);
-		while (broadcastQueue.size() > broadcastQueueCapacity) {
-			broadcastQueue.removeLast();// remove oldest
-		}
-	}
-
-	@Override
-	public Object getModuleContent(Object... params) {
-		return Collections.unmodifiableList(broadcastQueue);
 	}
 
 	@Override
 	public void addBufferContent(WorkspaceContent c) {
 		broadcastQueue.addFirst(c);
+		while (broadcastQueue.size() > broadcastQueueCapacity) {
+			broadcastQueue.removeLast();// remove oldest
+		}
 	}
 
 	@Override
@@ -110,6 +105,11 @@ public class BroadcastQueueImpl extends FrameworkModuleImpl implements
 			return (WorkspaceContent) broadcastQueue.get(i);
 		}
 		return null;
+	}
+
+	@Override
+	public Object getModuleContent(Object... params) {
+		return Collections.unmodifiableList(broadcastQueue);
 	}
 
 	@Override
