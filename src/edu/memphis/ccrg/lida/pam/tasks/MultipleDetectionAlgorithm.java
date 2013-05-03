@@ -94,12 +94,9 @@ public abstract class MultipleDetectionAlgorithm extends FrameworkTaskImpl
 				if (node != null) {
 					addPamLinkable(node);
 				} else {
-					logger
-							.log(
-									Level.WARNING,
-									"could not get node with label {1} from global initializer",
-									new Object[] {
-											TaskManager.getCurrentTick(), label });
+					logger.log(Level.WARNING,
+							   "Could not get node with label {1} from GlobalInitializer",
+							   new Object[] {TaskManager.getCurrentTick(),label});
 				}
 			}
 		}
