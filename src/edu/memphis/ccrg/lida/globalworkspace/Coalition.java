@@ -11,6 +11,7 @@
 package edu.memphis.ccrg.lida.globalworkspace;
 
 import edu.memphis.ccrg.lida.attentioncodelets.AttentionCodelet;
+import edu.memphis.ccrg.lida.framework.shared.CognitiveContentStructure;
 import edu.memphis.ccrg.lida.framework.shared.activation.Activatible;
 
 /**
@@ -28,9 +29,9 @@ public interface Coalition extends Activatible {
 	/**
 	 * Returns the content of the coalition.
 	 * 
-	 * @return The {@link BroadcastContent} of the coalition
+	 * @return The {@link CognitiveContentStructure} of the coalition
 	 */
-	public BroadcastContent getContent();
+	public CognitiveContentStructure getContent();
 
 	/**
 	 * Returns the creating {@link AttentionCodelet} that created this coalition
@@ -39,10 +40,4 @@ public interface Coalition extends Activatible {
 	 */
 	public AttentionCodelet getCreatingAttentionCodelet();
 
-	/**
-	 * Returns the id
-	 * 
-	 * @return the unique id of the Coalition
-	 */
-	public int getId();
 }
