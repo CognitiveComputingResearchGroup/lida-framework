@@ -10,17 +10,17 @@ package edu.memphis.ccrg.lida.workspace.workspacebuffers;
 import java.util.Map;
 
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
-import edu.memphis.ccrg.lida.framework.shared.ExtendedId;
-import edu.memphis.ccrg.lida.framework.shared.Linkable;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
-import edu.memphis.ccrg.lida.framework.shared.UnmodifiableNodeStructureImpl;
-import edu.memphis.ccrg.lida.workspace.Workspace;
-import edu.memphis.ccrg.lida.workspace.WorkspaceContent;
+import edu.memphis.ccrg.lida.framework.shared.CognitiveContentStructure;
+import edu.memphis.ccrg.lida.framework.shared.ns.ExtendedId;
+import edu.memphis.ccrg.lida.framework.shared.ns.Linkable;
+import edu.memphis.ccrg.lida.framework.shared.ns.NodeStructure;
+import edu.memphis.ccrg.lida.framework.shared.ns.NodeStructureImpl;
+import edu.memphis.ccrg.lida.framework.shared.ns.UnmodifiableNodeStructureImpl;
+import edu.memphis.ccrg.lida.workspace.ns.WorkspaceNS;
 
 /**
  * The default implementation of {@link WorkspaceBuffer} often a 
- * submodule of the {@link Workspace}. This implementation contains a single {@link NodeStructure} as content.
+ * submodule of the {@link WorkspaceNS}. This implementation contains a single {@link NodeStructure} as content.
  * 
  * @author Ryan J. McCall
  */
@@ -36,13 +36,13 @@ public class WorkspaceBufferImpl extends FrameworkModuleImpl implements	Workspac
 	 * {@link Linkable} are still the same as the originals.
 	 */
 	@Override
-	public void addBufferContent(WorkspaceContent content) {
+	public void addBufferContent(CognitiveContentStructure content) {
 		buffer.mergeWith(content);
 	}
 
 	@Override
-	public WorkspaceContent getBufferContent(Map<String, Object> params) {
-		return (WorkspaceContent)buffer;
+	public CognitiveContentStructure getBufferContent(Map<String, Object> params) {
+		return buffer;
 	}
 
 	@Override

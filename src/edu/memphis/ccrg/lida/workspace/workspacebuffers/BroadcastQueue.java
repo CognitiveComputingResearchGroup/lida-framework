@@ -1,8 +1,8 @@
 package edu.memphis.ccrg.lida.workspace.workspacebuffers;
 
+import edu.memphis.ccrg.lida.framework.shared.CognitiveContentStructure;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.workspace.Workspace;
-import edu.memphis.ccrg.lida.workspace.WorkspaceContent;
 
 /**
  * A {@link WorkspaceBuffer} storing the recent contents of consciousness. It is
@@ -19,8 +19,8 @@ public interface BroadcastQueue extends WorkspaceBuffer, BroadcastListener {
 	 * 
 	 * @param index
 	 *            position in the queue
-	 * @return {@link WorkspaceContent} at index position or null
+	 * @return {@link CognitiveContentStructure} at index position or null
 	 */
-	public WorkspaceContent getPositionContent(int index);
+	public CognitiveContentStructure getPositionContent(int index);
 
 }

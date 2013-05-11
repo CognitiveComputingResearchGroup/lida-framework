@@ -9,6 +9,7 @@ package edu.memphis.ccrg.lida.workspace;
 
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
+import edu.memphis.ccrg.lida.framework.shared.CognitiveContentStructure;
 
 /**
  * A workspace listener receives content from the workspace. The prime example
@@ -18,15 +19,14 @@ import edu.memphis.ccrg.lida.framework.ModuleName;
  */
 public interface WorkspaceListener extends ModuleListener {
 
-	/**
-	 * Receive NodeStructure content from ModuleType originatingBuffer
-	 * 
-	 * @param originatingBuffer
-	 *            source of content
-	 * @param content
-	 *            sent content
-	 */
-	public void receiveWorkspaceContent(ModuleName originatingBuffer,
-			WorkspaceContent content);
+    /**
+     * Receive CognitiveContentStructure from ModuleType originatingBuffer
+     * 
+     * @param originatingBuffer
+     *            source of content
+     * @param content
+     *            sent content
+     */
+    public void receiveWorkspaceContent(ModuleName originatingBuffer, CognitiveContentStructure content);
 
 }

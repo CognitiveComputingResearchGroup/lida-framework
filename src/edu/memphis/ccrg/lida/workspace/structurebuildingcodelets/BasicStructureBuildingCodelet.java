@@ -10,10 +10,9 @@ package edu.memphis.ccrg.lida.workspace.structurebuildingcodelets;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.framework.shared.Linkable;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.shared.ns.Linkable;
+import edu.memphis.ccrg.lida.framework.shared.ns.NodeStructure;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
-import edu.memphis.ccrg.lida.workspace.WorkspaceContent;
 import edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBuffer;
 
 /**
@@ -42,7 +41,7 @@ public class BasicStructureBuildingCodelet extends StructureBuildingCodeletImpl 
 		for (WorkspaceBuffer readableBuffer : readableBuffers.values()) {
 			if (bufferContainsSoughtContent(readableBuffer)) {
 				writableBuffer
-						.addBufferContent((WorkspaceContent) retrieveWorkspaceContent(readableBuffer));
+						.addBufferContent((NodeStructure) retrieveWorkspaceContent(readableBuffer));
 			}
 		}
 		logger.log(Level.FINEST, "SB codelet {1} finishes one run.",
@@ -50,8 +49,8 @@ public class BasicStructureBuildingCodelet extends StructureBuildingCodeletImpl 
 	}
 
 	@Override
-	public NodeStructure retrieveWorkspaceContent(WorkspaceBuffer buffer) {
-		return buffer.getBufferContent(null);
+    public NodeStructure retrieveWorkspaceContent(WorkspaceBuffer buffer) {
+		return (NodeStructure)buffer.getBufferContent(null);
 	}
 
 	@Override

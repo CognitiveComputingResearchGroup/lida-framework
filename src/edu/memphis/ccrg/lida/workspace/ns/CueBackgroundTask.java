@@ -8,7 +8,7 @@
 /**
  * 
  */
-package edu.memphis.ccrg.lida.workspace;
+package edu.memphis.ccrg.lida.workspace.ns;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,11 +17,12 @@ import edu.memphis.ccrg.lida.episodicmemory.EpisodicMemory;
 import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.initialization.Initializable;
-import edu.memphis.ccrg.lida.framework.shared.Node;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
+import edu.memphis.ccrg.lida.framework.shared.ns.Node;
+import edu.memphis.ccrg.lida.framework.shared.ns.NodeStructure;
+import edu.memphis.ccrg.lida.framework.shared.ns.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
+import edu.memphis.ccrg.lida.workspace.Workspace;
 import edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBuffer;
 
 /**
@@ -36,7 +37,7 @@ public class CueBackgroundTask extends FrameworkTaskImpl {
 
 	private static final double DEFAULT_CUEING_THRESHOLD = 0.4;
 	private double actThreshold = DEFAULT_CUEING_THRESHOLD;
-	private Workspace workspace;
+	private WorkspaceNS workspace;
 
 	private static final Logger logger = Logger
 			.getLogger(CueBackgroundTask.class.getCanonicalName());
@@ -46,7 +47,7 @@ public class CueBackgroundTask extends FrameworkTaskImpl {
 	 * <br/>
 	 * 
 	 * <b>workspace.cueingThreshold type=double</b> the amount of activation
-	 * {@link WorkspaceContent} must have to cue {@link EpisodicMemory}<br/>
+	 * content must have to cue {@link EpisodicMemory}<br/>
 	 * 
 	 * @see Initializable
 	 */
@@ -59,8 +60,8 @@ public class CueBackgroundTask extends FrameworkTaskImpl {
 
 	@Override
 	public void setAssociatedModule(FrameworkModule module, String moduleUsage) {
-		if (module instanceof Workspace) {
-			workspace = (Workspace) module;
+		if (module instanceof WorkspaceNS) {
+			workspace = (WorkspaceNS) module;
 		}
 	}
 

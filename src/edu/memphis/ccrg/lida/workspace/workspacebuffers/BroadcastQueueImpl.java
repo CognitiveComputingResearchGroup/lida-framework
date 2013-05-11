@@ -16,13 +16,13 @@ import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.initialization.Initializable;
-import edu.memphis.ccrg.lida.framework.shared.Linkable;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
-import edu.memphis.ccrg.lida.framework.shared.UnmodifiableNodeStructureImpl;
+import edu.memphis.ccrg.lida.framework.shared.CognitiveContentStructure;
+import edu.memphis.ccrg.lida.framework.shared.ns.Linkable;
+import edu.memphis.ccrg.lida.framework.shared.ns.NodeStructure;
+import edu.memphis.ccrg.lida.framework.shared.ns.NodeStructureImpl;
+import edu.memphis.ccrg.lida.framework.shared.ns.UnmodifiableNodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.Coalition;
-import edu.memphis.ccrg.lida.workspace.WorkspaceContent;
 
 /**
  * The BroadcastQueue is the data structure storing the recent contents of
@@ -40,7 +40,7 @@ public class BroadcastQueueImpl extends FrameworkModuleImpl implements
 
 	private static final int DEFAULT_QUEUE_CAPACITY = 20;
 	private int broadcastQueueCapacity = DEFAULT_QUEUE_CAPACITY;
-	private LinkedList<WorkspaceContent> broadcastQueue = new LinkedList<WorkspaceContent>();
+	private LinkedList<CognitiveContentStructure> broadcastQueue = new LinkedList<CognitiveContentStructure>();
 
 	/**
 	 * Default constructor
@@ -77,7 +77,7 @@ public class BroadcastQueueImpl extends FrameworkModuleImpl implements
 		// the copy (of the content) will be decayed (modified).
 		NodeStructure contentCopy = new NodeStructureImpl();
 		contentCopy.mergeWith(content);
-		addBufferContent((WorkspaceContent) contentCopy);
+		addBufferContent((CognitiveContentStructure) contentCopy);
 		while (broadcastQueue.size() > broadcastQueueCapacity) {
 			broadcastQueue.removeLast();// remove oldest
 		}
@@ -89,12 +89,12 @@ public class BroadcastQueueImpl extends FrameworkModuleImpl implements
 	}
 
 	@Override
-	public void addBufferContent(WorkspaceContent c) {
+	public void addBufferContent(CognitiveContentStructure c) {
 		broadcastQueue.addFirst(c);
 	}
 
 	@Override
-	public WorkspaceContent getBufferContent(Map<String, Object> params) {
+	public CognitiveContentStructure getBufferContent(Map<String, Object> params) {
 		if (params != null) {
 			Object index = params.get("position");
 			if (index instanceof Integer) {
@@ -105,9 +105,9 @@ public class BroadcastQueueImpl extends FrameworkModuleImpl implements
 	}
 
 	@Override
-	public WorkspaceContent getPositionContent(int i) {
+	public CognitiveContentStructure getPositionContent(int i) {
 		if (i > -1 && i < broadcastQueue.size()) {
-			return (WorkspaceContent) broadcastQueue.get(i);
+			return (CognitiveContentStructure) broadcastQueue.get(i);
 		}
 		return null;
 	}
@@ -117,9 +117,9 @@ public class BroadcastQueueImpl extends FrameworkModuleImpl implements
 		logger.log(Level.FINER, "Decaying Broadcast Queue", TaskManager
 				.getCurrentTick());
 		synchronized (this) {
-			Iterator<WorkspaceContent> itr = broadcastQueue.iterator();
+			Iterator<CognitiveContentStructure> itr = broadcastQueue.iterator();
 			while (itr.hasNext()) {
-				NodeStructure ns = itr.next();
+				NodeStructure ns = (NodeStructure) itr.next();
 				ns.decayNodeStructure(t);
 				if (ns.getNodeCount() == 0) {
 					itr.remove();
