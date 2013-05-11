@@ -13,15 +13,10 @@ import edu.memphis.ccrg.lida.framework.shared.activation.Activatible;
 /**
  * CognitiveContent contains a basic unit of representation that may be
  * processed or stored within LIDA modules or exchanged between LIDA modules.
- * CognitiveContent is parameterized by an identifier class.
  * 
  * @author Sean Kugele
  * @author Javier Snaider
  * 
- * @param <I>
- *            the type of identifier used by this class
  */
-public interface CognitiveContent<I> extends Activatible, Initializable {
-
-    public I getId();
+public interface CognitiveContent extends Activatible, Initializable {
 }

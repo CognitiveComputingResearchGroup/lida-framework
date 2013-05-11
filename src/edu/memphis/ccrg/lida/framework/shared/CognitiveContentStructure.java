@@ -19,7 +19,7 @@ import edu.memphis.ccrg.lida.framework.initialization.Initializable;
  * @author Javier Snaider
  * 
  */
-public interface CognitiveContentStructure<I> extends Initializable {
+public interface CognitiveContentStructure extends Initializable {
 
     /**
      * Adds {@link CognitiveContent} to this CognitiveContentStructure.
@@ -28,7 +28,7 @@ public interface CognitiveContentStructure<I> extends Initializable {
      *            the {@link CognitiveContent} to add
      * @return the added {@link CognitiveContent}
      */
-    public CognitiveContent<I> addContent(CognitiveContent<I> content);
+    public CognitiveContent addContent(CognitiveContent content);
 
     /**
      * Adds the {@link CognitiveContent} contained in the supplied Collection to
@@ -38,15 +38,7 @@ public interface CognitiveContentStructure<I> extends Initializable {
      *            a Collection containing the {@link CognitiveContent} to add
      * @return a Collection containing the added {@link CognitiveContent}
      */
-    public Collection<CognitiveContent<I>> addContent(Collection<CognitiveContent<I>> content);
-
-    /**
-     * Removes the {@link CognitiveContent} specified by id if present.
-     * 
-     * @param id
-     *            the id of the {@link CognitiveContent} to remove.
-     */
-    public void removeContent(I id);
+    public Collection<CognitiveContent> addContent(Collection<CognitiveContent> content);
 
     /**
      * Removes the specified {@link CognitiveContent} if present.
@@ -54,17 +46,7 @@ public interface CognitiveContentStructure<I> extends Initializable {
      * @param content
      *            {@link CognitiveContent} to remove.
      */
-    public void removeContent(CognitiveContent<I> content);
-
-    /**
-     * Returns whether this CognitiveContentStructure contains
-     * {@link CognitiveContent} with the specified id.
-     * 
-     * @param id
-     *            id of {@link CognitiveContent} checked for.
-     * @return true if contains {@link CognitiveContent} with the same id.
-     */
-    public boolean containsContent(I id);
+    public void removeContent(CognitiveContent content);
 
     /**
      * Returns whether this CognitiveContentStructure contains the specified
@@ -74,7 +56,7 @@ public interface CognitiveContentStructure<I> extends Initializable {
      *            {@link CognitiveContent} to be checked for.
      * @return true if contains {@link CognitiveContent} with the same id
      */
-    public boolean containsContent(CognitiveContent<I> content);
+    public boolean containsContent(CognitiveContent content);
 
     /**
      * Merges specified CognitiveContentStructure into this one.
@@ -82,14 +64,14 @@ public interface CognitiveContentStructure<I> extends Initializable {
      * @param cs
      *            CognitiveContentStructure
      */
-    public void mergeWith(CognitiveContentStructure<I> cs);
+    public void mergeWith(CognitiveContentStructure cs);
 
     /**
      * Returns a deep copy of this CognitiveContentStructure.
      * 
      * @return CognitiveContentStructure
      */
-    public CognitiveContentStructure<I> copy();
+    public CognitiveContentStructure copy();
 
     /**
      * Returns the reduced representation of this CognitiveContentStructure.
@@ -97,7 +79,7 @@ public interface CognitiveContentStructure<I> extends Initializable {
      * @return the {@link CognitiveContent} that represents a reduced
      *         representation of this CognitiveContentStructure
      */
-    public CognitiveContent<I> getReducedRepresentation();
+    public CognitiveContent getReducedRepresentation();
 
     /**
      * Decays the {@link CognitiveContent} contained in this
