@@ -9,7 +9,6 @@ package edu.memphis.ccrg.lida.framework.shared;
 
 import edu.memphis.ccrg.lida.framework.initialization.Initializable;
 import edu.memphis.ccrg.lida.framework.shared.activation.Activatible;
-import edu.memphis.ccrg.lida.framework.shared.ns.Node;
 
 /**
  * CognitiveContent contains a basic unit of representation that may be
