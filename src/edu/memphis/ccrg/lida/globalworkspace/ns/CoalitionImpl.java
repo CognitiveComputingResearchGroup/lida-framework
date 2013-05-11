@@ -5,18 +5,21 @@
  * which accompanies this distribution, and is available at
  * http://ccrg.cs.memphis.edu/assets/papers/2010/LIDA-framework-non-commercial-v1.0.pdf
  *******************************************************************************/
-package edu.memphis.ccrg.lida.globalworkspace;
+package edu.memphis.ccrg.lida.globalworkspace.ns;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.attentioncodelets.AttentionCodelet;
 import edu.memphis.ccrg.lida.attentioncodelets.AttentionCodeletImpl;
-import edu.memphis.ccrg.lida.framework.shared.Linkable;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.framework.shared.UnmodifiableNodeStructureImpl;
-import edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl;
+import edu.memphis.ccrg.lida.framework.shared.CognitiveContentStructure;
+import edu.memphis.ccrg.lida.framework.shared.activation.ns.ActivatibleImpl;
+import edu.memphis.ccrg.lida.framework.shared.ns.Linkable;
+import edu.memphis.ccrg.lida.framework.shared.ns.NodeStructure;
+import edu.memphis.ccrg.lida.framework.shared.ns.UnmodifiableNodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
+import edu.memphis.ccrg.lida.globalworkspace.Coalition;
+import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 
 /**
  * The default implementation of {@link Coalition}. Wraps content entering the
@@ -37,7 +40,7 @@ public class CoalitionImpl extends ActivatibleImpl implements Coalition {
 	 */
 	private int id;
 	/**
-	 * the {@link BroadcastContent} of the coalition
+	 * the contents of the coalition
 	 */
 	protected NodeStructure broadcastContent;
 
@@ -59,7 +62,7 @@ public class CoalitionImpl extends ActivatibleImpl implements Coalition {
 	 * created by specified {@link AttentionCodelet}
 	 * 
 	 * @param ns
-	 *            the {@link BroadcastContent}
+	 *            the broadcast content
 	 * @param c
 	 *            The {@link AttentionCodelet} that created this Coalition
 	 * @see AttentionCodeletImpl
@@ -97,18 +100,13 @@ public class CoalitionImpl extends ActivatibleImpl implements Coalition {
 	 * modified.
 	 */
 	@Override
-	public BroadcastContent getContent() {
-		return (BroadcastContent) broadcastContent;
+	public CognitiveContentStructure getContent() {
+		return broadcastContent;
 	}
 
 	@Override
 	public AttentionCodelet getCreatingAttentionCodelet() {
 		return creatingAttentionCodelet;
-	}
-
-	@Override
-	public int getId() {
-		return id;
 	}
 
 	@Override
