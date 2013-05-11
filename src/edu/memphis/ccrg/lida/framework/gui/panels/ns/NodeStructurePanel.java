@@ -16,7 +16,7 @@
  * Created on 17/08/2009, 08:55:55
  * @author Matthew Lohbihler (edits)
  */
-package edu.memphis.ccrg.lida.framework.gui.panels;
+package edu.memphis.ccrg.lida.framework.gui.panels.ns;
 
 import java.awt.Dimension;
 import java.util.logging.Level;
@@ -27,19 +27,21 @@ import javax.swing.Icon;
 import org.apache.commons.collections15.Transformer;
 
 import edu.memphis.ccrg.lida.framework.FrameworkModule;
-import edu.memphis.ccrg.lida.framework.gui.utils.GuiLink;
+import edu.memphis.ccrg.lida.framework.gui.panels.GuiPanel;
+import edu.memphis.ccrg.lida.framework.gui.panels.GuiPanelImpl;
 import edu.memphis.ccrg.lida.framework.gui.utils.GuiUtils;
-import edu.memphis.ccrg.lida.framework.gui.utils.NodeIcon;
-import edu.memphis.ccrg.lida.framework.gui.utils.NodeStructureGuiAdapter;
-import edu.memphis.ccrg.lida.framework.shared.Link;
-import edu.memphis.ccrg.lida.framework.shared.Linkable;
-import edu.memphis.ccrg.lida.framework.shared.Node;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
+import edu.memphis.ccrg.lida.framework.gui.utils.ns.GuiLink;
+import edu.memphis.ccrg.lida.framework.gui.utils.ns.NodeIcon;
+import edu.memphis.ccrg.lida.framework.gui.utils.ns.NodeStructureGuiAdapter;
 import edu.memphis.ccrg.lida.framework.shared.activation.Activatible;
+import edu.memphis.ccrg.lida.framework.shared.ns.Link;
+import edu.memphis.ccrg.lida.framework.shared.ns.Linkable;
+import edu.memphis.ccrg.lida.framework.shared.ns.Node;
+import edu.memphis.ccrg.lida.framework.shared.ns.NodeStructure;
+import edu.memphis.ccrg.lida.framework.shared.ns.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
-import edu.memphis.ccrg.lida.pam.PamNode;
-import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl;
+import edu.memphis.ccrg.lida.pam.ns.PamNode;
+import edu.memphis.ccrg.lida.pam.ns.PerceptualAssociativeMemoryNSImpl;
 import edu.uci.ics.jung.algorithms.layout.FRLayout;
 import edu.uci.ics.jung.algorithms.layout.Layout;
 import edu.uci.ics.jung.algorithms.layout.util.Relaxer;
@@ -217,7 +219,7 @@ public class NodeStructurePanel extends GuiPanelImpl {
                         tip = String.format("<html><b>%s</b><br/>Activation: %06.4f"
                                 + "<br /> BaseActivation: %06.4f<br /> Threshold:  %06.4f </html>", pn,
                                 pn.getActivation(), pn.getBaseLevelActivation(),
-                                PerceptualAssociativeMemoryImpl.getPerceptThreshold());
+                                PerceptualAssociativeMemoryNSImpl.getPerceptThreshold());
                     }
                     else {
                         Activatible n = l;

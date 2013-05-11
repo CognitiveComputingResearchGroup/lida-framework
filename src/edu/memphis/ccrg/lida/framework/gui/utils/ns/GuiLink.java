@@ -5,10 +5,10 @@
  * which accompanies this distribution, and is available at
  * http://ccrg.cs.memphis.edu/assets/papers/2010/LIDA-framework-non-commercial-v1.0.pdf
  *******************************************************************************/
-package edu.memphis.ccrg.lida.framework.gui.utils;
+package edu.memphis.ccrg.lida.framework.gui.utils.ns;
 
-import edu.memphis.ccrg.lida.framework.gui.panels.NodeStructurePanel;
-import edu.memphis.ccrg.lida.framework.shared.Link;
+import edu.memphis.ccrg.lida.framework.gui.panels.ns.NodeStructurePanel;
+import edu.memphis.ccrg.lida.framework.shared.ns.Link;
 
 /**
  * Utility which {@link NodeStructurePanel} uses to represent {@link Link}s.

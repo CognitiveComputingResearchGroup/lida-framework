@@ -8,17 +8,17 @@
 /**
  * 
  */
-package edu.memphis.ccrg.lida.framework.gui.utils;
+package edu.memphis.ccrg.lida.framework.gui.utils.ns;
 
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import edu.memphis.ccrg.lida.framework.gui.panels.NodeStructurePanel;
-import edu.memphis.ccrg.lida.framework.shared.Link;
-import edu.memphis.ccrg.lida.framework.shared.Linkable;
-import edu.memphis.ccrg.lida.framework.shared.Node;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.gui.panels.ns.NodeStructurePanel;
+import edu.memphis.ccrg.lida.framework.shared.ns.Link;
+import edu.memphis.ccrg.lida.framework.shared.ns.Linkable;
+import edu.memphis.ccrg.lida.framework.shared.ns.Node;
+import edu.memphis.ccrg.lida.framework.shared.ns.NodeStructure;
 import edu.uci.ics.jung.graph.AbstractTypedGraph;
 import edu.uci.ics.jung.graph.util.EdgeType;
 import edu.uci.ics.jung.graph.util.Pair;

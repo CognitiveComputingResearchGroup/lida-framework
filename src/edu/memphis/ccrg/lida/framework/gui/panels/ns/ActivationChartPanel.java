@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://ccrg.cs.memphis.edu/assets/papers/2010/LIDA-framework-non-commercial-v1.0.pdf
  *******************************************************************************/
-package edu.memphis.ccrg.lida.framework.gui.panels;
+package edu.memphis.ccrg.lida.framework.gui.panels.ns;
 
 import java.awt.Color;
 import java.util.logging.Level;
@@ -22,9 +22,11 @@ import org.jfree.data.xy.XYSeriesCollection;
 
 import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.ModuleName;
+import edu.memphis.ccrg.lida.framework.gui.panels.GuiPanel;
+import edu.memphis.ccrg.lida.framework.gui.panels.GuiPanelImpl;
 import edu.memphis.ccrg.lida.framework.shared.activation.Learnable;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
-import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
+import edu.memphis.ccrg.lida.pam.ns.PerceptualAssociativeMemoryNS;
 
 /**
  * A {@link GuiPanel} which displays a {@link Learnable} element's activation
@@ -222,7 +224,7 @@ public class ActivationChartPanel extends GuiPanelImpl {
 	public void refresh() {
 		ModuleName selectedModuleName = selectedModule.getModuleName();
 		if (selectedModuleName == ModuleName.PerceptualAssociativeMemory) {
-			learnable = (Learnable) ((PerceptualAssociativeMemory) selectedModule)
+			learnable = (Learnable) ((PerceptualAssociativeMemoryNS) selectedModule)
 					.getNode(elementName);
 		} else {
 			learnable = null;

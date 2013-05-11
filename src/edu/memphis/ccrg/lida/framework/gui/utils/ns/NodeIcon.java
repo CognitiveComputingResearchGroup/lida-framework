@@ -8,7 +8,7 @@
 /**
  * 
  */
-package edu.memphis.ccrg.lida.framework.gui.utils;
+package edu.memphis.ccrg.lida.framework.gui.utils.ns;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -16,9 +16,9 @@ import java.awt.Graphics;
 
 import javax.swing.Icon;
 
-import edu.memphis.ccrg.lida.framework.gui.panels.NodeStructurePanel;
-import edu.memphis.ccrg.lida.framework.shared.Link;
-import edu.memphis.ccrg.lida.framework.shared.Node;
+import edu.memphis.ccrg.lida.framework.gui.panels.ns.NodeStructurePanel;
+import edu.memphis.ccrg.lida.framework.shared.ns.Link;
+import edu.memphis.ccrg.lida.framework.shared.ns.Node;
 
 /**
  * Utility which {@link NodeStructurePanel} uses to represent {@link Node} and

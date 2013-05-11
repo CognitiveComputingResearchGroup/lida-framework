@@ -15,7 +15,7 @@
  *
  * Created on Jun 6, 2011, 5:15:10 PM
  */
-package edu.memphis.ccrg.lida.framework.gui.panels;
+package edu.memphis.ccrg.lida.framework.gui.panels.ns;
 
 import java.text.DecimalFormat;
 import java.util.Collection;
@@ -32,12 +32,14 @@ import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.TableColumn;
 
 import edu.memphis.ccrg.lida.framework.FrameworkModule;
+import edu.memphis.ccrg.lida.framework.gui.panels.GuiPanel;
+import edu.memphis.ccrg.lida.framework.gui.panels.GuiPanelImpl;
 import edu.memphis.ccrg.lida.framework.gui.utils.GuiUtils;
-import edu.memphis.ccrg.lida.framework.shared.Node;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.shared.ns.Node;
+import edu.memphis.ccrg.lida.framework.shared.ns.NodeStructure;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
-import edu.memphis.ccrg.lida.pam.PamNode;
-import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl;
+import edu.memphis.ccrg.lida.pam.ns.PamNode;
+import edu.memphis.ccrg.lida.pam.ns.PerceptualAssociativeMemoryNSImpl;
 
 /**
  * A {@link GuiPanel} which displays the attributes of a {@link NodeStructure}
@@ -260,7 +262,7 @@ public class NodeStructureTable extends GuiPanelImpl {
 				}
 			case 4:
 				if (node instanceof PamNode) {
-					return df.format(PerceptualAssociativeMemoryImpl
+					return df.format(PerceptualAssociativeMemoryNSImpl
 							.getPerceptThreshold());
 				} else {
 					return "";

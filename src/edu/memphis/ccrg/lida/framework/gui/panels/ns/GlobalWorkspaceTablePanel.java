@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://ccrg.cs.memphis.edu/assets/papers/2010/LIDA-framework-non-commercial-v1.0.pdf
  *******************************************************************************/
-package edu.memphis.ccrg.lida.framework.gui.panels;
+package edu.memphis.ccrg.lida.framework.gui.panels.ns;
 
 import java.text.DecimalFormat;
 import java.util.Collection;
@@ -16,7 +16,8 @@ import java.util.logging.Logger;
 import javax.swing.table.AbstractTableModel;
 
 import edu.memphis.ccrg.lida.framework.ModuleName;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.gui.panels.GuiPanelImpl;
+import edu.memphis.ccrg.lida.framework.shared.ns.NodeStructure;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.globalworkspace.Coalition;
@@ -209,7 +210,7 @@ public class GlobalWorkspaceTablePanel extends GuiPanelImpl implements
 
 			switch (columnIndex) {
 			case 0:
-				return coal.getId();
+				return coal.hashCode();
 			case 1:
 				return df.format(coal.getActivation());
 			case 2:
