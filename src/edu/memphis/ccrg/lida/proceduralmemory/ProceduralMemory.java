@@ -14,7 +14,7 @@ import edu.memphis.ccrg.lida.actionselection.Action;
 import edu.memphis.ccrg.lida.actionselection.ActionSelection;
 import edu.memphis.ccrg.lida.actionselection.Behavior;
 import edu.memphis.ccrg.lida.framework.FrameworkModule;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.shared.CognitiveContentStructure;
 
 /**
  * FrameworkModule containing {@link Scheme}s activated by each conscious
@@ -25,74 +25,75 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
  */
 public interface ProceduralMemory extends FrameworkModule {
 
-	/**
-	 * Gets a new {@link Scheme} having specified {@link Action}.
-	 * 
-	 * @param a
-	 *            an {@link Action}
-	 * @return a new {@link Scheme} with {@link Action} a
-	 */
-	public Scheme getNewScheme(Action a);
+    /**
+     * Gets a new {@link Scheme} having specified {@link Action}.
+     * 
+     * @param a
+     *            an {@link Action}
+     * @return a new {@link Scheme} with {@link Action} a
+     */
+    public Scheme getNewScheme(Action a);
 
-	/**
-	 * Returns whether this procedural memory contains specified scheme.
-	 * 
-	 * @param s
-	 *            a {@link Scheme}
-	 * @return true if it contains an equal scheme
-	 */
-	public boolean containsScheme(Scheme s);
+    /**
+     * Returns whether this procedural memory contains specified scheme.
+     * 
+     * @param s
+     *            a {@link Scheme}
+     * @return true if it contains an equal scheme
+     */
+    public boolean containsScheme(Scheme s);
 
-	/**
-	 * Removes specified {@link Scheme}.
-	 * 
-	 * @param s
-	 *            scheme to be removed.
-	 */
-	public void removeScheme(Scheme s);
+    /**
+     * Removes specified {@link Scheme}.
+     * 
+     * @param s
+     *            scheme to be removed.
+     */
+    public void removeScheme(Scheme s);
 
-	/**
-	 * Returns a view of all {@link Scheme} objects currently in the
-	 * {@link ProceduralMemory}.
-	 * 
-	 * @return a {@link Collection} of schemes
-	 */
-	public Collection<Scheme> getSchemes();
+    /**
+     * Returns a view of all {@link Scheme} objects currently in the
+     * {@link ProceduralMemory}.
+     * 
+     * @return a {@link Collection} of schemes
+     */
+    public Collection<Scheme> getSchemes();
 
-	/**
-	 * Returns a count of the schemes
-	 * 
-	 * @return number of schemes currently in this procedural memory.
-	 */
-	public int getSchemeCount();
+    /**
+     * Returns a count of the schemes
+     * 
+     * @return number of schemes currently in this procedural memory.
+     */
+    public int getSchemeCount();
 
-	/**
-	 * Using the broadcast, activate the relevant schemes of
-	 * {@link ProceduralMemory}
-	 */
-	public void activateSchemes();
+    /**
+     * Using the broadcast, activate the relevant schemes of
+     * {@link ProceduralMemory}
+     */
+    public void activateSchemes();
 
-	/**
-	 * A call-back method to determine if the {@link Scheme} s should be
-	 * instantiated. This method can be overidden by subclasses to provide
-	 * custom functionality.
-	 * 
-	 * @param s
-	 *            the {@link Scheme} to be checked
-	 * @param broadcastBuffer
-	 *            the {@link NodeStructure} in {@link ProceduralMemory}
-	 *            containing recent broadcast
-	 * @return true if the {@link Scheme} should be instantiated, false
-	 *         otherwise.
-	 */
-	public boolean shouldInstantiate(Scheme s, NodeStructure broadcastBuffer);
+    /**
+     * A call-back method to determine if the {@link Scheme} s should be
+     * instantiated. This method can be overidden by subclasses to provide
+     * custom functionality.
+     * 
+     * @param s
+     *            the {@link Scheme} to be checked
+     * @param broadcast
+     *            the {@link CognitiveContentStructure} containing the recent
+     *            broadcast
+     * @return true if the {@link Scheme} should be instantiated, false
+     *         otherwise.
+     */
+    public boolean shouldInstantiate(Scheme s, CognitiveContentStructure broadcast);
 
-	/**
-	 * Instantiates specified {@link Scheme} .
-	 * 
-	 * @param s
-	 *            a {@link Scheme} over instantiation threshold
-	 * @return a {@link Behavior}, an instantiation of {@link Scheme} s
-	 */
-	public Behavior createInstantiation(Scheme s);
+    /**
+     * Instantiates specified {@link Scheme} .
+     * 
+     * 
+     * @param s
+     *            a {@link Scheme} over instantiation threshold
+     * @return a {@link Behavior}, an instantiation of {@link Scheme} s
+     */
+    public Behavior createInstantiation(Scheme s);
 }

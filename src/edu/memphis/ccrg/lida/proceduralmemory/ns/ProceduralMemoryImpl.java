@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://ccrg.cs.memphis.edu/assets/papers/2010/LIDA-framework-non-commercial-v1.0.pdf
  *******************************************************************************/
-package edu.memphis.ccrg.lida.proceduralmemory;
+package edu.memphis.ccrg.lida.proceduralmemory.ns;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -26,20 +26,24 @@ import edu.memphis.ccrg.lida.actionselection.Behavior;
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.initialization.Initializable;
+import edu.memphis.ccrg.lida.framework.shared.CognitiveContentStructure;
 import edu.memphis.ccrg.lida.framework.shared.ConcurrentHashSet;
-import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
-import edu.memphis.ccrg.lida.framework.shared.Node;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
-import edu.memphis.ccrg.lida.framework.shared.UnmodifiableNodeStructureImpl;
+import edu.memphis.ccrg.lida.framework.shared.ns.ElementFactory;
+import edu.memphis.ccrg.lida.framework.shared.ns.Node;
+import edu.memphis.ccrg.lida.framework.shared.ns.NodeStructure;
+import edu.memphis.ccrg.lida.framework.shared.ns.NodeStructureImpl;
+import edu.memphis.ccrg.lida.framework.shared.ns.UnmodifiableNodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.globalworkspace.Coalition;
+import edu.memphis.ccrg.lida.proceduralmemory.Condition;
+import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryListener;
+import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
 
 /**
- * Default implementation of {@link ProceduralMemory}. Indexes scheme by context
+ * Default implementation of {@link ProceduralMemoryNS}. Indexes scheme by context
  * elements for quick access. Assumes that the {@link Condition} of
  * {@link Scheme} are {@link Node} only.
  * 
@@ -47,7 +51,7 @@ import edu.memphis.ccrg.lida.globalworkspace.Coalition;
  * @author Javier Snaider
  */
 public class ProceduralMemoryImpl extends FrameworkModuleImpl implements
-		ProceduralMemory, BroadcastListener {
+		ProceduralMemoryNS, BroadcastListener {
 
 	private static final Logger logger = Logger
 			.getLogger(ProceduralMemoryImpl.class.getCanonicalName());
@@ -221,7 +225,7 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements
 	 * Add {@link Condition} c to the condition pool if it is not already
 	 * stored. </br> Returns the stored condition with same id as c.</br> This
 	 * method is intended to be used only by {@link SchemeImpl} to ensure that
-	 * all schemes in the {@link ProceduralMemory} share the same condition
+	 * all schemes in the {@link ProceduralMemoryNS} share the same condition
 	 * instances.
 	 * 
 	 * @param c
@@ -260,9 +264,9 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements
 	 * @param type
 	 *            the type of the condition. This select the indexing map
 	 */
-	void indexScheme(Scheme s, Condition c, ConditionType type) {
+	void indexScheme(Scheme s, Condition c, String type) {
 		Map<Object, Set<Scheme>> map = null;
-		switch (type) {
+		switch (ConditionType.valueOf(type)) {
 		case CONTEXT:
 			map = contextSchemeMap;
 			break;
@@ -450,4 +454,10 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements
 	public NodeStructure getBroadcastBuffer() {
 		return new UnmodifiableNodeStructureImpl(broadcastBuffer);
 	}
+
+    @Override
+    public boolean shouldInstantiate(Scheme s, CognitiveContentStructure broadcast) {
+        // TODO Auto-generated method stub
+        return false;
+    }
 }

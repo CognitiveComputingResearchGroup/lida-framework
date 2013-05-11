@@ -4,7 +4,6 @@ import java.util.Collection;
 
 import edu.memphis.ccrg.lida.actionselection.Action;
 import edu.memphis.ccrg.lida.actionselection.Behavior;
-import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.activation.Activatible;
 
 /**
@@ -60,8 +59,7 @@ public interface ProceduralUnit extends Activatible {
 	public void setLabel(String l);
 
 	/**
-	 * Sets unique identifier for {@link Scheme}. Should be used by
-	 * {@link ElementFactory} only.
+	 * Sets unique identifier for {@link Scheme}. 
 	 * 
 	 * @param id
 	 *            unique identifier for this scheme
