@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://ccrg.cs.memphis.edu/assets/papers/2010/LIDA-framework-non-commercial-v1.0.pdf
  *******************************************************************************/
-package edu.memphis.ccrg.lida.framework.shared;
+package edu.memphis.ccrg.lida.framework.shared.ns;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,8 +30,8 @@ import edu.memphis.ccrg.lida.framework.strategies.NoExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.Strategy;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTask;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
-import edu.memphis.ccrg.lida.pam.PamLinkImpl;
-import edu.memphis.ccrg.lida.pam.PamNodeImpl;
+import edu.memphis.ccrg.lida.pam.ns.PamLinkImpl;
+import edu.memphis.ccrg.lida.pam.ns.PamNodeImpl;
 import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
 
 /**

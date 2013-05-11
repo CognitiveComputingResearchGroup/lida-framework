@@ -8,9 +8,9 @@
 /**
  * Node.java
  */
-package edu.memphis.ccrg.lida.framework.shared;
+package edu.memphis.ccrg.lida.framework.shared.ns;
 
-import edu.memphis.ccrg.lida.pam.PamNode;
+import edu.memphis.ccrg.lida.pam.ns.PamNode;
 import edu.memphis.ccrg.lida.proceduralmemory.Condition;
 
 /**

@@ -5,14 +5,14 @@
  * which accompanies this distribution, and is available at
  * http://ccrg.cs.memphis.edu/assets/papers/2010/LIDA-framework-non-commercial-v1.0.pdf
  *******************************************************************************/
-package edu.memphis.ccrg.lida.framework.shared;
+package edu.memphis.ccrg.lida.framework.shared.ns;
 
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
-import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
-import edu.memphis.ccrg.lida.workspace.WorkspaceContent;
+import edu.memphis.ccrg.lida.framework.shared.CognitiveContent;
+import edu.memphis.ccrg.lida.framework.shared.CognitiveContentStructure;
 
 /**
  * An immutable NodeStructureImpl. Throws {@link UnsupportedOperationException}
@@ -20,8 +20,7 @@ import edu.memphis.ccrg.lida.workspace.WorkspaceContent;
  * 
  * @author Ryan J. McCall
  */
-public class UnmodifiableNodeStructureImpl implements NodeStructure,
-		BroadcastContent, WorkspaceContent {
+public class UnmodifiableNodeStructureImpl implements NodeStructure {
 
 	private NodeStructure ns;
 
@@ -474,4 +473,75 @@ public class UnmodifiableNodeStructureImpl implements NodeStructure,
 			double threshold) {
 		return ns.getSubgraph(nodes, d, threshold);
 	}
+
+    @Override
+    public CognitiveContent addContent(CognitiveContent content) {
+        throw new UnsupportedOperationException(
+                "UnmodifiableNodeStructure cannot be modified");
+    }
+
+    @Override
+    public Collection<CognitiveContent> addContent(Collection<CognitiveContent> content) {
+        throw new UnsupportedOperationException(
+                "UnmodifiableNodeStructure cannot be modified");
+    }
+
+    @Override
+    public void removeContent(CognitiveContent content) {
+        throw new UnsupportedOperationException(
+                "UnmodifiableNodeStructure cannot be modified");
+    }
+
+    @Override
+    public boolean containsContent(CognitiveContent content) {
+        return containsLinkable((Linkable) content);
+    }
+
+    @Override
+    public void mergeWith(CognitiveContentStructure cs) {
+        throw new UnsupportedOperationException(
+                "UnmodifiableNodeStructure cannot be modified");
+            }
+
+    @Override
+    public CognitiveContent getReducedRepresentation() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public void decay(long ticks) {
+        throw new UnsupportedOperationException(
+                "UnmodifiableNodeStructure cannot be modified");
+    }
+
+    @Override
+    public void init(Map<String, ?> parameters) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void init() {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public <T> T getParam(String name, T defaultValue) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public boolean containsParameter(String key) {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public Map<String, ?> getParameters() {
+        // TODO Auto-generated method stub
+        return null;
+    }
 }

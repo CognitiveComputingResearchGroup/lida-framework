@@ -5,16 +5,16 @@
  * which accompanies this distribution, and is available at
  * http://ccrg.cs.memphis.edu/assets/papers/2010/LIDA-framework-non-commercial-v1.0.pdf
  *******************************************************************************/
-package edu.memphis.ccrg.lida.framework.shared;
+package edu.memphis.ccrg.lida.framework.shared.ns;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl;
+import edu.memphis.ccrg.lida.framework.shared.activation.ns.ActivatibleImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
-import edu.memphis.ccrg.lida.pam.PamLink;
-import edu.memphis.ccrg.lida.pam.PamLinkImpl;
-import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
+import edu.memphis.ccrg.lida.pam.ns.PamLink;
+import edu.memphis.ccrg.lida.pam.ns.PamLinkImpl;
+import edu.memphis.ccrg.lida.pam.ns.PerceptualAssociativeMemoryNS;
 
 /**
  * A {@link Link} that connects a {@link Node} to a {@link Linkable} (Node or
@@ -54,7 +54,7 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 	private String factoryType;
 
 	/**
-	 * {@link PamLink} in a {@link PerceptualAssociativeMemory} that grounds
+	 * {@link PamLink} in a {@link PerceptualAssociativeMemoryNS} that grounds
 	 * this Link.
 	 */
 	protected PamLink groundingPamLink;

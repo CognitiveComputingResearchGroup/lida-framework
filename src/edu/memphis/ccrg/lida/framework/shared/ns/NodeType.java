@@ -1,4 +1,4 @@
-package edu.memphis.ccrg.lida.framework.shared;
+package edu.memphis.ccrg.lida.framework.shared.ns;
 
 /**
  * A marker of Node type. Different types are treated differently in
