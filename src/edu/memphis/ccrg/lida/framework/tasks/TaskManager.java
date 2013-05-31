@@ -105,7 +105,7 @@ public class TaskManager implements GuiEventProvider {
 	private FrameworkGuiEvent defaultGuiEvent = new FrameworkGuiEvent(
 			ModuleName.Agent, "TicksEvent", null);
 
-	private int shutdownTick = DEFAULT_SHUTDOWN_TICK;
+	private static int shutdownTick = DEFAULT_SHUTDOWN_TICK;
 	private String postExecutationClassCanoncialName;
 
 	/**
@@ -134,7 +134,7 @@ public class TaskManager implements GuiEventProvider {
 		executorService = new ThreadPoolExecutor(corePoolSize, maxPoolSize,
 				keepAliveTime, TimeUnit.SECONDS,
 				new LinkedBlockingQueue<Runnable>());
-		this.shutdownTick = shutdownTick;
+		TaskManager.shutdownTick = shutdownTick;
 		postExecutationClassCanoncialName=canonicalName;
 		taskManagerThread = new Thread(new TaskManagerMainLoop());
 		taskManagerThread.start();
@@ -148,6 +148,14 @@ public class TaskManager implements GuiEventProvider {
 	 */
 	public static long getCurrentTick() {
 		return currentTick;
+	}
+	
+	/**
+	 * Gets the tick when the TaskManager will shut itself down.
+	 * @return the shutdown time tick
+	 */
+	public static int getShutdownTick(){
+		return shutdownTick; 
 	}
 
 	/**
