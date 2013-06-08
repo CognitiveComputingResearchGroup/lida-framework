@@ -181,6 +181,8 @@ public class ElementFactory {
 		// Default excite type
 		params = new HashMap<String, Object>();
 		params.put("m", 1.0);
+		params.put("lowerBound", 0.0);
+		params.put("upperBound", 1.0);
 		addExciteStrategy(defaultExciteType, new StrategyDef(
 				LinearExciteStrategy.class.getCanonicalName(),
 				defaultExciteType, params, exciteStrategyType, true));
