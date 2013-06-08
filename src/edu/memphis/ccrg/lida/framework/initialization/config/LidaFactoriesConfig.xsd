@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://ccrg.cs.memphis.edu/LidaFactoriesConfig"
+	elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema"
+	xmlns:tns="http://ccrg.cs.memphis.edu/LidaFactoriesConfig">
+	<element name="lidaFactoriesConfig" type="tns:lidaFactoriesConfig"></element>
+	<complexType name="lidaFactoriesConfig">
+		<sequence>
+			<element name="factoriesConfig" type="tns:factoriesConfig"
+				maxOccurs="1" minOccurs="1">
+			</element>
+		</sequence>
+	</complexType>
+
+	<complexType name="factoriesConfig">
+		<sequence>
+			<element name="factoryConfig" type="tns:factoryConfigDef"
+				maxOccurs="unbounded" minOccurs="1"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="factoryConfigDef">
+		<sequence>
+			<any minOccurs="0" />
+		</sequence>
+		<attribute name="name" type="string" use="required"></attribute>
+	</complexType>
+</schema>

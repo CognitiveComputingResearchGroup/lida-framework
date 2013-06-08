@@ -9,12 +9,12 @@ package edu.memphis.ccrg.lida.framework.strategies;
 
 import java.util.Map;
 
-import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
+import edu.memphis.ccrg.lida.framework.factories.StrategyFactory;
 
 /**
  * A strategy pattern for decaying Activatibles or Learnables
  * 
- * Implementations should add themselves to {@link ElementFactory} via the
+ * Implementations should add themselves to {@link StrategyFactory} via the
  * factoriesData.xml configuration file.
  * 
  * @author Javier Snaider

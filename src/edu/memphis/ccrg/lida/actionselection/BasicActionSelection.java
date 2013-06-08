@@ -19,9 +19,10 @@ import java.util.logging.Logger;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.BehaviorNetwork;
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
+import edu.memphis.ccrg.lida.framework.factories.FactoryManager;
+import edu.memphis.ccrg.lida.framework.factories.StrategyFactory;
 import edu.memphis.ccrg.lida.framework.initialization.Initializable;
 import edu.memphis.ccrg.lida.framework.shared.ConcurrentHashSet;
-import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
@@ -42,6 +43,9 @@ public class BasicActionSelection extends FrameworkModuleImpl implements
 	private static final Logger logger = Logger
 			.getLogger(BasicActionSelection.class.getCanonicalName());
 
+	private FactoryManager factoryManager = FactoryManager.getInstance();
+	private StrategyFactory strategyFactory = factoryManager.getFactory(StrategyFactory.class);
+	
 	private List<ActionSelectionListener> listeners = new ArrayList<ActionSelectionListener>();
 	private Set<Behavior> behaviors = new ConcurrentHashSet<Behavior>();
 	private double maxActivationThreshold;
@@ -107,11 +111,10 @@ public class BasicActionSelection extends FrameworkModuleImpl implements
 				DEFAULT_TICKS_PER_RUN);
 		taskSpawner.addTask(new ActionSelectionBackgroundTask(ticksPerRun));
 
-		ElementFactory factory = ElementFactory.getInstance();
 		String decayType = (String) getParam(
-				"actionSelection.behaviorDecayStrategy", factory
+				"actionSelection.behaviorDecayStrategy", strategyFactory
 						.getDefaultDecayType());
-		behaviorDecayStrategy = factory.getDecayStrategy(decayType);
+		behaviorDecayStrategy = strategyFactory.getDecayStrategy(decayType);
 
 		thresholdDecayRate = (Double) getParam(
 				"actionSelection.thresholdDecayRate",

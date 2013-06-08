@@ -9,7 +9,7 @@
 package edu.memphis.ccrg.lida.episodicmemory.sdm;
 
 import cern.colt.bitvector.BitVector;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.shared.ns.NodeStructure;
 
 /**
  * A translator between {@link BitVector} used in

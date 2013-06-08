@@ -12,13 +12,13 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.actionselection.PreafferenceListener;
 import edu.memphis.ccrg.lida.framework.CodeletManagerModule;
 import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleName;
-import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.factories.FactoryManager;
+import edu.memphis.ccrg.lida.framework.factories.FrameworkTaskFactory;
+import edu.memphis.ccrg.lida.framework.shared.CognitiveContentStructure;
 import edu.memphis.ccrg.lida.framework.tasks.Codelet;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
@@ -34,14 +34,14 @@ import edu.memphis.ccrg.lida.workspace.Workspace;
  * 
  */
 public class AttentionCodeletModule extends FrameworkModuleImpl implements
-		BroadcastListener, PreafferenceListener, CodeletManagerModule {
+		BroadcastListener, CodeletManagerModule {
 
 	private static final Logger logger = Logger
 			.getLogger(AttentionCodeletModule.class.getCanonicalName());
-	private static ElementFactory factory = ElementFactory.getInstance();
+	private static FactoryManager factoryManager = FactoryManager.getInstance();
+	private static FrameworkTaskFactory taskFactory = factoryManager.getFactory(FrameworkTaskFactory.class);
 
-	private static final String DEFAULT_CODELET_TYPE = NeighborhoodAttentionCodelet.class
-			.getSimpleName();
+	private static final String DEFAULT_CODELET_TYPE = "";
 	private String defaultCodeletType = DEFAULT_CODELET_TYPE;
 
 	private static final double DEFAULT_CODELET_ACTIVATION = 1.0;
@@ -101,7 +101,7 @@ public class AttentionCodeletModule extends FrameworkModuleImpl implements
 
 	@Override
 	public void setDefaultCodeletType(String type) {
-		if (factory.containsTaskType(type)) {
+		if (taskFactory.containsTaskType(type)) {
 			defaultCodeletType = type;
 		} else {
 			logger
@@ -134,7 +134,7 @@ public class AttentionCodeletModule extends FrameworkModuleImpl implements
 
 	@Override
 	public AttentionCodelet getCodelet(String type, Map<String, Object> params) {
-		AttentionCodelet codelet = (AttentionCodelet) factory.getFrameworkTask(
+		AttentionCodelet codelet = (AttentionCodelet) taskFactory.getFrameworkTask(
 				type, params, modulesMap);
 		if (codelet == null) {
 			logger
@@ -161,15 +161,6 @@ public class AttentionCodeletModule extends FrameworkModuleImpl implements
 		}
 	}
 
-	@Override
-	public void receivePreafference(NodeStructure addSet,
-			NodeStructure deleteSet) {
-		// TODO Receive results from Action Selection and create Attention
-		// Codelets. We need
-		// to figure out how to create coalitions and detect that something was
-		// "deleted"
-	}
-
 	/**
 	 * Performs learning based on the {@link AttentionCodelet} that created the
 	 * current<br/>
@@ -181,23 +172,7 @@ public class AttentionCodeletModule extends FrameworkModuleImpl implements
 	 */
 	@Override
 	public void learn(Coalition winningCoalition) {
-		AttentionCodelet coalitionCodelet = winningCoalition
-				.getCreatingAttentionCodelet();
-		if (coalitionCodelet instanceof DefaultAttentionCodelet) {
-			AttentionCodelet newCodelet = getDefaultCodelet();
-			NodeStructure content = (NodeStructure) winningCoalition
-					.getContent();
-			newCodelet.setSoughtContent(content.copy());
-			addCodelet(newCodelet);
-			logger.log(Level.FINER, "Created new codelet: {1}", new Object[] {
-					TaskManager.getCurrentTick(), newCodelet });
-		} else if (coalitionCodelet != null) {
-			// TODO Reinforcement amount might be a function of the broadcast's
-			// activation
-			coalitionCodelet.reinforceBaseLevelActivation(codeletReinforcement);
-			logger.log(Level.FINER, "Reinforcing codelet: {1}", new Object[] {
-					TaskManager.getCurrentTick(), coalitionCodelet });
-		}
+		// TODO not yet implemented
 	}
 
 	@Override

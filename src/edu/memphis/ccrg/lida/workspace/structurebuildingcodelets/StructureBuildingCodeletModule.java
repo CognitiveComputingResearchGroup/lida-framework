@@ -16,7 +16,8 @@ import edu.memphis.ccrg.lida.framework.CodeletManagerModule;
 import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleName;
-import edu.memphis.ccrg.lida.framework.shared.ns.ElementFactory;
+import edu.memphis.ccrg.lida.framework.factories.FactoryManager;
+import edu.memphis.ccrg.lida.framework.factories.FrameworkTaskFactory;
 import edu.memphis.ccrg.lida.framework.tasks.Codelet;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.workspace.Workspace;
@@ -33,25 +34,14 @@ public class StructureBuildingCodeletModule extends FrameworkModuleImpl
 
 	private static final Logger logger = Logger
 			.getLogger(StructureBuildingCodeletModule.class.getCanonicalName());
-	private static final ElementFactory factory = ElementFactory.getInstance();
 
-	private static final double DEFAULT_CODELET_ACTIVATION = 1.0;
-	private double codeletActivation = DEFAULT_CODELET_ACTIVATION;
-
-	private static final double DEFAULT_CODELET_REMOVAL_THRESHOLD = -1.0;
-	private double codeletRemovalThreshold = DEFAULT_CODELET_REMOVAL_THRESHOLD;
+	private static final FactoryManager factoryManager = FactoryManager.getInstance();
+	private static final FrameworkTaskFactory taskFactory = factoryManager.getFactory(FrameworkTaskFactory.class);
 
 	private static final String DEFAULT_CODELET_TYPE = "BasicStructureBuildingCodelet";
 	private String defaultCodeletType = DEFAULT_CODELET_TYPE;
 
 	private Map<ModuleName, FrameworkModule> modulesMap = new HashMap<ModuleName, FrameworkModule>();
-
-	// /*
-	// * Pool keeping all recycled codelets.
-	// * Key = CodeletType
-	// * Value = finished, reset codelets of that type
-	// */
-	// private Map<CodeletType, List<StructureBuildingCodelet>> codeletPool;
 
 	/**
 	 * Default Constructor. Sets up the initial default
@@ -75,16 +65,11 @@ public class StructureBuildingCodeletModule extends FrameworkModuleImpl
 	public void init() {
 		defaultCodeletType = (String) getParam("sbcModule.defaultCodeletType",
 				DEFAULT_CODELET_TYPE);
-		codeletActivation = (Double) getParam("sbcModule.codeletActivation",
-				DEFAULT_CODELET_ACTIVATION);
-		codeletRemovalThreshold = (Double) getParam(
-				"sbcModule.codeletRemovalThreshold",
-				DEFAULT_CODELET_REMOVAL_THRESHOLD);
 	}
 
 	@Override
 	public void setDefaultCodeletType(String type) {
-		if (factory.containsTaskType(type)) {
+		if (taskFactory.containsTaskType(type)) {
 			defaultCodeletType = type;
 		} else {
 			logger
@@ -131,15 +116,13 @@ public class StructureBuildingCodeletModule extends FrameworkModuleImpl
 	@Override
 	public StructureBuildingCodelet getCodelet(String type,
 			Map<String, Object> params) {
-		StructureBuildingCodelet codelet = (StructureBuildingCodelet) factory
+		StructureBuildingCodelet codelet = (StructureBuildingCodelet) taskFactory
 				.getFrameworkTask(type, params, modulesMap);
 		if (codelet == null) {
 			logger.log(Level.WARNING, "Codelet type not supported: {1}",
 					new Object[] { TaskManager.getCurrentTick(), type });
 			return null;
 		}
-		codelet.setActivation(codeletActivation);
-		codelet.setActivatibleRemovalThreshold(codeletRemovalThreshold);
 
 		return codelet;
 	}

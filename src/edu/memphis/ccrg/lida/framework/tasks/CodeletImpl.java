@@ -7,8 +7,9 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.framework.tasks;
 
-import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
+import edu.memphis.ccrg.lida.framework.shared.CognitiveContentStructure;
+import edu.memphis.ccrg.lida.framework.shared.CognitiveContentStructureImpl;
+
 
 /**
  * Abstract implementation of {@link Codelet}.
@@ -17,18 +18,18 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
  */
 public abstract class CodeletImpl extends FrameworkTaskImpl implements Codelet {
 
-	/**
-	 * Content which this codelet responds to.
-	 */
-	protected NodeStructure soughtContent = new NodeStructureImpl();
+    /**
+     * Content which this codelet responds to.
+     */
+    protected CognitiveContentStructure soughtContent = new CognitiveContentStructureImpl();
 
-	@Override
-	public NodeStructure getSoughtContent() {
-		return soughtContent;
-	}
+    @Override
+    public CognitiveContentStructure getSoughtContent() {
+        return soughtContent;
+    }
 
-	@Override
-	public void setSoughtContent(NodeStructure content) {
-		soughtContent = content;
-	}
+    @Override
+    public void setSoughtContent(CognitiveContentStructure content) {
+        soughtContent = (CognitiveContentStructure) content;
+    }
 }

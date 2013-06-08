@@ -11,7 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.FrameworkModule;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.shared.CognitiveContentStructure;
 import edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl;
 import edu.memphis.ccrg.lida.framework.tasks.CodeletImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
@@ -85,12 +85,13 @@ public abstract class AttentionCodeletImpl extends CodeletImpl implements
 	@Override
 	protected void runThisFrameworkTask() {
 		if (bufferContainsSoughtContent(currentSituationalModel)) {
-			NodeStructure csmContent = retrieveWorkspaceContent(currentSituationalModel);
+			CognitiveContentStructure csmContent = retrieveWorkspaceContent(currentSituationalModel);
 			if (csmContent == null) {
 				logger.log(Level.WARNING,
 							"Null WorkspaceContent returned in {1}. Coalition cannot be formed.",
 							new Object[]{TaskManager.getCurrentTick(),this});
-			} else if (csmContent.getLinkableCount() > 0) {
+			} 
+			else {
 				Coalition coalition = new CoalitionImpl(csmContent, this);
 				globalWorkspace.addCoalition(coalition);
 				logger.log(Level.FINER,

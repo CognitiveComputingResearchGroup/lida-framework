@@ -19,7 +19,7 @@ import edu.memphis.ccrg.lida.episodicmemory.sdm.SparseDistributedMemoryImpl;
 import edu.memphis.ccrg.lida.episodicmemory.sdm.Translator;
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.shared.ns.NodeStructure;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.globalworkspace.Coalition;

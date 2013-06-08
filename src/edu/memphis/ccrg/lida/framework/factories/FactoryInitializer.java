@@ -5,19 +5,22 @@
  * which accompanies this distribution, and is available at
  * http://ccrg.cs.memphis.edu/assets/papers/2010/LIDA-framework-non-commercial-v1.0.pdf
  *******************************************************************************/
-package edu.memphis.ccrg.lida.pam;
-
-import edu.memphis.ccrg.lida.framework.shared.Linkable;
-import edu.memphis.ccrg.lida.framework.shared.activation.Learnable;
+package edu.memphis.ccrg.lida.framework.factories;
 
 /**
- * A {@link Learnable} {@link Linkable}, a {@link PamNode} or {@link PamLink}
+ * @author Sean Kugele
+ * @param <T>
+ *            type of the factory to be initialized
  * 
- * @author Ryan J. McCall
- * @see PamNode
- * @see PamLink
- * @see PerceptualAssociativeMemory
  */
-public interface PamLinkable extends Linkable, Learnable {
+public interface FactoryInitializer<T extends InitializableFactory> {
+
+    /**
+     * Initializes the factory.
+     * 
+     * If the factory has dependencies on other factories, then those factories
+     * should be initialized prior to calling this method.
+     */
+    public void init();
 
 }

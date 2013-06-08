@@ -11,15 +11,15 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.episodicmemory.sdm.BasicTranslator;
 import edu.memphis.ccrg.lida.episodicmemory.sdm.Translator;
+import edu.memphis.ccrg.lida.episodicmemory.sdm.ns.BasicTranslator;
 import edu.memphis.ccrg.lida.framework.Agent;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.initialization.AgentXmlFactory;
 import edu.memphis.ccrg.lida.framework.initialization.FullyInitializable;
 import edu.memphis.ccrg.lida.framework.initialization.Initializer;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
-import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
+import edu.memphis.ccrg.lida.pam.ns.PerceptualAssociativeMemoryNS;
 
 /**
  * Initializes {@link EpisodicMemoryImpl} by creating and adding a
@@ -45,7 +45,7 @@ public class BasicEpisodicMemoryInitializer implements Initializer {
 	public void initModule(FullyInitializable module, Agent agent,
 			Map<String, ?> params) {
 		EpisodicMemoryImpl em = (EpisodicMemoryImpl) module;
-		PerceptualAssociativeMemory pam = (PerceptualAssociativeMemory) agent
+		PerceptualAssociativeMemoryNS pam = (PerceptualAssociativeMemoryNS) agent
 				.getSubmodule(ModuleName.PerceptualAssociativeMemory);
 		if (pam != null) {
 			int wordLength = (Integer) em.getParam("tem.wordLength",

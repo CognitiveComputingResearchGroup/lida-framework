@@ -5,14 +5,14 @@
  * which accompanies this distribution, and is available at
  * http://ccrg.cs.memphis.edu/assets/papers/2010/LIDA-framework-non-commercial-v1.0.pdf
  *******************************************************************************/
-package edu.memphis.ccrg.lida.framework.shared.activation.ns;
+package edu.memphis.ccrg.lida.framework.shared.activation;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import edu.memphis.ccrg.lida.framework.factories.FactoryManager;
+import edu.memphis.ccrg.lida.framework.factories.StrategyFactory;
 import edu.memphis.ccrg.lida.framework.initialization.InitializableImpl;
-import edu.memphis.ccrg.lida.framework.shared.activation.Activatible;
-import edu.memphis.ccrg.lida.framework.shared.ns.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.ns.Node;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
@@ -30,7 +30,9 @@ public class ActivatibleImpl extends InitializableImpl implements Activatible {
 
 	private static final Logger logger = Logger.getLogger(ActivatibleImpl.class
 			.getCanonicalName());
-	private static final ElementFactory factory = ElementFactory.getInstance();
+	
+	private static final FactoryManager factoryManager = FactoryManager.getInstance();
+	private static final StrategyFactory strategyFactory = factoryManager.getFactory(StrategyFactory.class);
 
 	private ExciteStrategy exciteStrategy;
 	private DecayStrategy decayStrategy;
@@ -45,8 +47,8 @@ public class ActivatibleImpl extends InitializableImpl implements Activatible {
 		activation = DEFAULT_ACTIVATION;
 		removalThreshold = DEFAULT_ACTIVATIBLE_REMOVAL_THRESHOLD;
 		incentiveSalience = DEFAULT_INCENTIVE_SALIENCE;
-		decayStrategy = factory.getDefaultDecayStrategy();
-		exciteStrategy = factory.getDefaultExciteStrategy();
+		decayStrategy = strategyFactory.getDefaultDecayStrategy();
+		exciteStrategy = strategyFactory.getDefaultExciteStrategy();
 	}
 
 	/**

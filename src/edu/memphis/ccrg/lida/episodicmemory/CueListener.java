@@ -8,11 +8,11 @@
 package edu.memphis.ccrg.lida.episodicmemory;
 
 import edu.memphis.ccrg.lida.framework.ModuleListener;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.workspace.Workspace;
+import edu.memphis.ccrg.lida.framework.shared.ns.NodeStructure;
+import edu.memphis.ccrg.lida.workspace.ns.WorkspaceNS;
 
 /**
- * Listens to cues from the {@link Workspace}. This interface is typically
+ * Listens to cues from the {@link WorkspaceNS}. This interface is typically
  * implemented by {@link EpisodicMemory} modules.
  * 
  * @author Ryan J. McCall

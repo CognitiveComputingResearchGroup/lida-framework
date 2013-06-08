@@ -8,14 +8,14 @@
 /**
  * 
  */
-package edu.memphis.ccrg.lida.framework.shared.activation.ns;
+package edu.memphis.ccrg.lida.framework.shared.activation;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import edu.memphis.ccrg.lida.framework.factories.FactoryManager;
+import edu.memphis.ccrg.lida.framework.factories.StrategyFactory;
 import edu.memphis.ccrg.lida.framework.initialization.Initializable;
-import edu.memphis.ccrg.lida.framework.shared.activation.Learnable;
-import edu.memphis.ccrg.lida.framework.shared.ns.ElementFactory;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.DefaultTotalActivationStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
@@ -32,7 +32,9 @@ public class LearnableImpl extends ActivatibleImpl implements Learnable {
 
 	private static final Logger logger = Logger.getLogger(LearnableImpl.class
 			.getCanonicalName());
-	private static final ElementFactory factory = ElementFactory.getInstance();
+	
+    private static final FactoryManager factoryManager = FactoryManager.getInstance();
+    private static final StrategyFactory strategyFactory = factoryManager.getFactory(StrategyFactory.class);
 
 	private double baseLevelActivation;
 	private double learnableRemovalThreshold;
@@ -51,9 +53,9 @@ public class LearnableImpl extends ActivatibleImpl implements Learnable {
 		baseLevelActivation = DEFAULT_BASE_LEVEL_ACTIVATION;
 		learnableRemovalThreshold = DEFAULT_LEARNABLE_REMOVAL_THRESHOLD;
 		baseLevelIncentiveSalience=DEFAULT_BASE_LEVEL_INCENTIVE_SALIENCE;
-		baseLevelDecayStrategy = factory.getDefaultDecayStrategy();
-		baseLevelExciteStrategy = factory.getDefaultExciteStrategy();
-		totalActivationStrategy = (TotalActivationStrategy) factory
+		baseLevelDecayStrategy = strategyFactory.getDefaultDecayStrategy();
+		baseLevelExciteStrategy = strategyFactory.getDefaultExciteStrategy();
+		totalActivationStrategy = (TotalActivationStrategy) strategyFactory
 				.getStrategy(DEFAULT_TOTAL_ACTIVATION_TYPE);
 	}
 
@@ -140,14 +142,14 @@ public class LearnableImpl extends ActivatibleImpl implements Learnable {
 	public void init() {
 		baseLevelActivation=getParam("learnable.baseLevelActivation", DEFAULT_BASE_LEVEL_ACTIVATION);
 		learnableRemovalThreshold=getParam("learnable.baseLevelRemovalThreshold",DEFAULT_LEARNABLE_REMOVAL_THRESHOLD);
-		String decayName=getParam("learnable.baseLevelDecayStrategy", factory.getDefaultDecayType());
-		baseLevelDecayStrategy = factory.getDecayStrategy(decayName);
-		String exciteName=getParam("learnable.baseLevelExciteStrategy",factory.getDefaultExciteType());
-		baseLevelExciteStrategy = factory.getExciteStrategy(exciteName);
+		String decayName=getParam("learnable.baseLevelDecayStrategy", strategyFactory.getDefaultDecayType());
+		baseLevelDecayStrategy = strategyFactory.getDecayStrategy(decayName);
+		String exciteName=getParam("learnable.baseLevelExciteStrategy",strategyFactory.getDefaultExciteType());
+		baseLevelExciteStrategy = strategyFactory.getExciteStrategy(exciteName);
 		String totalActivationName=getParam("learnable.totalActivationStrategy",DEFAULT_TOTAL_ACTIVATION_TYPE);
-		totalActivationStrategy =(TotalActivationStrategy)factory.getStrategy(totalActivationName);
+		totalActivationStrategy =(TotalActivationStrategy)strategyFactory.getStrategy(totalActivationName);
 		if (totalActivationStrategy==null) {
-			totalActivationStrategy=(TotalActivationStrategy)factory.getStrategy(DEFAULT_TOTAL_ACTIVATION_TYPE);
+			totalActivationStrategy=(TotalActivationStrategy)strategyFactory.getStrategy(DEFAULT_TOTAL_ACTIVATION_TYPE);
 		}
 	}
 

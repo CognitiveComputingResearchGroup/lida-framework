@@ -10,7 +10,7 @@
  */
 package edu.memphis.ccrg.lida.framework.tasks;
 
-import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.shared.CognitiveContentStructure;
 import edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBuffer;
 
 /**
@@ -24,13 +24,13 @@ public interface Codelet extends FrameworkTask {
 	/**
 	 * @return the sought content
 	 */
-	public NodeStructure getSoughtContent();
+	public CognitiveContentStructure getSoughtContent();
 
 	/**
 	 * @param content
 	 *            the content the codelet looks for.
 	 */
-	public void setSoughtContent(NodeStructure content);
+	public void setSoughtContent(CognitiveContentStructure content);
 
 	/**
 	 * Returns true if specified WorkspaceBuffer contains this codelet's sought
@@ -50,5 +50,5 @@ public interface Codelet extends FrameworkTask {
 	 *            the buffer
 	 * @return the workspace content
 	 */
-	public NodeStructure retrieveWorkspaceContent(WorkspaceBuffer buffer);
+	public CognitiveContentStructure retrieveWorkspaceContent(WorkspaceBuffer buffer);
 }

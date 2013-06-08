@@ -10,8 +10,7 @@ package edu.memphis.ccrg.lida.workspace.structurebuildingcodelets;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.framework.shared.ns.Linkable;
-import edu.memphis.ccrg.lida.framework.shared.ns.NodeStructure;
+import edu.memphis.ccrg.lida.framework.shared.CognitiveContentStructure;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBuffer;
 
@@ -41,7 +40,7 @@ public class BasicStructureBuildingCodelet extends StructureBuildingCodeletImpl 
 		for (WorkspaceBuffer readableBuffer : readableBuffers.values()) {
 			if (bufferContainsSoughtContent(readableBuffer)) {
 				writableBuffer
-						.addBufferContent((NodeStructure) retrieveWorkspaceContent(readableBuffer));
+						.addBufferContent((CognitiveContentStructure) retrieveWorkspaceContent(readableBuffer));
 			}
 		}
 		logger.log(Level.FINEST, "SB codelet {1} finishes one run.",
@@ -49,18 +48,16 @@ public class BasicStructureBuildingCodelet extends StructureBuildingCodeletImpl 
 	}
 
 	@Override
-    public NodeStructure retrieveWorkspaceContent(WorkspaceBuffer buffer) {
-		return (NodeStructure)buffer.getBufferContent(null);
+    public CognitiveContentStructure retrieveWorkspaceContent(WorkspaceBuffer buffer) {
+		return (CognitiveContentStructure)buffer.getBufferContent(null);
 	}
 
 	@Override
 	public boolean bufferContainsSoughtContent(WorkspaceBuffer buffer) {
-		NodeStructure ns = (NodeStructure) buffer.getBufferContent(null);
-		for (Linkable ln : soughtContent.getLinkables()) {
-			if (!ns.containsLinkable(ln)) {
-				return false;
-			}
-		}
+		CognitiveContentStructure ns = (CognitiveContentStructure) buffer.getBufferContent(null);
+		
+		// TODO: Need a Strategy for determining sought content
+		
 		logger.log(Level.FINEST, "SBcodelet {1} found sought content",
 				new Object[] { TaskManager.getCurrentTick(), this });
 		return true;

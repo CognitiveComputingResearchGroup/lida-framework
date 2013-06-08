@@ -5,16 +5,14 @@
  * which accompanies this distribution, and is available at
  * http://ccrg.cs.memphis.edu/assets/papers/2010/LIDA-framework-non-commercial-v1.0.pdf
  *******************************************************************************/
-package edu.memphis.ccrg.lida.pam;
-
-import edu.memphis.ccrg.lida.framework.shared.Link;
+package edu.memphis.ccrg.lida.framework.factories;
 
 /**
- * A {@link Link} in {@link PerceptualAssociativeMemory}
+ * A marker interface that designates that the implementing class functions as a
+ * Factory.
  * 
- * @author Ryan J. McCall
- * 
+ * @author Sean Kugele
  */
-public interface PamLink extends Link, PamLinkable {
+public interface Factory {
 
 }

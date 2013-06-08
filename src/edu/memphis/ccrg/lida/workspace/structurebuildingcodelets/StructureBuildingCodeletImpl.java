@@ -83,7 +83,6 @@ public abstract class StructureBuildingCodeletImpl extends CodeletImpl
 	@Override
 	public void reset() {
 		setTicksPerRun(1);
-		setActivation(0.0);
 
 		readableBuffers.clear();
 		writableBuffer = null;

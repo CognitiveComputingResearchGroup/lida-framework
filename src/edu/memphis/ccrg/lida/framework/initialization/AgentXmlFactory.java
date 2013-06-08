@@ -23,7 +23,8 @@ import edu.memphis.ccrg.lida.framework.AgentImpl;
 import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
-import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
+import edu.memphis.ccrg.lida.framework.factories.DefaultFrameworkTaskFactory;
+import edu.memphis.ccrg.lida.framework.factories.FrameworkTaskFactory;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTask;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
@@ -770,7 +771,7 @@ public class AgentXmlFactory implements AgentFactory {
 	 */
 	static void initializeTasks(Map<ModuleName, FrameworkModule> moduleMap,
 			List<TaskData> toRun) {
-		ElementFactory factory = ElementFactory.getInstance();
+		FrameworkTaskFactory factory = DefaultFrameworkTaskFactory.getInstance();
 		for (TaskData td : toRun) {
 			FrameworkTask task = factory.getFrameworkTask(td.tasktype,
 					td.params, moduleMap);

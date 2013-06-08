@@ -7,7 +7,7 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.actionselection;
 
-import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.shared.ns.NodeStructure;
 
 /**
  * Listener of preafferent signal from {@link ActionSelection}
