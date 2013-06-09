@@ -10,6 +10,7 @@ package edu.memphis.ccrg.lida.framework.shared;
 import java.io.Serializable;
 import java.util.AbstractSet;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -23,7 +24,9 @@ import java.util.concurrent.ConcurrentMap;
  * 
  * @param <E>
  *            The generic type to use in this HashSet
+ * @deprecated Should use {@link Collections#newSetFromMap(java.util.Map)} instead.
  */
+@Deprecated
 public class ConcurrentHashSet<E> extends AbstractSet<E> implements Set<E>,
 		Serializable {
 
