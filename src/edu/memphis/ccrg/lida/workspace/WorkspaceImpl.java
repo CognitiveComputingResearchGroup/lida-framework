@@ -121,9 +121,7 @@ public class WorkspaceImpl extends FrameworkModuleImpl implements Workspace,
 			WorkspaceBuffer buffer = (WorkspaceBuffer) getSubmodule(ModuleName.PerceptualBuffer);
 			buffer.addBufferContent((WorkspaceContent) newPercept);
 		} else {
-			logger
-					.log(
-							Level.WARNING,
+			logger.log(Level.WARNING,
 							"Received a percept but Workspace does not have a perceptual buffer.",
 							TaskManager.getCurrentTick());
 		}
@@ -136,9 +134,7 @@ public class WorkspaceImpl extends FrameworkModuleImpl implements Workspace,
 			NodeStructure ns = buffer.getBufferContent(null);
 			ns.addNode(n,n.getFactoryType());
 		} else {
-			logger
-					.log(
-							Level.WARNING,
+			logger.log(Level.WARNING,
 							"Received a percept but Workspace does not have a perceptual buffer.",
 							TaskManager.getCurrentTick());
 		}
@@ -151,9 +147,7 @@ public class WorkspaceImpl extends FrameworkModuleImpl implements Workspace,
 			NodeStructure ns = buffer.getBufferContent(null);
 			ns.addLink(l,l.getFactoryType());
 		} else {
-			logger
-					.log(
-							Level.WARNING,
+			logger.log(Level.WARNING,
 							"Received a percept but Workspace does not have a perceptual buffer.",
 							TaskManager.getCurrentTick());
 		}
