@@ -16,7 +16,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import edu.memphis.ccrg.lida.framework.initialization.StrategyDef;
-import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
+import edu.memphis.ccrg.lida.framework.shared.ns.ElementFactory;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy;

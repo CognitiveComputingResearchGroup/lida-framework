@@ -18,14 +18,14 @@ import org.junit.Test;
 import edu.memphis.ccrg.lida.episodicmemory.CueListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockWorkspaceBufferImpl;
-import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
-import edu.memphis.ccrg.lida.framework.shared.Link;
-import edu.memphis.ccrg.lida.framework.shared.Node;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
+import edu.memphis.ccrg.lida.framework.shared.ns.ElementFactory;
+import edu.memphis.ccrg.lida.framework.shared.ns.Link;
+import edu.memphis.ccrg.lida.framework.shared.ns.Node;
+import edu.memphis.ccrg.lida.framework.shared.ns.NodeStructure;
+import edu.memphis.ccrg.lida.framework.shared.ns.NodeStructureImpl;
 import edu.memphis.ccrg.lida.globalworkspace.Coalition;
 import edu.memphis.ccrg.lida.globalworkspace.CoalitionImpl;
-import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl;
+import edu.memphis.ccrg.lida.pam.ns.PerceptualAssociativeMemoryNSImpl;
 
 /**
  * This class is the JUnit test for <code>WorkspaceImpl</code> class.
@@ -233,7 +233,7 @@ public class WorkspaceImplTest {
 		assertEquals(0, ns.getLinkCount());
 
 		Link l12 = factory.getLink(node1, node2,
-				PerceptualAssociativeMemoryImpl.FEATURE);
+				PerceptualAssociativeMemoryNSImpl.FEATURE);
 		workspace.receivePercept(l12);
 
 		ns = buffer.getBufferContent(null);

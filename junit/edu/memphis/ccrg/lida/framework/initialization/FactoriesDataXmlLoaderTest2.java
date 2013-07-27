@@ -19,16 +19,16 @@ import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Document;
 
-import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
-import edu.memphis.ccrg.lida.framework.shared.Linkable;
-import edu.memphis.ccrg.lida.framework.shared.Node;
-import edu.memphis.ccrg.lida.framework.shared.NodeImpl;
+import edu.memphis.ccrg.lida.framework.shared.ns.ElementFactory;
+import edu.memphis.ccrg.lida.framework.shared.ns.Linkable;
+import edu.memphis.ccrg.lida.framework.shared.ns.Node;
+import edu.memphis.ccrg.lida.framework.shared.ns.NodeImpl;
 import edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.LinearExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.Strategy;
 import edu.memphis.ccrg.lida.framework.tasks.Codelet;
-import edu.memphis.ccrg.lida.pam.PamLinkImpl;
-import edu.memphis.ccrg.lida.pam.PamNodeImpl;
+import edu.memphis.ccrg.lida.pam.ns.PamLinkImpl;
+import edu.memphis.ccrg.lida.pam.ns.PamNodeImpl;
 import edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.BasicStructureBuildingCodelet;
 
 public class FactoriesDataXmlLoaderTest2 {

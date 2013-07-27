@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.example.org/NewXMLSchema"
+	xmlns:tns="http://www.example.org/NewXMLSchema" elementFormDefault="qualified">
+
+	<complexType name="param">
+		<simpleContent>
+			<extension base="string">
+				<attribute name="name" type="string" use="required"></attribute>
+				<attribute name="type" use="optional">
+					<simpleType>
+						<restriction base="string">
+							<enumeration value="int"></enumeration>
+							<enumeration value="double"></enumeration>
+							<enumeration value="string"></enumeration>
+							<enumeration value="boolean"></enumeration>
+						</restriction>
+					</simpleType>
+				</attribute>
+			</extension>
+		</simpleContent>
+	</complexType>
+</schema>

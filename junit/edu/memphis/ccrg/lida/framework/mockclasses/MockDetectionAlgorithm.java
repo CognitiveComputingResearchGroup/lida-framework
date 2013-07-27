@@ -7,7 +7,7 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.framework.mockclasses;
 
-import edu.memphis.ccrg.lida.pam.tasks.BasicDetectionAlgorithm;
+import edu.memphis.ccrg.lida.pam.ns.tasks.BasicDetectionAlgorithm;
 
 public class MockDetectionAlgorithm extends BasicDetectionAlgorithm {
 

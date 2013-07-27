@@ -19,7 +19,7 @@ import edu.memphis.ccrg.lida.framework.AgentImpl;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockPAM;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
-import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
+import edu.memphis.ccrg.lida.pam.ns.PerceptualAssociativeMemoryNS;
 
 public class BasicEMinitializerTest {
 
@@ -34,7 +34,7 @@ public class BasicEMinitializerTest {
 	public void testInitModule() {
 		TaskManager tm = new TaskManager(10, 10, -1,null);
 		Agent agent = new AgentImpl(tm);
-		PerceptualAssociativeMemory pam = new MockPAM();
+		PerceptualAssociativeMemoryNS pam = new MockPAM();
 		pam.setModuleName(ModuleName.PerceptualAssociativeMemory);
 		agent.addSubModule(pam);
 		EpisodicMemoryImpl module = new EpisodicMemoryImpl();

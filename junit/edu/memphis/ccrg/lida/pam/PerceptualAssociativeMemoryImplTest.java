@@ -32,13 +32,13 @@ import edu.memphis.ccrg.lida.framework.initialization.FactoriesDataXmlLoader;
 import edu.memphis.ccrg.lida.framework.mockclasses.ExecutingMockTaskSpawner;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockDetectionAlgorithm;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockTaskSpawner;
-import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
-import edu.memphis.ccrg.lida.framework.shared.ExtendedId;
-import edu.memphis.ccrg.lida.framework.shared.Link;
-import edu.memphis.ccrg.lida.framework.shared.LinkCategory;
-import edu.memphis.ccrg.lida.framework.shared.Node;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
+import edu.memphis.ccrg.lida.framework.shared.ns.ElementFactory;
+import edu.memphis.ccrg.lida.framework.shared.ns.ExtendedId;
+import edu.memphis.ccrg.lida.framework.shared.ns.Link;
+import edu.memphis.ccrg.lida.framework.shared.ns.LinkCategory;
+import edu.memphis.ccrg.lida.framework.shared.ns.Node;
+import edu.memphis.ccrg.lida.framework.shared.ns.NodeStructure;
+import edu.memphis.ccrg.lida.framework.shared.ns.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.SigmoidDecayStrategy;
@@ -46,10 +46,17 @@ import edu.memphis.ccrg.lida.framework.strategies.SigmoidExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.TotalActivationStrategy;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTask;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
-import edu.memphis.ccrg.lida.pam.tasks.DetectionAlgorithm;
+import edu.memphis.ccrg.lida.pam.ns.PamLink;
+import edu.memphis.ccrg.lida.pam.ns.PamLinkImpl;
+import edu.memphis.ccrg.lida.pam.ns.PamNode;
+import edu.memphis.ccrg.lida.pam.ns.PamNodeImpl;
+import edu.memphis.ccrg.lida.pam.ns.PerceptualAssociativeMemoryNSImpl;
+import edu.memphis.ccrg.lida.pam.ns.PropagationStrategy;
+import edu.memphis.ccrg.lida.pam.ns.UpscalePropagationStrategy;
+import edu.memphis.ccrg.lida.pam.ns.tasks.DetectionAlgorithm;
 
 /**
- * Tests {@link PerceptualAssociativeMemoryImpl}
+ * Tests {@link PerceptualAssociativeMemoryNSImpl}
  * 
  * @author Ryan J. McCall
  * @author Siminder Kaur
@@ -57,7 +64,7 @@ import edu.memphis.ccrg.lida.pam.tasks.DetectionAlgorithm;
 public class PerceptualAssociativeMemoryImplTest {
 
 	private static ElementFactory factory;
-	private PerceptualAssociativeMemoryImpl pam;
+	private PerceptualAssociativeMemoryNSImpl pam;
 	private NodeStructure nodeStructure;
 	private PamNode node1, node2, node3;
 	private DecayStrategy decayStrategy;
@@ -75,7 +82,7 @@ public class PerceptualAssociativeMemoryImplTest {
 
 	@Before
 	public void setUp() throws Exception {
-		pam = new PerceptualAssociativeMemoryImpl();
+		pam = new PerceptualAssociativeMemoryNSImpl();
 		nodeStructure = new NodeStructureImpl("PamNodeImpl", "PamLinkImpl");
 
 		node1 = (PamNodeImpl) factory.getNode("PamNodeImpl", "Node 1");
@@ -87,9 +94,9 @@ public class PerceptualAssociativeMemoryImplTest {
 		tas = (TotalActivationStrategy) factory
 				.getStrategy("DefaultTotalActivation");
 		link1 = (PamLinkImpl) factory.getLink("PamLinkImpl", node1, node2,
-				PerceptualAssociativeMemoryImpl.NONE);
+				PerceptualAssociativeMemoryNSImpl.NONE);
 		link2 = (PamLinkImpl) factory.getLink("PamLinkImpl", node2, node3,
-				PerceptualAssociativeMemoryImpl.NONE);
+				PerceptualAssociativeMemoryNSImpl.NONE);
 	}
 
 	@Test
@@ -251,7 +258,7 @@ public class PerceptualAssociativeMemoryImplTest {
 
 	/**
 	 * Test method for
-	 * {@link edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl#addDefaultNodes(java.util.Set)}
+	 * {@link edu.memphis.ccrg.lida.pam.ns.PerceptualAssociativeMemoryNSImpl#addDefaultNodes(java.util.Set)}
 	 * .
 	 */
 	@Test
@@ -357,7 +364,7 @@ public class PerceptualAssociativeMemoryImplTest {
 
 	/**
 	 * Test method for
-	 * {@link edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl#addDetectionAlgorithm(edu.memphis.ccrg.lida.pam.tasks.DetectionAlgorithm)}
+	 * {@link edu.memphis.ccrg.lida.pam.ns.PerceptualAssociativeMemoryNSImpl#addDetectionAlgorithm(edu.memphis.ccrg.lida.pam.ns.tasks.DetectionAlgorithm)}
 	 * .
 	 */
 	@Test
@@ -394,7 +401,7 @@ public class PerceptualAssociativeMemoryImplTest {
 
 	/**
 	 * Test method for
-	 * {@link edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl#setPropagationStrategy(edu.memphis.ccrg.lida.pam.PropagationStrategy)}
+	 * {@link edu.memphis.ccrg.lida.pam.ns.PerceptualAssociativeMemoryNSImpl#setPropagationStrategy(edu.memphis.ccrg.lida.pam.ns.PropagationStrategy)}
 	 * .
 	 */
 	@Test
@@ -424,17 +431,17 @@ public class PerceptualAssociativeMemoryImplTest {
 		testNod4.setActivation(0.99);
 
 		PamLinkImpl l12 = (PamLinkImpl) pam.addDefaultLink(testNod1, testNod2,
-				PerceptualAssociativeMemoryImpl.NONE);
+				PerceptualAssociativeMemoryNSImpl.NONE);
 		double link12Activation = 1.0;
 		l12.setBaseLevelActivation(link12Activation);
 
 		PamLinkImpl l13 = (PamLinkImpl) pam.addDefaultLink(testNod1, testNod3,
-				PerceptualAssociativeMemoryImpl.NONE);
+				PerceptualAssociativeMemoryNSImpl.NONE);
 		double link13Activation = 0.5;
 		l13.setBaseLevelActivation(link13Activation);
 
 		PamLinkImpl l41 = (PamLinkImpl) pam.addDefaultLink(testNod4, testNod1,
-				PerceptualAssociativeMemoryImpl.NONE);
+				PerceptualAssociativeMemoryNSImpl.NONE);
 		l41.setBaseLevelActivation(0.99);
 
 		TaskSpawner ts = new ExecutingMockTaskSpawner();
@@ -549,7 +556,7 @@ public class PerceptualAssociativeMemoryImplTest {
 		PamNode a = pam.addDefaultNode(node1);
 		PamNode b = pam.addDefaultNode(node2);
 		Link l = factory.getLink("PamLinkImpl", a, b,
-				PerceptualAssociativeMemoryImpl.NONE);
+				PerceptualAssociativeMemoryNSImpl.NONE);
 		pam.addDefaultLink(l);
 		assertTrue(pam.containsLink(l));
 		assertFalse(pam.containsLink(this.link2));
@@ -561,19 +568,19 @@ public class PerceptualAssociativeMemoryImplTest {
 		pam.setPerceptThreshold(0.7);
 
 		pam.setPerceptThreshold(-1);
-		assertTrue(PerceptualAssociativeMemoryImpl.getPerceptThreshold() == 0.7);
+		assertTrue(PerceptualAssociativeMemoryNSImpl.getPerceptThreshold() == 0.7);
 
 		pam.setPerceptThreshold(231);
-		assertTrue(PerceptualAssociativeMemoryImpl.getPerceptThreshold() == 0.7);
+		assertTrue(PerceptualAssociativeMemoryNSImpl.getPerceptThreshold() == 0.7);
 
 		pam.setPerceptThreshold(0.3487);
-		assertTrue(PerceptualAssociativeMemoryImpl.getPerceptThreshold() == 0.3487);
+		assertTrue(PerceptualAssociativeMemoryNSImpl.getPerceptThreshold() == 0.3487);
 
 		pam.setPerceptThreshold(0.0);
-		assertTrue(PerceptualAssociativeMemoryImpl.getPerceptThreshold() == 0.0);
+		assertTrue(PerceptualAssociativeMemoryNSImpl.getPerceptThreshold() == 0.0);
 
 		pam.setPerceptThreshold(1.0);
-		assertTrue(PerceptualAssociativeMemoryImpl.getPerceptThreshold() == 1.0);
+		assertTrue(PerceptualAssociativeMemoryNSImpl.getPerceptThreshold() == 1.0);
 	}
 
 	@Test
@@ -669,7 +676,7 @@ public class PerceptualAssociativeMemoryImplTest {
 		pam.addDefaultNode(node1);
 		pam.addDefaultNode(node2);
 		Link l = factory.getLink("PamLinkImpl", node1, node2,
-				PerceptualAssociativeMemoryImpl.NONE);
+				PerceptualAssociativeMemoryNSImpl.NONE);
 		pam.addDefaultLink(l);
 
 		assertEquals(l, pam.getLink(l.getExtendedId()));
@@ -677,7 +684,7 @@ public class PerceptualAssociativeMemoryImplTest {
 				99)));
 
 		ExtendedId id2 = new ExtendedId(node1.getId(), node2.getExtendedId(),
-				PerceptualAssociativeMemoryImpl.NONE.getId());
+				PerceptualAssociativeMemoryNSImpl.NONE.getId());
 		assertEquals(l, pam.getLink(id2));
 	}
 
@@ -735,15 +742,15 @@ public class PerceptualAssociativeMemoryImplTest {
 		} catch (UnsupportedOperationException e) {
 		}
 		Link l = factory.getLink("PamLinkImpl", node1, node2,
-				PerceptualAssociativeMemoryImpl.NONE);
+				PerceptualAssociativeMemoryNSImpl.NONE);
 		pam.addDefaultLink(l);
 
 		l = factory.getLink("PamLinkImpl", node2, node3,
-				PerceptualAssociativeMemoryImpl.NONE);
+				PerceptualAssociativeMemoryNSImpl.NONE);
 		pam.addDefaultLink(l);
 
 		l = factory.getLink("PamLinkImpl", node3, node1,
-				PerceptualAssociativeMemoryImpl.NONE);
+				PerceptualAssociativeMemoryNSImpl.NONE);
 		pam.addDefaultLink(l);
 
 		links = pam.getLinks();
@@ -763,8 +770,8 @@ public class PerceptualAssociativeMemoryImplTest {
 
 	@Test
 	public void testGetLinkCategory() {
-		int id = PerceptualAssociativeMemoryImpl.NONE.getId();
-		assertEquals(PerceptualAssociativeMemoryImpl.NONE, pam
+		int id = PerceptualAssociativeMemoryNSImpl.NONE.getId();
+		assertEquals(PerceptualAssociativeMemoryNSImpl.NONE, pam
 				.getLinkCategory(id));
 
 		Node newCat = factory.getNode("PamNodeImpl");

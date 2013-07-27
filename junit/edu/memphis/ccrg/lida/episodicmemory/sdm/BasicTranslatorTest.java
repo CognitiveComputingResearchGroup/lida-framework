@@ -14,17 +14,17 @@ import org.junit.Test;
 
 import cern.colt.bitvector.BitVector;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockPAM;
-import edu.memphis.ccrg.lida.framework.shared.Node;
-import edu.memphis.ccrg.lida.framework.shared.NodeImpl;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
-import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
+import edu.memphis.ccrg.lida.framework.shared.ns.Node;
+import edu.memphis.ccrg.lida.framework.shared.ns.NodeImpl;
+import edu.memphis.ccrg.lida.framework.shared.ns.NodeStructure;
+import edu.memphis.ccrg.lida.framework.shared.ns.NodeStructureImpl;
+import edu.memphis.ccrg.lida.pam.ns.PerceptualAssociativeMemoryNS;
 
 public class BasicTranslatorTest {
 
 	private Translator tr;
 	private static int SIZE = 100;
-	private PerceptualAssociativeMemory pam;
+	private PerceptualAssociativeMemoryNS pam;
 	private NodeStructure ns;
 	private BitVector vector;
 

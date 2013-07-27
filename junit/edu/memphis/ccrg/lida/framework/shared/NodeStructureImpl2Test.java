@@ -14,8 +14,13 @@ import org.junit.Test;
 import edu.memphis.ccrg.lida.framework.initialization.AgentStarter;
 import edu.memphis.ccrg.lida.framework.initialization.ConfigUtils;
 import edu.memphis.ccrg.lida.framework.initialization.FactoriesDataXmlLoader;
-import edu.memphis.ccrg.lida.pam.PamNode;
-import edu.memphis.ccrg.lida.pam.PamNodeImpl;
+import edu.memphis.ccrg.lida.framework.shared.ns.ElementFactory;
+import edu.memphis.ccrg.lida.framework.shared.ns.Link;
+import edu.memphis.ccrg.lida.framework.shared.ns.Node;
+import edu.memphis.ccrg.lida.framework.shared.ns.NodeStructure;
+import edu.memphis.ccrg.lida.framework.shared.ns.NodeStructureImpl;
+import edu.memphis.ccrg.lida.pam.ns.PamNode;
+import edu.memphis.ccrg.lida.pam.ns.PamNodeImpl;
 
 /**
  * @author Daqi Dong

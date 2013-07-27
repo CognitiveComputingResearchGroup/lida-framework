@@ -34,12 +34,12 @@ import edu.memphis.ccrg.lida.framework.mockclasses.MockFrameworkModule;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockInitializer;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockInitializer2;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockTaskSpawner;
-import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.shared.ns.ElementFactory;
+import edu.memphis.ccrg.lida.framework.shared.ns.NodeStructure;
 import edu.memphis.ccrg.lida.framework.tasks.MockFrameworkTask;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
-import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
+import edu.memphis.ccrg.lida.pam.ns.PerceptualAssociativeMemoryNS;
 import edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorMemoryListener;
 import edu.memphis.ccrg.lida.workspace.Workspace;
 import edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBufferImpl;
@@ -944,7 +944,7 @@ public class AgentXmlFactoryTest {
 		assertTrue(workspace instanceof Workspace);
 		FrameworkModule pam = a
 				.getSubmodule(ModuleName.PerceptualAssociativeMemory);
-		assertTrue(pam instanceof PerceptualAssociativeMemory);
+		assertTrue(pam instanceof PerceptualAssociativeMemoryNS);
 		TaskManager tm = a.getTaskManager();
 		assertNotNull(tm);
 		assertEquals(50, tm.getTickDuration());
@@ -964,7 +964,7 @@ public class AgentXmlFactoryTest {
 		workspace = a.getSubmodule(ModuleName.Workspace);
 		assertTrue(workspace instanceof Workspace);
 		pam = a.getSubmodule(ModuleName.PerceptualAssociativeMemory);
-		assertTrue(pam instanceof PerceptualAssociativeMemory);
+		assertTrue(pam instanceof PerceptualAssociativeMemoryNS);
 		tm = a.getTaskManager();
 		assertNotNull(tm);
 		assertEquals(50, tm.getTickDuration());
@@ -984,7 +984,7 @@ public class AgentXmlFactoryTest {
 		assertTrue(workspace instanceof Workspace);
 		FrameworkModule pam = a
 				.getSubmodule(ModuleName.PerceptualAssociativeMemory);
-		assertTrue(pam instanceof PerceptualAssociativeMemory);
+		assertTrue(pam instanceof PerceptualAssociativeMemoryNS);
 		TaskManager tm = a.getTaskManager();
 
 		assertNotNull(tm);

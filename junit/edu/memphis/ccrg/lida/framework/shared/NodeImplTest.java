@@ -15,7 +15,10 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
-import edu.memphis.ccrg.lida.pam.PamNodeImpl;
+import edu.memphis.ccrg.lida.framework.shared.ns.ElementFactory;
+import edu.memphis.ccrg.lida.framework.shared.ns.ExtendedId;
+import edu.memphis.ccrg.lida.framework.shared.ns.NodeImpl;
+import edu.memphis.ccrg.lida.pam.ns.PamNodeImpl;
 
 /**
  * This is a JUnit class which can be used to test methods of the NodeImpl class

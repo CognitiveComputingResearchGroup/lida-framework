@@ -5,11 +5,11 @@
  * which accompanies this distribution, and is available at
  * http://ccrg.cs.memphis.edu/assets/papers/2010/LIDA-framework-non-commercial-v1.0.pdf
  *******************************************************************************/
-package edu.memphis.ccrg.lida.pam.tasks;
+package edu.memphis.ccrg.lida.pam.tasks.ns;
 
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTask;
-import edu.memphis.ccrg.lida.pam.PamLinkable;
-import edu.memphis.ccrg.lida.pam.PamNode;
+import edu.memphis.ccrg.lida.pam.ns.PamLinkable;
+import edu.memphis.ccrg.lida.pam.ns.PamNode;
 import edu.memphis.ccrg.lida.sensorymemory.SensoryMemory;
 
 /**

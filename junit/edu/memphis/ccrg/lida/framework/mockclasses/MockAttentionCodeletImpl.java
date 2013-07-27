@@ -10,9 +10,9 @@ package edu.memphis.ccrg.lida.framework.mockclasses;
 import java.util.Collection;
 
 import edu.memphis.ccrg.lida.attentioncodelets.AttentionCodeletImpl;
-import edu.memphis.ccrg.lida.framework.shared.Link;
-import edu.memphis.ccrg.lida.framework.shared.Node;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.shared.ns.Link;
+import edu.memphis.ccrg.lida.framework.shared.ns.Node;
+import edu.memphis.ccrg.lida.framework.shared.ns.NodeStructure;
 import edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBuffer;
 
 public class MockAttentionCodeletImpl extends AttentionCodeletImpl {

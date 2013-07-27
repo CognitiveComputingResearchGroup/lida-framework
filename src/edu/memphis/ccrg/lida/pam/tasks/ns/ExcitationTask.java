@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://ccrg.cs.memphis.edu/assets/papers/2010/LIDA-framework-non-commercial-v1.0.pdf
  *******************************************************************************/
-package edu.memphis.ccrg.lida.pam.tasks;
+package edu.memphis.ccrg.lida.pam.tasks.ns;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -13,14 +13,14 @@ import java.util.logging.Logger;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTask;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
-import edu.memphis.ccrg.lida.pam.PamLinkable;
-import edu.memphis.ccrg.lida.pam.PamNode;
-import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
+import edu.memphis.ccrg.lida.pam.ns.PamLinkable;
+import edu.memphis.ccrg.lida.pam.ns.PamNode;
+import edu.memphis.ccrg.lida.pam.ns.PerceptualAssociativeMemoryNS;
 
 /**
  * A task which performs the excitation of a single {@link PamNode}.
  * 
- * @see PerceptualAssociativeMemory#receiveExcitation(PamLinkable, double)
+ * @see PerceptualAssociativeMemoryNS#receiveExcitation(PamLinkable, double)
  * 
  * @author Ryan J. McCall
  * 
@@ -43,7 +43,7 @@ public class ExcitationTask extends FrameworkTaskImpl {
 	/*
 	 * Used to make another excitation call
 	 */
-	private PerceptualAssociativeMemory pam;
+	private PerceptualAssociativeMemoryNS pam;
 
 	/**
 	 * Instantiates a new excitation task to excite supplied {@link PamNode}
@@ -59,7 +59,7 @@ public class ExcitationTask extends FrameworkTaskImpl {
 	 *            PerceptualAssociativeMemory module
 	 */
 	public ExcitationTask(int ticksPerRun, PamNode n, double excitation,
-			PerceptualAssociativeMemory pam) {
+			PerceptualAssociativeMemoryNS pam) {
 		super(ticksPerRun);
 		node = n;
 		excitationAmount = excitation;
@@ -71,7 +71,7 @@ public class ExcitationTask extends FrameworkTaskImpl {
 	 * {@link PamNode} over the percept threshold it creates an
 	 * {@link AddNodeToPerceptTask} to add it to the percept. In either case it
 	 * calls
-	 * {@link PerceptualAssociativeMemory#propagateActivationToParents(PamNode)}
+	 * {@link PerceptualAssociativeMemoryNS#propagateActivationToParents(PamNode)}
 	 * to pass the node's activation, then the tasks finishes.
 	 */
 	@Override

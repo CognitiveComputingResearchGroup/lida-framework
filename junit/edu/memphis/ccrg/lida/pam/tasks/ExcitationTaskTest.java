@@ -20,8 +20,10 @@ import edu.memphis.ccrg.lida.framework.mockclasses.MockTaskSpawner;
 import edu.memphis.ccrg.lida.framework.strategies.LinearExciteStrategy;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTask;
 import edu.memphis.ccrg.lida.framework.tasks.TaskStatus;
-import edu.memphis.ccrg.lida.pam.PamNode;
-import edu.memphis.ccrg.lida.pam.PamNodeImpl;
+import edu.memphis.ccrg.lida.pam.ns.PamNode;
+import edu.memphis.ccrg.lida.pam.ns.PamNodeImpl;
+import edu.memphis.ccrg.lida.pam.ns.tasks.AddNodeToPerceptTask;
+import edu.memphis.ccrg.lida.pam.ns.tasks.ExcitationTask;
 
 public class ExcitationTaskTest {
 

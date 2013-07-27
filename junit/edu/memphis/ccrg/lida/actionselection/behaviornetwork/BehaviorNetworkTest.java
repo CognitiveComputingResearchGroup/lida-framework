@@ -15,15 +15,15 @@ import org.junit.Test;
 import edu.memphis.ccrg.lida.actionselection.ActionImpl;
 import edu.memphis.ccrg.lida.actionselection.Behavior;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockTaskSpawner;
-import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
-import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.activation.Activatible;
+import edu.memphis.ccrg.lida.framework.shared.ns.ElementFactory;
+import edu.memphis.ccrg.lida.framework.shared.ns.Node;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTask;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
-import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemory;
-import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryImpl;
 import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
-import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryImpl.ConditionType;
+import edu.memphis.ccrg.lida.proceduralmemory.ns.ProceduralMemory;
+import edu.memphis.ccrg.lida.proceduralmemory.ns.ProceduralMemoryImpl;
+import edu.memphis.ccrg.lida.proceduralmemory.ns.ProceduralMemoryImpl.ConditionType;
 
 /**
  * Test for {@link BehaviorNetwork} class.

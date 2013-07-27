@@ -20,14 +20,16 @@ import edu.memphis.ccrg.lida.actionselection.Action;
 import edu.memphis.ccrg.lida.actionselection.ActionImpl;
 import edu.memphis.ccrg.lida.actionselection.Behavior;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockTaskSpawner;
-import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
-import edu.memphis.ccrg.lida.framework.shared.Node;
-import edu.memphis.ccrg.lida.framework.shared.NodeImpl;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
+import edu.memphis.ccrg.lida.framework.shared.ns.ElementFactory;
+import edu.memphis.ccrg.lida.framework.shared.ns.Node;
+import edu.memphis.ccrg.lida.framework.shared.ns.NodeImpl;
+import edu.memphis.ccrg.lida.framework.shared.ns.NodeStructure;
+import edu.memphis.ccrg.lida.framework.shared.ns.NodeStructureImpl;
 import edu.memphis.ccrg.lida.globalworkspace.Coalition;
 import edu.memphis.ccrg.lida.globalworkspace.CoalitionImpl;
-import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryImpl.ConditionType;
+import edu.memphis.ccrg.lida.proceduralmemory.ns.ProceduralMemoryImpl;
+import edu.memphis.ccrg.lida.proceduralmemory.ns.SchemeImpl;
+import edu.memphis.ccrg.lida.proceduralmemory.ns.ProceduralMemoryImpl.ConditionType;
 
 /**
  * @author Ryan J. McCall

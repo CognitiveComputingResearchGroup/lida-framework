@@ -19,9 +19,9 @@ import org.junit.Test;
 
 import edu.memphis.ccrg.lida.framework.mockclasses.MockSensoryMotorMemory;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockTaskSpawner;
-import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
-import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryImpl;
+import edu.memphis.ccrg.lida.framework.shared.ns.ElementFactory;
 import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
+import edu.memphis.ccrg.lida.proceduralmemory.ns.ProceduralMemoryImpl;
 
 public class BasicActionSelectionTest {
 

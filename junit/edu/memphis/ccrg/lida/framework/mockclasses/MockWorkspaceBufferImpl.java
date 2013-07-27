@@ -9,8 +9,8 @@ package edu.memphis.ccrg.lida.framework.mockclasses;
 
 import java.util.Map;
 
-import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
+import edu.memphis.ccrg.lida.framework.shared.ns.NodeStructure;
+import edu.memphis.ccrg.lida.framework.shared.ns.NodeStructureImpl;
 import edu.memphis.ccrg.lida.workspace.WorkspaceContent;
 import edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBufferImpl;
 

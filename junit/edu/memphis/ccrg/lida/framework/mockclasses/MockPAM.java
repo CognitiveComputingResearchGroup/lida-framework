@@ -15,27 +15,27 @@ import java.util.Set;
 
 import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
-import edu.memphis.ccrg.lida.framework.shared.ExtendedId;
-import edu.memphis.ccrg.lida.framework.shared.Link;
-import edu.memphis.ccrg.lida.framework.shared.LinkCategory;
-import edu.memphis.ccrg.lida.framework.shared.Linkable;
-import edu.memphis.ccrg.lida.framework.shared.Node;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.pam.PamLink;
-import edu.memphis.ccrg.lida.pam.PamLinkable;
-import edu.memphis.ccrg.lida.pam.PamListener;
-import edu.memphis.ccrg.lida.pam.PamNode;
-import edu.memphis.ccrg.lida.pam.PamNodeImpl;
-import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
-import edu.memphis.ccrg.lida.pam.PropagationStrategy;
-import edu.memphis.ccrg.lida.pam.tasks.DetectionAlgorithm;
+import edu.memphis.ccrg.lida.framework.shared.ns.ExtendedId;
+import edu.memphis.ccrg.lida.framework.shared.ns.Link;
+import edu.memphis.ccrg.lida.framework.shared.ns.LinkCategory;
+import edu.memphis.ccrg.lida.framework.shared.ns.Linkable;
+import edu.memphis.ccrg.lida.framework.shared.ns.Node;
+import edu.memphis.ccrg.lida.framework.shared.ns.NodeStructure;
+import edu.memphis.ccrg.lida.pam.ns.PamLink;
+import edu.memphis.ccrg.lida.pam.ns.PamLinkable;
+import edu.memphis.ccrg.lida.pam.ns.PamListener;
+import edu.memphis.ccrg.lida.pam.ns.PamNode;
+import edu.memphis.ccrg.lida.pam.ns.PamNodeImpl;
+import edu.memphis.ccrg.lida.pam.ns.PerceptualAssociativeMemoryNS;
+import edu.memphis.ccrg.lida.pam.ns.PropagationStrategy;
+import edu.memphis.ccrg.lida.pam.ns.tasks.DetectionAlgorithm;
 
 /**
  * @author Javier Snaider
  * 
  */
 public class MockPAM extends FrameworkModuleImpl implements
-		PerceptualAssociativeMemory {
+		PerceptualAssociativeMemoryNS {
 
 	private static double perceptThreshold = 0.0;
 

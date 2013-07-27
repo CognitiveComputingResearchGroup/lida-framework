@@ -17,13 +17,15 @@ import org.junit.Test;
 
 import edu.memphis.ccrg.lida.framework.mockclasses.MockPAM;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockTaskSpawner;
-import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
+import edu.memphis.ccrg.lida.framework.shared.ns.ElementFactory;
 import edu.memphis.ccrg.lida.framework.strategies.LinearExciteStrategy;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTask;
 import edu.memphis.ccrg.lida.framework.tasks.TaskStatus;
-import edu.memphis.ccrg.lida.pam.PamLink;
-import edu.memphis.ccrg.lida.pam.PamNode;
-import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl;
+import edu.memphis.ccrg.lida.pam.ns.PamLink;
+import edu.memphis.ccrg.lida.pam.ns.PamNode;
+import edu.memphis.ccrg.lida.pam.ns.PerceptualAssociativeMemoryNSImpl;
+import edu.memphis.ccrg.lida.pam.ns.tasks.AddLinkToPerceptTask;
+import edu.memphis.ccrg.lida.pam.ns.tasks.PropagationTask;
 
 /**
  * A propagation task excites a node and a link. The link connects the source of
@@ -52,7 +54,7 @@ public class PropagationTaskTest {
 		sink.setActivation(0.0);
 		sink.setExciteStrategy(new LinearExciteStrategy());
 		link = (PamLink) factory.getLink("PamLinkImpl", source, sink,
-				PerceptualAssociativeMemoryImpl.NONE);
+				PerceptualAssociativeMemoryNSImpl.NONE);
 		link.setActivation(0.0);
 		link.setExciteStrategy(new LinearExciteStrategy());
 

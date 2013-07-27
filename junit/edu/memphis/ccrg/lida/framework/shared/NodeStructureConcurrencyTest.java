@@ -17,7 +17,13 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl;
+import edu.memphis.ccrg.lida.framework.shared.ns.ElementFactory;
+import edu.memphis.ccrg.lida.framework.shared.ns.Link;
+import edu.memphis.ccrg.lida.framework.shared.ns.LinkCategory;
+import edu.memphis.ccrg.lida.framework.shared.ns.Node;
+import edu.memphis.ccrg.lida.framework.shared.ns.NodeStructure;
+import edu.memphis.ccrg.lida.framework.shared.ns.NodeStructureImpl;
+import edu.memphis.ccrg.lida.pam.ns.PerceptualAssociativeMemoryNSImpl;
 
 public class NodeStructureConcurrencyTest {
 
@@ -59,8 +65,8 @@ public class NodeStructureConcurrencyTest {
 		nodes[3].setLabel("green");
 		nodes[3].setActivation(0.4);
 
-		category1 = PerceptualAssociativeMemoryImpl.NONE;
-		category2 = PerceptualAssociativeMemoryImpl.FEATURE;
+		category1 = PerceptualAssociativeMemoryNSImpl.NONE;
+		category2 = PerceptualAssociativeMemoryNSImpl.FEATURE;
 
 		link1 = factory.getLink(nodes[0], nodes[1], category1);
 		link2 = factory.getLink(nodes[1], nodes[2], category2);

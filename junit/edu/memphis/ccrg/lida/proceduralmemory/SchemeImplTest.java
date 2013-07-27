@@ -16,8 +16,9 @@ import org.junit.Test;
 
 import edu.memphis.ccrg.lida.actionselection.Action;
 import edu.memphis.ccrg.lida.actionselection.ActionImpl;
-import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
-import edu.memphis.ccrg.lida.framework.shared.Node;
+import edu.memphis.ccrg.lida.framework.shared.ns.ElementFactory;
+import edu.memphis.ccrg.lida.framework.shared.ns.Node;
+import edu.memphis.ccrg.lida.proceduralmemory.ns.SchemeImpl;
 
 public class SchemeImplTest {
 

@@ -10,7 +10,7 @@ package edu.memphis.ccrg.lida.framework.shared.ns;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.framework.shared.activation.ns.ActivatibleImpl;
+import edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.pam.ns.PamNode;
 import edu.memphis.ccrg.lida.pam.ns.PamNodeImpl;

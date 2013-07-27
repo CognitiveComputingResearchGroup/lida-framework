@@ -18,16 +18,19 @@ import org.junit.Before;
 import org.junit.Test;
 
 import edu.memphis.ccrg.lida.framework.mockclasses.MockPAM;
-import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
-import edu.memphis.ccrg.lida.framework.shared.Link;
-import edu.memphis.ccrg.lida.framework.shared.Node;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
+import edu.memphis.ccrg.lida.framework.shared.ns.ElementFactory;
+import edu.memphis.ccrg.lida.framework.shared.ns.Link;
+import edu.memphis.ccrg.lida.framework.shared.ns.Node;
+import edu.memphis.ccrg.lida.framework.shared.ns.NodeStructure;
+import edu.memphis.ccrg.lida.framework.shared.ns.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskStatus;
-import edu.memphis.ccrg.lida.pam.PamLink;
-import edu.memphis.ccrg.lida.pam.PamLinkImpl;
-import edu.memphis.ccrg.lida.pam.PamNode;
-import edu.memphis.ccrg.lida.pam.PamNodeImpl;
+import edu.memphis.ccrg.lida.pam.ns.PamLink;
+import edu.memphis.ccrg.lida.pam.ns.PamLinkImpl;
+import edu.memphis.ccrg.lida.pam.ns.PamNode;
+import edu.memphis.ccrg.lida.pam.ns.PamNodeImpl;
+import edu.memphis.ccrg.lida.pam.ns.tasks.AddLinkToPerceptTask;
+import edu.memphis.ccrg.lida.pam.ns.tasks.AddNodeStructureToPerceptTask;
+import edu.memphis.ccrg.lida.pam.ns.tasks.AddNodeToPerceptTask;
 
 /**
  * @author Ryan J. McCall

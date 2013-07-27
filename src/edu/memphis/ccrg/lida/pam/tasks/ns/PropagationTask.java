@@ -5,13 +5,13 @@
  * which accompanies this distribution, and is available at
  * http://ccrg.cs.memphis.edu/assets/papers/2010/LIDA-framework-non-commercial-v1.0.pdf
  *******************************************************************************/
-package edu.memphis.ccrg.lida.pam.tasks;
+package edu.memphis.ccrg.lida.pam.tasks.ns;
 
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
-import edu.memphis.ccrg.lida.pam.PamLink;
-import edu.memphis.ccrg.lida.pam.PamLinkable;
-import edu.memphis.ccrg.lida.pam.PamNode;
-import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
+import edu.memphis.ccrg.lida.pam.ns.PamLink;
+import edu.memphis.ccrg.lida.pam.ns.PamLinkable;
+import edu.memphis.ccrg.lida.pam.ns.PamNode;
+import edu.memphis.ccrg.lida.pam.ns.PerceptualAssociativeMemoryNS;
 
 /**
  * A task which propagates an amount of activation along a {@link PamLink} to
@@ -24,7 +24,7 @@ public class PropagationTask extends FrameworkTaskImpl {
 	private PamLinkable sink;
 	private PamLink link;
 	private double excitationAmount;
-	private PerceptualAssociativeMemory pam;
+	private PerceptualAssociativeMemoryNS pam;
 
 	/**
 	 * Default constructor.
@@ -40,7 +40,7 @@ public class PropagationTask extends FrameworkTaskImpl {
 	 *            the pam
 	 */
 	public PropagationTask(int ticksPerRun, PamLink link, double amount,
-			PerceptualAssociativeMemory pam) {
+			PerceptualAssociativeMemoryNS pam) {
 		super(ticksPerRun);
 		this.link = link;
 		this.sink = (PamLinkable) link.getSink();
@@ -52,7 +52,7 @@ public class PropagationTask extends FrameworkTaskImpl {
 	 * Excites the {@link PamLink} specified amount. Excites link's sink based
 	 * on link's new activation. If this puts sink over its percept threshold
 	 * then both Link and sink will be send as a percept. Calls
-	 * {@link PerceptualAssociativeMemory#propagateActivationToParents(PamNode)}
+	 * {@link PerceptualAssociativeMemoryNS#propagateActivationToParents(PamNode)}
 	 * with sink and finishes.
 	 */
 	@Override

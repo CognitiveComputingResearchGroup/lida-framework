@@ -24,10 +24,10 @@ import cern.colt.bitvector.BitVector;
 import edu.memphis.ccrg.lida.episodicmemory.sdm.SparseDistributedMemory;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockLocalAssocListener;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockTranslator;
-import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
-import edu.memphis.ccrg.lida.framework.shared.Node;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
+import edu.memphis.ccrg.lida.framework.shared.ns.ElementFactory;
+import edu.memphis.ccrg.lida.framework.shared.ns.Node;
+import edu.memphis.ccrg.lida.framework.shared.ns.NodeStructure;
+import edu.memphis.ccrg.lida.framework.shared.ns.NodeStructureImpl;
 import edu.memphis.ccrg.lida.globalworkspace.Coalition;
 import edu.memphis.ccrg.lida.globalworkspace.CoalitionImpl;
 
@@ -91,7 +91,7 @@ public class EpisodicMemoryImplTest {
 
 	/**
 	 * Test method for
-	 * {@link edu.memphis.ccrg.lida.episodicmemory.EpisodicMemoryImpl#receiveCue(edu.memphis.ccrg.lida.framework.shared.NodeStructure)}
+	 * {@link edu.memphis.ccrg.lida.episodicmemory.EpisodicMemoryImpl#receiveCue(edu.memphis.ccrg.lida.framework.shared.ns.NodeStructure)}
 	 * .
 	 */
 	@Test

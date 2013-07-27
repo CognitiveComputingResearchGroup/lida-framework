@@ -23,15 +23,17 @@ import org.junit.Test;
 import edu.memphis.ccrg.lida.framework.initialization.AgentStarter;
 import edu.memphis.ccrg.lida.framework.initialization.ConfigUtils;
 import edu.memphis.ccrg.lida.framework.initialization.FactoriesDataXmlLoader;
-import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
-import edu.memphis.ccrg.lida.framework.shared.LinkCategory;
-import edu.memphis.ccrg.lida.framework.shared.Node;
+import edu.memphis.ccrg.lida.framework.shared.ns.ElementFactory;
+import edu.memphis.ccrg.lida.framework.shared.ns.LinkCategory;
+import edu.memphis.ccrg.lida.framework.shared.ns.Node;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.DefaultTotalActivationStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.LinearExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.TotalActivationStrategy;
+import edu.memphis.ccrg.lida.pam.ns.PamLinkImpl;
+import edu.memphis.ccrg.lida.pam.ns.PerceptualAssociativeMemoryNSImpl;
 
 /**
  * @author Ryan J. McCall
@@ -59,7 +61,7 @@ public class PamLinkImplTest {
 	public void setUp() throws Exception {
 		node1 = factory.getNode();
 		node2 = factory.getNode();
-		linkCategory = PerceptualAssociativeMemoryImpl.NONE;
+		linkCategory = PerceptualAssociativeMemoryNSImpl.NONE;
 		link1 = (PamLinkImpl) factory.getLink("PamLinkImpl", node1, node2,
 				linkCategory);
 		link2 = (PamLinkImpl) factory.getLink("PamLinkImpl", node1, node2,
@@ -69,7 +71,7 @@ public class PamLinkImplTest {
 	}
 
 	/**
-	 * {@link edu.memphis.ccrg.lida.pam.PamLinkImpl#equals(java.lang.Object)}.
+	 * {@link edu.memphis.ccrg.lida.pam.ns.PamLinkImpl#equals(java.lang.Object)}.
 	 */
 	@Test
 	public void testEquals() {
@@ -80,7 +82,7 @@ public class PamLinkImplTest {
 	}
 
 	/**
-	 * {@link edu.memphis.ccrg.lida.pam.PamLinkImpl#equals(Object)}
+	 * {@link edu.memphis.ccrg.lida.pam.ns.PamLinkImpl#equals(Object)}
 	 */
 	@Test
 	public void testHashCode() {

@@ -13,6 +13,8 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
+import edu.memphis.ccrg.lida.framework.shared.ns.ExtendedId;
+
 /**
  * 
  * If you are really bored then you can test the case where the sinks link's

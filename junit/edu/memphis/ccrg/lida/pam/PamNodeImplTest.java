@@ -17,13 +17,14 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
-import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
+import edu.memphis.ccrg.lida.framework.shared.ns.ElementFactory;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.DefaultTotalActivationStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.LinearExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.TotalActivationStrategy;
+import edu.memphis.ccrg.lida.pam.ns.PamNodeImpl;
 
 /**
  * @author Siminder Kaur
@@ -43,7 +44,7 @@ public class PamNodeImplTest {
 	}
 
 	/**
-	 * {@link edu.memphis.ccrg.lida.pam.PamNodeImpl#equals(java.lang.Object)}.
+	 * {@link edu.memphis.ccrg.lida.pam.ns.PamNodeImpl#equals(java.lang.Object)}.
 	 */
 	@Test
 	public void testEquals() {

@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://ccrg.cs.memphis.edu/assets/papers/2010/LIDA-framework-non-commercial-v1.0.pdf
  *******************************************************************************/
-package edu.memphis.ccrg.lida.pam.tasks;
+package edu.memphis.ccrg.lida.pam.tasks.ns;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -13,12 +13,12 @@ import java.util.logging.Logger;
 import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.initialization.GlobalInitializer;
 import edu.memphis.ccrg.lida.framework.initialization.Initializable;
-import edu.memphis.ccrg.lida.framework.shared.Linkable;
+import edu.memphis.ccrg.lida.framework.shared.ns.Linkable;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
-import edu.memphis.ccrg.lida.pam.PamLinkable;
-import edu.memphis.ccrg.lida.pam.PamNode;
-import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
+import edu.memphis.ccrg.lida.pam.ns.PamLinkable;
+import edu.memphis.ccrg.lida.pam.ns.PamNode;
+import edu.memphis.ccrg.lida.pam.ns.PerceptualAssociativeMemoryNS;
 import edu.memphis.ccrg.lida.sensorymemory.SensoryMemory;
 
 /**
@@ -45,9 +45,9 @@ public abstract class BasicDetectionAlgorithm extends FrameworkTaskImpl
 	 */
 	protected SensoryMemory sensoryMemory;
 	/**
-	 * the {@link PerceptualAssociativeMemory}
+	 * the {@link PerceptualAssociativeMemoryNS}
 	 */
-	protected PerceptualAssociativeMemory pam;
+	protected PerceptualAssociativeMemoryNS pam;
 	/**
 	 * {@link PamLinkable} this algorithm detects
 	 */
@@ -55,7 +55,7 @@ public abstract class BasicDetectionAlgorithm extends FrameworkTaskImpl
 
 	/**
 	 * Default constructor. Associated {@link Linkable},
-	 * {@link PerceptualAssociativeMemory} and {@link SensoryMemory} must be set
+	 * {@link PerceptualAssociativeMemoryNS} and {@link SensoryMemory} must be set
 	 * using setters.
 	 */
 	public BasicDetectionAlgorithm() {
@@ -63,8 +63,8 @@ public abstract class BasicDetectionAlgorithm extends FrameworkTaskImpl
 
 	@Override
 	public void setAssociatedModule(FrameworkModule module, String moduleUsage) {
-		if (module instanceof PerceptualAssociativeMemory) {
-			pam = (PerceptualAssociativeMemory) module;
+		if (module instanceof PerceptualAssociativeMemoryNS) {
+			pam = (PerceptualAssociativeMemoryNS) module;
 		} else if (module instanceof SensoryMemory) {
 			sensoryMemory = (SensoryMemory) module;
 		} else {
@@ -88,7 +88,7 @@ public abstract class BasicDetectionAlgorithm extends FrameworkTaskImpl
 	 * <br/>
 	 * 
 	 * <b>node type=string</b>label of the Node in
-	 * {@link PerceptualAssociativeMemory} this algorithm detects<br/>
+	 * {@link PerceptualAssociativeMemoryNS} this algorithm detects<br/>
 	 * 
 	 * @see Initializable
 	 */

@@ -10,7 +10,7 @@ package edu.memphis.ccrg.lida.framework.mockclasses;
 import cern.colt.bitvector.BitVector;
 import edu.memphis.ccrg.lida.episodicmemory.sdm.BitVectorUtils;
 import edu.memphis.ccrg.lida.episodicmemory.sdm.Translator;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.shared.ns.NodeStructure;
 
 public class MockTranslator implements Translator {
 

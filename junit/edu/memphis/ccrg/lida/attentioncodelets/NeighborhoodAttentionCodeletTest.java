@@ -22,12 +22,12 @@ import org.junit.Test;
 import edu.memphis.ccrg.lida.framework.initialization.GlobalInitializer;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockGlobalWorkspaceImpl;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockWorkspaceBufferImpl;
-import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
-import edu.memphis.ccrg.lida.framework.shared.Link;
-import edu.memphis.ccrg.lida.framework.shared.Node;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
-import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl;
+import edu.memphis.ccrg.lida.framework.shared.ns.ElementFactory;
+import edu.memphis.ccrg.lida.framework.shared.ns.Link;
+import edu.memphis.ccrg.lida.framework.shared.ns.Node;
+import edu.memphis.ccrg.lida.framework.shared.ns.NodeStructure;
+import edu.memphis.ccrg.lida.framework.shared.ns.NodeStructureImpl;
+import edu.memphis.ccrg.lida.pam.ns.PerceptualAssociativeMemoryNSImpl;
 import edu.memphis.ccrg.lida.workspace.WorkspaceContent;
 
 public class NeighborhoodAttentionCodeletTest {
@@ -63,7 +63,7 @@ public class NeighborhoodAttentionCodeletTest {
 		node2 = factory.getNode();
 		node2.setLabel("node2");
 		link1 = factory.getLink(node1, node2,
-				PerceptualAssociativeMemoryImpl.NONE);
+				PerceptualAssociativeMemoryNSImpl.NONE);
 
 		gInit.setAttribute("node1", node1);
 		gInit.setAttribute("node2", node2);

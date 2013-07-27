@@ -5,11 +5,11 @@
  * which accompanies this distribution, and is available at
  * http://ccrg.cs.memphis.edu/assets/papers/2010/LIDA-framework-non-commercial-v1.0.pdf
  *******************************************************************************/
-package edu.memphis.ccrg.lida.pam.tasks;
+package edu.memphis.ccrg.lida.pam.tasks.ns;
 
-import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.shared.ns.NodeStructure;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
-import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
+import edu.memphis.ccrg.lida.pam.ns.PerceptualAssociativeMemoryNS;
 
 /**
  * A task which adds a {@link NodeStructure} to the percept.
@@ -19,7 +19,7 @@ import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 public class AddNodeStructureToPerceptTask extends FrameworkTaskImpl {
 
 	private NodeStructure ns;
-	private PerceptualAssociativeMemory pam;
+	private PerceptualAssociativeMemoryNS pam;
 
 	/**
 	 * Default constructor
@@ -27,10 +27,10 @@ public class AddNodeStructureToPerceptTask extends FrameworkTaskImpl {
 	 * @param ns
 	 *            {@link NodeStructure}
 	 * @param pam
-	 *            {@link PerceptualAssociativeMemory}
+	 *            {@link PerceptualAssociativeMemoryNS}
 	 */
 	public AddNodeStructureToPerceptTask(NodeStructure ns,
-			PerceptualAssociativeMemory pam) {
+			PerceptualAssociativeMemoryNS pam) {
 		this.ns = ns;
 		this.pam = pam;
 	}

@@ -23,8 +23,14 @@ import org.junit.Test;
 import edu.memphis.ccrg.lida.framework.initialization.AgentStarter;
 import edu.memphis.ccrg.lida.framework.initialization.ConfigUtils;
 import edu.memphis.ccrg.lida.framework.initialization.FactoriesDataXmlLoader;
-import edu.memphis.ccrg.lida.pam.PamLinkImpl;
-import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl;
+import edu.memphis.ccrg.lida.framework.shared.ns.ElementFactory;
+import edu.memphis.ccrg.lida.framework.shared.ns.ExtendedId;
+import edu.memphis.ccrg.lida.framework.shared.ns.Link;
+import edu.memphis.ccrg.lida.framework.shared.ns.LinkCategory;
+import edu.memphis.ccrg.lida.framework.shared.ns.LinkImpl;
+import edu.memphis.ccrg.lida.framework.shared.ns.Node;
+import edu.memphis.ccrg.lida.pam.ns.PamLinkImpl;
+import edu.memphis.ccrg.lida.pam.ns.PerceptualAssociativeMemoryNSImpl;
 
 /**
  * This is a JUnit class which can be used to test methods of the LinkImpl class
@@ -61,17 +67,17 @@ public class LinkImplTest {
 		node3 = factory.getNode();
 		node4 = factory.getNode();
 
-		linktype1 = PerceptualAssociativeMemoryImpl.NONE;
+		linktype1 = PerceptualAssociativeMemoryNSImpl.NONE;
 
 		pamLink1 = (PamLinkImpl) factory.getLink("PamLinkImpl", node3, node4,
-				PerceptualAssociativeMemoryImpl.NONE);
+				PerceptualAssociativeMemoryNSImpl.NONE);
 
 		link1 = (LinkImpl) factory.getLink(node1, node2,
-				PerceptualAssociativeMemoryImpl.NONE);
+				PerceptualAssociativeMemoryNSImpl.NONE);
 		link2 = (LinkImpl) factory.getLink(node3, node4,
-				PerceptualAssociativeMemoryImpl.NONE);
+				PerceptualAssociativeMemoryNSImpl.NONE);
 		link3 = (LinkImpl) factory.getLink(node3, link2,
-				PerceptualAssociativeMemoryImpl.NONE);
+				PerceptualAssociativeMemoryNSImpl.NONE);
 	}
 
 	/**

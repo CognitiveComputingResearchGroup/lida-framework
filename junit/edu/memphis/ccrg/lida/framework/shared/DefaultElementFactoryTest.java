@@ -12,10 +12,12 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
+import edu.memphis.ccrg.lida.framework.shared.ns.ElementFactory;
+import edu.memphis.ccrg.lida.framework.shared.ns.NodeImpl;
 import edu.memphis.ccrg.lida.framework.strategies.NoDecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.NoExciteStrategy;
-import edu.memphis.ccrg.lida.pam.PamNode;
-import edu.memphis.ccrg.lida.pam.PamNodeImpl;
+import edu.memphis.ccrg.lida.pam.ns.PamNode;
+import edu.memphis.ccrg.lida.pam.ns.PamNodeImpl;
 
 public class DefaultElementFactoryTest {
 

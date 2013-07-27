@@ -20,13 +20,16 @@ import edu.memphis.ccrg.lida.framework.Agent;
 import edu.memphis.ccrg.lida.framework.AgentImpl;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.initialization.GlobalInitializer;
-import edu.memphis.ccrg.lida.framework.shared.Link;
-import edu.memphis.ccrg.lida.framework.shared.Node;
+import edu.memphis.ccrg.lida.framework.shared.ns.Link;
+import edu.memphis.ccrg.lida.framework.shared.ns.Node;
+import edu.memphis.ccrg.lida.pam.ns.BasicPamInitializer;
+import edu.memphis.ccrg.lida.pam.ns.PerceptualAssociativeMemoryNS;
+import edu.memphis.ccrg.lida.pam.ns.PerceptualAssociativeMemoryNSImpl;
 
 public class BasicPamInitializerTest {
 
 	private Agent agent;
-	private PerceptualAssociativeMemory pam;
+	private PerceptualAssociativeMemoryNS pam;
 	private BasicPamInitializer initializer;
 	private Map<String, Object> params;
 	private GlobalInitializer globalInitializer;
@@ -34,7 +37,7 @@ public class BasicPamInitializerTest {
 	@Before
 	public void setUp() {
 		agent = new AgentImpl(null);
-		pam = new PerceptualAssociativeMemoryImpl();
+		pam = new PerceptualAssociativeMemoryNSImpl();
 		pam.setModuleName(ModuleName.PerceptualAssociativeMemory);
 
 		initializer = new BasicPamInitializer();

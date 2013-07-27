@@ -11,12 +11,12 @@ import org.junit.Test;
 
 import edu.memphis.ccrg.lida.framework.mockclasses.MockGlobalWorkspaceImpl;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockWorkspaceBufferImpl;
-import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
-import edu.memphis.ccrg.lida.framework.shared.Link;
-import edu.memphis.ccrg.lida.framework.shared.Node;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
-import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl;
+import edu.memphis.ccrg.lida.framework.shared.ns.ElementFactory;
+import edu.memphis.ccrg.lida.framework.shared.ns.Link;
+import edu.memphis.ccrg.lida.framework.shared.ns.Node;
+import edu.memphis.ccrg.lida.framework.shared.ns.NodeStructure;
+import edu.memphis.ccrg.lida.framework.shared.ns.NodeStructureImpl;
+import edu.memphis.ccrg.lida.pam.ns.PerceptualAssociativeMemoryNSImpl;
 import edu.memphis.ccrg.lida.workspace.WorkspaceContent;
 
 public class DefaultAttentionCodeletTest {
@@ -50,14 +50,14 @@ public class DefaultAttentionCodeletTest {
 		node3 = factory.getNode();
 		node3.setActivation(0.5);
 		link12 = factory.getLink(node1, node2,
-				PerceptualAssociativeMemoryImpl.NONE);
+				PerceptualAssociativeMemoryNSImpl.NONE);
 		link21 = factory.getLink(node2, node1,
-				PerceptualAssociativeMemoryImpl.NONE);
+				PerceptualAssociativeMemoryNSImpl.NONE);
 
 		link32 = factory.getLink(node2, node3,
-				PerceptualAssociativeMemoryImpl.NONE);
+				PerceptualAssociativeMemoryNSImpl.NONE);
 		link23 = factory.getLink(node3, node2,
-				PerceptualAssociativeMemoryImpl.NONE);
+				PerceptualAssociativeMemoryNSImpl.NONE);
 	}
 
 	@Test

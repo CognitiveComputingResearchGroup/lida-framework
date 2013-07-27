@@ -17,7 +17,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
-import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
+import edu.memphis.ccrg.lida.framework.shared.ns.ElementFactory;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.DefaultTotalActivationStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
