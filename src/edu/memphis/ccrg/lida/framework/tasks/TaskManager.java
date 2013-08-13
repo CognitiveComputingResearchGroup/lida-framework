@@ -73,6 +73,9 @@ public class TaskManager implements GuiEventProvider {
 	private volatile long endOfNextInterval = 0L;
 	private volatile static long currentTick = 0L;
 	private volatile Long maxTick = 0L;
+	/*
+	 * Represents whether the TaskManager is in step mode or not. 
+	 */
 	private volatile boolean inIntervalMode = false;
 	private final Object lock = new Object();
 
