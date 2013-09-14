@@ -243,6 +243,15 @@ public class XmlUtils {
                             logger.log(Level.FINE, e.toString(), TaskManager.getCurrentTick());
                         }
                     }
+                    else if ("byte".equalsIgnoreCase(type)) {
+                        try {
+                            value = Byte.parseByte(sValue);
+                        }
+                        catch (NumberFormatException e) {
+                            value = null;
+                            logger.log(Level.FINE, e.toString(), TaskManager.getCurrentTick());
+                        }
+                    }
                     else if ("boolean".equalsIgnoreCase(type)) {
                         value = Boolean.parseBoolean(sValue);
                     }
