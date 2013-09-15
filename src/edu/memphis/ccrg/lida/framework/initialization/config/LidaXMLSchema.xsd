@@ -76,6 +76,7 @@
     						<enumeration value="double"></enumeration>
     						<enumeration value="string"></enumeration>
     						<enumeration value="boolean"></enumeration>
+    						<enumeration value="byte"></enumeration>
     					</restriction>
     				</simpleType>
     			</attribute>
