@@ -63,7 +63,7 @@ public class NeighborhoodAttentionCodeletTest {
 		node2 = factory.getNode();
 		node2.setLabel("node2");
 		link1 = factory.getLink(node1, node2,
-				PerceptualAssociativeMemoryImpl.NONE);
+				PerceptualAssociativeMemoryImpl.NO_LINK_CATEGORY);
 
 		gInit.setAttribute("node1", node1);
 		gInit.setAttribute("node2", node2);

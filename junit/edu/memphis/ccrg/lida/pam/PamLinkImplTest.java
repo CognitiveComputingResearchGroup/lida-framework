@@ -59,7 +59,7 @@ public class PamLinkImplTest {
 	public void setUp() throws Exception {
 		node1 = factory.getNode();
 		node2 = factory.getNode();
-		linkCategory = PerceptualAssociativeMemoryImpl.NONE;
+		linkCategory = PerceptualAssociativeMemoryImpl.NO_LINK_CATEGORY;
 		link1 = (PamLinkImpl) factory.getLink("PamLinkImpl", node1, node2,
 				linkCategory);
 		link2 = (PamLinkImpl) factory.getLink("PamLinkImpl", node1, node2,

@@ -149,7 +149,7 @@ public class BasicProceduralMemoryInitializer implements Initializer {
 				// TODO third parameter for category
 				if (source != null && sink != null) {
 					loadedNodeStructure.addDefaultLink(source, sink,
-							PerceptualAssociativeMemoryImpl.PARENT, 1.0, -1.0);
+							PerceptualAssociativeMemoryImpl.PARENT_LINK_CATEGORY, 1.0, -1.0);
 				} else {
 					logger
 							.log(

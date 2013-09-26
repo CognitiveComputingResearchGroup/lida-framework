@@ -87,9 +87,9 @@ public class PerceptualAssociativeMemoryImplTest {
 		tas = (TotalActivationStrategy) factory
 				.getStrategy("DefaultTotalActivation");
 		link1 = (PamLinkImpl) factory.getLink("PamLinkImpl", node1, node2,
-				PerceptualAssociativeMemoryImpl.NONE);
+				PerceptualAssociativeMemoryImpl.NO_LINK_CATEGORY);
 		link2 = (PamLinkImpl) factory.getLink("PamLinkImpl", node2, node3,
-				PerceptualAssociativeMemoryImpl.NONE);
+				PerceptualAssociativeMemoryImpl.NO_LINK_CATEGORY);
 	}
 
 	@Test
@@ -424,17 +424,17 @@ public class PerceptualAssociativeMemoryImplTest {
 		testNod4.setActivation(0.99);
 
 		PamLinkImpl l12 = (PamLinkImpl) pam.addDefaultLink(testNod1, testNod2,
-				PerceptualAssociativeMemoryImpl.NONE);
+				PerceptualAssociativeMemoryImpl.NO_LINK_CATEGORY);
 		double link12Activation = 1.0;
 		l12.setBaseLevelActivation(link12Activation);
 
 		PamLinkImpl l13 = (PamLinkImpl) pam.addDefaultLink(testNod1, testNod3,
-				PerceptualAssociativeMemoryImpl.NONE);
+				PerceptualAssociativeMemoryImpl.NO_LINK_CATEGORY);
 		double link13Activation = 0.5;
 		l13.setBaseLevelActivation(link13Activation);
 
 		PamLinkImpl l41 = (PamLinkImpl) pam.addDefaultLink(testNod4, testNod1,
-				PerceptualAssociativeMemoryImpl.NONE);
+				PerceptualAssociativeMemoryImpl.NO_LINK_CATEGORY);
 		l41.setBaseLevelActivation(0.99);
 
 		TaskSpawner ts = new ExecutingMockTaskSpawner();
@@ -549,7 +549,7 @@ public class PerceptualAssociativeMemoryImplTest {
 		PamNode a = pam.addDefaultNode(node1);
 		PamNode b = pam.addDefaultNode(node2);
 		Link l = factory.getLink("PamLinkImpl", a, b,
-				PerceptualAssociativeMemoryImpl.NONE);
+				PerceptualAssociativeMemoryImpl.NO_LINK_CATEGORY);
 		pam.addDefaultLink(l);
 		assertTrue(pam.containsLink(l));
 		assertFalse(pam.containsLink(this.link2));
@@ -669,7 +669,7 @@ public class PerceptualAssociativeMemoryImplTest {
 		pam.addDefaultNode(node1);
 		pam.addDefaultNode(node2);
 		Link l = factory.getLink("PamLinkImpl", node1, node2,
-				PerceptualAssociativeMemoryImpl.NONE);
+				PerceptualAssociativeMemoryImpl.NO_LINK_CATEGORY);
 		pam.addDefaultLink(l);
 
 		assertEquals(l, pam.getLink(l.getExtendedId()));
@@ -677,7 +677,7 @@ public class PerceptualAssociativeMemoryImplTest {
 				99)));
 
 		ExtendedId id2 = new ExtendedId(node1.getId(), node2.getExtendedId(),
-				PerceptualAssociativeMemoryImpl.NONE.getId());
+				PerceptualAssociativeMemoryImpl.NO_LINK_CATEGORY.getId());
 		assertEquals(l, pam.getLink(id2));
 	}
 
@@ -735,15 +735,15 @@ public class PerceptualAssociativeMemoryImplTest {
 		} catch (UnsupportedOperationException e) {
 		}
 		Link l = factory.getLink("PamLinkImpl", node1, node2,
-				PerceptualAssociativeMemoryImpl.NONE);
+				PerceptualAssociativeMemoryImpl.NO_LINK_CATEGORY);
 		pam.addDefaultLink(l);
 
 		l = factory.getLink("PamLinkImpl", node2, node3,
-				PerceptualAssociativeMemoryImpl.NONE);
+				PerceptualAssociativeMemoryImpl.NO_LINK_CATEGORY);
 		pam.addDefaultLink(l);
 
 		l = factory.getLink("PamLinkImpl", node3, node1,
-				PerceptualAssociativeMemoryImpl.NONE);
+				PerceptualAssociativeMemoryImpl.NO_LINK_CATEGORY);
 		pam.addDefaultLink(l);
 
 		links = pam.getLinks();
@@ -763,8 +763,8 @@ public class PerceptualAssociativeMemoryImplTest {
 
 	@Test
 	public void testGetLinkCategory() {
-		int id = PerceptualAssociativeMemoryImpl.NONE.getId();
-		assertEquals(PerceptualAssociativeMemoryImpl.NONE, pam
+		int id = PerceptualAssociativeMemoryImpl.NO_LINK_CATEGORY.getId();
+		assertEquals(PerceptualAssociativeMemoryImpl.NO_LINK_CATEGORY, pam
 				.getLinkCategory(id));
 
 		Node newCat = factory.getNode("PamNodeImpl");

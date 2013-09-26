@@ -52,7 +52,7 @@ public class PropagationTaskTest {
 		sink.setActivation(0.0);
 		sink.setExciteStrategy(new LinearExciteStrategy());
 		link = (PamLink) factory.getLink("PamLinkImpl", source, sink,
-				PerceptualAssociativeMemoryImpl.NONE);
+				PerceptualAssociativeMemoryImpl.NO_LINK_CATEGORY);
 		link.setActivation(0.0);
 		link.setExciteStrategy(new LinearExciteStrategy());
 

@@ -233,7 +233,7 @@ public class WorkspaceImplTest {
 		assertEquals(0, ns.getLinkCount());
 
 		Link l12 = factory.getLink(node1, node2,
-				PerceptualAssociativeMemoryImpl.FEATURE);
+				PerceptualAssociativeMemoryImpl.FEATURE_LINK_CATEGORY);
 		workspace.receivePercept(l12);
 
 		ns = buffer.getBufferContent(null);

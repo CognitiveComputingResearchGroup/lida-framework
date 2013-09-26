@@ -103,26 +103,26 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 	/**
 	 * Primitive {@link LinkCategory} NONE
 	 */
-	public static LinkCategory NONE = (PamNode) factory.getNode(
-			DEFAULT_NONDECAYING_PAMNODE, "None");
+	public static LinkCategory NO_LINK_CATEGORY = (PamNode) factory.getNode(
+			DEFAULT_NONDECAYING_PAMNODE, "no-link-category");
 
 	/**
 	 * Primitive {@link LinkCategory} LATERAL
 	 */
-	public static LinkCategory LATERAL = (PamNode) factory.getNode(
-			DEFAULT_NONDECAYING_PAMNODE, "Lateral");
+	public static LinkCategory LATERAL_LINK_CATEGORY = (PamNode) factory.getNode(
+			DEFAULT_NONDECAYING_PAMNODE, "lateral-link-category");
 
 	/**
 	 * Primitive {@link LinkCategory} PARENT
 	 */
-	public static LinkCategory PARENT = (PamNode) factory.getNode(
-			DEFAULT_NONDECAYING_PAMNODE, "Parent");
+	public static LinkCategory PARENT_LINK_CATEGORY = (PamNode) factory.getNode(
+			DEFAULT_NONDECAYING_PAMNODE, "parent-link-category");
 
 	/**
 	 * Primitive {@link LinkCategory} FEATURE
 	 */
-	public static LinkCategory FEATURE = (PamNode) factory.getNode(
-			DEFAULT_NONDECAYING_PAMNODE, "Feature");
+	public static LinkCategory FEATURE_LINK_CATEGORY = (PamNode) factory.getNode(
+			DEFAULT_NONDECAYING_PAMNODE, "feature-link-category");
 	/*
 	 * A map where an entry represents a mapping between one factory element type and another.
 	 * The mapping governs a conversion that occurs for each Linkable send out of PAM as a percept.
@@ -135,10 +135,10 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 	 */
 	public PerceptualAssociativeMemoryImpl() {
 		super();
-		addInternalLinkCategory(NONE);
-		addInternalLinkCategory(LATERAL);
-		addInternalLinkCategory(PARENT);
-		addInternalLinkCategory(FEATURE);
+		addInternalLinkCategory(NO_LINK_CATEGORY);
+//		addInternalLinkCategory(LATERAL_LINK_CATEGORY); //TODO add back in for a release
+//		addInternalLinkCategory(PARENT_LINK_CATEGORY);
+//		addInternalLinkCategory(FEATURE_LINK_CATEGORY);
 	}
 
 	/**

@@ -170,10 +170,10 @@ public class BasicPamInitializer implements Initializer {
 					PamLink pamLink = null;
 					if(linkParams.length >= 4){//Custom Factory name desired
 						pamLink = pam.addLink(linkParams[3].trim(), source, sink,
-								PerceptualAssociativeMemoryImpl.PARENT);
+								PerceptualAssociativeMemoryImpl.PARENT_LINK_CATEGORY);
 					}else{
 						pamLink = pam.addDefaultLink(source, sink,
-								PerceptualAssociativeMemoryImpl.PARENT);
+								PerceptualAssociativeMemoryImpl.PARENT_LINK_CATEGORY);
 					}
 					if (pamLink == null) {
 						logger.log(Level.WARNING, "Bad link specification, unable to create link: {1}",
