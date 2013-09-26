@@ -27,7 +27,6 @@ import edu.memphis.ccrg.lida.actionselection.PreafferenceListener;
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.initialization.Initializable;
-import edu.memphis.ccrg.lida.framework.shared.ConcurrentHashSet;
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
@@ -250,7 +249,7 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements
 			synchronized (element) {
 				Set<Behavior> values = map.get(element);
 				if (values == null) {
-					values = new ConcurrentHashSet<Behavior>();
+					values = Collections.newSetFromMap(new ConcurrentHashMap<Behavior,Boolean>());
 					map.put(element, values);
 				}
 				values.add(b);

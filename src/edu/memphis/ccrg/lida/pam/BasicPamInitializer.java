@@ -16,6 +16,8 @@ import edu.memphis.ccrg.lida.framework.initialization.FullyInitializable;
 import edu.memphis.ccrg.lida.framework.initialization.GlobalInitializer;
 import edu.memphis.ccrg.lida.framework.initialization.Initializer;
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
+import edu.memphis.ccrg.lida.framework.shared.Link;
+import edu.memphis.ccrg.lida.framework.shared.LinkCategory;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.activation.Learnable;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
@@ -46,6 +48,9 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 public class BasicPamInitializer implements Initializer {
 
 	private static final Logger logger = Logger.getLogger(BasicPamInitializer.class.getCanonicalName());
+	/**
+	 * A {@link GlobalInitializer} reference.
+	 */
 	protected static final GlobalInitializer globalInitializer = GlobalInitializer.getInstance();
 	private static final ElementFactory factory = ElementFactory.getInstance();
 
@@ -57,7 +62,14 @@ public class BasicPamInitializer implements Initializer {
 		initLinks(pam, params);
 	}
 
-	protected void initNodes(PerceptualAssociativeMemory pam,Map<String, ?> params) {
+	/**
+	 * Inits the {@link Node} Objects of the specified {@link PerceptualAssociativeMemory} object based
+	 * on params. Params must contain a String key "nodes" whose value is a list of node defs
+	 * separated by ",". Node def attributes are separated by ":".
+	 * @param pam the {@link PerceptualAssociativeMemory}
+	 * @param params the parameters
+	 */
+	protected static void initNodes(PerceptualAssociativeMemory pam,Map<String, ?> params) {
 		String nodes = (String)params.get("nodes");
 		if (nodes != null) {
 			String[] defs = nodes.split(",");
@@ -89,8 +101,14 @@ public class BasicPamInitializer implements Initializer {
 			}
 		}
 	}
-
-	protected void initLinkCategories(PerceptualAssociativeMemory pam,
+	/**
+	 * Inits the {@link LinkCategory} objects of the specified {@link PerceptualAssociativeMemory} object based
+	 * on params. Params must contain a String key "linkCategories" whose value is a list of {@link LinkCategory}
+	 * object names separated by ",". 
+	 * @param pam the {@link PerceptualAssociativeMemory}
+	 * @param params the parameters
+	 */
+	protected static void initLinkCategories(PerceptualAssociativeMemory pam,
 			Map<String, ?> params) {
 		String linkCategories = (String) params.get("linkCategories");
 		if (linkCategories != null) {
@@ -119,8 +137,14 @@ public class BasicPamInitializer implements Initializer {
 			}
 		}
 	}
-
-	protected void initLinks(PerceptualAssociativeMemory pam,
+	/**
+	 * Inits the {@link Link} objects of the specified {@link PerceptualAssociativeMemory} object based
+	 * on params. Params must contain a String key "links" whose value is a list of link defs
+	 * separated by ",". Link def elements are separated by ":".
+	 * @param pam the {@link PerceptualAssociativeMemory}
+	 * @param params the parameters
+	 */
+	protected static void initLinks(PerceptualAssociativeMemory pam,
 			Map<String, ?> params) {
 		String links = (String) params.get("links");
 		if (links != null) {
@@ -165,6 +189,11 @@ public class BasicPamInitializer implements Initializer {
 		}
 	}
 
+	/**
+	 * Parses a base-level activation for specified learnable.
+	 * @param param a {@link String} to be parsed.
+	 * @param learnable the {@link Learnable} whose base-level activation will be set.
+	 */
 	protected static void parseBaseLevelActivation(String param, Learnable learnable) {
 		double blActivation = Learnable.DEFAULT_BASE_LEVEL_ACTIVATION;
 		try{

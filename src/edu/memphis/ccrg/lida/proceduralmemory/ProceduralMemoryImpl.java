@@ -26,7 +26,6 @@ import edu.memphis.ccrg.lida.actionselection.Behavior;
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.initialization.Initializable;
-import edu.memphis.ccrg.lida.framework.shared.ConcurrentHashSet;
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
@@ -93,7 +92,7 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements
 	 * Set of all schemes current in the module. Convenient for decaying the
 	 * schemes' base-level activation.
 	 */
-	private Set<Scheme> schemeSet = new ConcurrentHashSet<Scheme>();
+	private Set<Scheme> schemeSet = Collections.newSetFromMap(new ConcurrentHashMap<Scheme,Boolean>());
 
 	/*
 	 * A pool of all conditions (context and adding) in all schemes in the
@@ -279,7 +278,7 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements
 				Object id = c.getConditionId();
 				Set<Scheme> values = map.get(id);
 				if (values == null) {
-					values = new ConcurrentHashSet<Scheme>();
+					values = Collections.newSetFromMap(new ConcurrentHashMap<Scheme,Boolean>());
 					map.put(id, values);
 				}
 				values.add(s);

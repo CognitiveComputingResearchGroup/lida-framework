@@ -29,7 +29,6 @@ import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
 import edu.memphis.ccrg.lida.framework.gui.events.GuiEventProvider;
-import edu.memphis.ccrg.lida.framework.shared.ConcurrentHashSet;
 
 /**
  * All tasks in the {@link Agent} system are executed by this class. Controls
@@ -371,7 +370,7 @@ public class TaskManager implements GuiEventProvider {
 		Long time = currentTick + inXTicks;
 		Set<FrameworkTask> set = taskQueue.get(time);
 		if (set == null) {
-			Set<FrameworkTask> set2 = new ConcurrentHashSet<FrameworkTask>();
+			Set<FrameworkTask> set2 = Collections.newSetFromMap(new ConcurrentHashMap<FrameworkTask,Boolean>());
 			set = taskQueue.putIfAbsent(time, set2);
 			if (set == null) {// there wasn't a set already at key 'time'
 				set = set2;

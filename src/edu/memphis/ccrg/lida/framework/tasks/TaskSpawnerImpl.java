@@ -10,12 +10,12 @@ package edu.memphis.ccrg.lida.framework.tasks;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.initialization.AgentXmlFactory;
 import edu.memphis.ccrg.lida.framework.initialization.InitializableImpl;
-import edu.memphis.ccrg.lida.framework.shared.ConcurrentHashSet;
 
 /**
  * Maintains a queue of running tasks and their task status. Methods to add and
@@ -32,7 +32,7 @@ public class TaskSpawnerImpl extends InitializableImpl implements TaskSpawner {
 	/*
 	 * The tasks currently controlled by this TaskSpawner.
 	 */
-	private Set<FrameworkTask> controlledTasks = new ConcurrentHashSet<FrameworkTask>();
+	private Set<FrameworkTask> controlledTasks = Collections.newSetFromMap(new ConcurrentHashMap<FrameworkTask,Boolean>());
 
 	private TaskManager taskManager;
 

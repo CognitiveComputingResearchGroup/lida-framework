@@ -13,6 +13,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -20,7 +21,6 @@ import edu.memphis.ccrg.lida.actionselection.behaviornetwork.BehaviorNetwork;
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.initialization.Initializable;
-import edu.memphis.ccrg.lida.framework.shared.ConcurrentHashSet;
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
@@ -43,7 +43,7 @@ public class BasicActionSelection extends FrameworkModuleImpl implements
 			.getLogger(BasicActionSelection.class.getCanonicalName());
 
 	private List<ActionSelectionListener> listeners = new ArrayList<ActionSelectionListener>();
-	private Set<Behavior> behaviors = new ConcurrentHashSet<Behavior>();
+	private Set<Behavior> behaviors = Collections.newSetFromMap(new ConcurrentHashMap<Behavior,Boolean>());
 	private double maxActivationThreshold;
 	private DecayStrategy behaviorDecayStrategy;
 
