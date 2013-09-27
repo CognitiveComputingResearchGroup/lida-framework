@@ -81,7 +81,7 @@ public class BroadcastQueueImpl extends FrameworkModuleImpl implements
 	}
 
 	@Override
-	public void addBufferContent(WorkspaceContent c) {
+	public synchronized void addBufferContent(WorkspaceContent c) {
 		broadcastQueue.addFirst(c);
 		while (broadcastQueue.size() > broadcastQueueCapacity) {
 			broadcastQueue.removeLast();// remove oldest
@@ -102,7 +102,9 @@ public class BroadcastQueueImpl extends FrameworkModuleImpl implements
 	@Override
 	public WorkspaceContent getPositionContent(int i) {
 		if (i > -1 && i < broadcastQueue.size()) {
-			return (WorkspaceContent) broadcastQueue.get(i);
+			if(!broadcastQueue.isEmpty()){
+				return (WorkspaceContent) broadcastQueue.get(i);
+			}
 		}
 		return null;
 	}
