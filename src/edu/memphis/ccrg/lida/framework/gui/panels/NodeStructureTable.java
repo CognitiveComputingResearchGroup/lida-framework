@@ -18,25 +18,17 @@
 package edu.memphis.ccrg.lida.framework.gui.panels;
 
 import java.text.DecimalFormat;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.swing.SwingConstants;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableColumnModel;
-import javax.swing.table.TableColumn;
 
 import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.gui.utils.GuiUtils;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.shared.activation.Learnable;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
-import edu.memphis.ccrg.lida.pam.PamNode;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl;
 
 /**
@@ -131,7 +123,6 @@ public class NodeStructureTable extends GuiPanelImpl {
 	private javax.swing.JScrollPane nodeStructurePane;
 	private javax.swing.JTable nodeStructureTable;
 	private javax.swing.JButton refreshButton;
-
 	// End of variables declaration//GEN-END:variables
 
 	/**
@@ -166,41 +157,43 @@ public class NodeStructureTable extends GuiPanelImpl {
 	public void refresh() {
 		display(module.getModuleContent());
 	}
+	@Override
+	public void display(Object o) {
+		if (o instanceof NodeStructure) {
+			nodeStructure = (NodeStructure) o;
+			((AbstractTableModel) nodeStructureTable.getModel())
+					.fireTableStructureChanged();
+		} else {
+			logger.log(Level.WARNING,
+							"Can only display NodeStructure, but received {1} from module {2}",
+							new Object[] {TaskManager.getCurrentTick(),o,module});
+		}
+	}
 
 	/*
 	 * Implementation of abstract table model to adapt a NodeStructure to a
 	 * Table. Columns are the attributes of the Nodes in the NodeStructure. Rows
-	 * are the Nodes
+	 * are the Nodes.
 	 * 
 	 * @author Javier Snaider
+	 * @author Ryan
 	 */
 	private class NodeStructureTableModel extends AbstractTableModel {
-		// TODO support links as well
-
-		private String[] columnNames = { "Node", "ID", "Current Activation",
-				"Base-Level Activation", "Threshold" };
-		private int[] columnAlign = { SwingConstants.LEFT,
-				SwingConstants.RIGHT, SwingConstants.RIGHT,
-				SwingConstants.RIGHT, SwingConstants.RIGHT };
+		// Support links as well
 		private DecimalFormat df = new DecimalFormat("0.0000");
-		private Map<String, Integer> columnAlignmentMap = new HashMap<String, Integer>();
-
-		public NodeStructureTableModel() {
-			for (int i = 0; i < columnNames.length; i++) {
-				columnAlignmentMap.put(columnNames[i], columnAlign[i]);
-			}
-		}
+		private String[] columnNames = {"Node Label", "ID", 
+				"Base-Level Activation", "Current Activation", 
+				"Base-Level Incentive Salience", "Current Incentive Salience", 
+									"Percept Threshold"};
 
 		@Override
 		public int getColumnCount() {
 			return columnNames.length;
 		}
-
 		@Override
 		public int getRowCount() {
 			return nodeStructure.getNodeCount();
 		}
-
 		@Override
 		public String getColumnName(int column) {
 			if (column < columnNames.length) {
@@ -213,104 +206,49 @@ public class NodeStructureTable extends GuiPanelImpl {
 		 * Depending on the columnIndex, the appropriate method is called to get
 		 * an attribute of the Node.
 		 * 
-		 * @param rowIndex
-		 *            which row that is being filled in
-		 * @param columnIndex
-		 *            the attribute being asked for
+		 * @param rowIndex the index of the row being filled in
+		 * @param columnIndex the index of the attribute being asked for
 		 * @see javax.swing.table.TableModel#getValueAt(int, int)
 		 */
 		@Override
 		public Object getValueAt(int rowIndex, int columnIndex) {
-			Node node = null;
-			if (rowIndex > nodeStructure.getNodeCount()
-					|| columnIndex > columnNames.length || rowIndex < 0
-					|| columnIndex < 0) {
-				return null;
-			}
-			Collection<Node> nodes = nodeStructure.getNodes();
-			Iterator<Node> it = nodes.iterator();
-			// TODO optimize
-			for (int i = 0; i <= rowIndex; i++) {
-				node = it.next();
-			}
-			switch (columnIndex) {
-			case 0:
-				if (node == null) {
-					return "";
-				} else {
-					return node.getLabel();
+			Object value = "";
+			Object[] nodes = nodeStructure.getNodes().toArray();
+			if (rowIndex >= 0 && rowIndex < nodes.length &&
+						columnIndex >= 0 &&	columnIndex < columnNames.length) {				
+				Node node = (Node) nodes[rowIndex];
+				switch (columnIndex) {
+					case 0:
+						value = node.getLabel();
+						break;
+					case 1:
+						value = node.getId();
+						break;
+					case 2:
+						if (node instanceof Learnable) {
+							value = df.format(((Learnable)node).getBaseLevelActivation());
+						}
+						break;
+					case 3:
+						value = df.format(node.getActivation());
+						break;
+					case 4:
+						if (node instanceof Learnable) {
+							value = df.format(((Learnable) node).getBaseLevelIncentiveSalience());
+						}
+						break;
+					case 5:
+						value = df.format(node.getIncentiveSalience());	
+						break;
+					case 6:
+						value = df.format(PerceptualAssociativeMemoryImpl.getPerceptThreshold());
+						break;
+					default:
+						break;
 				}
-			case 1:
-				if (node == null) {
-					return "";
-				} else {
-					return node.getId();
-				}
-			case 2:
-				if (node == null) {
-					return "";
-				} else {
-					return df.format(node.getActivation());
-				}
-			case 3:
-				if (node instanceof PamNode) {
-					return df.format(((PamNode) node).getBaseLevelActivation());
-				} else {
-					return "";
-				}
-			case 4:
-				if (node instanceof PamNode) {
-					return df.format(PerceptualAssociativeMemoryImpl
-							.getPerceptThreshold());
-				} else {
-					return "";
-				}
-			default:
-				return "";
-			}
-		}
-
-		/**
-		 * @return the columnAlignmentMap
-		 */
-		public Map<String, Integer> getColumnAlignmentMap() {
-			return columnAlignmentMap;
-		}
-	}
-
-	@Override
-	public void display(Object o) {
-		if (o instanceof NodeStructure) {
-			nodeStructure = (NodeStructure) o;
-			((AbstractTableModel) nodeStructureTable.getModel())
-					.fireTableStructureChanged();
-		} else {
-			logger
-					.log(
-							Level.WARNING,
-							"Can only display NodeStructure, but received {1} from module {2}",
-							new Object[] { TaskManager.getCurrentTick(), o,
-									module });
-		}
-	}
-
-	@SuppressWarnings("unused")
-	private class AlignedColumnTableModel extends DefaultTableColumnModel {
-
-		private DefaultTableCellRenderer render;
-
-		public AlignedColumnTableModel() {
-			render = new DefaultTableCellRenderer();
-			render.setHorizontalAlignment(SwingConstants.RIGHT);
-		}
-
-		@Override
-		public void addColumn(TableColumn column) {
-			if (nodeStructureTableModel.getColumnAlignmentMap().get(
-					column.getHeaderValue().toString()) == SwingConstants.RIGHT) {
-				column.setCellRenderer(render);
-			}
-			super.addColumn(column);
-		}
-	}
+			}				
+			return value;
+		}//method
+		
+	}//table model
 }

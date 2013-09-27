@@ -104,14 +104,8 @@ public class GlobalWorkspaceTablePanel extends GuiPanelImpl implements
 						Short.MAX_VALUE).addContainerGap()).addComponent(
 				jSplitPane1, javax.swing.GroupLayout.Alignment.TRAILING,
 				javax.swing.GroupLayout.DEFAULT_SIZE, 1142, Short.MAX_VALUE));
-		layout
-				.setVerticalGroup(layout
-						.createParallelGroup(
-								javax.swing.GroupLayout.Alignment.LEADING)
-						.addGroup(
-								layout
-										.createSequentialGroup()
-										.addComponent(
+		layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+						.addGroup(layout.createSequentialGroup().addComponent(
 												jToolBar1,
 												javax.swing.GroupLayout.PREFERRED_SIZE,
 												25,
@@ -141,12 +135,9 @@ public class GlobalWorkspaceTablePanel extends GuiPanelImpl implements
 
 	@Override
 	public void initPanel(String[] param) {
-		module = (GlobalWorkspace) agent
-				.getSubmodule(ModuleName.GlobalWorkspace);
+		module = (GlobalWorkspace) agent.getSubmodule(ModuleName.GlobalWorkspace);
 		if (module == null) {
-			logger
-					.log(
-							Level.WARNING,
+			logger.log(Level.WARNING,
 							"Error initializing NodeStructure Panel, Module does not exist in agent.",
 							0L);
 			return;
@@ -174,9 +165,8 @@ public class GlobalWorkspaceTablePanel extends GuiPanelImpl implements
 
 	private class CoalitionsTableModel extends AbstractTableModel {
 
-		private String[] columNames = { "Coalition ID", "Activation",
-				"Coalition NodeStructure", "Creating AttentionCodelet",
-				"Sought Content" };
+		private String[] columNames = {"Coalition ID","Activation","Incentive Salience",
+								"NodeStructure Content","Creating Attention Codelet","Codelet's Sought Content" };
 		private DecimalFormat df = new DecimalFormat("0.0000");
 
 		@Override
@@ -199,7 +189,6 @@ public class GlobalWorkspaceTablePanel extends GuiPanelImpl implements
 
 		@Override
 		public Object getValueAt(int rowIndex, int columnIndex) {
-
 			if (rowIndex > coalitionArray.length
 					|| columnIndex > columNames.length || rowIndex < 0
 					|| columnIndex < 0) {
@@ -208,18 +197,20 @@ public class GlobalWorkspaceTablePanel extends GuiPanelImpl implements
 			Coalition coal = coalitionArray[rowIndex];
 
 			switch (columnIndex) {
-			case 0:
-				return coal.getId();
-			case 1:
-				return df.format(coal.getActivation());
-			case 2:
-				return coal.getContent();
-			case 3:
-				return coal.getCreatingAttentionCodelet();
-			case 4:
-				return coal.getCreatingAttentionCodelet().getSoughtContent();
-			default:
-				return "";
+				case 0:
+					return coal.getId();
+				case 1:
+					return df.format(coal.getActivation());
+				case 2:
+					return df.format(coal.getIncentiveSalience());
+				case 3:
+					return coal.getContent();
+				case 4:
+					return coal.getCreatingAttentionCodelet();
+				case 5:
+					return coal.getCreatingAttentionCodelet().getSoughtContent();
+				default:
+					return "";
 			}
 
 		}
@@ -259,24 +250,23 @@ public class GlobalWorkspaceTablePanel extends GuiPanelImpl implements
 			}
 			BroadcastDetail bd = recentBbroadcasts.get(rowIndex);
 			switch (columnIndex) {
-			case 0:
-				return bd.getTickAtBroadcast();
-			case 1:
-				return bd.getBroadcastSentCount();
-			case 2:
-				return df.format(bd.getWinnerCoalActivation());
-			case 3:
-				return bd.getBroadcastContent();
-			case 4:
-				BroadcastTrigger trigger = bd.getLastBroadcastTrigger();
-				if (trigger != null) {
-					return trigger.getClass().getSimpleName();
-				}
-				return "";
-			default:
-				return "";
+				case 0:
+					return bd.getTickAtBroadcast();
+				case 1:
+					return bd.getBroadcastSentCount();
+				case 2:
+					return df.format(bd.getWinnerCoalActivation());
+				case 3:
+					return bd.getBroadcastContent();
+				case 4:
+					BroadcastTrigger trigger = bd.getLastBroadcastTrigger();
+					if (trigger != null) {
+						return trigger.getClass().getSimpleName();
+					}
+					return "";
+				default:
+					return "";
 			}
-
 		}
 	}
 
