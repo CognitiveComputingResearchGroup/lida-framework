@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.actionselection.Behavior;
 import edu.memphis.ccrg.lida.actionselection.BehaviorImpl;
+import edu.memphis.ccrg.lida.attentioncodelets.AttentionCodelet;
 import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.initialization.FrameworkTaskDef;
@@ -30,6 +31,8 @@ import edu.memphis.ccrg.lida.framework.strategies.NoExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.Strategy;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTask;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
+import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
+import edu.memphis.ccrg.lida.globalworkspace.Coalition;
 import edu.memphis.ccrg.lida.pam.PamLinkImpl;
 import edu.memphis.ccrg.lida.pam.PamNodeImpl;
 import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
@@ -41,10 +44,10 @@ import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
  * @author Javier Snaider
  * @author Ryan J. McCall
  */
+@SuppressWarnings("static-method")
 public class ElementFactory {
 
-	private static final Logger logger = Logger.getLogger(ElementFactory.class
-			.getCanonicalName());
+	private static final Logger logger = Logger.getLogger(ElementFactory.class.getCanonicalName());
 
 	/*
 	 * Used to assign unique IDs to nodes.
@@ -66,8 +69,7 @@ public class ElementFactory {
 	 */
 	private String defaultExciteType = "defaultExcite";
 
-	private String defaultTotalValueStrategyType = DefaultTotalActivationStrategy.class
-			.getSimpleName();
+	private String defaultTotalValueStrategyType = DefaultTotalActivationStrategy.class.getSimpleName();
 
 	/*
 	 * Used to retrieve default link class from 'linkClasses' map. e.g.
@@ -92,8 +94,7 @@ public class ElementFactory {
 	private String defaultNodeType = NodeImpl.class.getSimpleName();
 
 	// TODO a Definition for behavior is needed
-	private String defaultBehaviorClassName = BehaviorImpl.class
-			.getCanonicalName();
+	private String defaultBehaviorClassName = BehaviorImpl.class.getCanonicalName();
 
 	/*
 	 * Map of all the ExciteStrategies available to this factory
@@ -174,36 +175,31 @@ public class ElementFactory {
 		// Default decay type
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("m", 0.1);
-		addDecayStrategy(defaultDecayType, new StrategyDef(
-				LinearDecayStrategy.class.getCanonicalName(), defaultDecayType,
-				params, decayStrategyType, true));
+		addDecayStrategy(defaultDecayType, new StrategyDef(LinearDecayStrategy.class.getCanonicalName(), defaultDecayType, params, decayStrategyType,
+				true));
 
 		// Default excite type
 		params = new HashMap<String, Object>();
 		params.put("m", 1.0);
 		params.put("lowerBound", 0.0);
 		params.put("upperBound", 1.0);
-		addExciteStrategy(defaultExciteType, new StrategyDef(
-				LinearExciteStrategy.class.getCanonicalName(),
-				defaultExciteType, params, exciteStrategyType, true));
+		addExciteStrategy(defaultExciteType, new StrategyDef(LinearExciteStrategy.class.getCanonicalName(), defaultExciteType, params,
+				exciteStrategyType, true));
 
 		// No-decay strategy type
 		String strategyName = "noDecay";
-		addDecayStrategy(strategyName, new StrategyDef(NoDecayStrategy.class
-				.getCanonicalName(), strategyName,
-				new HashMap<String, Object>(), decayStrategyType, true));
+		addDecayStrategy(strategyName, new StrategyDef(NoDecayStrategy.class.getCanonicalName(), strategyName, new HashMap<String, Object>(),
+				decayStrategyType, true));
 
 		// No-excite strategy type
 		strategyName = "noExcite";
-		addExciteStrategy(strategyName, new StrategyDef(NoExciteStrategy.class
-				.getCanonicalName(), strategyName,
-				new HashMap<String, Object>(), exciteStrategyType, true));
+		addExciteStrategy(strategyName, new StrategyDef(NoExciteStrategy.class.getCanonicalName(), strategyName, new HashMap<String, Object>(),
+				exciteStrategyType, true));
 
 		// Default TotalActivation strategy
 		strategyName = defaultTotalValueStrategyType;
-		StrategyDef strategyDef = new StrategyDef(
-				DefaultTotalActivationStrategy.class.getCanonicalName(),
-				strategyName, new HashMap<String, Object>(), "other", true);
+		StrategyDef strategyDef = new StrategyDef(DefaultTotalActivationStrategy.class.getCanonicalName(), strategyName,
+				new HashMap<String, Object>(), "other", true);
 		addStrategy(strategyName, strategyDef);
 
 		// Nodes, Links
@@ -223,14 +219,12 @@ public class ElementFactory {
 		addNodeType(defaultNodeType, defaultNodeClassName);
 
 		// PamNodeImpl type
-		LinkableDef newNodeDef = new LinkableDef(PamNodeImpl.class
-				.getCanonicalName(), new HashMap<String, String>(),
+		LinkableDef newNodeDef = new LinkableDef(PamNodeImpl.class.getCanonicalName(), new HashMap<String, String>(),
 				PamNodeImpl.class.getSimpleName(), params);
 		addNodeType(newNodeDef);
 
 		// Non-decaying PamNode
-		newNodeDef = new LinkableDef(PamNodeImpl.class.getCanonicalName(),
-				defaultStrategies, "NoDecayPamNode", params);
+		newNodeDef = new LinkableDef(PamNodeImpl.class.getCanonicalName(), defaultStrategies, "NoDecayPamNode", params);
 		addNodeType(newNodeDef);
 
 		// Links
@@ -238,13 +232,11 @@ public class ElementFactory {
 		addLinkType(defaultLinkType, defaultLinkClassName);
 
 		// PamLinkImpl type
-		LinkableDef newLinkDef = new LinkableDef(PamLinkImpl.class
-				.getCanonicalName(), new HashMap<String, String>(),
+		LinkableDef newLinkDef = new LinkableDef(PamLinkImpl.class.getCanonicalName(), new HashMap<String, String>(),
 				PamLinkImpl.class.getSimpleName(), params);
 		addLinkType(newLinkDef);
 
-		newLinkDef = new LinkableDef(PamLinkImpl.class.getCanonicalName(),
-				defaultStrategies, "NoDecayPamLink", params);
+		newLinkDef = new LinkableDef(PamLinkImpl.class.getCanonicalName(), defaultStrategies, "NoDecayPamLink", params);
 		addLinkType(newLinkDef);
 	}
 
@@ -305,9 +297,7 @@ public class ElementFactory {
 	 *            the class name
 	 */
 	public void addLinkType(String typeName, String className) {
-		linkClasses.put(typeName, new LinkableDef(className,
-				new HashMap<String, String>(), typeName,
-				new HashMap<String, Object>()));
+		linkClasses.put(typeName, new LinkableDef(className, new HashMap<String, String>(), typeName, new HashMap<String, Object>()));
 	}
 
 	/**
@@ -329,9 +319,7 @@ public class ElementFactory {
 	 *            the canonical node name
 	 */
 	public void addNodeType(String typeName, String className) {
-		nodeClasses.put(typeName, new LinkableDef(className,
-				new HashMap<String, String>(), typeName,
-				new HashMap<String, Object>()));
+		nodeClasses.put(typeName, new LinkableDef(className, new HashMap<String, String>(), typeName, new HashMap<String, Object>()));
 	}
 
 	/**
@@ -419,12 +407,8 @@ public class ElementFactory {
 		StrategyDef sd = decayStrategies.get(strategyTypeName);
 		if (sd == null) {
 			sd = decayStrategies.get(defaultDecayType);
-			logger
-					.log(
-							Level.WARNING,
-							"Decay strategy type {1} does not exist. Default type will be returned.",
-							new Object[] { TaskManager.getCurrentTick(),
-									strategyTypeName });
+			logger.log(Level.WARNING, "Decay strategy type {1} does not exist. Default type will be returned.",
+					new Object[] { TaskManager.getCurrentTick(), strategyTypeName });
 		}
 		d = (DecayStrategy) sd.getInstance();
 		return d;
@@ -442,12 +426,8 @@ public class ElementFactory {
 		StrategyDef sd = exciteStrategies.get(strategyTypeName);
 		if (sd == null) {
 			sd = exciteStrategies.get(defaultExciteType);
-			logger
-					.log(
-							Level.WARNING,
-							"Excite strategy type {1} does not exist. Default type will be returned.",
-							new Object[] { TaskManager.getCurrentTick(),
-									strategyTypeName });
+			logger.log(Level.WARNING, "Excite strategy type {1} does not exist. Default type will be returned.",
+					new Object[] { TaskManager.getCurrentTick(), strategyTypeName });
 		}
 		d = (ExciteStrategy) sd.getInstance();
 		return d;
@@ -466,9 +446,7 @@ public class ElementFactory {
 		if (sd != null) {
 			d = sd.getInstance();
 		} else {
-			logger.log(Level.WARNING,
-					"Factory does not contain strategy of type {1}",
-					new Object[] { TaskManager.getCurrentTick(), typeName });
+			logger.log(Level.WARNING, "Factory does not contain strategy of type {1}", new Object[] { TaskManager.getCurrentTick(), typeName });
 		}
 		return d;
 	}
@@ -489,11 +467,8 @@ public class ElementFactory {
 	 *            threshold to remain in {@link NodeStructure}
 	 * @return new Link
 	 */
-	public Link getLink(Node source, Linkable sink, LinkCategory category,
-			double activation, double removalThreshold) {
-		return getLink(defaultLinkType, source, sink, category,
-				defaultDecayType, defaultExciteType, activation,
-				removalThreshold);
+	public Link getLink(Node source, Linkable sink, LinkCategory category, double activation, double removalThreshold) {
+		return getLink(defaultLinkType, source, sink, category, defaultDecayType, defaultExciteType, activation, removalThreshold);
 	}
 
 	/**
@@ -509,9 +484,7 @@ public class ElementFactory {
 	 * @return new Link
 	 */
 	public Link getLink(Node source, Linkable sink, LinkCategory category) {
-		return getLink(defaultLinkType, source, sink, category,
-				defaultDecayType, defaultExciteType,
-				Activatible.DEFAULT_ACTIVATION,
+		return getLink(defaultLinkType, source, sink, category, defaultDecayType, defaultExciteType, Activatible.DEFAULT_ACTIVATION,
 				Activatible.DEFAULT_ACTIVATIBLE_REMOVAL_THRESHOLD);
 	}
 
@@ -532,20 +505,15 @@ public class ElementFactory {
 	 *            Link's {@link LinkCategory}
 	 * @return new {@link Link} with specified attributes.
 	 */
-	public Link getLink(String requiredType, String desiredType, Node source,
-			Linkable sink, LinkCategory category) {
+	public Link getLink(String requiredType, String desiredType, Node source, Linkable sink, LinkCategory category) {
 		LinkableDef requiredDef = linkClasses.get(requiredType);
 		if (requiredDef == null) {
-			logger.log(Level.WARNING,
-					"Factory does not contain link type: {1}", new Object[] {
-							TaskManager.getCurrentTick(), requiredType });
+			logger.log(Level.WARNING, "Factory does not contain link type: {1}", new Object[] { TaskManager.getCurrentTick(), requiredType });
 			return null;
 		}
 		LinkableDef desiredDef = linkClasses.get(desiredType);
 		if (desiredDef == null) {
-			logger.log(Level.WARNING,
-					"Factory does not contain link type: {1}", new Object[] {
-							TaskManager.getCurrentTick(), desiredType });
+			logger.log(Level.WARNING, "Factory does not contain link type: {1}", new Object[] { TaskManager.getCurrentTick(), desiredType });
 			return null;
 		}
 
@@ -577,12 +545,10 @@ public class ElementFactory {
 	 *            LinkCategory
 	 * @return new Link
 	 */
-	public Link getLink(String linkType, Node source, Linkable sink,
-			LinkCategory category) {
+	public Link getLink(String linkType, Node source, Linkable sink, LinkCategory category) {
 		LinkableDef linkDef = linkClasses.get(linkType);
 		if (linkDef == null) {
-			logger.log(Level.WARNING, "Link type {1} does not exist.",
-					new Object[] { TaskManager.getCurrentTick(), linkType });
+			logger.log(Level.WARNING, "Link type {1} does not exist.", new Object[] { TaskManager.getCurrentTick(), linkType });
 			return null;
 		}
 
@@ -595,8 +561,7 @@ public class ElementFactory {
 			exciteB = defaultExciteType;
 		}
 
-		return getLink(linkType, source, sink, category, decayB, exciteB,
-				Activatible.DEFAULT_ACTIVATION,
+		return getLink(linkType, source, sink, category, decayB, exciteB, Activatible.DEFAULT_ACTIVATION,
 				Activatible.DEFAULT_ACTIVATIBLE_REMOVAL_THRESHOLD);
 	}
 
@@ -622,25 +587,19 @@ public class ElementFactory {
 	 *            threshold of activation required to remain active
 	 * @return new Link
 	 */
-	public Link getLink(String linkType, Node source, Linkable sink,
-			LinkCategory category, String decayStrategy, String exciteStrategy,
+	public Link getLink(String linkType, Node source, Linkable sink, LinkCategory category, String decayStrategy, String exciteStrategy,
 			double activation, double removalThreshold) {
 
 		if (source == null) {
-			logger.log(Level.WARNING,
-					"Cannot create a link with a null source.", TaskManager
-							.getCurrentTick());
+			logger.log(Level.WARNING, "Cannot create a link with a null source.", TaskManager.getCurrentTick());
 			return null;
 		}
 		if (sink == null) {
-			logger.log(Level.WARNING, "Cannot create a link with a null sink.",
-					TaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "Cannot create a link with a null sink.", TaskManager.getCurrentTick());
 			return null;
 		}
 		if (category == null) {
-			logger.log(Level.WARNING,
-					"Cannot create a link with a null category.", TaskManager
-							.getCurrentTick());
+			logger.log(Level.WARNING, "Cannot create a link with a null category.", TaskManager.getCurrentTick());
 			return null;
 		}
 
@@ -648,10 +607,7 @@ public class ElementFactory {
 		try {
 			LinkableDef linkDef = linkClasses.get(linkType);
 			if (linkDef == null) {
-				logger
-						.log(Level.WARNING, "Link type {1} does not exist.",
-								new Object[] { TaskManager.getCurrentTick(),
-										linkType });
+				logger.log(Level.WARNING, "Link type {1} does not exist.", new Object[] { TaskManager.getCurrentTick(), linkType });
 				return null;
 			}
 
@@ -667,14 +623,11 @@ public class ElementFactory {
 			link.init(linkDef.getParams());
 
 		} catch (InstantiationException e) {
-			logger.log(Level.WARNING, "InstantiationException creating Link.",
-					TaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "InstantiationException creating Link.", TaskManager.getCurrentTick());
 		} catch (IllegalAccessException e) {
-			logger.log(Level.WARNING, "IllegalAccessException creating Link.",
-					TaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "IllegalAccessException creating Link.", TaskManager.getCurrentTick());
 		} catch (ClassNotFoundException e) {
-			logger.log(Level.WARNING, "ClassNotFoundException creating Link.",
-					TaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "ClassNotFoundException creating Link.", TaskManager.getCurrentTick());
 		}
 		return link;
 	}
@@ -688,8 +641,7 @@ public class ElementFactory {
 	 * @return the node
 	 */
 	public Node getNode() {
-		return getNode(defaultNodeType, defaultDecayType, defaultExciteType,
-				"Node", Activatible.DEFAULT_ACTIVATION,
+		return getNode(defaultNodeType, defaultDecayType, defaultExciteType, "Node", Activatible.DEFAULT_ACTIVATION,
 				Activatible.DEFAULT_ACTIVATIBLE_REMOVAL_THRESHOLD);
 	}
 
@@ -703,8 +655,7 @@ public class ElementFactory {
 	 * @return the node
 	 */
 	public Node getNode(Node oNode) {
-		return getNode(oNode, defaultNodeType, defaultDecayType,
-				defaultExciteType);
+		return getNode(oNode, defaultNodeType, defaultDecayType, defaultExciteType);
 	}
 
 	/**
@@ -724,14 +675,12 @@ public class ElementFactory {
 	 */
 	public Node getNode(Node oNode, String nodeType) {
 		if (oNode == null) {
-			logger.log(Level.WARNING, "Supplied node is null", TaskManager
-					.getCurrentTick());
+			logger.log(Level.WARNING, "Supplied node is null", TaskManager.getCurrentTick());
 			return null;
 		}
 		LinkableDef nodeDef = nodeClasses.get(nodeType);
 		if (nodeDef == null) {
-			logger.log(Level.WARNING, "Node type {1} does not exist.",
-					new Object[] { TaskManager.getCurrentTick(), nodeType });
+			logger.log(Level.WARNING, "Node type {1} does not exist.", new Object[] { TaskManager.getCurrentTick(), nodeType });
 			return null;
 		}
 		String decayB = nodeDef.getDefaultStrategies().get(decayStrategyType);
@@ -759,8 +708,7 @@ public class ElementFactory {
 	public Node getNode(String type, String label) {
 		LinkableDef nodeDef = nodeClasses.get(type);
 		if (nodeDef == null) {
-			logger.log(Level.WARNING, "Node type {1} does not exist.",
-					new Object[] { TaskManager.getCurrentTick(), type });
+			logger.log(Level.WARNING, "Node type {1} does not exist.", new Object[] { TaskManager.getCurrentTick(), type });
 			return null;
 		}
 		String decayB = nodeDef.getDefaultStrategies().get(decayStrategyType);
@@ -772,9 +720,7 @@ public class ElementFactory {
 			exciteB = defaultExciteType;
 		}
 
-		Node n = getNode(type, decayB, exciteB, label,
-				Activatible.DEFAULT_ACTIVATION,
-				Activatible.DEFAULT_ACTIVATIBLE_REMOVAL_THRESHOLD);
+		Node n = getNode(type, decayB, exciteB, label, Activatible.DEFAULT_ACTIVATION, Activatible.DEFAULT_ACTIVATIBLE_REMOVAL_THRESHOLD);
 		return n;
 	}
 
@@ -794,16 +740,12 @@ public class ElementFactory {
 	public Node getNode(String requiredType, Node oNode, String desiredType) {
 		LinkableDef requiredDef = nodeClasses.get(requiredType);
 		if (requiredDef == null) {
-			logger.log(Level.WARNING,
-					"Factory does not contain node type: {1}", new Object[] {
-							TaskManager.getCurrentTick(), requiredType });
+			logger.log(Level.WARNING, "Factory does not contain node type: {1}", new Object[] { TaskManager.getCurrentTick(), requiredType });
 			return null;
 		}
 		LinkableDef desiredDef = nodeClasses.get(desiredType);
 		if (desiredDef == null) {
-			logger.log(Level.WARNING,
-					"Factory does not contain node type: {1}", new Object[] {
-							TaskManager.getCurrentTick(), desiredType });
+			logger.log(Level.WARNING, "Factory does not contain node type: {1}", new Object[] { TaskManager.getCurrentTick(), desiredType });
 			return null;
 		}
 
@@ -820,8 +762,7 @@ public class ElementFactory {
 				}
 			}
 		} catch (ClassNotFoundException exc) {
-			logger.log(Level.SEVERE, "Cannot find Class type.", TaskManager
-					.getCurrentTick());
+			logger.log(Level.SEVERE, "Cannot find Class type.", TaskManager.getCurrentTick());
 			exc.printStackTrace();
 		}
 		return newNode;
@@ -858,16 +799,12 @@ public class ElementFactory {
 	 * 
 	 * @return the node
 	 */
-	private Node getNode(Node oNode, String nodeType, String decayStrategy,
-			String exciteStrategy) {
+	private Node getNode(Node oNode, String nodeType, String decayStrategy, String exciteStrategy) {
 		if (oNode == null) {
-			logger.log(Level.WARNING, "Specified node is null", TaskManager
-					.getCurrentTick());
+			logger.log(Level.WARNING, "Specified node is null", TaskManager.getCurrentTick());
 			return null;
 		}
-		Node n = getNode(nodeType, decayStrategy, exciteStrategy, oNode
-				.getLabel(), oNode.getActivation(), oNode
-				.getActivatibleRemovalThreshold());
+		Node n = getNode(nodeType, decayStrategy, exciteStrategy, oNode.getLabel(), oNode.getActivation(), oNode.getActivatibleRemovalThreshold());
 		n.setGroundingPamNode(oNode.getGroundingPamNode());
 		n.setId(oNode.getId()); // sets extended id as well.
 		n.updateNodeValues(oNode);
@@ -906,17 +843,12 @@ public class ElementFactory {
 	 *            {@link NodeStructure}s
 	 * @return the node
 	 */
-	public Node getNode(String nodeType, String decayStrategy,
-			String exciteStrategy, String nodeLabel, double activation,
-			double removalThreshold) {
+	public Node getNode(String nodeType, String decayStrategy, String exciteStrategy, String nodeLabel, double activation, double removalThreshold) {
 		Node n = null;
 		try {
 			LinkableDef nodeDef = nodeClasses.get(nodeType);
 			if (nodeDef == null) {
-				logger
-						.log(Level.WARNING, "Node type {1} does not exist.",
-								new Object[] { TaskManager.getCurrentTick(),
-										nodeType });
+				logger.log(Level.WARNING, "Node type {1} does not exist.", new Object[] { TaskManager.getCurrentTick(), nodeType });
 				return null;
 			}
 
@@ -931,14 +863,11 @@ public class ElementFactory {
 			setActivatibleStrategies(n, decayStrategy, exciteStrategy);
 			n.init(nodeDef.getParams());
 		} catch (InstantiationException e) {
-			logger.log(Level.WARNING, "InstantiationException creating Node.",
-					TaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "InstantiationException creating Node.", TaskManager.getCurrentTick());
 		} catch (IllegalAccessException e) {
-			logger.log(Level.WARNING, "IllegalAccessException creating Node.",
-					TaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "IllegalAccessException creating Node.", TaskManager.getCurrentTick());
 		} catch (ClassNotFoundException e) {
-			logger.log(Level.WARNING, "ClassNotFoundException creating Node.",
-					TaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "ClassNotFoundException creating Node.", TaskManager.getCurrentTick());
 		}
 		return n;
 	}
@@ -946,8 +875,7 @@ public class ElementFactory {
 	/*
 	 * Assigns specified decay and excite strategies to supplied Activatible
 	 */
-	private void setActivatibleStrategies(Activatible activatible,
-			String decayStrategy, String exciteStrategy) {
+	private void setActivatibleStrategies(Activatible activatible, String decayStrategy, String exciteStrategy) {
 		DecayStrategy decayB = getDecayStrategy(decayStrategy);
 		activatible.setDecayStrategy(decayB);
 		ExciteStrategy exciteB = getExciteStrategy(exciteStrategy);
@@ -964,12 +892,8 @@ public class ElementFactory {
 		if (linkClasses.containsKey(linkTypeName)) {
 			defaultLinkType = linkTypeName;
 		} else {
-			logger
-					.log(
-							Level.WARNING,
-							"Factory does not contain Link type {1} so it cannot be used as default.",
-							new Object[] { TaskManager.getCurrentTick(),
-									linkTypeName });
+			logger.log(Level.WARNING, "Factory does not contain Link type {1} so it cannot be used as default.",
+					new Object[] { TaskManager.getCurrentTick(), linkTypeName });
 		}
 	}
 
@@ -983,12 +907,8 @@ public class ElementFactory {
 		if (nodeClasses.containsKey(nodeTypeName)) {
 			defaultNodeType = nodeTypeName;
 		} else {
-			logger
-					.log(
-							Level.WARNING,
-							"Factory does not contain Node type {1} so it cannot be used as default.",
-							new Object[] { TaskManager.getCurrentTick(),
-									nodeTypeName });
+			logger.log(Level.WARNING, "Factory does not contain Node type {1} so it cannot be used as default.",
+					new Object[] { TaskManager.getCurrentTick(), nodeTypeName });
 		}
 	}
 
@@ -1020,12 +940,8 @@ public class ElementFactory {
 		if (decayStrategies.containsKey(decayTypeName)) {
 			defaultDecayType = decayTypeName;
 		} else {
-			logger
-					.log(
-							Level.WARNING,
-							"Factory does not contain decay strategy type {1} so it cannot be used as default.",
-							new Object[] { TaskManager.getCurrentTick(),
-									decayTypeName });
+			logger.log(Level.WARNING, "Factory does not contain decay strategy type {1} so it cannot be used as default.",
+					new Object[] { TaskManager.getCurrentTick(), decayTypeName });
 		}
 	}
 
@@ -1057,12 +973,8 @@ public class ElementFactory {
 		if (exciteStrategies.containsKey(exciteTypeName)) {
 			defaultExciteType = exciteTypeName;
 		} else {
-			logger
-					.log(
-							Level.WARNING,
-							"Factory does not contain excite strategy type {1} so it cannot be used as default.",
-							new Object[] { TaskManager.getCurrentTick(),
-									exciteTypeName });
+			logger.log(Level.WARNING, "Factory does not contain excite strategy type {1} so it cannot be used as default.", new Object[] {
+					TaskManager.getCurrentTick(), exciteTypeName });
 		}
 	}
 
@@ -1077,8 +989,7 @@ public class ElementFactory {
 	 *            optional parameters to be set in object's init method
 	 * @return the new {@link FrameworkTask}
 	 */
-	public FrameworkTask getFrameworkTask(String taskType,
-			Map<String, ? extends Object> params) {
+	public FrameworkTask getFrameworkTask(String taskType, Map<String, ? extends Object> params) {
 		return getFrameworkTask(taskType, params, null);
 	}
 
@@ -1095,14 +1006,10 @@ public class ElementFactory {
 	 * 
 	 * @return the new {@link FrameworkTask}
 	 */
-	public FrameworkTask getFrameworkTask(String taskType,
-			Map<String, ? extends Object> params,
-			Map<ModuleName, FrameworkModule> modules) {
+	public FrameworkTask getFrameworkTask(String taskType, Map<String, ? extends Object> params, Map<ModuleName, FrameworkModule> modules) {
 		FrameworkTaskDef taskDef = tasks.get(taskType);
 		if (taskDef == null) {
-			logger.log(Level.WARNING,
-					"Factory does not contain FrameworkTask type {1}",
-					new Object[] { TaskManager.getCurrentTick(), taskType });
+			logger.log(Level.WARNING, "Factory does not contain FrameworkTask type {1}", new Object[] { TaskManager.getCurrentTick(), taskType });
 			return null;
 		}
 		String decayB = taskDef.getDefaultStrategies().get(decayStrategyType);
@@ -1114,10 +1021,8 @@ public class ElementFactory {
 			exciteB = defaultExciteType;
 		}
 		int ticksPerRun = taskDef.getTicksPerRun();
-		return getFrameworkTask(taskType, decayB, exciteB, ticksPerRun,
-				Activatible.DEFAULT_ACTIVATION,
-				Activatible.DEFAULT_ACTIVATIBLE_REMOVAL_THRESHOLD, params,
-				modules);
+		return getFrameworkTask(taskType, decayB, exciteB, ticksPerRun, Activatible.DEFAULT_ACTIVATION,
+				Activatible.DEFAULT_ACTIVATIBLE_REMOVAL_THRESHOLD, params, modules);
 	}
 
 	/**
@@ -1142,21 +1047,13 @@ public class ElementFactory {
 	 * 
 	 * @return the new {@link FrameworkTask}
 	 */
-	public FrameworkTask getFrameworkTask(String taskType,
-			String decayStrategy, String exciteStrategy, int ticksPerRun,
-			double activation, double removalThreshold,
-			Map<String, ? extends Object> params,
-			Map<ModuleName, FrameworkModule> modules) {
+	public FrameworkTask getFrameworkTask(String taskType, String decayStrategy, String exciteStrategy, int ticksPerRun, double activation,
+			double removalThreshold, Map<String, ? extends Object> params, Map<ModuleName, FrameworkModule> modules) {
 		FrameworkTask task = null;
 		try {
 			FrameworkTaskDef taskDef = tasks.get(taskType);
 			if (taskDef == null) {
-				logger
-						.log(
-								Level.WARNING,
-								"Factory does not contain FrameworkTask type {1}",
-								new Object[] { TaskManager.getCurrentTick(),
-										taskType });
+				logger.log(Level.WARNING, "Factory does not contain FrameworkTask type {1}", new Object[] { TaskManager.getCurrentTick(), taskType });
 				return null;
 			}
 
@@ -1170,21 +1067,14 @@ public class ElementFactory {
 
 			// Associate specified modules to task
 			if (modules != null) {
-				Map<ModuleName, String> associatedModules = taskDef
-						.getAssociatedModules();
+				Map<ModuleName, String> associatedModules = taskDef.getAssociatedModules();
 				for (ModuleName mName : associatedModules.keySet()) {
 					FrameworkModule module = modules.get(mName);
 					if (module != null) {
-						task.setAssociatedModule(module, associatedModules
-								.get(mName));
+						task.setAssociatedModule(module, associatedModules.get(mName));
 					} else {
-						logger
-								.log(
-										Level.WARNING,
-										"Could not associate module {1} to FrameworkTask {2}. Module was not found in 'modules' map",
-										new Object[] {
-												TaskManager.getCurrentTick(),
-												mName, task });
+						logger.log(Level.WARNING, "Could not associate module {1} to FrameworkTask {2}. Module was not found in 'modules' map",
+								new Object[] { TaskManager.getCurrentTick(), mName, task });
 					}
 				}
 			}
@@ -1201,14 +1091,11 @@ public class ElementFactory {
 			}
 			task.init(mergedParams);
 		} catch (InstantiationException e) {
-			logger.log(Level.WARNING, "{1} creating FrameworkTask of type {2}",
-					new Object[] { TaskManager.getCurrentTick(), e, taskType });
+			logger.log(Level.WARNING, "{1} creating FrameworkTask of type {2}", new Object[] { TaskManager.getCurrentTick(), e, taskType });
 		} catch (IllegalAccessException e) {
-			logger.log(Level.WARNING, "{1} creating FrameworkTask of type {2}",
-					new Object[] { TaskManager.getCurrentTick(), e, taskType });
+			logger.log(Level.WARNING, "{1} creating FrameworkTask of type {2}", new Object[] { TaskManager.getCurrentTick(), e, taskType });
 		} catch (ClassNotFoundException e) {
-			logger.log(Level.WARNING, "{1} creating FrameworkTask of type {2}",
-					new Object[] { TaskManager.getCurrentTick(), e, taskType });
+			logger.log(Level.WARNING, "{1} creating FrameworkTask of type {2}", new Object[] { TaskManager.getCurrentTick(), e, taskType });
 		}
 		return task;
 	}
@@ -1240,18 +1127,11 @@ public class ElementFactory {
 			if (containsLinkType(linkType)) {
 				return new NodeStructureImpl(nodeType, linkType);
 			}
-			logger
-					.log(
-							Level.WARNING,
-							"Cannot get NodeStructure. Factory does not contain link type {1}",
-							new Object[] { TaskManager.getCurrentTick(),
-									linkType });
+			logger.log(Level.WARNING, "Cannot get NodeStructure. Factory does not contain link type {1}", new Object[] {
+					TaskManager.getCurrentTick(), linkType });
 		}
-		logger
-				.log(
-						Level.WARNING,
-						"Cannot get NodeStructure. Factory does not contain node type {1}",
-						new Object[] { TaskManager.getCurrentTick(), nodeType });
+		logger.log(Level.WARNING, "Cannot get NodeStructure. Factory does not contain node type {1}", new Object[] { TaskManager.getCurrentTick(),
+				nodeType });
 		return null;
 	}
 
@@ -1277,18 +1157,13 @@ public class ElementFactory {
 	 *            qualified name of the desired {@link Behavior} class
 	 * @return a new {@link Behavior}
 	 */
-	@SuppressWarnings("static-method")
 	public Behavior getBehavior(Scheme s, String className) {
 		if (s == null) {
-			logger.log(Level.WARNING,
-					"Cannot create a Behavior with null Scheme.", TaskManager
-							.getCurrentTick());
+			logger.log(Level.WARNING, "Cannot create a Behavior with null Scheme.", TaskManager.getCurrentTick());
 			return null;
 		}
 		if (className == null) {
-			logger.log(Level.WARNING,
-					"Cannot create a Behavior, specified class name is null.",
-					TaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "Cannot create a Behavior, specified class name is null.", TaskManager.getCurrentTick());
 			return null;
 		}
 		Behavior b = null;
@@ -1298,27 +1173,41 @@ public class ElementFactory {
 			b.setScheme(s);
 			b.setActivation(s.getTotalActivation());
 		} catch (InstantiationException e) {
-			logger
-					.log(
-							Level.WARNING,
-							"InstantiationException encountered creating object of class {1}.",
-							new Object[] { TaskManager.getCurrentTick(),
-									className });
+			logger.log(Level.WARNING, "InstantiationException encountered creating object of class {1}.", new Object[] {
+					TaskManager.getCurrentTick(), className });
 		} catch (IllegalAccessException e) {
-			logger
-					.log(
-							Level.WARNING,
-							"IllegalAccessException encountered creating object of class {1}.",
-							new Object[] { TaskManager.getCurrentTick(),
-									className });
+			logger.log(Level.WARNING, "IllegalAccessException encountered creating object of class {1}.", new Object[] {
+					TaskManager.getCurrentTick(), className });
 		} catch (ClassNotFoundException e) {
-			logger
-					.log(
-							Level.WARNING,
-							"ClassNotFoundException encountered creating object of class {1}.",
-							new Object[] { TaskManager.getCurrentTick(),
-									className });
+			logger.log(Level.WARNING, "ClassNotFoundException encountered creating object of class {1}.", new Object[] {
+					TaskManager.getCurrentTick(), className });
 		}
 		return b;
+	}
+
+	/**
+	 * Gets a new {@link Coalition} object.
+	 * @param className Class name of the {@link Coalition} to be created.
+	 * @param content {@link BroadcastContent}
+	 * @param cod {@link AttentionCodelet}
+	 * @return {@link Coalition}
+	 */
+	public Coalition getCoalition(String className, BroadcastContent content, AttentionCodelet cod) {
+		Coalition c = null;
+		try {
+			c = (Coalition) Class.forName(className).newInstance();
+			c.setCreatingAttentionCodelet(cod);
+			c.setContent(content);
+		} catch (InstantiationException e) {
+			logger.log(Level.WARNING, "InstantiationException encountered creating object of class {1}.", new Object[] {
+					TaskManager.getCurrentTick(), className });
+		} catch (IllegalAccessException e) {
+			logger.log(Level.WARNING, "IllegalAccessException encountered creating object of class {1}.", new Object[] {
+					TaskManager.getCurrentTick(), className });
+		} catch (ClassNotFoundException e) {
+			logger.log(Level.WARNING, "ClassNotFoundException encountered creating object of class {1}.", new Object[] {
+					TaskManager.getCurrentTick(), className });
+		}
+		return c;
 	}
 }
