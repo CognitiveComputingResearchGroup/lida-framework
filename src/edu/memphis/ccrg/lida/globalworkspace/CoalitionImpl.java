@@ -78,7 +78,7 @@ public class CoalitionImpl extends ActivatibleImpl implements Coalition {
 		if(broadcastContent.getLinkableCount()!=0){
 			double salienceSum = 0.0;
 			for (Linkable linkable: broadcastContent.getLinkables()) {
-				salienceSum += linkable.getTotalActivation()+linkable.getTotalIncentiveSalience();
+				salienceSum += linkable.getTotalActivation()+Math.abs(linkable.getTotalIncentiveSalience());
 			}
 			a = codelet.getBaseLevelActivation()*salienceSum/(2*broadcastContent.getLinkableCount());
 		}
