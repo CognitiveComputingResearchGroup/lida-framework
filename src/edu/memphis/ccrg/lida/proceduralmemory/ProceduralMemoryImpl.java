@@ -78,15 +78,15 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements
 		NEGATEDCONTEXT
 	};
 
-	/*
+	/**
 	 * Schemes indexed by Nodes in their context.
 	 */
-	private Map<Object, Set<Scheme>> contextSchemeMap = new ConcurrentHashMap<Object, Set<Scheme>>();
+	protected Map<Object, Set<Scheme>> contextSchemeMap = new ConcurrentHashMap<Object, Set<Scheme>>();
 
-	/*
+	/**
 	 * Schemes indexed by Nodes in their adding list.
 	 */
-	private Map<Object, Set<Scheme>> addingSchemeMap = new ConcurrentHashMap<Object, Set<Scheme>>();
+	protected Map<Object, Set<Scheme>> addingSchemeMap = new ConcurrentHashMap<Object, Set<Scheme>>();
 
 	/*
 	 * Set of all schemes current in the module. Convenient for decaying the
@@ -100,10 +100,10 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements
 	 */
 	private Map<Object, Condition> conditionPool = new HashMap<Object, Condition>();
 
-	/*
+	/**
 	 * Recent contents of consciousness that have not yet decayed away.
 	 */
-	private InternalNodeStructure broadcastBuffer = new InternalNodeStructure();
+	protected InternalNodeStructure broadcastBuffer = new InternalNodeStructure();
 
 	/**
 	 * Allows Nodes to be added without copying. Warning: doing so allows the
@@ -340,7 +340,7 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements
 		// To prevent a scheme from being instantiated multiple times all
 		// schemes over threshold are stored in a set
 		Set<Scheme> relevantSchemes = new HashSet<Scheme>();
-		for (Node n : broadcastBuffer.getNodes()) { // TODO consider links
+		for (Node n: broadcastBuffer.getNodes()) { 
 			// Get all schemes that contain Node n in their context and add them
 			// to relevantSchemes
 			Set<Scheme> schemes = contextSchemeMap.get(n.getConditionId());
@@ -350,15 +350,16 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements
 			// If Node n has positive desirability,
 			// get the schemes that have n in their adding list and add them to
 			// relevantSchemes
-			if (n.getIncentiveSalience() > 0.0) {// TODO think about more
+			if (n.getIncentiveSalience() > 0.0) {
 				schemes = addingSchemeMap.get(n.getConditionId());
 				if (schemes != null) {
 					relevantSchemes.addAll(schemes);
 				}
 			}
+			//TODO Case is incentive salience is negative? 
 		}
-		// For each relevant scheme, check if it should be instantiated, if so
-		// instantiate.
+		//TODO consider links too
+		// For each relevant scheme, if it should be instantiated, then instantiate
 		for (Scheme s : relevantSchemes) {
 			if (shouldInstantiate(s, broadcastBuffer)) {
 				createInstantiation(s);

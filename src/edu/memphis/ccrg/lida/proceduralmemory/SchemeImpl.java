@@ -144,7 +144,6 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 	}
 
 	// Scheme methods
-
 	@Override
 	public void setId(int id) {
 		this.id = id;
