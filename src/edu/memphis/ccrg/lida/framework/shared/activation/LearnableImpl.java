@@ -223,7 +223,7 @@ public class LearnableImpl extends ActivatibleImpl implements Learnable {
 								getBaseLevelIncentiveSalience() });
 			}
 			synchronized (this) {
-				baseLevelIncentiveSalience= baseLevelDecayStrategy.decay(
+				baseLevelIncentiveSalience = baseLevelDecayStrategy.decay(
 						getBaseLevelIncentiveSalience(), t);
 			}
 			if (logger.isLoggable(Level.FINEST)) {

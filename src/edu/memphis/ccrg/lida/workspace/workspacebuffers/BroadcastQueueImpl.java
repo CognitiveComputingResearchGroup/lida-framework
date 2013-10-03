@@ -40,6 +40,7 @@ public class BroadcastQueueImpl extends FrameworkModuleImpl implements
 
 	private static final int DEFAULT_QUEUE_CAPACITY = 20;
 	private int broadcastQueueCapacity = DEFAULT_QUEUE_CAPACITY;
+	private boolean isDecay;
 	private LinkedList<WorkspaceContent> broadcastQueue = new LinkedList<WorkspaceContent>();
 
 	/**
@@ -59,6 +60,7 @@ public class BroadcastQueueImpl extends FrameworkModuleImpl implements
 	 */
 	@Override
 	public void init() {
+		isDecay = getParam("workspace.broadcastQueueDecay",false);
 		int requestedCapacity = getParam("workspace.broadcastQueueCapacity", 
 										 DEFAULT_QUEUE_CAPACITY);
 		if(requestedCapacity > 0){
@@ -116,15 +118,17 @@ public class BroadcastQueueImpl extends FrameworkModuleImpl implements
 
 	@Override
 	public void decayModule(long t) {
-		logger.log(Level.FINER, "Decaying Broadcast Queue", TaskManager
-				.getCurrentTick());
-		synchronized (this) {
-			Iterator<WorkspaceContent> itr = broadcastQueue.iterator();
-			while (itr.hasNext()) {
-				NodeStructure ns = itr.next();
-				ns.decayNodeStructure(t);
-				if (ns.getNodeCount() == 0) {
-					itr.remove();
+		if(isDecay){
+			logger.log(Level.FINER, "Decaying Broadcast Queue", TaskManager
+					.getCurrentTick());
+			synchronized (this) {
+				Iterator<WorkspaceContent> itr = broadcastQueue.iterator();
+				while (itr.hasNext()) {
+					NodeStructure ns = itr.next();
+					ns.decayNodeStructure(t);
+					if (ns.getNodeCount() == 0) {
+						itr.remove();
+					}
 				}
 			}
 		}

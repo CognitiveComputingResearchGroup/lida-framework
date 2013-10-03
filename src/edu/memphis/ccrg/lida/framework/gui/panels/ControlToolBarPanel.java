@@ -221,22 +221,24 @@ public class ControlToolBarPanel extends GuiPanelImpl {
 	 * @param evt
 	 */
 	private void addTicksButtonActionPerformed(java.awt.event.ActionEvent evt) {
-		if (ticksModeTB.isSelected()) {
-			Map<String, Object> parameters = new HashMap<String, Object>();
-			int ticks;
-			try {
-				ticks = Integer.parseInt(tiksTB.getText());
-			} catch (NumberFormatException e) {
-				ticks = 0;
-			}
-			parameters.put("ticks", ticks);
-			controller.executeCommand("AddTicks", parameters);
+		if(!ticksModeTB.isSelected()){
+			ticksModeTB.setSelected(true);
+			executeTicksModeCommand();
+		}
+		
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		int ticks = 0;
+		try {
+			ticks = Integer.parseInt(tiksTB.getText());
+		} catch (NumberFormatException e) {
+		}
+		parameters.put("ticks", ticks);
+		controller.executeCommand("AddTicks", parameters);
 
-			if (isPaused) {
-				isPaused = !isPaused;
-				statusLabel.setText(RUNNING_LABEL);
-				controller.executeCommand("resumeRunningThreads", null);
-			}
+		if (isPaused) {
+			isPaused = !isPaused;
+			statusLabel.setText(RUNNING_LABEL);
+			controller.executeCommand("resumeRunningThreads", null);
 		}
 	}
 
@@ -246,6 +248,9 @@ public class ControlToolBarPanel extends GuiPanelImpl {
 	 * @param evt
 	 */
 	private void ticksModeTBActionPerformed(java.awt.event.ActionEvent evt) {
+		executeTicksModeCommand();
+	}
+	private void executeTicksModeCommand(){
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("enable", ticksModeTB.isSelected());
 		controller.executeCommand("EnableTicksMode", parameters);

@@ -7,16 +7,12 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.globalworkspace;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import edu.memphis.ccrg.lida.attentioncodelets.AttentionCodelet;
 import edu.memphis.ccrg.lida.attentioncodelets.AttentionCodeletImpl;
 import edu.memphis.ccrg.lida.framework.shared.Linkable;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.UnmodifiableNodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl;
-import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 
 /**
  * The default implementation of {@link Coalition}. Wraps content entering the
@@ -29,8 +25,6 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
  */
 public class CoalitionImpl extends ActivatibleImpl implements Coalition {
 
-	private static final Logger logger = Logger.getLogger(CoalitionImpl.class
-			.getCanonicalName());
 	private static int idCounter = 0;
 	/*
 	 * unique id
@@ -44,7 +38,7 @@ public class CoalitionImpl extends ActivatibleImpl implements Coalition {
 	/**
 	 * the {@link AttentionCodelet} that created the coalition
 	 */
-	protected AttentionCodelet creatingAttentionCodelet;
+	protected AttentionCodelet codelet;
 
 	/**
 	 * Default constructor
@@ -66,35 +60,34 @@ public class CoalitionImpl extends ActivatibleImpl implements Coalition {
 	 */
 	public CoalitionImpl(NodeStructure ns, AttentionCodelet c) {
 		this();
-		broadcastContent = new UnmodifiableNodeStructureImpl(ns,true);
-		creatingAttentionCodelet = c;
-		if(creatingAttentionCodelet != null) {
-			updateActivation();
-		}else{
-			logger.log(Level.WARNING, "Coalition received null AttentionCodelet",
-					TaskManager.getCurrentTick());
+		if(ns==null || c==null){
+			throw new IllegalArgumentException("Constructor argument null: " + ns + " " + c);		
 		}
+		setContent((BroadcastContent) ns);
+		setCreatingAttentionCodelet(c);
+		setCoalitionActivation();
 	}
 
 	/**
-	 * Calculates and sets the coalition's activation. This implementation uses the
-	 * average total activation and total incentive salience of the broadcast content 
+	 * Sets the coalition's activation to the average total activation and 
+	 * total incentive salience of the broadcast content 
 	 * multiplied by the attention codelet's base-level activation.
 	 */
-	protected void updateActivation() {
-		double salienceSum = 0.0;
-		for (Linkable lnk: broadcastContent.getLinkables()) {
-			salienceSum += lnk.getTotalActivation()+lnk.getTotalIncentiveSalience();
+	protected void setCoalitionActivation() {
+		double a = 0.0;
+		if(broadcastContent.getLinkableCount()!=0){
+			double salienceSum = 0.0;
+			for (Linkable linkable: broadcastContent.getLinkables()) {
+				salienceSum += linkable.getTotalActivation()+linkable.getTotalIncentiveSalience();
+			}
+			a = codelet.getBaseLevelActivation()*salienceSum/(2*broadcastContent.getLinkableCount());
 		}
-		double aveLinkableSalience = salienceSum/(2.0*broadcastContent.getLinkableCount());
-		double a = creatingAttentionCodelet.getBaseLevelActivation()*aveLinkableSalience;
-		setActivation(a);
+		super.setActivation(a);
 	}
 
 	/**
 	 * Returns an {@link UnmodifiableNodeStructureImpl} containing the broadcast
-	 * content. Note that {@link UnmodifiableNodeStructureImpl} cannot be
-	 * modified.
+	 * content. Note that {@link UnmodifiableNodeStructureImpl} cannot be modified.
 	 */
 	@Override
 	public BroadcastContent getContent() {
@@ -102,15 +95,24 @@ public class CoalitionImpl extends ActivatibleImpl implements Coalition {
 	}
 
 	@Override
+	public void setContent(BroadcastContent c) {
+		broadcastContent = new UnmodifiableNodeStructureImpl((NodeStructure) c,true);
+	}
+
+	@Override
+	public void setCreatingAttentionCodelet(AttentionCodelet c) {
+		codelet=c;
+	}
+
+	@Override
 	public AttentionCodelet getCreatingAttentionCodelet() {
-		return creatingAttentionCodelet;
+		return codelet;
 	}
 
 	@Override
 	public int getId() {
 		return id;
 	}
-
 	@Override
 	public boolean equals(Object o) {
 		if (o instanceof CoalitionImpl) {
@@ -119,7 +121,6 @@ public class CoalitionImpl extends ActivatibleImpl implements Coalition {
 		}
 		return false;
 	}
-
 	@Override
 	public int hashCode() {
 		return (int)id;

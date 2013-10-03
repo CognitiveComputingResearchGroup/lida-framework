@@ -14,7 +14,6 @@ import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.actionselection.Behavior;
 import edu.memphis.ccrg.lida.actionselection.BehaviorImpl;
-import edu.memphis.ccrg.lida.attentioncodelets.AttentionCodelet;
 import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.initialization.FrameworkTaskDef;
@@ -31,8 +30,6 @@ import edu.memphis.ccrg.lida.framework.strategies.NoExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.Strategy;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTask;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
-import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
-import edu.memphis.ccrg.lida.globalworkspace.Coalition;
 import edu.memphis.ccrg.lida.pam.PamLinkImpl;
 import edu.memphis.ccrg.lida.pam.PamNodeImpl;
 import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
@@ -1183,31 +1180,5 @@ public class ElementFactory {
 					TaskManager.getCurrentTick(), className });
 		}
 		return b;
-	}
-
-	/**
-	 * Gets a new {@link Coalition} object.
-	 * @param className Class name of the {@link Coalition} to be created.
-	 * @param content {@link BroadcastContent}
-	 * @param cod {@link AttentionCodelet}
-	 * @return {@link Coalition}
-	 */
-	public Coalition getCoalition(String className, BroadcastContent content, AttentionCodelet cod) {
-		Coalition c = null;
-		try {
-			c = (Coalition) Class.forName(className).newInstance();
-			c.setCreatingAttentionCodelet(cod);
-			c.setContent(content);
-		} catch (InstantiationException e) {
-			logger.log(Level.WARNING, "InstantiationException encountered creating object of class {1}.", new Object[] {
-					TaskManager.getCurrentTick(), className });
-		} catch (IllegalAccessException e) {
-			logger.log(Level.WARNING, "IllegalAccessException encountered creating object of class {1}.", new Object[] {
-					TaskManager.getCurrentTick(), className });
-		} catch (ClassNotFoundException e) {
-			logger.log(Level.WARNING, "ClassNotFoundException encountered creating object of class {1}.", new Object[] {
-					TaskManager.getCurrentTick(), className });
-		}
-		return c;
 	}
 }

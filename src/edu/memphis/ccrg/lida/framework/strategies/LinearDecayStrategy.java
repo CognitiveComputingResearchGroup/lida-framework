@@ -36,20 +36,24 @@ public class LinearDecayStrategy extends StrategyImpl implements DecayStrategy {
 	public LinearDecayStrategy() {
 		m = DEFAULT_M;
 	}
+	
+	private static final double DEFAULT_LOWER_BOUND=0.0;
+	private double lowerBound=DEFAULT_LOWER_BOUND;
 
 	/**
 	 * If this method is overridden, this init() must be called first! i.e.
 	 * super.init(); Will set parameters with the following names:<br/>
 	 * <br/>
 	 * 
-	 * <b>m</b> slope of the decay function<br/>
+	 * <b>m</b> slope of the excite function<br/>
 	 * If any parameter is not specified its default value will be used.
 	 * 
 	 * @see Initializable
 	 */
 	@Override
 	public void init() {
-		m = (Double) getParam("m", DEFAULT_M);
+		m = getParam("m", DEFAULT_M);
+		lowerBound=getParam("lowerBound",DEFAULT_LOWER_BOUND);
 	}
 
 	/**
@@ -106,9 +110,9 @@ public class LinearDecayStrategy extends StrategyImpl implements DecayStrategy {
 	 * 
 	 * @return Calculated activation value
 	 */
-	private static double calcActivation(double currentActivation, long ticks,
+	private double calcActivation(double currentActivation, long ticks,
 			double mm) {
 		currentActivation -= (mm * ticks);
-		return (currentActivation > 0.0) ? currentActivation : 0.0;
+		return (currentActivation > lowerBound)? currentActivation: lowerBound;
 	}
 }
