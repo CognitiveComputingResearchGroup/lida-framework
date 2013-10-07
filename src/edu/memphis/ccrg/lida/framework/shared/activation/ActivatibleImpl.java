@@ -33,6 +33,7 @@ public class ActivatibleImpl extends InitializableImpl implements Activatible {
 
 	private ExciteStrategy exciteStrategy;
 	private DecayStrategy decayStrategy;
+	private DecayStrategy incentiveDecayStrategy;
 	private double activation;
 	private double removalThreshold;
 	private double incentiveSalience;
