@@ -127,7 +127,7 @@ public class BasicSensoryMotorMemory extends FrameworkModuleImpl implements
 				sendActuatorCommand(alg);
 			} else {
 				logger.log(Level.WARNING,
-						"Could not find algorithm for action {1}",
+						"The SensoryMotorMemory does not contain an action-algorithm mapping for action {1}",
 						new Object[] { TaskManager.getCurrentTick(), action });
 			}
 			cancel();

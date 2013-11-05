@@ -19,7 +19,7 @@ import edu.memphis.ccrg.lida.framework.initialization.Initializer;
 
 /**
  * Basic SensoryMotorMemory {@link Initializer} which reads String parameters
- * beginning with 'smm.' and creates a action-algorithm mapping based on the
+ * beginning with 'smm.mapping.' and creates a action-algorithm mapping based on the
  * parameter. The definition is: <br/>
  * <b>actionName,algorithm</b>
  * 
@@ -70,15 +70,15 @@ public class BasicSensoryMotorMemoryInitializer implements Initializer {
 					Action action = (Action) initializer
 							.getAttribute(actionName);
 					if (action != null) {
+						logger.log(Level.INFO,"Adding mapping from action: {0} to algorithm: {1}",
+								new Object[]{action,algorithmName});
 						smm.addActionAlgorithm(action.getId(), algorithmName);
 					} else {
 						logger.log(Level.WARNING,
 								"could not find agent action: {0}", actionName);
 					}
 				} else {
-					logger
-							.log(
-									Level.WARNING,
+					logger.log(Level.WARNING,
 									"incorrect smm def: {0} must have form 'actionName,algorithm'",
 									smmDef);
 				}
