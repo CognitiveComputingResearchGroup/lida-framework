@@ -59,7 +59,7 @@ public class NodeStructureConcurrencyTest {
 		nodes[3].setLabel("green");
 		nodes[3].setActivation(0.4);
 
-		category1 = PerceptualAssociativeMemoryImpl.NO_LINK_CATEGORY;
+		category1 = PerceptualAssociativeMemoryImpl.DEFAULT_LINK_CATEGORY;
 		category2 = PerceptualAssociativeMemoryImpl.FEATURE_LINK_CATEGORY;
 
 		link1 = factory.getLink(nodes[0], nodes[1], category1);

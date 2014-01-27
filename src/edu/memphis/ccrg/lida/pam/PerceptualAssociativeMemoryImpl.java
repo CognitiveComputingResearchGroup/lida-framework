@@ -68,7 +68,6 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 	protected PamNodeStructure pamNodeStructure = new PamNodeStructure(
 			"PamNodeImpl", "PamLinkImpl");
 
-	// TODO consider links as well
 	/**
 	 * All {@link PamNode} objects currently in
 	 * {@link PerceptualAssociativeMemoryImpl} indexed by their label.
@@ -101,10 +100,10 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 	private Map<Integer, LinkCategory> linkCategories = new HashMap<Integer, LinkCategory>();
 
 	/**
-	 * Primitive {@link LinkCategory} NONE
+	 * Primitive default {@link LinkCategory}.
 	 */
-	public static LinkCategory NO_LINK_CATEGORY = (PamNode) factory.getNode(
-			DEFAULT_NONDECAYING_PAMNODE, "no-link-category");
+	public static LinkCategory DEFAULT_LINK_CATEGORY = (PamNode) factory.getNode(
+			DEFAULT_NONDECAYING_PAMNODE, "default-link-category");
 
 	/**
 	 * Primitive {@link LinkCategory} LATERAL
@@ -135,7 +134,7 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 	 */
 	public PerceptualAssociativeMemoryImpl() {
 		super();
-		addInternalLinkCategory(NO_LINK_CATEGORY);
+		addInternalLinkCategory(DEFAULT_LINK_CATEGORY);
 //		addInternalLinkCategory(LATERAL_LINK_CATEGORY); //TODO add back in for a release
 //		addInternalLinkCategory(PARENT_LINK_CATEGORY);
 //		addInternalLinkCategory(FEATURE_LINK_CATEGORY);

@@ -61,17 +61,17 @@ public class LinkImplTest {
 		node3 = factory.getNode();
 		node4 = factory.getNode();
 
-		linktype1 = PerceptualAssociativeMemoryImpl.NO_LINK_CATEGORY;
+		linktype1 = PerceptualAssociativeMemoryImpl.DEFAULT_LINK_CATEGORY;
 
 		pamLink1 = (PamLinkImpl) factory.getLink("PamLinkImpl", node3, node4,
-				PerceptualAssociativeMemoryImpl.NO_LINK_CATEGORY);
+				PerceptualAssociativeMemoryImpl.DEFAULT_LINK_CATEGORY);
 
 		link1 = (LinkImpl) factory.getLink(node1, node2,
-				PerceptualAssociativeMemoryImpl.NO_LINK_CATEGORY);
+				PerceptualAssociativeMemoryImpl.DEFAULT_LINK_CATEGORY);
 		link2 = (LinkImpl) factory.getLink(node3, node4,
-				PerceptualAssociativeMemoryImpl.NO_LINK_CATEGORY);
+				PerceptualAssociativeMemoryImpl.DEFAULT_LINK_CATEGORY);
 		link3 = (LinkImpl) factory.getLink(node3, link2,
-				PerceptualAssociativeMemoryImpl.NO_LINK_CATEGORY);
+				PerceptualAssociativeMemoryImpl.DEFAULT_LINK_CATEGORY);
 	}
 
 	/**

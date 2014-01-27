@@ -50,14 +50,14 @@ public class DefaultAttentionCodeletTest {
 		node3 = factory.getNode();
 		node3.setActivation(0.5);
 		link12 = factory.getLink(node1, node2,
-				PerceptualAssociativeMemoryImpl.NO_LINK_CATEGORY);
+				PerceptualAssociativeMemoryImpl.DEFAULT_LINK_CATEGORY);
 		link21 = factory.getLink(node2, node1,
-				PerceptualAssociativeMemoryImpl.NO_LINK_CATEGORY);
+				PerceptualAssociativeMemoryImpl.DEFAULT_LINK_CATEGORY);
 
 		link32 = factory.getLink(node2, node3,
-				PerceptualAssociativeMemoryImpl.NO_LINK_CATEGORY);
+				PerceptualAssociativeMemoryImpl.DEFAULT_LINK_CATEGORY);
 		link23 = factory.getLink(node3, node2,
-				PerceptualAssociativeMemoryImpl.NO_LINK_CATEGORY);
+				PerceptualAssociativeMemoryImpl.DEFAULT_LINK_CATEGORY);
 	}
 
 	@Test
