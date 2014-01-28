@@ -290,16 +290,14 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements
 	 * Assumes Conditions are Nodes only
 	 */
 	@Override
-	public void receiveBroadcast(Coalition coal) {
-		NodeStructure ns = (NodeStructure) coal.getContent();
-		for (Node bNode : ns.getNodes()) {
-			// For each broadcast node check if it is in the condition pool
-			// i.e. there is at least 1 scheme that has context or result
+	public void receiveBroadcast(Coalition coalition) {
+		NodeStructure ns = (NodeStructure) coalition.getContent();
+		for (Node broadcastNode: ns.getNodes()) {
+			// For each broadcast node, check if it is in the condition pool,
+			// i.e., there is at least 1 scheme that has context or result
 			// condition equal to the node.
-			Node condition = (Node) conditionPool.get(bNode.getConditionId());
-			if (condition != null) { // won't add any nodes to broadcast buffer
-										// that aren't already in the condition
-										// pool
+			Node condition = (Node) conditionPool.get(broadcastNode.getConditionId());
+			if (condition != null) { //Add node to broadcast buffer only if already in the condition pool
 				if (!broadcastBuffer.containsNode(condition)) {
 					// Add a reference to the condition pool Node to the
 					// broadcast buffer without copying
@@ -307,17 +305,17 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements
 				}
 				// Update the activation of the condition-pool/broadcast-buffer
 				// node if needed
-				if (bNode.getActivation() > condition.getActivation()) {
-					condition.setActivation(bNode.getActivation());
+				if (broadcastNode.getActivation() > condition.getActivation()) {
+					condition.setActivation(broadcastNode.getActivation());
 				}
 				// Update the desirability of the
 				// condition-pool/broadcast-buffer node if needed
-				if(bNode.getIncentiveSalience()>condition.getIncentiveSalience()){
-					condition.setIncentiveSalience(bNode.getIncentiveSalience());
+				if(broadcastNode.getIncentiveSalience() > condition.getIncentiveSalience()){
+					condition.setIncentiveSalience(broadcastNode.getIncentiveSalience());
 				}
 			}
 		}
-		learn(coal);
+		learn(coalition);
 		// Spawn a new task to activate and instantiate relevant schemes.
 		// This task runs only once in the next tick
 		taskSpawner.addTask(new FrameworkTaskImpl() {
@@ -360,7 +358,7 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements
 		}
 		//TODO consider links too
 		// For each relevant scheme, if it should be instantiated, then instantiate
-		for (Scheme s : relevantSchemes) {
+		for (Scheme s: relevantSchemes) {
 			if (shouldInstantiate(s, broadcastBuffer)) {
 				createInstantiation(s);
 			}
@@ -371,6 +369,7 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements
 	 * Returns true if the specified scheme's total activation is greater than
 	 * the scheme selection threshold. </br>The threshold can be set in the
 	 * {@link #init()} method.
+	 * @see SchemeImpl#getActivation()
 	 */
 	@Override
 	public boolean shouldInstantiate(Scheme s, NodeStructure broadcastBuffer) {
