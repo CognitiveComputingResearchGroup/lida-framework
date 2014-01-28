@@ -94,11 +94,11 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements
 	 */
 	private Set<Scheme> schemeSet = Collections.newSetFromMap(new ConcurrentHashMap<Scheme,Boolean>());
 
-	/*
+	/**
 	 * A pool of all conditions (context and adding) in all schemes in the
 	 * procedural memory
 	 */
-	private Map<Object, Condition> conditionPool = new HashMap<Object, Condition>();
+	protected Map<Object, Condition> conditionPool = new HashMap<Object, Condition>();
 
 	/**
 	 * Recent contents of consciousness that have not yet decayed away.
