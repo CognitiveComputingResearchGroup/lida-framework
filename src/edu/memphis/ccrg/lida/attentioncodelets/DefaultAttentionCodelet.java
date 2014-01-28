@@ -2,16 +2,9 @@ package edu.memphis.ccrg.lida.attentioncodelets;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.framework.shared.Link;
-import edu.memphis.ccrg.lida.framework.shared.Linkable;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
-import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.Coalition;
 import edu.memphis.ccrg.lida.workspace.WorkspaceContent;
 import edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBuffer;
@@ -24,7 +17,7 @@ import edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBuffer;
  */
 public class DefaultAttentionCodelet extends AttentionCodeletImpl {
 
-	private static final Logger logger = Logger.getLogger(DefaultAttentionCodelet.class.getCanonicalName());
+//	private static final Logger logger = Logger.getLogger(DefaultAttentionCodelet.class.getCanonicalName());
 	private static final double DEFAULT_ATTENTION_THRESHOLD = 0.0;
 	/**
 	 * Activation which content must have in order to be added to the
@@ -77,7 +70,7 @@ public class DefaultAttentionCodelet extends AttentionCodeletImpl {
 		double maxActivation = -1.0;
 		Node maxActiveNode = null;
 		NodeStructure ns = (NodeStructure) buffer.getBufferContent(null);
-		for (Node n : ns.getNodes()) {
+		for (Node n: ns.getNodes()) {
 			double activation = n.getActivation();
 			if (activation >= attentionThreshold && 
 				activation > maxActivation) {
@@ -99,45 +92,37 @@ public class DefaultAttentionCodelet extends AttentionCodeletImpl {
 	 */
 	@Override
 	public NodeStructure retrieveWorkspaceContent(WorkspaceBuffer buffer) {
-		NodeStructure bufferNS = buffer.getBufferContent(null);
-		NodeStructure result = new NodeStructureImpl();
-		if (bufferNS != null){
-			//TODO was throwing ConcurrentModificationException
-//			result = bufferNS.getSubgraph(activeNodes, retrievalDepth, attentionThreshold);			
-			for(Node n: activeNodes){
-				Node bufferNode = bufferNS.getNode(n.getId());
-				result.addNode(bufferNode,bufferNode.getFactoryType());
-				if (retrievalDepth > DEFAULT_RETRIEVAL_DEPTH) {
-					getNeighbors(bufferNS, result, n);
-				}
-			}
-		} else {
-			logger.log(Level.WARNING, "Buffer returned null NodeStructure",
-					TaskManager.getCurrentTick());
-		}
-		return result;
+		NodeStructure bufferStructure = buffer.getBufferContent(null);
+		//TODO was throwing ConcurrentModificationException
+		return bufferStructure.getSubgraph(activeNodes, retrievalDepth, attentionThreshold);
 	}
+//	for(Node n: activeNodes){
+//	Node bufferNode = bufferNS.getNode(n.getId());
+//	result.addNode(bufferNode,bufferNode.getFactoryType());
+//	if (retrievalDepth > DEFAULT_RETRIEVAL_DEPTH) {
+//		getNeighbors(bufferNS, result, n);
+//	}
+//}
 	
-	private void getNeighbors(NodeStructure bufferNS,
-			NodeStructure retrievedSubGraph, Node n) {
-		Map<Linkable, Link> sinks = bufferNS.getConnectedSinks(n);
-		for (Linkable sink : sinks.keySet()) {
-			if (sink instanceof Node && 
-					sink.getActivation() >= attentionThreshold) {
-				Node sinkNode = (Node)sink;
-				retrievedSubGraph.addNode(sinkNode,sinkNode.getFactoryType());
-				Link connectingLink = sinks.get(sink);
-				retrievedSubGraph.addLink(connectingLink,connectingLink.getFactoryType());
-			}
-		}
-
-		Map<Node, Link> sources = bufferNS.getConnectedSources(n);
-		for (Node source : sources.keySet()) {
-			if (source.getActivation() >= attentionThreshold) {
-				retrievedSubGraph.addNode(source,source.getFactoryType());
-				Link connectingLink = sources.get(source);
-				retrievedSubGraph.addLink(connectingLink,connectingLink.getFactoryType());
-			}
-		}
-	}
+//	private void getNeighbors(NodeStructure bufferNS,
+//			NodeStructure retrievedSubGraph, Node n) {
+//		Map<Linkable, Link> sinks = bufferNS.getConnectedSinks(n);
+//		for (Linkable sink : sinks.keySet()) {
+//			if (sink instanceof Node && 
+//					sink.getActivation() >= attentionThreshold) {
+//				Node sinkNode = (Node)sink;
+//				retrievedSubGraph.addNode(sinkNode,sinkNode.getFactoryType());
+//				Link connectingLink = sinks.get(sink);
+//				retrievedSubGraph.addLink(connectingLink,connectingLink.getFactoryType());
+//			}
+//		}
+//		Map<Node, Link> sources = bufferNS.getConnectedSources(n);
+//		for (Node source : sources.keySet()) {
+//			if (source.getActivation() >= attentionThreshold) {
+//				retrievedSubGraph.addNode(source,source.getFactoryType());
+//				Link connectingLink = sources.get(source);
+//				retrievedSubGraph.addLink(connectingLink,connectingLink.getFactoryType());
+//			}
+//		}
+//	}
 }
