@@ -411,10 +411,10 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 
 	@Override
 	public void propagateActivationToParents(PamNode pn) {
-		double nodeActivation = pn.getTotalActivation();
-		if (nodeActivation >= propagateActivationThreshold) {
+		double currentActivation = pn.getActivation();
+		if (currentActivation >= propagateActivationThreshold) {
 			propagateParams.put("upscale", upscaleFactor);// Calculate the amount to propagate
-			propagateParams.put("totalActivation", nodeActivation);
+			propagateParams.put("totalActivation", pn.getTotalActivation());
 			double amountToPropagate = propagationStrategy.getActivationToPropagate(propagateParams);
 			Map<Linkable, Link> parentLinkMap = pamNodeStructure.getConnectedSinks(pn);
 			for (Linkable parent: parentLinkMap.keySet()) {
