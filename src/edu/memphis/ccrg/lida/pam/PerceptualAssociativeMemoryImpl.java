@@ -103,25 +103,25 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 	 * Primitive default {@link LinkCategory}.
 	 */
 	public static LinkCategory DEFAULT_LINK_CATEGORY = (PamNode) factory.getNode(
-			DEFAULT_NONDECAYING_PAMNODE, "default-link-category");
+			DEFAULT_NONDECAYING_PAMNODE, "default-link");
 
 	/**
 	 * Primitive {@link LinkCategory} LATERAL
 	 */
 	public static LinkCategory LATERAL_LINK_CATEGORY = (PamNode) factory.getNode(
-			DEFAULT_NONDECAYING_PAMNODE, "lateral-link-category");
+			DEFAULT_NONDECAYING_PAMNODE, "lateral-link");
 
 	/**
 	 * Primitive {@link LinkCategory} PARENT
 	 */
 	public static LinkCategory PARENT_LINK_CATEGORY = (PamNode) factory.getNode(
-			DEFAULT_NONDECAYING_PAMNODE, "parent-link-category");
+			DEFAULT_NONDECAYING_PAMNODE, "parent-link");
 
 	/**
 	 * Primitive {@link LinkCategory} FEATURE
 	 */
 	public static LinkCategory FEATURE_LINK_CATEGORY = (PamNode) factory.getNode(
-			DEFAULT_NONDECAYING_PAMNODE, "feature-link-category");
+			DEFAULT_NONDECAYING_PAMNODE, "feature-link");
 	/*
 	 * A map where an entry represents a mapping between one factory element type and another.
 	 * The mapping governs a conversion that occurs for each Linkable send out of PAM as a percept.
