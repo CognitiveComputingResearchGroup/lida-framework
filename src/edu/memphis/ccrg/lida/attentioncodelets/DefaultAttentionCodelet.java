@@ -92,9 +92,10 @@ public class DefaultAttentionCodelet extends AttentionCodeletImpl {
 	 */
 	@Override
 	public NodeStructure retrieveWorkspaceContent(WorkspaceBuffer buffer) {
-		NodeStructure bufferStructure = buffer.getBufferContent(null);
+		return buffer.getBufferContent(null);
+//		NodeStructure bufferStructure = buffer.getBufferContent(null);
 		//TODO was throwing ConcurrentModificationException
-		return bufferStructure.getSubgraph(activeNodes, retrievalDepth, attentionThreshold);
+//		return bufferStructure.getSubgraph(activeNodes, retrievalDepth, attentionThreshold);
 	}
 //	for(Node n: activeNodes){
 //	Node bufferNode = bufferNS.getNode(n.getId());
