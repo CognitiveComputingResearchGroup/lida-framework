@@ -872,7 +872,7 @@ public class ElementFactory {
 	/*
 	 * Assigns specified decay and excite strategies to supplied Activatible
 	 */
-	private void setActivatibleStrategies(Activatible activatible, String decayStrategy, String exciteStrategy) {
+	private void setActivatibleStrategies(Activatible activatible, String decayStrategy, String exciteStrategy, String isDecayStrategy) {
 		DecayStrategy decayB = getDecayStrategy(decayStrategy);
 		activatible.setDecayStrategy(decayB);
 		ExciteStrategy exciteB = getExciteStrategy(exciteStrategy);

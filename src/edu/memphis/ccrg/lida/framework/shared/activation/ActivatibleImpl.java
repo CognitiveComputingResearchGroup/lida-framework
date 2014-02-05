@@ -33,7 +33,7 @@ public class ActivatibleImpl extends InitializableImpl implements Activatible {
 
 	private ExciteStrategy exciteStrategy;
 	private DecayStrategy decayStrategy;
-//	private DecayStrategy incentiveDecayStrategy;
+	private DecayStrategy incentiveSalienceDecayStrategy;
 	private double activation;
 	private double removalThreshold;
 	private double incentiveSalience;
@@ -47,6 +47,7 @@ public class ActivatibleImpl extends InitializableImpl implements Activatible {
 		incentiveSalience = DEFAULT_INCENTIVE_SALIENCE;
 		decayStrategy = factory.getDefaultDecayStrategy();
 		exciteStrategy = factory.getDefaultExciteStrategy();
+		incentiveSalienceDecayStrategy = factory.getDefaultDecayStrategy();
 	}
 
 	/**
@@ -81,7 +82,7 @@ public class ActivatibleImpl extends InitializableImpl implements Activatible {
 			}
 			synchronized (this) {
 				activation = decayStrategy.decay(getActivation(), ticks);
-				incentiveSalience=decayStrategy.decay(getIncentiveSalience(), ticks);
+				incentiveSalience=incentiveSalienceDecayStrategy.decay(getIncentiveSalience(), ticks);
 			}
 			if (logger.isLoggable(Level.FINEST)) {
 				logger.log(Level.FINEST,
