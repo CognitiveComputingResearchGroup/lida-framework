@@ -65,6 +65,8 @@ public class ElementFactory {
 	 * Used to retrieve default excite strategy from 'exciteStrategies' map.
 	 */
 	private String defaultExciteType = "defaultExcite";
+	
+	private String defaultIncentiveSalienceDecay = "noDecay";
 
 	private String defaultTotalValueStrategyType = DefaultTotalActivationStrategy.class.getSimpleName();
 
@@ -144,6 +146,8 @@ public class ElementFactory {
 	 * @see LidaFactories.xsd
 	 */
 	private static final String exciteStrategyType = "excite";
+	
+	private static final String isDecayStrategyType = "isDecay";
 
 	// TODO Implement PropagationStrategy in Pam in a generic way
 	/*
@@ -465,7 +469,8 @@ public class ElementFactory {
 	 * @return new Link
 	 */
 	public Link getLink(Node source, Linkable sink, LinkCategory category, double activation, double removalThreshold) {
-		return getLink(defaultLinkType, source, sink, category, defaultDecayType, defaultExciteType, activation, removalThreshold);
+		return getLink(defaultLinkType, source, sink, category, defaultDecayType, defaultExciteType,defaultIncentiveSalienceDecay,
+					activation, removalThreshold);
 	}
 
 	/**
@@ -481,7 +486,8 @@ public class ElementFactory {
 	 * @return new Link
 	 */
 	public Link getLink(Node source, Linkable sink, LinkCategory category) {
-		return getLink(defaultLinkType, source, sink, category, defaultDecayType, defaultExciteType, Activatible.DEFAULT_ACTIVATION,
+		return getLink(defaultLinkType, source, sink, category, defaultDecayType, defaultExciteType, defaultIncentiveSalienceDecay, 
+				Activatible.DEFAULT_ACTIVATION,
 				Activatible.DEFAULT_ACTIVATIBLE_REMOVAL_THRESHOLD);
 	}
 
@@ -558,7 +564,8 @@ public class ElementFactory {
 			exciteB = defaultExciteType;
 		}
 
-		return getLink(linkType, source, sink, category, decayB, exciteB, Activatible.DEFAULT_ACTIVATION,
+		return getLink(linkType, source, sink, category, decayB, exciteB, defaultIncentiveSalienceDecay,
+				Activatible.DEFAULT_ACTIVATION,
 				Activatible.DEFAULT_ACTIVATIBLE_REMOVAL_THRESHOLD);
 	}
 
@@ -584,7 +591,8 @@ public class ElementFactory {
 	 *            threshold of activation required to remain active
 	 * @return new Link
 	 */
-	public Link getLink(String linkType, Node source, Linkable sink, LinkCategory category, String decayStrategy, String exciteStrategy,
+	public Link getLink(String linkType, Node source, Linkable sink, LinkCategory category, 
+			String decayStrategy, String exciteStrategy, String isDecayStrategy,
 			double activation, double removalThreshold) {
 
 		if (source == null) {
@@ -616,7 +624,7 @@ public class ElementFactory {
 			link.setCategory(category);
 			link.setActivation(activation);
 			link.setActivatibleRemovalThreshold(removalThreshold);
-			setActivatibleStrategies(link, decayStrategy, exciteStrategy);
+			setActivatibleStrategies(link, decayStrategy, exciteStrategy, isDecayStrategy);
 			link.init(linkDef.getParams());
 
 		} catch (InstantiationException e) {
@@ -638,7 +646,7 @@ public class ElementFactory {
 	 * @return the node
 	 */
 	public Node getNode() {
-		return getNode(defaultNodeType, defaultDecayType, defaultExciteType, "Node", Activatible.DEFAULT_ACTIVATION,
+		return getNode(defaultNodeType, defaultDecayType, defaultExciteType, "noDecay", "Node", Activatible.DEFAULT_ACTIVATION,
 				Activatible.DEFAULT_ACTIVATIBLE_REMOVAL_THRESHOLD);
 	}
 
@@ -710,14 +718,19 @@ public class ElementFactory {
 		}
 		String decayB = nodeDef.getDefaultStrategies().get(decayStrategyType);
 		String exciteB = nodeDef.getDefaultStrategies().get(exciteStrategyType);
+		String decayIs = nodeDef.getDefaultStrategies().get(isDecayStrategyType);
+		
 		if (decayB == null) {
 			decayB = defaultDecayType;
 		}
 		if (exciteB == null) {
 			exciteB = defaultExciteType;
 		}
+		if(decayIs == null){
+			decayIs = defaultIncentiveSalienceDecay;
+		}
 
-		Node n = getNode(type, decayB, exciteB, label, Activatible.DEFAULT_ACTIVATION, Activatible.DEFAULT_ACTIVATIBLE_REMOVAL_THRESHOLD);
+		Node n = getNode(type, decayB, exciteB, decayIs, label, Activatible.DEFAULT_ACTIVATION, Activatible.DEFAULT_ACTIVATIBLE_REMOVAL_THRESHOLD);
 		return n;
 	}
 
@@ -777,8 +790,8 @@ public class ElementFactory {
 	 *            new node's excite strategy
 	 * @return the node
 	 */
-	public Node getNode(Node oNode, String decayStrategy, String exciteStrategy) {
-		return getNode(oNode, defaultNodeType, decayStrategy, exciteStrategy);
+	public Node getNode(Node oNode, String decayStrategy, String exciteStrategy, String isDecayStrategy) {
+		return getNode(oNode, defaultNodeType, decayStrategy, exciteStrategy, isDecayStrategy);
 	}
 
 	/*
@@ -796,12 +809,13 @@ public class ElementFactory {
 	 * 
 	 * @return the node
 	 */
-	private Node getNode(Node oNode, String nodeType, String decayStrategy, String exciteStrategy) {
+	private Node getNode(Node oNode, String nodeType, 
+						String decayStrategy, String exciteStrategy, String isDecayStrategy) {
 		if (oNode == null) {
 			logger.log(Level.WARNING, "Specified node is null", TaskManager.getCurrentTick());
 			return null;
 		}
-		Node n = getNode(nodeType, decayStrategy, exciteStrategy, oNode.getLabel(), oNode.getActivation(), oNode.getActivatibleRemovalThreshold());
+		Node n = getNode(nodeType, decayStrategy, exciteStrategy, isDecayStrategy, oNode.getLabel(), oNode.getActivation(), oNode.getActivatibleRemovalThreshold());
 		n.setGroundingPamNode(oNode.getGroundingPamNode());
 		n.setId(oNode.getId()); // sets extended id as well.
 		n.updateNodeValues(oNode);
@@ -831,6 +845,7 @@ public class ElementFactory {
 	 *            decay strategy of new node
 	 * @param exciteStrategy
 	 *            excite strategy of new node
+	 * @param incSalDecayStrategy incentive salience decay strategy of new Node
 	 * @param nodeLabel
 	 *            label of new node
 	 * @param activation
@@ -840,7 +855,8 @@ public class ElementFactory {
 	 *            {@link NodeStructure}s
 	 * @return the node
 	 */
-	public Node getNode(String nodeType, String decayStrategy, String exciteStrategy, String nodeLabel, double activation, double removalThreshold) {
+	public Node getNode(String nodeType, String decayStrategy, String exciteStrategy, String incSalDecayStrategy,
+						String nodeLabel, double activation, double removalThreshold) {
 		Node n = null;
 		try {
 			LinkableDef nodeDef = nodeClasses.get(nodeType);
@@ -857,7 +873,7 @@ public class ElementFactory {
 			n.setLabel(nodeLabel);
 			n.setActivation(activation);
 			n.setActivatibleRemovalThreshold(removalThreshold);
-			setActivatibleStrategies(n, decayStrategy, exciteStrategy);
+			setActivatibleStrategies(n, decayStrategy, exciteStrategy, incSalDecayStrategy);
 			n.init(nodeDef.getParams());
 		} catch (InstantiationException e) {
 			logger.log(Level.WARNING, "InstantiationException creating Node.", TaskManager.getCurrentTick());
@@ -872,11 +888,14 @@ public class ElementFactory {
 	/*
 	 * Assigns specified decay and excite strategies to supplied Activatible
 	 */
-	private void setActivatibleStrategies(Activatible activatible, String decayStrategy, String exciteStrategy, String isDecayStrategy) {
+	private void setActivatibleStrategies(Activatible activatible, String decayStrategy, String exciteStrategy, 
+										  String incentiveSalienceDecayStrategy) {
 		DecayStrategy decayB = getDecayStrategy(decayStrategy);
 		activatible.setDecayStrategy(decayB);
 		ExciteStrategy exciteB = getExciteStrategy(exciteStrategy);
 		activatible.setExciteStrategy(exciteB);
+		decayB = getDecayStrategy(incentiveSalienceDecayStrategy);
+		activatible.setIncentiveSalienceDecayStrategy(decayB);
 	}
 
 	/**
@@ -1060,7 +1079,7 @@ public class ElementFactory {
 			task.setTicksPerRun(ticksPerRun);
 			task.setActivation(activation);
 			task.setActivatibleRemovalThreshold(removalThreshold);
-			setActivatibleStrategies(task, decayStrategy, exciteStrategy);
+			setActivatibleStrategies(task, decayStrategy, exciteStrategy, decayStrategy);
 
 			// Associate specified modules to task
 			if (modules != null) {

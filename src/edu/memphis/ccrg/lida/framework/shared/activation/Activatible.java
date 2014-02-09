@@ -140,6 +140,17 @@ public interface Activatible extends Initializable {
 	 * @return the decay strategy.
 	 */
 	public DecayStrategy getDecayStrategy();
+	
+	/**
+	 * Sets the incentive salience {@link DecayStrategy}.
+	 * @param s the DecayStrategy
+	 */
+	public void setIncentiveSalienceDecayStrategy(DecayStrategy s);
+	/**
+	 * Gets the incentive salience {@link DecayStrategy}.
+	 * @return the DecayStrategy
+	 */
+	public DecayStrategy getIncentiveSalienceDecayStrategy();
 
 	/**
 	 * Sets the threshold on the amount of activation and incentive salience required to remain active.

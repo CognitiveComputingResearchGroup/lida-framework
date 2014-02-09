@@ -224,4 +224,14 @@ public class ActivatibleImpl extends InitializableImpl implements Activatible {
 	public boolean isRemovable() {
 		return getActivation()+getIncentiveSalience()<=removalThreshold;
 	}
+
+	@Override
+	public void setIncentiveSalienceDecayStrategy(DecayStrategy s) {
+		incentiveSalienceDecayStrategy=s;
+	}
+
+	@Override
+	public DecayStrategy getIncentiveSalienceDecayStrategy() {
+		return incentiveSalienceDecayStrategy;
+	}
 }

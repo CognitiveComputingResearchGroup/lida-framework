@@ -365,7 +365,7 @@ public class ElementFactoryTest {
 		String linkT = "PamLinkImpl";
 
 		Link l = factory.getLink(linkT, node2, node1, category1,
-				"defaultDecay", "defaultExcite", 0.99, 0.11);
+				"defaultDecay", "defaultExcite", "defaultDecay", 0.99, 0.11);
 
 		assertTrue(l instanceof PamLinkImpl);
 		assertEquals(l.getSource(), node2);
@@ -533,7 +533,7 @@ public class ElementFactoryTest {
 
 	@Test
 	public void testGetNode4() {
-		Node n = factory.getNode(node1, "specialDecay", "specialExcite");
+		Node n = factory.getNode(node1, "specialDecay", "specialExcite", "specialDecay");
 		assertTrue(n.getDecayStrategy() instanceof SigmoidDecayStrategy);
 		assertTrue(n.getExciteStrategy() instanceof SigmoidExciteStrategy);
 
@@ -553,7 +553,7 @@ public class ElementFactoryTest {
 	@Test
 	public void testGetNode6() {
 		Node n = factory.getNode("PamNodeImpl", "specialDecay",
-				"specialExcite", "chuck", 0.99, 0.11);
+				"specialExcite", "specialDecay", "chuck", 0.99, 0.11);
 		assertTrue(n instanceof PamNodeImpl);
 		assertTrue(n.getDecayStrategy() instanceof SigmoidDecayStrategy);
 		assertTrue(n.getExciteStrategy() instanceof SigmoidExciteStrategy);
@@ -561,23 +561,23 @@ public class ElementFactoryTest {
 		assertTrue(0.99 == n.getActivation());
 		assertTrue(0.11 == n.getActivatibleRemovalThreshold());
 
-		n = factory.getNode(null, "specialDecay", "specialExcite", "chuck",
+		n = factory.getNode(null, "specialDecay", "specialExcite", "specialDecay","chuck",
 				0.99, 0.11);
 		assertTrue(n == null);
 
-		n = factory.getNode("PamNodeImpl", null, "specialExcite", "chuck",
+		n = factory.getNode("PamNodeImpl", null, "specialExcite", "specialDecay","chuck",
 				0.99, 0.11);
 		assertTrue(n instanceof PamNodeImpl);
 		assertFalse(n.getDecayStrategy() instanceof SigmoidDecayStrategy);
 		assertTrue(n.getExciteStrategy() instanceof SigmoidExciteStrategy);
 
-		n = factory.getNode("PamNodeImpl", "specialDecay", null, "chuck", 0.99,
+		n = factory.getNode("PamNodeImpl", "specialDecay", null, "specialDecay", "chuck", 0.99,
 				0.11);
 		assertTrue(n instanceof PamNodeImpl);
 		assertTrue(n.getDecayStrategy() instanceof SigmoidDecayStrategy);
 		assertFalse(n.getExciteStrategy() instanceof SigmoidExciteStrategy);
 
-		n = factory.getNode("PamNodeImpl", "specialDecay", "specialExcite",
+		n = factory.getNode("PamNodeImpl", "specialDecay", "specialExcite","specialDecay",
 				null, 0.99, 0.11);
 		assertTrue(n instanceof PamNodeImpl);
 	}
@@ -601,7 +601,7 @@ public class ElementFactoryTest {
 		n = factory.getNode("NodeImpl", "");
 		assertEquals("NodeImpl", n.getFactoryType());
 
-		n = factory.getNode(n, "", "");
+		n = factory.getNode(n, "", "", "");
 		assertEquals("NodeImpl", n.getFactoryType());
 
 		n = factory.getNode("NodeImpl", n, "PamNodeImpl");
@@ -610,7 +610,8 @@ public class ElementFactoryTest {
 		n = factory.getNode("PamNodeImpl", n, "PamNodeImpl");
 		assertEquals("PamNodeImpl", n.getFactoryType());
 
-		n = factory.getNode("NodeImpl", "", "", "", 0.0, 0.0);
+		n = factory.getNode("NodeImpl", "", "", "",
+							"", 0.0, 0.0);
 		assertEquals("NodeImpl", n.getFactoryType());
 	}
 
@@ -630,7 +631,7 @@ public class ElementFactoryTest {
 		l = factory.getLink("LinkImpl", "LinkImpl", node1, node2, category1);
 		assertEquals("LinkImpl", l.getFactoryType());
 
-		l = factory.getLink("LinkImpl", node2, node1, category1, null, null, 0,
+		l = factory.getLink("LinkImpl", node2, node1, category1, null, null, null, 0,
 				0);
 		assertEquals("LinkImpl", l.getFactoryType());
 	}
