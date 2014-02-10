@@ -30,6 +30,7 @@ public class ActivatibleImpl extends InitializableImpl implements Activatible {
 	private static final Logger logger = Logger.getLogger(ActivatibleImpl.class
 			.getCanonicalName());
 	private static final ElementFactory factory = ElementFactory.getInstance();
+	private static final String DEFAULT_IS_DECAY = "noDecay";
 
 	private ExciteStrategy exciteStrategy;
 	private DecayStrategy decayStrategy;
@@ -70,6 +71,11 @@ public class ActivatibleImpl extends InitializableImpl implements Activatible {
 		this.decayStrategy = decay;
 	}
 
+	@Override
+	public void init(){
+		String name = getParam("activatible.incentiveSalienceDecayStrategy",DEFAULT_IS_DECAY);
+		incentiveSalienceDecayStrategy = factory.getDecayStrategy(name);
+	}
 
 	@Override
 	public void decay(long ticks) {

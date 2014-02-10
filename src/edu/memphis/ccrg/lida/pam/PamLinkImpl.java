@@ -57,7 +57,7 @@ public class PamLinkImpl extends LinkImpl implements PamLink {
 	 * Copy constructor
 	 * 
 	 * @deprecated Use
-	 *             {@link ElementFactory#getLink(String, Node, Linkable, LinkCategory, String, String, double, double)}
+	 *             {@link ElementFactory#getLink(String, Node, Linkable, LinkCategory, String, String, String, double, double)}
 	 *             instead.
 	 * @param pl
 	 *            source {@link PamLinkImpl}
@@ -76,7 +76,7 @@ public class PamLinkImpl extends LinkImpl implements PamLink {
 	 * @see ElementFactory#getLink(String,
 	 *      edu.memphis.ccrg.lida.framework.shared.Node,
 	 *      edu.memphis.ccrg.lida.framework.shared.Linkable,
-	 *      edu.memphis.ccrg.lida.framework.shared.LinkCategory, String, String,
+	 *      edu.memphis.ccrg.lida.framework.shared.LinkCategory, String, String, String,
 	 *      double, double)
 	 */
 	@Override

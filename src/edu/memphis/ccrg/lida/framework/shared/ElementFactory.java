@@ -65,7 +65,7 @@ public class ElementFactory {
 	 * Used to retrieve default excite strategy from 'exciteStrategies' map.
 	 */
 	private String defaultExciteType = "defaultExcite";
-	
+	//TODO fix
 	private String defaultIncentiveSalienceDecay = "noDecay";
 
 	private String defaultTotalValueStrategyType = DefaultTotalActivationStrategy.class.getSimpleName();
@@ -585,6 +585,7 @@ public class ElementFactory {
 	 *            Link's {@link DecayStrategy}
 	 * @param exciteStrategy
 	 *            Link's {@link ExciteStrategy}
+	 * @param isDecayStrategy  Link's incentive salience {@link DecayStrategy}
 	 * @param activation
 	 *            initial activation
 	 * @param removalThreshold
@@ -696,7 +697,7 @@ public class ElementFactory {
 		if (exciteB == null) {
 			exciteB = defaultExciteType;
 		}
-		return getNode(oNode, nodeType, decayB, exciteB);
+		return getNode(oNode, nodeType, decayB, exciteB); //TODO this call is wrong
 	}
 
 	/**
@@ -788,10 +789,11 @@ public class ElementFactory {
 	 *            new node's decay strategy
 	 * @param exciteStrategy
 	 *            new node's excite strategy
+	 * @param isDecayStrategy node's incentive salience {@link DecayStrategy}
 	 * @return the node
 	 */
-	public Node getNode(Node oNode, String decayStrategy, String exciteStrategy, String isDecayStrategy) {
-		return getNode(oNode, defaultNodeType, decayStrategy, exciteStrategy, isDecayStrategy);
+	public Node getNode(Node oNode, String decayStrategy, String exciteStrategy, String isDecayStrategy) { //TODO check calls to this method
+		return getNode(oNode, defaultNodeType, decayStrategy, exciteStrategy, isDecayStrategy); 
 	}
 
 	/*

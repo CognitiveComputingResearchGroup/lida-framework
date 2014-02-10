@@ -69,7 +69,7 @@ public class PamNodeImpl extends NodeImpl implements PamNode {
 	 * Must call the {@link #init()} of the internal {@link Learnable}.
 	 * 
 	 * @see LearnableImpl#init()
-	 * @see ElementFactory#getNode(String, String, String, String, double,
+	 * @see ElementFactory#getNode(String, String, String, String, String, double,
 	 *      double)
 	 */
 	@Override

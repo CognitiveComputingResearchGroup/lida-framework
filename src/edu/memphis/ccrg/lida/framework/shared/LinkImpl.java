@@ -108,7 +108,7 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 	 * Copy constructor
 	 * 
 	 * @deprecated Use
-	 *             {@link ElementFactory#getLink(String, Node, Linkable, LinkCategory, String, String, double, double)}
+	 *             {@link ElementFactory#getLink(String, Node, Linkable, LinkCategory, String, String, String, double, double)}
 	 *             instead.
 	 * @param l
 	 *            source {@link LinkImpl}
