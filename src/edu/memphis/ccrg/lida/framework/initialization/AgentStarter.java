@@ -76,9 +76,7 @@ public class AgentStarter {
 	public static void start(Properties p) {
 		agentProperties = p;
 		if (agentProperties == null) {
-			logger
-					.log(
-							Level.SEVERE,
+			logger.log(Level.SEVERE,
 							"Specified Properties object is null, attempting to load default properties path instead.");
 			start();
 		} else {
@@ -152,7 +150,7 @@ public class AgentStarter {
 		// If GUI is Enabled then used the FrameworkGuiFactory to start the
 		// agent
 		boolean enableGui = Boolean.parseBoolean(agentProperties.getProperty(
-				"lida.gui.enable", "true"));
+													"lida.gui.enable", "true"));
 		if (enableGui) {
 			FrameworkGuiFactory.start(agent, agentProperties);
 		} else {
