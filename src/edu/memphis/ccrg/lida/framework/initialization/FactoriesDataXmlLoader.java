@@ -206,9 +206,7 @@ public class FactoriesDataXmlLoader {
 			StrategyDef bd = strategies.get(s);
 			String type = bd.getType();
 			if (strat.containsKey(type)) {
-				logger
-						.log(
-								Level.WARNING,
+				logger.log(Level.WARNING,
 								"Cannot add strategy {1} a strategy of type {2} already exists",
 								new Object[] { TaskManager.getCurrentTick(), s,
 										type });

@@ -65,7 +65,10 @@ public class ElementFactory {
 	 * Used to retrieve default excite strategy from 'exciteStrategies' map.
 	 */
 	private String defaultExciteType = "defaultExcite";
-	//TODO fix
+	
+	/*
+	 * Used to retrieve default incentive salience decay strategy from 'decayStrategies' map.
+	 */
 	private String defaultIncentiveSalienceDecay = "noDecay";
 
 	private String defaultTotalValueStrategyType = DefaultTotalActivationStrategy.class.getSimpleName();
@@ -647,8 +650,8 @@ public class ElementFactory {
 	 * @return the node
 	 */
 	public Node getNode() {
-		return getNode(defaultNodeType, defaultDecayType, defaultExciteType, "noDecay", "Node", Activatible.DEFAULT_ACTIVATION,
-				Activatible.DEFAULT_ACTIVATIBLE_REMOVAL_THRESHOLD);
+		return getNode(defaultNodeType, defaultDecayType, defaultExciteType, defaultIncentiveSalienceDecay, 
+				"Node", Activatible.DEFAULT_ACTIVATION, Activatible.DEFAULT_ACTIVATIBLE_REMOVAL_THRESHOLD);
 	}
 
 	/**
@@ -661,7 +664,7 @@ public class ElementFactory {
 	 * @return the node
 	 */
 	public Node getNode(Node oNode) {
-		return getNode(oNode, defaultNodeType, defaultDecayType, defaultExciteType);
+		return getNode(oNode, defaultNodeType, defaultDecayType, defaultExciteType, defaultIncentiveSalienceDecay);
 	}
 
 	/**
@@ -691,13 +694,17 @@ public class ElementFactory {
 		}
 		String decayB = nodeDef.getDefaultStrategies().get(decayStrategyType);
 		String exciteB = nodeDef.getDefaultStrategies().get(exciteStrategyType);
+		String decayIs = nodeDef.getDefaultStrategies().get(isDecayStrategyType);
 		if (decayB == null) {
 			decayB = defaultDecayType;
 		}
 		if (exciteB == null) {
 			exciteB = defaultExciteType;
 		}
-		return getNode(oNode, nodeType, decayB, exciteB); //TODO this call is wrong
+		if(decayIs == null){
+			decayIs = defaultIncentiveSalienceDecay;
+		}
+		return getNode(oNode, nodeType, decayB, exciteB, decayIs);
 	}
 
 	/**
@@ -720,7 +727,6 @@ public class ElementFactory {
 		String decayB = nodeDef.getDefaultStrategies().get(decayStrategyType);
 		String exciteB = nodeDef.getDefaultStrategies().get(exciteStrategyType);
 		String decayIs = nodeDef.getDefaultStrategies().get(isDecayStrategyType);
-		
 		if (decayB == null) {
 			decayB = defaultDecayType;
 		}
@@ -730,7 +736,6 @@ public class ElementFactory {
 		if(decayIs == null){
 			decayIs = defaultIncentiveSalienceDecay;
 		}
-
 		Node n = getNode(type, decayB, exciteB, decayIs, label, Activatible.DEFAULT_ACTIVATION, Activatible.DEFAULT_ACTIVATIBLE_REMOVAL_THRESHOLD);
 		return n;
 	}
@@ -792,7 +797,7 @@ public class ElementFactory {
 	 * @param isDecayStrategy node's incentive salience {@link DecayStrategy}
 	 * @return the node
 	 */
-	public Node getNode(Node oNode, String decayStrategy, String exciteStrategy, String isDecayStrategy) { //TODO check calls to this method
+	public Node getNode(Node oNode, String decayStrategy, String exciteStrategy, String isDecayStrategy) { 
 		return getNode(oNode, defaultNodeType, decayStrategy, exciteStrategy, isDecayStrategy); 
 	}
 
