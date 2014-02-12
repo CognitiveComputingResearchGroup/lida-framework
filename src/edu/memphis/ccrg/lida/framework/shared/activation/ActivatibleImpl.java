@@ -229,7 +229,8 @@ public class ActivatibleImpl extends InitializableImpl implements Activatible {
 
 	@Override
 	public boolean isRemovable() {
-		return getActivation()+getIncentiveSalience()<=removalThreshold;
+		return getActivation() <= removalThreshold && 
+				Math.abs(getIncentiveSalience()) <= removalThreshold;
 	}
 
 	@Override

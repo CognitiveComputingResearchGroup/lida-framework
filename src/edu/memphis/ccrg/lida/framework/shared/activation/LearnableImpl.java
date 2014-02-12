@@ -184,7 +184,8 @@ public class LearnableImpl extends ActivatibleImpl implements Learnable {
 
 	@Override
 	public boolean isRemovable() {
-		return (getBaseLevelActivation()+getBaseLevelIncentiveSalience()) <= learnableRemovalThreshold;
+		return getBaseLevelActivation() <= learnableRemovalThreshold && 
+				Math.abs(getBaseLevelIncentiveSalience()) <= learnableRemovalThreshold;
 	}
 
 	@Override

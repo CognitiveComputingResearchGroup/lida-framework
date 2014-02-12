@@ -25,6 +25,7 @@ import edu.memphis.ccrg.lida.framework.strategies.DefaultTotalActivationStrategy
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.LinearExciteStrategy;
+import edu.memphis.ccrg.lida.framework.strategies.LinearIncentiveSalienceDecay;
 import edu.memphis.ccrg.lida.framework.strategies.NoDecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.NoExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.Strategy;
@@ -69,7 +70,7 @@ public class ElementFactory {
 	/*
 	 * Used to retrieve default incentive salience decay strategy from 'decayStrategies' map.
 	 */
-	private String defaultIncentiveSalienceDecay = "noDecay";
+	private String defaultIncentiveSalienceDecay = "defaultIncentiveSalienceDecay";
 
 	private String defaultTotalValueStrategyType = DefaultTotalActivationStrategy.class.getSimpleName();
 
@@ -149,7 +150,7 @@ public class ElementFactory {
 	 * @see LidaFactories.xsd
 	 */
 	private static final String exciteStrategyType = "excite";
-	
+	//TODO not yet supported
 	private static final String isDecayStrategyType = "isDecay";
 
 	// TODO Implement PropagationStrategy in Pam in a generic way
@@ -193,12 +194,16 @@ public class ElementFactory {
 		// No-decay strategy type
 		String strategyName = "noDecay";
 		addDecayStrategy(strategyName, new StrategyDef(NoDecayStrategy.class.getCanonicalName(), strategyName, new HashMap<String, Object>(),
-				decayStrategyType, true));
+						decayStrategyType, true));
 
 		// No-excite strategy type
 		strategyName = "noExcite";
 		addExciteStrategy(strategyName, new StrategyDef(NoExciteStrategy.class.getCanonicalName(), strategyName, new HashMap<String, Object>(),
-				exciteStrategyType, true));
+						exciteStrategyType, true));
+		
+		strategyName = defaultIncentiveSalienceDecay;
+		addDecayStrategy(strategyName, new StrategyDef(LinearIncentiveSalienceDecay.class.getCanonicalName(), strategyName, new HashMap<String, Object>(),
+						decayStrategyType, true));
 
 		// Default TotalActivation strategy
 		strategyName = defaultTotalValueStrategyType;
