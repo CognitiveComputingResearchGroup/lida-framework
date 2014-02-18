@@ -137,9 +137,20 @@ public class ExtendedId {
 		StringBuilder sb = new StringBuilder("[");
 		sb.append(linkCategory).append(",");
 		sb.append(sourceNodeId).append(",");
-		sb.append(sinkLinkCategory).append(",");
+		String temp = null;
+		if(sinkLinkCategory==UNDEFINED){
+			temp = " ";
+		}else{
+			temp = sinkLinkCategory+"";
+		}
+		sb.append(temp).append(",");
 		sb.append(sinkNode1Id).append(",");
-		sb.append(sinkNode2Id).append("]");
+		if(sinkNode2Id==UNDEFINED){
+			temp = " ";
+		}else{
+			temp = sinkNode2Id+"";
+		}
+		sb.append(temp).append("]");
 		return sb.toString();
 	}
 }
