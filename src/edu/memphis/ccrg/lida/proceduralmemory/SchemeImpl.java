@@ -30,19 +30,6 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 	private static final Logger logger = Logger.getLogger(SchemeImpl.class
 			.getCanonicalName());
 	private static int idCounter = 0;// TODO Factory support for Scheme
-
-	private String label;
-	private int id;
-	private boolean isInnate;
-	private int numExecutions;
-	private int numSuccessfulExecutions;
-
-	private Action action;
-	private Map<Object, Condition> context = new ConcurrentHashMap<Object, Condition>();
-	private Map<Object, Condition> addingList = new ConcurrentHashMap<Object, Condition>();
-	private Map<Object, Condition> deletingList = new ConcurrentHashMap<Object, Condition>();
-	private ProceduralMemoryImpl pm;
-
 	/*
 	 * The weight of the context in the calculation of scheme salience
 	 */
@@ -55,6 +42,16 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 	 * Threshold for Schemes to be reliable
 	 */
 	private static double reliabilityThreshold = 0.0;
+	private String label;
+	private int id;
+	private boolean isInnate;
+	private int numExecutions;
+	private int numSuccessfulExecutions;
+	private Action action;
+	private Map<Object, Condition> context = new ConcurrentHashMap<Object, Condition>();
+	private Map<Object, Condition> addingList = new ConcurrentHashMap<Object, Condition>();
+	private Map<Object, Condition> deletingList = new ConcurrentHashMap<Object, Condition>();
+	private ProceduralMemoryImpl pm;
 
 	/**
 	 * Constructs a new scheme with default values
@@ -166,8 +163,8 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 
 	@Override
 	public double getReliability() {
-		return (numExecutions > 0) ? ((double) numSuccessfulExecutions)
-				/ numExecutions : 0.0;
+		return numExecutions>0? 
+				((double)numSuccessfulExecutions)/numExecutions: 0.0;
 	}
 
 	@Override
@@ -191,15 +188,11 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 	 * @return average activation of unit's context
 	 */
 	protected double getAverageContextActivation() {
-		if (context.size() == 0) {
-			return 0.0;
+		double activationSum = 0.0;
+		for (Condition c: context.values()) {			
+			activationSum += c.getActivation(); // if required to use Condition weight, use it here
 		}
-		double aggregateActivation = 0.0;
-		for (Condition c : context.values()) {
-			// if required to use Condition weight, use it here
-			aggregateActivation += c.getActivation();
-		}
-		return aggregateActivation / context.size();
+		return context.size()==0? 0: activationSum/context.size();
 	}
 
 	/**
@@ -208,18 +201,11 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 	 * @return average incentive salience of this unit's adding list
 	 */
 	protected double getAverageAddingListIncentiveSalience() {
-		int numConditions = 0;
 		double incentiveSalienceSum = 0.0;
-		for (Condition c : addingList.values()) {
-			// if required to use Condition weight, use it here
-			incentiveSalienceSum += c.getIncentiveSalience();
-			numConditions++;
+		for (Condition c: addingList.values()) {
+			incentiveSalienceSum += Math.abs(c.getIncentiveSalience()); // if required to use Condition weight, use it here
 		}
-		if (numConditions == 0) {
-			return 0.0;
-		} else {
-			return incentiveSalienceSum / numConditions;
-		}
+		return addingList.size()==0? 0: incentiveSalienceSum/addingList.size();
 	}
 
 	// Learnable override
@@ -232,9 +218,9 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 
 	@Override
 	public double getActivation() {
-		double overallSalience = contextWeight * getAverageContextActivation()
-				+ addingListWeight * getAverageAddingListIncentiveSalience();
-		return (overallSalience > 1.0) ? 1.0 : overallSalience;
+		double overallSalience = contextWeight*getAverageContextActivation() + 
+								 addingListWeight*getAverageAddingListIncentiveSalience();
+		return overallSalience>1.0? 1.0: overallSalience;
 	}
 
 	@Override
@@ -305,19 +291,19 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 	@Override
 	public Collection<Condition> getContextConditions() {
 		Collection<Condition> aux = context.values();
-		return (aux == null) ? null : Collections.unmodifiableCollection(aux);
+		return aux==null? null: Collections.unmodifiableCollection(aux);
 	}
 
 	@Override
 	public Collection<Condition> getAddingList() {
 		Collection<Condition> aux = addingList.values();
-		return (aux == null) ? null : Collections.unmodifiableCollection(aux);
+		return aux==null? null: Collections.unmodifiableCollection(aux);
 	}
 
 	@Override
 	public Collection<Condition> getDeletingList() {
 		Collection<Condition> aux = deletingList.values();
-		return (aux == null) ? null : Collections.unmodifiableCollection(aux);
+		return aux==null? null: Collections.unmodifiableCollection(aux);
 	}
 
 	@Override
