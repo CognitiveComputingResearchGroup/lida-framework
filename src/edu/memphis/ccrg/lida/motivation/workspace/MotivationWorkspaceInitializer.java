@@ -8,7 +8,12 @@ import edu.memphis.ccrg.lida.framework.initialization.GlobalInitializer;
 import edu.memphis.ccrg.lida.framework.initialization.Initializer;
 import edu.memphis.ccrg.lida.framework.shared.LinkCategory;
 
-public class WorkspaceInitializer implements Initializer {
+/**
+ * {@link Initializer} for the {@link MotivationWorkspace}.
+ * @author Ryan J McCall
+ *
+ */
+public class MotivationWorkspaceInitializer implements Initializer {
 
 	@Override
 	public void initModule(FullyInitializable m, Agent a, Map<String, ?> params) {
@@ -19,6 +24,4 @@ public class WorkspaceInitializer implements Initializer {
 			workspace.setTemporalCategory((LinkCategory)o);
 		} 
 	}
-
-
 }
