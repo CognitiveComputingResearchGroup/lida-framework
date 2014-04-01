@@ -47,15 +47,15 @@ public class MotivationWorkspace extends WorkspaceImpl {
 
 	/*
 	 * It appears preferable to perform this operation right when a node is added to the CSM
-	 * as opposed to performing this op cyclicly in a task.
+	 * as opposed to performing this op cyclically in a task.
 	 */
 	private void buildTemporalLink(Node n, NodeStructure csmStructure) {
 		BroadcastQueue queue = (BroadcastQueue) getSubmodule(ModuleName.BroadcastQueue);
-		NodeStructure queueStructure = queue.getPositionContent(0);
-		if (queueStructure != null) {
+		NodeStructure latestBroadcast = queue.getPositionContent(0);
+		if (latestBroadcast != null) {
 			Node sink = n;
-			if(!queueStructure.containsNode(sink)){ 
-				Node source = getFirstEventNode(queueStructure, temporalCategory);
+			if(!latestBroadcast.containsNode(sink)){ 
+				Node source = getFirstEventNode(latestBroadcast, temporalCategory);
 				if(source != null){
 					if(!csmStructure.containsNode(source)){ // Avoid endlessly exciting source
 						csmStructure.addNode(source, source.getFactoryType());
