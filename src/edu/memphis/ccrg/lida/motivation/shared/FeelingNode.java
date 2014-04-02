@@ -4,8 +4,8 @@ import edu.memphis.ccrg.lida.framework.shared.Node;
 
 
 /**
+ * A {@link Node} having a valence. Can be marked a drive feeling or not.
  * @author Ryan J McCall
- *
  */
 public interface FeelingNode extends Valenceable, Node {
 
@@ -17,7 +17,7 @@ public interface FeelingNode extends Valenceable, Node {
 	
 	/**
 	 * Returns whether this feeling is a drive, i.e., concerning the agent's internal state.
-	 * @return
+	 * @return true if the feeling is a drive feeling
 	 */
 	public boolean isDrive();
 

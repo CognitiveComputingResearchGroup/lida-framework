@@ -6,10 +6,16 @@ import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.Agent;
 import edu.memphis.ccrg.lida.framework.initialization.FullyInitializable;
+import edu.memphis.ccrg.lida.framework.initialization.Initializer;
 import edu.memphis.ccrg.lida.pam.BasicPamInitializer;
 import edu.memphis.ccrg.lida.pam.PamNode;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 
+/**
+ * An {@link Initializer} for the {@link MotivationPerceptualAssociativeMemory} that
+ * extends {@link BasicPamInitializer} by allowing feeling nodes to be declared.
+ * @author Ryan J McCall
+ */
 public class MotivationPamInitializer extends BasicPamInitializer {
 	
 	private static final Logger logger = Logger.getLogger(MotivationPamInitializer.class.getCanonicalName());
@@ -25,11 +31,16 @@ public class MotivationPamInitializer extends BasicPamInitializer {
 	/**
 	 * Parses a parameter called "nodes".
 	 * The parameter's value should be a String consisting of a sequence of nodeDefs separated by ','.
-	 * Each NodeDefs must have the following form:
-	 * <i>label:baseLevelActivation:factoryName:drive</i>
+	 * Each NodeDef must have the following form:
+	 * <i>label:baseLevelActivation:factoryName:valence:isDrive</i> </br>
+	 * Examples:</br>
+	 * cup</br>
+	 * cup:0.1</br>
+	 * cup:0.1:PamNodeImpl</br>
+	 * sweet:0.0:FeelingPamNodeImpl:positive</br>
+	 * thirst:0.0:FeelingPamNodeImpl:negative:drive</br>
+	 * 
 	 * Only the label is mandatory, but this order must be preserved, e.g., factory name cannot come second.
-	 * Base-level activation should be a double, factory name a String, and the final
-	 * one is "drive" if it corresponds to a feeling node that should be marked as a drive feeling node.
 	 */
 	protected static void initNodes(PerceptualAssociativeMemory pam, Map<String, ?> params) {
 		String nodes = (String) params.get("nodes");

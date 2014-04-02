@@ -7,11 +7,19 @@ import java.util.logging.Logger;
 import edu.memphis.ccrg.lida.framework.Agent;
 import edu.memphis.ccrg.lida.framework.initialization.FullyInitializable;
 import edu.memphis.ccrg.lida.framework.initialization.GlobalInitializer;
+import edu.memphis.ccrg.lida.framework.initialization.Initializable;
 import edu.memphis.ccrg.lida.framework.initialization.Initializer;
 import edu.memphis.ccrg.lida.framework.shared.LinkCategory;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.proceduralmemory.BasicProceduralMemoryInitializer;
 
+/**
+ * An {@link Initializer} for the {@link MotivationProceduralMemory}.
+ * Its only function is to give the Procedural Memory access to the temporal 
+ * {@link LinkCategory}. This must be done in an initializer because the LinkCategory may have not yet 
+ * been created when the procedural memory's {@link Initializable#init()} runs.
+ * @author Ryan J McCall
+ */
 public class MotivationProceduralMemoryInitializer extends BasicProceduralMemoryInitializer implements Initializer {
 	
 	private static final Logger logger = Logger.getLogger(MotivationProceduralMemoryInitializer.class.getCanonicalName());

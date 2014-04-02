@@ -16,9 +16,14 @@ import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.Coalition;
 import edu.memphis.ccrg.lida.motivation.shared.FeelingNode;
+import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemory;
 import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryImpl;
 import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
 
+/**
+ * First attempt at a motivationally supportive {@link ProceduralMemory}.
+ * @author Ryan J McCall
+ */
 public class MotivationProceduralMemory extends ProceduralMemoryImpl {
 
 	private static final Logger logger = Logger.getLogger(MotivationProceduralMemory.class.getCanonicalName());
@@ -31,6 +36,10 @@ public class MotivationProceduralMemory extends ProceduralMemoryImpl {
 		isLesioned = getParam("proceduralMemory.isLesioned", false);
 	}
 
+	/**
+	 * Sets the temporal {@link LinkCategory}.
+	 * @param c the {@link LinkCategory}
+	 */
 	void setTemporalLinkCategory(LinkCategory c) {
 		temporalCategory = c;
 	}

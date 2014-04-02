@@ -3,6 +3,10 @@ package edu.memphis.ccrg.lida.motivation.shared;
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.LinkImpl;
 
+/**
+ * A {@link Link} having a valence.
+ * @author Ryan J McCall
+ */
 public class FeelingLinkImpl extends LinkImpl implements Valenceable {
 	
 	private ValenceableImpl valence = new ValenceableImpl();

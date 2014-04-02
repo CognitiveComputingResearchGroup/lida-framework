@@ -15,9 +15,16 @@ import edu.memphis.ccrg.lida.motivation.shared.FeelingNodeImpl;
 import edu.memphis.ccrg.lida.pam.PamLink;
 import edu.memphis.ccrg.lida.pam.PamLinkable;
 import edu.memphis.ccrg.lida.pam.PamNode;
+import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl;
 import edu.memphis.ccrg.lida.pam.tasks.PropagationTask;
 
+/**
+ * A motivationally extended {@link PerceptualAssociativeMemory} which adds support for 
+ * incentive salience, including current incentive salience passing. Additionally, a detailed
+ * learning algorithm, which also concerns incentive salience is included.
+ * @author Ryan J McCall
+ */
 public class MotivationPerceptualAssociativeMemory extends PerceptualAssociativeMemoryImpl {
 	
 	private static final Logger logger = Logger.getLogger(MotivationPerceptualAssociativeMemory.class.getCanonicalName());
@@ -171,5 +178,4 @@ public class MotivationPerceptualAssociativeMemory extends PerceptualAssociative
 			}
 		}
 	}
-
 }

@@ -2,8 +2,13 @@ package edu.memphis.ccrg.lida.motivation.pam;
 
 import edu.memphis.ccrg.lida.motivation.shared.FeelingNode;
 import edu.memphis.ccrg.lida.motivation.shared.ValenceableImpl;
+import edu.memphis.ccrg.lida.pam.PamNode;
 import edu.memphis.ccrg.lida.pam.PamNodeImpl;
 
+/**
+ * A {@link PamNode} with a valence and a flag signifying whether or not it is a drive feeling.
+ * @author Ryan J McCall
+ */
 public class FeelingPamNodeImpl extends PamNodeImpl implements FeelingNode {
 
 	private ValenceableImpl valence = new ValenceableImpl();
