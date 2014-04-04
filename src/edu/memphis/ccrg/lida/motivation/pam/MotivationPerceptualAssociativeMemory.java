@@ -178,4 +178,28 @@ public class MotivationPerceptualAssociativeMemory extends PerceptualAssociative
 			}
 		}
 	}
+
+	/**
+	 * Sets learning rate
+	 * @param d new learning rate
+	 */
+	public void setLearningRate(double d) {
+		learningRate = d;
+	}
+
+	/**
+	 * Sets the discount rate.
+	 * @param d  new discount rate
+	 */
+	public void setDiscountRate(double d) {
+		discountRate = d;
+	}
+
+	/**
+	 * Sets the upscale factor.
+	 * @param d new upscale factor
+	 */
+	public void setUpscale(double d) {
+		upscaleFactor = d;
+	}
 }

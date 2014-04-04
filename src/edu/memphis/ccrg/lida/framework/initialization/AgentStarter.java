@@ -40,6 +40,8 @@ public class AgentStarter {
 	 * The properties configuration to be used for this agent
 	 */
 	private static Properties agentProperties;
+	
+	private static Agent currentAgent;
 
 	/**
 	 * Starts an {@link Agent} using the default properties path or the one that
@@ -56,9 +58,7 @@ public class AgentStarter {
 		}
 		Properties properties = ConfigUtils.loadProperties(propertiesPath);
 		if (properties == null) {
-			logger
-					.log(
-							Level.SEVERE,
+			logger.log(Level.SEVERE,
 							"Could not load main properties file from path: {0}, trying default properties path instead.",
 							propertiesPath);
 			start();
@@ -128,8 +128,8 @@ public class AgentStarter {
 		FactoriesDataXmlLoader.loadFactoriesData(agentProperties);
 
 		// Create model: Agent
-		Agent agent = new AgentXmlFactory().getAgent(agentProperties);
-		if (agent == null) {
+		currentAgent = new AgentXmlFactory().getAgent(agentProperties);
+		if (currentAgent == null) {
 			logger.log(Level.SEVERE,
 					"Failed to create agent, application not started.");
 			return;
@@ -138,8 +138,7 @@ public class AgentStarter {
 															// accessible
 															// initializer
 															// variables
-		logger.log(Level.CONFIG, "Agent created", 0L);
-
+		logger.log(Level.CONFIG, "Agent created", 0L);	
 		// Configure the logging
 		String loggingFile = agentProperties
 				.getProperty("lida.logging.configuration");
@@ -152,10 +151,18 @@ public class AgentStarter {
 		boolean enableGui = Boolean.parseBoolean(agentProperties.getProperty(
 													"lida.gui.enable", "true"));
 		if (enableGui) {
-			FrameworkGuiFactory.start(agent, agentProperties);
+			FrameworkGuiFactory.start(currentAgent, agentProperties);
 		} else {
-			agent.getTaskManager().resumeTasks();
+			currentAgent.getTaskManager().resumeTasks();
 		}
+	}
+	
+	/**
+	 * Gets the current {@link Agent}.
+	 * @return Most recently created {@link Agent}. 
+	 */
+	public static Agent getCurrentAgent(){
+		return currentAgent;
 	}
 
 }

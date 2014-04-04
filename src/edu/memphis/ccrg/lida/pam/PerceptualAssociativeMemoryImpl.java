@@ -89,7 +89,10 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 	private static double perceptThreshold = DEFAULT_PERCEPT_THRESHOLD;
 
 	private static final double DEFAULT_UPSCALE_FACTOR = 0.9;
-	private double upscaleFactor = DEFAULT_UPSCALE_FACTOR;
+	/**
+	 * 
+	 */
+	protected double upscaleFactor = DEFAULT_UPSCALE_FACTOR;
 
 	private static final double DEFAULT_DOWNSCALE_FACTOR = 0.5;
 	private double downscaleFactor = DEFAULT_DOWNSCALE_FACTOR;

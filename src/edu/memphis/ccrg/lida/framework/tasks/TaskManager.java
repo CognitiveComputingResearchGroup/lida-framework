@@ -109,6 +109,7 @@ public class TaskManager implements GuiEventProvider {
 
 	private static int shutdownTick = DEFAULT_SHUTDOWN_TICK;
 	private String postExecutationClassCanoncialName;
+	private boolean isExitOnShutdown = true;
 
 	/**
 	 * Constructs a new TaskManager.
@@ -578,7 +579,7 @@ public class TaskManager implements GuiEventProvider {
 		} catch (InterruptedException e) {
 			logger.log(Level.INFO,"Shutdown interrupted scheduled tasks. Message: {0}",e.getMessage());
 		}
-
+		// Run post-execution class
 		if(postExecutationClassCanoncialName != null){
 			logger.log(Level.INFO, "Preparing to run post-execution Class: {1}",
 					new Object[]{currentTick,postExecutationClassCanoncialName});
@@ -590,8 +591,23 @@ public class TaskManager implements GuiEventProvider {
 							new Object[]{currentTick,e});
 			} 
 		}
-		logger.log(Level.INFO, "Calling \"System.exit(0)\"",currentTick);
-		System.exit(0);
+		notifyAll(); //TODO Perhaps a separate object for this?
+		if(isExitOnShutdown){
+			logger.log(Level.INFO, "Calling \"System.exit(0)\"",currentTick);
+			System.exit(0);
+		}
+	}
+	
+	/**
+	 * Sets a flag governing whether the virtual machine is shutdown 
+	 * when the TaskManager stops running.
+	 * 
+	 * @param b True if the VM will shutdown when the taskManager stops running
+	 * @see System#exit(int)
+	 * @see #stopRunning()
+	 */
+	public void setExitOnShutdown(boolean b) {
+		isExitOnShutdown = b;
 	}
 
 	@Override
