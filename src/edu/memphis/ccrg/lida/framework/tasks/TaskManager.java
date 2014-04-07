@@ -493,7 +493,7 @@ public class TaskManager implements GuiEventProvider {
 					}
 				}
 				if(currentTick == shutdownTick){//TODO check this in goNextTick if multiple ticks are run at once
-					logger.log(Level.INFO, "Reached the shutdown tick: {0}, initiating application shutdown.", currentTick);
+					logger.log(Level.INFO, "\nReached the shutdown tick: {0}, initiating application shutdown.", currentTick);
 					stopRunning();
 				}
 			}// while
@@ -581,7 +581,7 @@ public class TaskManager implements GuiEventProvider {
 		}
 		// Run post-execution class
 		if(postExecutationClassCanoncialName != null){
-			logger.log(Level.INFO, "Preparing to run post-execution Class: {1}",
+			logger.log(Level.INFO, "Running post-execution class: {1}",
 					new Object[]{currentTick,postExecutationClassCanoncialName});
 			try {
 				Class.forName(postExecutationClassCanoncialName).newInstance();
@@ -591,9 +591,11 @@ public class TaskManager implements GuiEventProvider {
 							new Object[]{currentTick,e});
 			} 
 		}
-		notifyAll(); //TODO Perhaps a separate object for this?
+		synchronized (this) {
+			notifyAll(); 
+		}
 		if(isExitOnShutdown){
-			logger.log(Level.INFO, "Calling \"System.exit(0)\"",currentTick);
+			logger.log(Level.INFO, "\nCalling \"System.exit(0)\"",currentTick);
 			System.exit(0);
 		}
 	}
