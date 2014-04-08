@@ -70,7 +70,7 @@ public class TaskManager implements GuiEventProvider {
 	private volatile boolean shuttingDown = false;
 
 	private volatile long endOfNextInterval = 0L;
-	private volatile static long currentTick = 0L;
+	private volatile static long currentTick;
 	private volatile Long maxTick = 0L;
 	/*
 	 * Represents whether the TaskManager is in step mode or not. 
@@ -122,6 +122,7 @@ public class TaskManager implements GuiEventProvider {
 	 * @param canonicalName an optional canonical name of a Class whose default constructor will be invoked right before the TaskManager will shutdown. 
 	 */
 	public TaskManager(int tickDuration, int maxPoolSize, int shutdownTick, String canonicalName) {
+		currentTick = 0L;
 		int corePoolSize = DEFAULT_NUMBER_OF_THREADS;
 		long keepAliveTime = 10;
 		if (tickDuration >= 0) {
