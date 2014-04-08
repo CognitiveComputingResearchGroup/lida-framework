@@ -55,20 +55,14 @@ public class TaskManager implements GuiEventProvider {
 	 * Default number of threads in the {@link ExecutorService}
 	 */
 	public static final int DEFAULT_NUMBER_OF_THREADS = 50;
-	/**
-	 * Default tick at which the TaskManager will shut itself down.
-	 */
-	public static final int DEFAULT_SHUTDOWN_TICK = -1;
 	/*
 	 * Determines whether or not spawned tasks should run
 	 */
 	private volatile boolean tasksPaused = true;
-
 	/*
 	 * Whether or not this task manager is shutting down its tasks
 	 */
 	private volatile boolean shuttingDown = false;
-
 	private volatile long endOfNextInterval = 0L;
 	private volatile static long currentTick;
 	private volatile Long maxTick = 0L;
@@ -106,10 +100,20 @@ public class TaskManager implements GuiEventProvider {
 	private List<FrameworkGuiEventListener> guiListeners = new ArrayList<FrameworkGuiEventListener>();
 	private FrameworkGuiEvent defaultGuiEvent = new FrameworkGuiEvent(
 			ModuleName.Agent, "TicksEvent", null);
-
+	/**
+	 * Default tick at which the TaskManager will shut itself down. Default value 
+	 * implies TaskManager will never shut itself down.
+	 */
+	public static final int DEFAULT_SHUTDOWN_TICK = -1;
 	private static int shutdownTick = DEFAULT_SHUTDOWN_TICK;
-	private String postExecutationClassCanoncialName;
+	/*
+	 * Flag on whether System.exit(0) is called when shutdown tick is reached. 
+	 */
 	private boolean isExitOnShutdown = true;
+	/* 
+	 * Optional class that runs after TaskManager has reached the shutdown tick.
+	 */
+	private String postExecutationClassCanoncialName;
 
 	/**
 	 * Constructs a new TaskManager.
@@ -122,7 +126,7 @@ public class TaskManager implements GuiEventProvider {
 	 * @param canonicalName an optional canonical name of a Class whose default constructor will be invoked right before the TaskManager will shutdown. 
 	 */
 	public TaskManager(int tickDuration, int maxPoolSize, int shutdownTick, String canonicalName) {
-		currentTick = 0L;
+		currentTick = 0L; //Static variable reinitialized here
 		int corePoolSize = DEFAULT_NUMBER_OF_THREADS;
 		long keepAliveTime = 10;
 		if (tickDuration >= 0) {
@@ -592,12 +596,15 @@ public class TaskManager implements GuiEventProvider {
 							new Object[]{currentTick,e});
 			} 
 		}
-		synchronized (this) {
-			notifyAll(); 
-		}
 		if(isExitOnShutdown){
 			logger.log(Level.INFO, "\nCalling \"System.exit(0)\"",currentTick);
 			System.exit(0);
+		}else{ 
+			synchronized (this) {
+				//Signal Thread creating the TaskManager (and Agent) that the shutdown tick has been reached and 
+				//the TaskManager has stopped running.
+				notifyAll();  
+			}
 		}
 	}
 	
