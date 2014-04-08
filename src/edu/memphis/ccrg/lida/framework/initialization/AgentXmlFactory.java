@@ -46,6 +46,7 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
  * 
  */
 public class AgentXmlFactory implements AgentFactory {
+	//TODO This class could be singleton
 	// TODO consider 'postInit' method that runs after initializers run.
 	// This will allow objects created in the initial pass, e.g. Nodes, Actions,
 	// to be used by other
