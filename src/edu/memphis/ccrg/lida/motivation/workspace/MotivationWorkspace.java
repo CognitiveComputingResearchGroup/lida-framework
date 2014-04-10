@@ -3,6 +3,8 @@ package edu.memphis.ccrg.lida.motivation.workspace;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.shared.ExtendedId;
@@ -11,6 +13,7 @@ import edu.memphis.ccrg.lida.framework.shared.LinkCategory;
 import edu.memphis.ccrg.lida.framework.shared.Linkable;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.motivation.shared.FeelingNode;
 import edu.memphis.ccrg.lida.motivation.shared.FeelingNodeImpl;
 import edu.memphis.ccrg.lida.workspace.Workspace;
@@ -25,6 +28,7 @@ import edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBuffer;
  */
 public class MotivationWorkspace extends WorkspaceImpl {
 	
+	private static final Logger logger = Logger.getLogger(MotivationWorkspace.class.getCanonicalName());
 	private LinkCategory temporalCategory;
 
 	/**
@@ -62,7 +66,11 @@ public class MotivationWorkspace extends WorkspaceImpl {
 					}
 					ExtendedId oppositeId = new ExtendedId(sink.getId(), source.getExtendedId(), temporalCategory.getId());
 					if(!csmStructure.containsLink(oppositeId)){	// Avoid creating cycles
-						csmStructure.addDefaultLink(source, sink, temporalCategory, 1.0, 0.0);						
+						Link link = csmStructure.addDefaultLink(source, sink, temporalCategory, 1.0, 0.0);	
+						if(link == null){
+							logger.log(Level.INFO, "Failed to add link from {1} to {2}", 
+										new Object[]{TaskManager.getCurrentTick(), source, sink});		
+						}
 					}
 				}	
 			}
