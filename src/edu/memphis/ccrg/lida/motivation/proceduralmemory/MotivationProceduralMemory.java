@@ -3,8 +3,6 @@ package edu.memphis.ccrg.lida.motivation.proceduralmemory;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.LinkCategory;
@@ -13,7 +11,6 @@ import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTask;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
-import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.Coalition;
 import edu.memphis.ccrg.lida.motivation.shared.FeelingNode;
 import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemory;
@@ -26,7 +23,7 @@ import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
  */
 public class MotivationProceduralMemory extends ProceduralMemoryImpl {
 
-	private static final Logger logger = Logger.getLogger(MotivationProceduralMemory.class.getCanonicalName());
+//	private static final Logger logger = Logger.getLogger(MotivationProceduralMemory.class.getCanonicalName());
 	private boolean isLesioned;
 	private LinkCategory temporalCategory;
 	
@@ -47,8 +44,8 @@ public class MotivationProceduralMemory extends ProceduralMemoryImpl {
 	@Override
 	public void receiveBroadcast(Coalition coalition) {
 		NodeStructure ns = (NodeStructure) coalition.getContent();
-		logger.log(Level.INFO, " Broadcast at {0}: {1}",
-					new Object[]{TaskManager.getCurrentTick(), ns.toString()}); //TODO Remove
+//		logger.log(Level.INFO, " Broadcast at {0}: {1}",
+//					new Object[]{TaskManager.getCurrentTick(), ns.toString()}); //TODO Remove
 		for (Node broadcastNode: ns.getNodes()) {
 			// For each broadcast node, check if it is in the condition pool,
 			// i.e., there is at least 1 scheme that has context or result
