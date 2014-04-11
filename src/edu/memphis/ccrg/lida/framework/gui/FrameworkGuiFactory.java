@@ -150,12 +150,12 @@ public class FrameworkGuiFactory {
                 populateConfig(guiDef, doc);
         }
         else {
-            logger.log(Level.INFO, "GUI config XML file not found. Failing over to legacy properties file");
+            logger.log(Level.INFO, "XML GUI config file not found. Loading properties GUI config file instead.");
 
             filename = systemProperties.getProperty("lida.gui.panels", DEFAULT_PANELS_FILENAME);
             Properties properties = ConfigUtils.loadProperties(filename);
             if (properties == null)
-                logger.log(Level.SEVERE, "unable to load GUI panels from " + filename);
+                logger.log(Level.SEVERE, "Unable to load GUI panels from " + filename);
             else
                 populateConfig(guiDef, properties);
         }

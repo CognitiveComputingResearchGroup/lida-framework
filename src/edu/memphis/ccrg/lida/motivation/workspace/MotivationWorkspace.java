@@ -51,7 +51,7 @@ public class MotivationWorkspace extends WorkspaceImpl {
 
 	/*
 	 * It appears preferable to perform this operation right when a node is added to the CSM
-	 * as opposed to performing this op cyclically in a task.
+	 * as opposed to performing it cyclically in a task.
 	 */
 	private void buildTemporalLink(Node n, NodeStructure csmStructure) {
 		BroadcastQueue queue = (BroadcastQueue) getSubmodule(ModuleName.BroadcastQueue);
@@ -67,8 +67,8 @@ public class MotivationWorkspace extends WorkspaceImpl {
 					ExtendedId oppositeId = new ExtendedId(sink.getId(), source.getExtendedId(), temporalCategory.getId());
 					if(!csmStructure.containsLink(oppositeId)){	// Avoid creating cycles
 						Link link = csmStructure.addDefaultLink(source, sink, temporalCategory, 1.0, 0.0);	
-						if(link == null){
-							logger.log(Level.INFO, "Failed to add link from {1} to {2}", 
+						if(link != null){
+							logger.log(Level.INFO, "Buidling link from {1} to {2}", 
 										new Object[]{TaskManager.getCurrentTick(), source, sink});		
 						}
 					}
