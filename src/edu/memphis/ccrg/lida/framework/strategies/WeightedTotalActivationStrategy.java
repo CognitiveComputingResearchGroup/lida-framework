@@ -2,24 +2,27 @@ package edu.memphis.ccrg.lida.framework.strategies;
 
 
 /**
- * Computes total activation as a weighted average of base-level and current.
+ * Some proportion of base-level activation and some proportion of current activation 
+ * contribute to total activation.
  * @author Ryan J. McCall
  */
 public class WeightedTotalActivationStrategy extends StrategyImpl implements TotalActivationStrategy {
 
 	
-	private static final double DEFAULT_BLA_WEIGHT = 0.1;
-	private double blaWeight;
+	private static final double DEFAULT_BASE_LEVEL_WEIGHT = 1.0;
+	private double baseLevelWeight;
+	private static final double DEFAULT_CURRENT_WEIGHT = 1.0;
+	private double currentWeight;
 	
 	@Override
 	public void init(){
-		blaWeight = getParam("blaWeight",DEFAULT_BLA_WEIGHT);
+		baseLevelWeight = getParam("baseLevelWeight", DEFAULT_BASE_LEVEL_WEIGHT);
+		currentWeight = getParam("currentWeight", DEFAULT_CURRENT_WEIGHT);
 	}
 	
 	@Override
 	public double calculateTotalActivation(double baseLevelActivation, double currentActivation) {
-		double sum = (blaWeight*baseLevelActivation + (1-blaWeight)*currentActivation)/2;
-		return (sum > 1.0)? 1.0 : sum;
-	}
-
+		double total = (baseLevelWeight*baseLevelActivation + currentWeight*currentActivation)/2;
+		return total>1? 1: total;
+	}	
 }
