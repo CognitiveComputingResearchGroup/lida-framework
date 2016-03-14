@@ -50,7 +50,15 @@ public class PamLinkImpl extends LinkImpl implements PamLink {
 	public PamLinkImpl() {
 		super();
 		groundingPamLink = this;
-		learnable = new LearnableImpl();
+		/**TODO This default implementation is making the PamLinks 
+		 * getting initialized with the default strategies at least for BL decay
+		 * 
+		 *
+		 * I think the init() method was supposed to initialize it with the right
+		 * parameters. But it is not doing it in this case.
+		 * 
+		 */
+		learnable = new LearnableImpl(); 
 	}
 
 	/**
