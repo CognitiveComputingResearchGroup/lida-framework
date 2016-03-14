@@ -43,7 +43,7 @@ public class FrameworkGuiFactory {
     private static final String DEFAULT_CONFIG_SCHEMA_PATH = "edu/memphis/ccrg/lida/framework/initialization/config/LidaGuiDef.xsd";
     private static final String DEFAULT_COMMANDS_FILENAME = "configs/guiCommands.properties";
     private static final String DEFAULT_PANELS_FILENAME = "configs/guiPanels.properties";
-    private static final int DEFAULT_GUI_REFRESH_RATE = 5;
+    private static final int DEFAULT_GUI_REFRESH_RATE = 1;
 
     // Legacy panel properties file fields.
     //    private static final String PANEL_PROPFILE_COMMENT = "name = real name, class name, Position [A,B,C,FLOAT, TOOL], Order at Position, Refresh after load?, Additional strings are used as general parameters for the panel's initPanel method";
