@@ -22,7 +22,7 @@ import java.util.logging.Logger;
  */
 public abstract class SubsumptionMPTImpl implements MPT{
 
-    private static final Logger logger = Logger
+    public static final Logger logger = Logger
                     .getLogger(SubsumptionMPTImpl.class.getCanonicalName());
 
     protected Map<String, Object> sensedData = new HashMap<String, Object>();
